@@ -1,4 +1,4 @@
-import { Github, Twitter } from "lucide-react";
+import { Github, Instagram, Twitter } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
@@ -13,6 +13,7 @@ const footerLinks = [
 
 const socialLinks = [
   { href: "https://twitter.com", label: "Twitter", icon: Twitter },
+  { href: "https://instagram.com", label: "Instagram", icon: Instagram },
   { href: "https://github.com", label: "GitHub", icon: Github },
 ];
 

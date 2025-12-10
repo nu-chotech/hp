@@ -1,12 +1,13 @@
 "use client";
 
-import { Github, MessageSquare, Twitter } from "lucide-react";
+import { Github, Instagram, MessageSquare, Twitter } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
 const socialLinks = [
   { icon: Twitter, label: "Twitter", href: "https://twitter.com" },
+  { icon: Instagram, label: "Instagram", href: "https://instagram.com" },
   { icon: Github, label: "GitHub", href: "https://github.com" },
 ];
 

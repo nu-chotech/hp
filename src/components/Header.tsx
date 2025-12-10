@@ -58,15 +58,20 @@ export function Header() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-3">
             <Image
               src="/icon.png"
               alt="ChoTech"
-              width={32}
-              height={32}
+              width={44}
+              height={44}
               className="rounded-lg"
             />
-            <span className="font-bold text-lg">ChoTech</span>
+            <div className="flex flex-col">
+              <span className="text-xs text-muted-foreground hidden sm:block">
+                学生エンジニアコミュニティ
+              </span>
+              <span className="font-bold text-lg leading-tight">ChoTech</span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}

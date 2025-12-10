@@ -8,6 +8,9 @@ export function HeroSection() {
     <section className="min-h-screen flex items-center justify-center pt-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="max-w-3xl mx-auto">
+          <p className="text-xs text-muted-foreground mb-2">
+            長崎大学 情報データ科学部発
+          </p>
           <p className="text-sm text-muted-foreground mb-4">
             学生エンジニアコミュニティ
           </p>
