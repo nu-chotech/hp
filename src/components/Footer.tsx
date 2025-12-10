@@ -7,7 +7,7 @@ const footerLinks = [
   { href: "#about", label: "私たちについて" },
   { href: "#activities", label: "活動内容" },
   { href: "#news", label: "お知らせ" },
-  { href: "#members", label: "メンバー" },
+  { href: "#members", label: "運営メンバー" },
   { href: "#recruit", label: "参加する" },
 ];
 

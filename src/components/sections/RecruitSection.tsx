@@ -25,7 +25,7 @@ export function RecruitSection() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">メンバー募集中</h2>
+            <h2 className="text-3xl font-bold mb-4">コミュニティに参加する</h2>
             <p className="text-muted-foreground">
               一緒にChoTechで活動しませんか？
             </p>
@@ -34,7 +34,7 @@ export function RecruitSection() {
           <div className="grid md:grid-cols-2 gap-6 mb-8">
             <Card>
               <CardContent className="p-6">
-                <h3 className="font-semibold mb-4">こんな方を募集</h3>
+                <h3 className="font-semibold mb-4">こんな方を歓迎</h3>
                 <ul className="space-y-3">
                   {requirements.map((item) => (
                     <li key={item} className="flex items-start gap-2">
@@ -70,7 +70,7 @@ export function RecruitSection() {
               <Link href="#contact">Discordで参加する</Link>
             </Button>
             <p className="text-sm text-muted-foreground mt-4">
-              ※ 随時募集しています
+              ※ いつでも参加できます
             </p>
           </div>
         </div>
