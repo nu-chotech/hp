@@ -1,7 +1,6 @@
 "use client";
 
 import { ArrowRight, Calendar } from "lucide-react";
-import * as motion from "motion/react-client";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -26,12 +25,6 @@ const sampleNews = [
     publishedAt: "2024-12-01",
     category: { id: "report", name: "活動報告" },
   },
-  {
-    id: "4",
-    title: "年末LT大会の参加者募集中",
-    publishedAt: "2024-11-28",
-    category: { id: "event", name: "イベント" },
-  },
 ];
 
 function formatDate(dateString: string) {
@@ -43,86 +36,38 @@ function formatDate(dateString: string) {
   });
 }
 
-function getCategoryColor(categoryId: string) {
-  switch (categoryId) {
-    case "event":
-      return "bg-primary/10 text-primary hover:bg-primary/20";
-    case "info":
-      return "bg-accent/10 text-accent-foreground hover:bg-accent/20";
-    case "report":
-      return "bg-brand-accent/10 text-brand-accent hover:bg-brand-accent/20";
-    default:
-      return "bg-muted text-muted-foreground hover:bg-muted/80";
-  }
-}
-
 export function NewsSection() {
   return (
-    <section id="news" className="py-20 lg:py-32">
+    <section id="news" className="py-20 bg-muted/50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-          className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 mb-12"
-        >
+        <div className="flex items-end justify-between gap-4 mb-8">
           <div>
-            <span className="text-primary font-semibold text-sm uppercase tracking-widest mb-4 block">
-              News
-            </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
-              お知らせ
-            </h2>
+            <h2 className="text-3xl font-bold">お知らせ</h2>
           </div>
-          <Button asChild variant="outline" className="rounded-full">
-            <Link href="/news" className="flex items-center gap-2">
+          <Button asChild variant="ghost" size="sm">
+            <Link href="/news" className="flex items-center gap-1">
               すべて見る
               <ArrowRight className="w-4 h-4" />
             </Link>
           </Button>
-        </motion.div>
+        </div>
 
-        {/* News List */}
         <div className="space-y-4">
-          {sampleNews.map((news, index) => (
-            <motion.article
+          {sampleNews.map((news) => (
+            <Link
               key={news.id}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              href={`/news/${news.id}`}
+              className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 p-4 rounded-lg border bg-card hover:bg-muted transition-colors"
             >
-              <Link
-                href={`/news/${news.id}`}
-                className="group flex flex-col sm:flex-row sm:items-center gap-4 p-4 sm:p-6 rounded-xl bg-card border border-border hover:border-primary/50 hover:shadow-md transition-all duration-300"
-              >
-                {/* Date */}
-                <div className="flex items-center gap-2 text-sm text-muted-foreground shrink-0">
-                  <Calendar className="w-4 h-4" />
-                  <time dateTime={news.publishedAt}>
-                    {formatDate(news.publishedAt)}
-                  </time>
-                </div>
-
-                {/* Category Badge */}
-                <Badge
-                  variant="secondary"
-                  className={`w-fit ${getCategoryColor(news.category.id)}`}
-                >
-                  {news.category.name}
-                </Badge>
-
-                {/* Title */}
-                <h3 className="flex-1 font-medium group-hover:text-primary transition-colors line-clamp-1">
-                  {news.title}
-                </h3>
-
-                {/* Arrow */}
-                <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all shrink-0" />
-              </Link>
-            </motion.article>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground shrink-0">
+                <Calendar className="w-4 h-4" />
+                <time dateTime={news.publishedAt}>
+                  {formatDate(news.publishedAt)}
+                </time>
+              </div>
+              <Badge variant="secondary">{news.category.name}</Badge>
+              <span className="flex-1">{news.title}</span>
+            </Link>
           ))}
         </div>
       </div>

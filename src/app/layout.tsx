@@ -13,19 +13,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "TechCommunity | 学生エンジニアコミュニティ",
+  title: "ChoTech | 学生エンジニアコミュニティ",
   description:
-    "学生エンジニアが集まり、技術を学び、共に成長するコミュニティです。Web開発、AI/ML、モバイルアプリなど様々な分野で活動しています。",
-  keywords: [
-    "学生エンジニア",
-    "プログラミング",
-    "Web開発",
-    "AI",
-    "機械学習",
-    "コミュニティ",
-  ],
+    "ChoTechは学生エンジニアが集まり、技術を学び、共に成長するコミュニティです。",
+  keywords: ["ChoTech", "学生エンジニア", "プログラミング", "コミュニティ"],
   openGraph: {
-    title: "TechCommunity | 学生エンジニアコミュニティ",
+    title: "ChoTech | 学生エンジニアコミュニティ",
     description:
       "学生エンジニアが集まり、技術を学び、共に成長するコミュニティです。",
     type: "website",
