@@ -91,7 +91,7 @@ export function HeroSection() {
         <div className="max-w-3xl mx-auto">
           {/* Origin - シンプルなフェードイン */}
           <motion.p
-            className="text-xs text-white/70 mb-2"
+            className="text-xs text-white/60 mb-2"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -101,7 +101,7 @@ export function HeroSection() {
 
           {/* Description - シンプルなフェードイン */}
           <motion.p
-            className="text-sm text-white/70 mb-4"
+            className="text-sm text-white/60 mb-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}
@@ -114,7 +114,7 @@ export function HeroSection() {
 
           {/* Tagline - 文字単位アニメーション */}
           <motion.p
-            className="text-xl font-medium max-w-xl mx-auto mb-4 text-white"
+            className="text-xl font-medium max-w-xl mx-auto mb-8 text-white"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3, delay: 1.2 }}
@@ -124,7 +124,7 @@ export function HeroSection() {
 
           {/* サブテキスト - フェードアップ */}
           <motion.p
-            className="text-white/80 max-w-xl mx-auto mb-8"
+            className="text-white/60 max-w-xl mx-auto mb-8"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 1.8, ease: "easeOut" }}
