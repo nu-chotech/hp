@@ -1,28 +1,28 @@
 "use client";
 
-import { Code, Lightbulb, Rocket, Users } from "lucide-react";
+import { BookOpen, Hammer, MessageCircle, Users } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 const features = [
   {
-    icon: Code,
-    title: "技術を学ぶ",
-    description: "最新の技術を実践的に学びます。",
+    icon: BookOpen,
+    title: "学ぶ",
+    description: "最新の技術を実践的に学び、T字型人材を目指します。",
+  },
+  {
+    icon: Hammer,
+    title: "作る",
+    description: "チームでプロジェクトに挑戦し、アイデアを形にします。",
+  },
+  {
+    icon: MessageCircle,
+    title: "話す",
+    description: "ライトニングトークや勉強会で知識を共有します。",
   },
   {
     icon: Users,
-    title: "仲間と成長",
-    description: "同じ志を持つ仲間と切磋琢磨します。",
-  },
-  {
-    icon: Lightbulb,
-    title: "アイデアを形に",
-    description: "プロジェクトを通じてアイデアを実現します。",
-  },
-  {
-    icon: Rocket,
-    title: "社会に貢献",
-    description: "技術で社会課題の解決に挑みます。",
+    title: "仲間",
+    description: "同じ志を持つ仲間と切磋琢磨し、共に成長します。",
   },
 ];
 
@@ -33,7 +33,7 @@ export function AboutSection() {
         <div className="text-center max-w-2xl mx-auto mb-12">
           <h2 className="text-3xl font-bold mb-4">私たちについて</h2>
           <p className="text-muted-foreground">
-            ChoTechは、テクノロジーを通じて社会に貢献することを目指す学生の集まりです。
+            学生が主体的かつ協働的に「技術を学ぶ・作る・話す」独自のカルチャーを育んでいくコミュニティです。
           </p>
         </div>
 

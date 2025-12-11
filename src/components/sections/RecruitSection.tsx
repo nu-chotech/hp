@@ -5,18 +5,18 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
-const requirements = [
-  "プログラミングに興味がある学生",
-  "チーム開発に挑戦したい方",
-  "新しい技術を学びたい方",
-  "仲間と一緒に成長したい方",
+const participationStyles = [
+  "会員制ではない — いつでも気軽に参加可能",
+  "完全自由参加 — 聞くだけでもOK",
+  "初心者歓迎 — 知識ゼロでも安心",
+  "挙手制 — やりたいことがあれば主体的に",
 ];
 
 const benefits = [
-  "実践的なプロジェクト経験",
-  "メンター制度でサポート",
-  "勉強会・ハッカソン参加",
-  "就活・キャリア相談",
+  "実践的なスキル習得（プレゼン・技術力）",
+  "仲間との出会いとネットワーキング",
+  "T字型人材への成長・キャリアへの貢献",
+  "ポートフォリオの構築",
 ];
 
 export function RecruitSection() {
@@ -34,9 +34,9 @@ export function RecruitSection() {
           <div className="grid md:grid-cols-2 gap-6 mb-8">
             <Card>
               <CardContent className="p-6">
-                <h3 className="font-semibold mb-4">こんな方を歓迎</h3>
+                <h3 className="font-semibold mb-4">参加スタイル</h3>
                 <ul className="space-y-3">
-                  {requirements.map((item) => (
+                  {participationStyles.map((item) => (
                     <li key={item} className="flex items-start gap-2">
                       <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 shrink-0" />
                       <span className="text-sm text-muted-foreground">

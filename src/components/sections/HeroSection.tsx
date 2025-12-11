@@ -19,8 +19,12 @@ export function HeroSection() {
             ChoTech
           </h1>
 
-          <p className="text-lg text-muted-foreground max-w-xl mx-auto mb-8">
-            技術を学び、共に成長し、社会に貢献する学生エンジニアの集まりです。
+          <p className="text-xl font-medium max-w-xl mx-auto mb-4">
+            共に学び、共に創り、共に発信する。
+          </p>
+
+          <p className="text-muted-foreground max-w-xl mx-auto mb-8">
+            「技術を学ぶ・作る・話す」を、みんなで気軽に楽しむコミュニティ
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
