@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowRight, Calendar } from "lucide-react";
+import { motion } from "motion/react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -36,40 +37,91 @@ function formatDate(dateString: string) {
   });
 }
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.12,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, x: -20 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut" as const,
+    },
+  },
+};
+
 export function NewsSection() {
   return (
     <section id="news" className="py-20 bg-muted/50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-end justify-between gap-4 mb-8">
+        <motion.div
+          className="flex items-end justify-between gap-4 mb-8"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.7 }}
+        >
           <div>
             <h2 className="text-3xl font-bold">お知らせ</h2>
           </div>
-          <Button asChild variant="ghost" size="sm">
-            <Link href="/news" className="flex items-center gap-1">
-              すべて見る
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </Button>
-        </div>
+          <motion.div whileHover={{ x: 5 }} transition={{ duration: 0.2 }}>
+            <Button asChild variant="ghost" size="sm">
+              <Link href="/news" className="flex items-center gap-1">
+                すべて見る
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </Button>
+          </motion.div>
+        </motion.div>
 
-        <div className="space-y-4">
+        <motion.div
+          className="space-y-4"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+        >
           {sampleNews.map((news) => (
-            <Link
+            <motion.div
               key={news.id}
-              href={`/news/${news.id}`}
-              className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 p-4 rounded-lg border bg-card hover:bg-muted transition-colors"
+              variants={itemVariants}
+              whileHover={{
+                x: 8,
+                transition: { duration: 0.2 },
+              }}
             >
-              <div className="flex items-center gap-2 text-sm text-muted-foreground shrink-0">
-                <Calendar className="w-4 h-4" />
-                <time dateTime={news.publishedAt}>
-                  {formatDate(news.publishedAt)}
-                </time>
-              </div>
-              <Badge variant="secondary">{news.category.name}</Badge>
-              <span className="flex-1">{news.title}</span>
-            </Link>
+              <Link
+                href={`/news/${news.id}`}
+                className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 p-4 rounded-lg border bg-card hover:bg-muted transition-colors"
+              >
+                <div className="flex items-center gap-2 text-sm text-muted-foreground shrink-0">
+                  <Calendar className="w-4 h-4" />
+                  <time dateTime={news.publishedAt}>
+                    {formatDate(news.publishedAt)}
+                  </time>
+                </div>
+                <Badge variant="secondary">{news.category.name}</Badge>
+                <span className="flex-1">{news.title}</span>
+                <motion.div
+                  className="hidden sm:block"
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 1 }}
+                >
+                  <ArrowRight className="w-4 h-4 text-muted-foreground" />
+                </motion.div>
+              </Link>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

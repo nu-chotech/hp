@@ -1,6 +1,7 @@
 "use client";
 
 import { CheckCircle2 } from "lucide-react";
+import { motion } from "motion/react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -19,60 +20,154 @@ const benefits = [
   "ポートフォリオの構築",
 ];
 
+const cardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut" as const,
+    },
+  },
+};
+
+const listItemVariants = {
+  hidden: { opacity: 0, x: -10 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.4,
+    },
+  },
+};
+
 export function RecruitSection() {
   return (
     <section id="recruit" className="py-20 bg-muted/50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
+          <motion.div
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.7 }}
+          >
             <h2 className="text-3xl font-bold mb-4">コミュニティに参加する</h2>
             <p className="text-muted-foreground">
               一緒にChoTechで活動しませんか？
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid md:grid-cols-2 gap-6 mb-8">
-            <Card>
-              <CardContent className="p-6">
-                <h3 className="font-semibold mb-4">参加スタイル</h3>
-                <ul className="space-y-3">
-                  {participationStyles.map((item) => (
-                    <li key={item} className="flex items-start gap-2">
-                      <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                      <span className="text-sm text-muted-foreground">
-                        {item}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
+            <motion.div
+              variants={cardVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              whileHover={{ y: -5, transition: { duration: 0.2 } }}
+            >
+              <Card className="h-full transition-shadow hover:shadow-lg">
+                <CardContent className="p-6">
+                  <h3 className="font-semibold mb-4">参加スタイル</h3>
+                  <motion.ul
+                    className="space-y-3"
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    transition={{ staggerChildren: 0.1, delayChildren: 0.3 }}
+                  >
+                    {participationStyles.map((item) => (
+                      <motion.li
+                        key={item}
+                        className="flex items-start gap-2"
+                        variants={listItemVariants}
+                      >
+                        <motion.div
+                          whileHover={{ scale: 1.2, rotate: 10 }}
+                          transition={{ type: "spring", stiffness: 400 }}
+                        >
+                          <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 shrink-0" />
+                        </motion.div>
+                        <span className="text-sm text-muted-foreground">
+                          {item}
+                        </span>
+                      </motion.li>
+                    ))}
+                  </motion.ul>
+                </CardContent>
+              </Card>
+            </motion.div>
 
-            <Card>
-              <CardContent className="p-6">
-                <h3 className="font-semibold mb-4">参加するメリット</h3>
-                <ul className="space-y-3">
-                  {benefits.map((item) => (
-                    <li key={item} className="flex items-start gap-2">
-                      <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                      <span className="text-sm text-muted-foreground">
-                        {item}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
+            <motion.div
+              variants={cardVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ delay: 0.15 }}
+              whileHover={{ y: -5, transition: { duration: 0.2 } }}
+            >
+              <Card className="h-full transition-shadow hover:shadow-lg">
+                <CardContent className="p-6">
+                  <h3 className="font-semibold mb-4">参加するメリット</h3>
+                  <motion.ul
+                    className="space-y-3"
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    transition={{ staggerChildren: 0.1, delayChildren: 0.45 }}
+                  >
+                    {benefits.map((item) => (
+                      <motion.li
+                        key={item}
+                        className="flex items-start gap-2"
+                        variants={listItemVariants}
+                      >
+                        <motion.div
+                          whileHover={{ scale: 1.2, rotate: 10 }}
+                          transition={{ type: "spring", stiffness: 400 }}
+                        >
+                          <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 shrink-0" />
+                        </motion.div>
+                        <span className="text-sm text-muted-foreground">
+                          {item}
+                        </span>
+                      </motion.li>
+                    ))}
+                  </motion.ul>
+                </CardContent>
+              </Card>
+            </motion.div>
           </div>
 
-          <div className="text-center">
-            <Button asChild size="lg">
-              <Link href="#contact">Discordで参加する</Link>
-            </Button>
-            <p className="text-sm text-muted-foreground mt-4">
+          <motion.div
+            className="text-center"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            >
+              <Button asChild size="lg">
+                <Link href="#contact">Discordで参加する</Link>
+              </Button>
+            </motion.div>
+            <motion.p
+              className="text-sm text-muted-foreground mt-4"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.6 }}
+            >
               ※ いつでも参加できます
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
         </div>
       </div>
     </section>
