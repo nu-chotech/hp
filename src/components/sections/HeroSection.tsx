@@ -64,16 +64,12 @@ export function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.9 }}
           >
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button asChild size="lg">
-                <Link href="#recruit">参加する</Link>
-              </Button>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button asChild variant="outline" size="lg">
-                <Link href="#about">詳しく見る</Link>
-              </Button>
-            </motion.div>
+            <Button asChild size="lg">
+              <Link href="#recruit">参加する</Link>
+            </Button>
+            <Button asChild variant="outline" size="lg">
+              <Link href="#about">詳しく見る</Link>
+            </Button>
           </motion.div>
         </motion.div>
       </div>

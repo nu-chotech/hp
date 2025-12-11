@@ -75,14 +75,9 @@ export function AboutSection() {
         >
           {features.map((feature) => (
             <motion.div key={feature.title} variants={itemVariants}>
-              <Card className="h-full transition-shadow hover:shadow-lg">
+              <Card className="h-full">
                 <CardContent className="p-6">
-                  <motion.div
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                  >
-                    <feature.icon className="w-8 h-8 mb-4 text-primary" />
-                  </motion.div>
+                  <feature.icon className="w-8 h-8 mb-4 text-primary" />
                   <h3 className="font-semibold mb-2">{feature.title}</h3>
                   <p className="text-sm text-muted-foreground">
                     {feature.description}

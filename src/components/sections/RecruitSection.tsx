@@ -67,9 +67,8 @@ export function RecruitSection() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-50px" }}
-              whileHover={{ y: -5, transition: { duration: 0.2 } }}
             >
-              <Card className="h-full transition-shadow hover:shadow-lg">
+              <Card className="h-full">
                 <CardContent className="p-6">
                   <h3 className="font-semibold mb-4">参加スタイル</h3>
                   <motion.ul
@@ -85,12 +84,7 @@ export function RecruitSection() {
                         className="flex items-start gap-2"
                         variants={listItemVariants}
                       >
-                        <motion.div
-                          whileHover={{ scale: 1.2, rotate: 10 }}
-                          transition={{ type: "spring", stiffness: 400 }}
-                        >
-                          <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                        </motion.div>
+                        <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 shrink-0" />
                         <span className="text-sm text-muted-foreground">
                           {item}
                         </span>
@@ -107,9 +101,8 @@ export function RecruitSection() {
               whileInView="visible"
               viewport={{ once: true, margin: "-50px" }}
               transition={{ delay: 0.15 }}
-              whileHover={{ y: -5, transition: { duration: 0.2 } }}
             >
-              <Card className="h-full transition-shadow hover:shadow-lg">
+              <Card className="h-full">
                 <CardContent className="p-6">
                   <h3 className="font-semibold mb-4">参加するメリット</h3>
                   <motion.ul
@@ -125,12 +118,7 @@ export function RecruitSection() {
                         className="flex items-start gap-2"
                         variants={listItemVariants}
                       >
-                        <motion.div
-                          whileHover={{ scale: 1.2, rotate: 10 }}
-                          transition={{ type: "spring", stiffness: 400 }}
-                        >
-                          <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                        </motion.div>
+                        <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 shrink-0" />
                         <span className="text-sm text-muted-foreground">
                           {item}
                         </span>
@@ -149,15 +137,9 @@ export function RecruitSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 400, damping: 17 }}
-            >
-              <Button asChild size="lg">
-                <Link href="#contact">Discordで参加する</Link>
-              </Button>
-            </motion.div>
+            <Button asChild size="lg">
+              <Link href="#contact">Discordで参加する</Link>
+            </Button>
             <motion.p
               className="text-sm text-muted-foreground mt-4"
               initial={{ opacity: 0 }}

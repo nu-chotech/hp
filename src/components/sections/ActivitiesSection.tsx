@@ -82,12 +82,8 @@ export function ActivitiesSection() {
           viewport={{ once: true, margin: "-50px" }}
         >
           {activities.map((activity, index) => (
-            <motion.div
-              key={activity.title}
-              variants={cardVariants}
-              whileHover={{ y: -8, transition: { duration: 0.3 } }}
-            >
-              <Card className="flex flex-col h-full transition-shadow hover:shadow-xl">
+            <motion.div key={activity.title} variants={cardVariants}>
+              <Card className="flex flex-col h-full">
                 <CardHeader>
                   <div className="flex items-center justify-between mb-2">
                     <motion.div

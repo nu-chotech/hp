@@ -34,39 +34,22 @@ export function ContactSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <Card className="mb-8 transition-shadow hover:shadow-lg">
+            <Card className="mb-8">
               <CardContent className="p-6">
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                <Link
+                  href="https://discord.gg/example"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-3"
                 >
-                  <Link
-                    href="https://discord.gg/example"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-3"
-                  >
-                    <motion.div
-                      animate={{
-                        scale: [1, 1.1, 1],
-                      }}
-                      transition={{
-                        duration: 2,
-                        repeat: Number.POSITIVE_INFINITY,
-                        repeatType: "loop",
-                        ease: "easeInOut",
-                      }}
-                    >
-                      <MessageSquare className="w-8 h-8 text-primary" />
-                    </motion.div>
-                    <div className="text-left">
-                      <p className="font-semibold">Discord</p>
-                      <p className="text-sm text-muted-foreground">
-                        コミュニティに参加して交流
-                      </p>
-                    </div>
-                  </Link>
-                </motion.div>
+                  <MessageSquare className="w-8 h-8 text-primary" />
+                  <div className="text-left">
+                    <p className="font-semibold">Discord</p>
+                    <p className="text-sm text-muted-foreground">
+                      コミュニティに参加して交流
+                    </p>
+                  </div>
+                </Link>
               </CardContent>
             </Card>
           </motion.div>

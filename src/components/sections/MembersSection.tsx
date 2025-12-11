@@ -92,14 +92,14 @@ export function MembersSection() {
             <motion.div
               key={member.id}
               variants={cardVariants}
-              whileHover={{ y: -8, transition: { duration: 0.3 } }}
+              whileHover={{ y: -6, transition: { duration: 0.3 } }}
             >
               <Card className="h-full transition-shadow hover:shadow-lg">
                 <CardContent className="p-6 text-center">
                   <motion.div
                     className="w-16 h-16 mx-auto mb-4 rounded-full bg-muted flex items-center justify-center text-xl font-bold"
-                    initial={{ scale: 0, rotate: -180 }}
-                    whileInView={{ scale: 1, rotate: 0 }}
+                    initial={{ scale: 0 }}
+                    whileInView={{ scale: 1 }}
                     viewport={{ once: true }}
                     transition={{
                       delay: 0.2 + index * 0.1,
@@ -116,34 +116,24 @@ export function MembersSection() {
                   </p>
                   <div className="flex items-center justify-center gap-2">
                     {member.github && (
-                      <motion.div
-                        whileHover={{ scale: 1.2 }}
-                        whileTap={{ scale: 0.9 }}
+                      <Link
+                        href={member.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 rounded-full hover:bg-muted transition-all hover:scale-110 active:scale-95"
                       >
-                        <Link
-                          href={member.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-2 rounded-full hover:bg-muted transition-colors"
-                        >
-                          <Github className="w-4 h-4" />
-                        </Link>
-                      </motion.div>
+                        <Github className="w-4 h-4" />
+                      </Link>
                     )}
                     {member.twitter && (
-                      <motion.div
-                        whileHover={{ scale: 1.2 }}
-                        whileTap={{ scale: 0.9 }}
+                      <Link
+                        href={member.twitter}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 rounded-full hover:bg-muted transition-all hover:scale-110 active:scale-95"
                       >
-                        <Link
-                          href={member.twitter}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-2 rounded-full hover:bg-muted transition-colors"
-                        >
-                          <Twitter className="w-4 h-4" />
-                        </Link>
-                      </motion.div>
+                        <Twitter className="w-4 h-4" />
+                      </Link>
                     )}
                   </div>
                 </CardContent>
