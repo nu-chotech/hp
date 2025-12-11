@@ -1,32 +1,11 @@
 "use client";
 
-import { animate, motion } from "motion/react";
-import Link from "next/link";
-import { useCallback } from "react";
+import { motion } from "motion/react";
+import { SmoothLink } from "@/components/shared/SmoothLink";
 import { Button } from "@/components/ui/button";
+import { siteConfig } from "@/config/site";
 
 export function HeroSection() {
-  const scrollToSection = useCallback(
-    (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-      e.preventDefault();
-      const targetId = href.replace("#", "");
-      const element = document.getElementById(targetId);
-
-      if (element) {
-        const headerOffset = 80;
-        const elementPosition = element.getBoundingClientRect().top;
-        const offsetPosition = window.scrollY + elementPosition - headerOffset;
-
-        animate(window.scrollY, offsetPosition, {
-          duration: 0.8,
-          ease: [0.25, 0.1, 0.25, 1],
-          onUpdate: (value) => window.scrollTo(0, value),
-        });
-      }
-    },
-    [],
-  );
-
   return (
     <section className="min-h-screen flex items-center justify-center pt-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -42,7 +21,7 @@ export function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            長崎大学 情報データ科学部発
+            {siteConfig.origin}
           </motion.p>
           <motion.p
             className="text-sm text-muted-foreground mb-4"
@@ -50,7 +29,7 @@ export function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            学生エンジニアコミュニティ
+            {siteConfig.description}
           </motion.p>
 
           <motion.h1
@@ -59,7 +38,7 @@ export function HeroSection() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
           >
-            ChoTech
+            {siteConfig.name}
           </motion.h1>
 
           <motion.p
@@ -68,7 +47,7 @@ export function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
           >
-            共に学び、共に創り、共に発信する。
+            {siteConfig.tagline}
           </motion.p>
 
           <motion.p
@@ -87,17 +66,10 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.9 }}
           >
             <Button asChild size="lg">
-              <Link
-                href="#recruit"
-                onClick={(e) => scrollToSection(e, "#recruit")}
-              >
-                参加する
-              </Link>
+              <SmoothLink href="#recruit">参加する</SmoothLink>
             </Button>
             <Button asChild variant="outline" size="lg">
-              <Link href="#about" onClick={(e) => scrollToSection(e, "#about")}>
-                詳しく見る
-              </Link>
+              <SmoothLink href="#about">詳しく見る</SmoothLink>
             </Button>
           </motion.div>
         </motion.div>

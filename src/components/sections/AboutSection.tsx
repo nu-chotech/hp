@@ -2,7 +2,13 @@
 
 import { BookOpen, Hammer, MessageCircle, Users } from "lucide-react";
 import { motion } from "motion/react";
+import { SectionHeader } from "@/components/shared/SectionHeader";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  defaultViewport,
+  fadeInUp,
+  staggerContainer,
+} from "@/lib/motion-variants";
 
 const features = [
   {
@@ -27,54 +33,24 @@ const features = [
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: "easeOut" as const,
-    },
-  },
-};
-
 export function AboutSection() {
   return (
     <section id="about" className="py-20 bg-muted/50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          className="text-center max-w-2xl mx-auto mb-12"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.7 }}
-        >
-          <h2 className="text-3xl font-bold mb-4">私たちについて</h2>
-          <p className="text-muted-foreground">
-            学生が主体的かつ協働的に「技術を学ぶ・作る・話す」独自のカルチャーを育んでいくコミュニティです。
-          </p>
-        </motion.div>
+        <SectionHeader
+          title="私たちについて"
+          description="学生が主体的かつ協働的に「技術を学ぶ・作る・話す」独自のカルチャーを育んでいくコミュニティです。"
+        />
 
         <motion.div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-          variants={containerVariants}
+          variants={staggerContainer(0.15)}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={defaultViewport}
         >
           {features.map((feature) => (
-            <motion.div key={feature.title} variants={itemVariants}>
+            <motion.div key={feature.title} variants={fadeInUp}>
               <Card className="h-full">
                 <CardContent className="p-6">
                   <feature.icon className="w-8 h-8 mb-4 text-primary" />

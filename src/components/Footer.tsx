@@ -1,71 +1,21 @@
 "use client";
 
-import { Github, Instagram, Twitter } from "lucide-react";
-import { animate } from "motion/react";
-import Image from "next/image";
 import Link from "next/link";
-import { useCallback } from "react";
+import { Logo } from "@/components/shared/Logo";
+import { SmoothLink } from "@/components/shared/SmoothLink";
 import { Separator } from "@/components/ui/separator";
-
-const footerLinks = [
-  { href: "#about", label: "私たちについて" },
-  { href: "#activities", label: "活動内容" },
-  { href: "#news", label: "お知らせ" },
-  { href: "#members", label: "運営メンバー" },
-  { href: "#recruit", label: "参加する" },
-];
-
-const socialLinks = [
-  { href: "https://twitter.com", label: "Twitter", icon: Twitter },
-  { href: "https://instagram.com", label: "Instagram", icon: Instagram },
-  { href: "https://github.com", label: "GitHub", icon: Github },
-];
+import { navLinks, siteConfig, socialLinks } from "@/config/site";
 
 export function Footer() {
-  const scrollToSection = useCallback(
-    (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-      e.preventDefault();
-      const targetId = href.replace("#", "");
-      const element = document.getElementById(targetId);
-
-      if (element) {
-        const headerOffset = 80;
-        const elementPosition = element.getBoundingClientRect().top;
-        const offsetPosition = window.scrollY + elementPosition - headerOffset;
-
-        animate(window.scrollY, offsetPosition, {
-          duration: 0.8,
-          ease: [0.25, 0.1, 0.25, 1],
-          onUpdate: (value) => window.scrollTo(0, value),
-        });
-      }
-    },
-    [],
-  );
-
   return (
     <footer className="bg-muted">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Logo & Description */}
           <div className="md:col-span-2">
-            <Link href="/" className="flex items-center gap-3 mb-4">
-              <Image
-                src="/icon.png"
-                alt="ChoTech"
-                width={40}
-                height={40}
-                className="rounded-lg"
-              />
-              <div className="flex flex-col">
-                <span className="text-xs text-muted-foreground">
-                  学生エンジニアコミュニティ
-                </span>
-                <span className="font-bold text-lg leading-tight">ChoTech</span>
-              </div>
-            </Link>
+            <Logo className="mb-4" />
             <p className="text-muted-foreground text-sm max-w-md">
-              共に学び、共に創り、共に発信する。
+              {siteConfig.tagline}
             </p>
           </div>
 
@@ -73,15 +23,14 @@ export function Footer() {
           <div>
             <h3 className="font-semibold text-sm mb-4">ナビゲーション</h3>
             <ul className="space-y-2">
-              {footerLinks.map((link) => (
+              {navLinks.map((link) => (
                 <li key={link.href}>
-                  <Link
+                  <SmoothLink
                     href={link.href}
-                    onClick={(e) => scrollToSection(e, link.href)}
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {link.label}
-                  </Link>
+                  </SmoothLink>
                 </li>
               ))}
             </ul>
@@ -91,7 +40,7 @@ export function Footer() {
         <Separator className="my-8" />
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} ChoTech</p>
+          <p>{siteConfig.copyright}</p>
           <div className="flex items-center gap-4">
             {socialLinks.map((social) => (
               <Link

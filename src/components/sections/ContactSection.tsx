@@ -1,16 +1,12 @@
 "use client";
 
-import { Github, Instagram, MessageSquare, Twitter } from "lucide-react";
+import { MessageSquare } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
+import { SectionHeader } from "@/components/shared/SectionHeader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-
-const socialLinks = [
-  { icon: Twitter, label: "Twitter", href: "https://twitter.com" },
-  { icon: Instagram, label: "Instagram", href: "https://instagram.com" },
-  { icon: Github, label: "GitHub", href: "https://github.com" },
-];
+import { externalLinks, socialLinks } from "@/config/site";
 
 export function ContactSection() {
   return (
@@ -23,10 +19,11 @@ export function ContactSection() {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.7 }}
         >
-          <h2 className="text-3xl font-bold mb-4">お問い合わせ</h2>
-          <p className="text-muted-foreground mb-8">
-            ご質問やご相談はDiscordでお気軽にどうぞ。
-          </p>
+          <SectionHeader
+            title="お問い合わせ"
+            description="ご質問やご相談はDiscordでお気軽にどうぞ。"
+            className="mb-8"
+          />
 
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -37,7 +34,7 @@ export function ContactSection() {
             <Card className="mb-8">
               <CardContent className="p-6">
                 <Link
-                  href="https://discord.gg/example"
+                  href={externalLinks.discord}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-3"

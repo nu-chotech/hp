@@ -4,6 +4,7 @@ import type { LucideIcon } from "lucide-react";
 import { Github, Instagram, Link2, Twitter } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
+import { SectionHeader } from "@/components/shared/SectionHeader";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -13,6 +14,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  cardScale,
+  defaultViewport,
+  staggerContainer,
+} from "@/lib/motion-variants";
 
 // SNSリンク設定
 const socialLinksConfig: {
@@ -96,27 +102,78 @@ const teamMembers: TeamMember[] = [
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
+interface MemberSocialLinksProps {
+  member: TeamMember;
+  onStopPropagation?: boolean;
+}
 
-const cardVariants = {
-  hidden: { opacity: 0, scale: 0.9 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: {
-      duration: 0.5,
-      ease: "easeOut" as const,
-    },
-  },
-};
+function MemberSocialLinks({
+  member,
+  onStopPropagation = false,
+}: MemberSocialLinksProps) {
+  return (
+    <div className="flex items-center justify-center gap-2">
+      {socialLinksConfig.map(({ key, icon: Icon }) =>
+        member[key] ? (
+          <a
+            key={key}
+            href={member[key]}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-2 rounded-full hover:bg-muted transition-all hover:scale-110 active:scale-95"
+            onClick={onStopPropagation ? (e) => e.stopPropagation() : undefined}
+          >
+            <Icon className="w-4 h-4" />
+          </a>
+        ) : null,
+      )}
+    </div>
+  );
+}
+
+interface MemberAvatarProps {
+  name: string;
+  size?: "sm" | "lg";
+  index?: number;
+  animate?: boolean;
+}
+
+function MemberAvatar({
+  name,
+  size = "sm",
+  index = 0,
+  animate = true,
+}: MemberAvatarProps) {
+  const sizeClasses =
+    size === "lg" ? "w-20 h-20 text-2xl" : "w-16 h-16 text-xl";
+
+  const content = (
+    <div
+      className={`${sizeClasses} mx-auto mb-4 rounded-full bg-muted flex items-center justify-center font-bold`}
+    >
+      {name.charAt(0)}
+    </div>
+  );
+
+  if (!animate) return content;
+
+  return (
+    <motion.div
+      className={`${sizeClasses} mx-auto mb-4 rounded-full bg-muted flex items-center justify-center font-bold`}
+      initial={{ scale: 0 }}
+      whileInView={{ scale: 1 }}
+      viewport={{ once: true }}
+      transition={{
+        delay: 0.2 + index * 0.1,
+        type: "spring",
+        stiffness: 200,
+        damping: 15,
+      }}
+    >
+      {name.charAt(0)}
+    </motion.div>
+  );
+}
 
 export function MembersSection() {
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
@@ -130,30 +187,22 @@ export function MembersSection() {
   return (
     <section id="members" className="py-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          className="text-center max-w-2xl mx-auto mb-12"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.7 }}
-        >
-          <h2 className="text-3xl font-bold mb-4">運営メンバー</h2>
-          <p className="text-muted-foreground">
-            ChoTechを運営するコアメンバーです。
-          </p>
-        </motion.div>
+        <SectionHeader
+          title="運営メンバー"
+          description="ChoTechを運営するコアメンバーです。"
+        />
 
         <motion.div
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6"
-          variants={containerVariants}
+          variants={staggerContainer(0.1)}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={defaultViewport}
         >
           {teamMembers.map((member, index) => (
             <motion.div
               key={member.id}
-              variants={cardVariants}
+              variants={cardScale}
               whileHover={{ y: -6, transition: { duration: 0.3 } }}
             >
               <Card
@@ -161,41 +210,12 @@ export function MembersSection() {
                 onClick={() => handleMemberClick(member)}
               >
                 <CardContent className="p-6 text-center">
-                  <motion.div
-                    className="w-16 h-16 mx-auto mb-4 rounded-full bg-muted flex items-center justify-center text-xl font-bold"
-                    initial={{ scale: 0 }}
-                    whileInView={{ scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{
-                      delay: 0.2 + index * 0.1,
-                      type: "spring",
-                      stiffness: 200,
-                      damping: 15,
-                    }}
-                  >
-                    {member.name.charAt(0)}
-                  </motion.div>
+                  <MemberAvatar name={member.name} index={index} />
                   <h3 className="font-semibold">{member.name}</h3>
                   <p className="text-sm text-muted-foreground mb-4">
                     {member.role}
                   </p>
-                  <div className="flex items-center justify-center gap-2">
-                    {socialLinksConfig.map(
-                      ({ key, icon: Icon }) =>
-                        member[key] && (
-                          <a
-                            key={key}
-                            href={member[key]}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-2 rounded-full hover:bg-muted transition-all hover:scale-110 active:scale-95"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <Icon className="w-4 h-4" />
-                          </a>
-                        ),
-                    )}
-                  </div>
+                  <MemberSocialLinks member={member} onStopPropagation />
                 </CardContent>
               </Card>
             </motion.div>
@@ -216,7 +236,6 @@ export function MembersSection() {
                 transition={{ duration: 0.3, ease: "easeOut" }}
               >
                 <DialogHeader className="text-center sm:text-center">
-                  {/* アバター */}
                   <motion.div
                     className="w-20 h-20 mx-auto mb-4 rounded-full bg-muted flex items-center justify-center text-2xl font-bold"
                     initial={{ scale: 0 }}
@@ -296,19 +315,18 @@ export function MembersSection() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.6 }}
                 >
-                  {socialLinksConfig.map(
-                    ({ key, icon: Icon }) =>
-                      selectedMember[key] && (
-                        <motion.a
-                          key={key}
-                          href={selectedMember[key]}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-2 rounded-full hover:bg-muted transition-all hover:scale-110 active:scale-95"
-                        >
-                          <Icon className="w-4 h-4" />
-                        </motion.a>
-                      ),
+                  {socialLinksConfig.map(({ key, icon: Icon }) =>
+                    selectedMember[key] ? (
+                      <motion.a
+                        key={key}
+                        href={selectedMember[key]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 rounded-full hover:bg-muted transition-all hover:scale-110 active:scale-95"
+                      >
+                        <Icon className="w-4 h-4" />
+                      </motion.a>
+                    ) : null,
                   )}
                 </motion.nav>
               </motion.div>

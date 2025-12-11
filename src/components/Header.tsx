@@ -1,20 +1,10 @@
 "use client";
 
-import {
-  ChevronRight,
-  Heart,
-  Menu,
-  MessageSquare,
-  Newspaper,
-  Rocket,
-  UserCircle,
-  Users,
-  X,
-} from "lucide-react";
-import { animate } from "motion/react";
+import { ChevronRight, Menu, MessageSquare, X } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { Logo } from "@/components/shared/Logo";
+import { SmoothLink } from "@/components/shared/SmoothLink";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -24,40 +14,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { navLinks, siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
-
-const navLinks = [
-  { href: "#about", label: "私たちについて", icon: Users },
-  { href: "#activities", label: "活動内容", icon: Rocket },
-  { href: "#news", label: "お知らせ", icon: Newspaper },
-  { href: "#members", label: "運営メンバー", icon: UserCircle },
-  { href: "#recruit", label: "参加する", icon: Heart },
-];
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-
-  const scrollToSection = useCallback(
-    (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-      e.preventDefault();
-      const targetId = href.replace("#", "");
-      const element = document.getElementById(targetId);
-
-      if (element) {
-        const headerOffset = 80;
-        const elementPosition = element.getBoundingClientRect().top;
-        const offsetPosition = window.scrollY + elementPosition - headerOffset;
-
-        animate(window.scrollY, offsetPosition, {
-          duration: 0.8,
-          ease: [0.25, 0.1, 0.25, 1],
-          onUpdate: (value) => window.scrollTo(0, value),
-        });
-      }
-    },
-    [],
-  );
 
   useEffect(() => {
     const handleScroll = () => {
@@ -67,6 +29,8 @@ export function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const closeSheet = () => setIsOpen(false);
 
   return (
     <header
@@ -79,34 +43,18 @@ export function Header() {
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-3">
-            <Image
-              src="/icon.png"
-              alt="ChoTech"
-              width={44}
-              height={44}
-              className="rounded-lg"
-            />
-            <div className="flex flex-col">
-              <span className="text-xs text-muted-foreground hidden sm:block">
-                学生エンジニアコミュニティ
-              </span>
-              <span className="font-bold text-lg leading-tight">ChoTech</span>
-            </div>
-          </Link>
+          <Logo size={44} hideSubtitleOnMobile />
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-1">
             {navLinks.map((link) => (
-              <Link
+              <SmoothLink
                 key={link.href}
                 href={link.href}
-                onClick={(e) => scrollToSection(e, link.href)}
                 className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 {link.label}
-              </Link>
+              </SmoothLink>
             ))}
           </nav>
 
@@ -135,15 +83,15 @@ export function Header() {
                 <SheetTitle className="flex items-center gap-3">
                   <Image
                     src="/icon.png"
-                    alt="ChoTech"
+                    alt={siteConfig.name}
                     width={40}
                     height={40}
                     className="rounded-xl"
                   />
                   <div className="text-left">
-                    <p className="font-bold text-lg">ChoTech</p>
+                    <p className="font-bold text-lg">{siteConfig.name}</p>
                     <p className="text-xs text-muted-foreground font-normal">
-                      学生エンジニアコミュニティ
+                      {siteConfig.description}
                     </p>
                   </div>
                 </SheetTitle>
@@ -156,18 +104,17 @@ export function Header() {
                 <ul className="space-y-1">
                   {navLinks.map((link) => (
                     <li key={link.href}>
-                      <Link
+                      <SmoothLink
                         href={link.href}
-                        onClick={(e) => {
-                          setIsOpen(false);
-                          scrollToSection(e, link.href);
-                        }}
+                        onNavigate={closeSheet}
                         className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-muted transition-colors group"
                       >
-                        <link.icon className="w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors" />
+                        {link.icon && (
+                          <link.icon className="w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors" />
+                        )}
                         <span className="flex-1">{link.label}</span>
                         <ChevronRight className="w-4 h-4 text-muted-foreground opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
-                      </Link>
+                      </SmoothLink>
                     </li>
                   ))}
                 </ul>
@@ -177,25 +124,18 @@ export function Header() {
 
               {/* Footer */}
               <div className="p-6 pt-4">
-                <Button
-                  asChild
-                  className="w-full"
-                  onClick={() => setIsOpen(false)}
-                >
-                  <Link
+                <Button asChild className="w-full" onClick={closeSheet}>
+                  <SmoothLink
                     href="#contact"
-                    onClick={(e) => {
-                      setIsOpen(false);
-                      scrollToSection(e, "#contact");
-                    }}
+                    onNavigate={closeSheet}
                     className="flex items-center justify-center gap-2"
                   >
                     <MessageSquare className="w-4 h-4" />
                     お問い合わせ
-                  </Link>
+                  </SmoothLink>
                 </Button>
                 <p className="text-xs text-center text-muted-foreground mt-4">
-                  © {new Date().getFullYear()} ChoTech
+                  {siteConfig.copyright}
                 </p>
               </div>
             </SheetContent>

@@ -5,6 +5,12 @@ import { motion } from "motion/react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  defaultViewport,
+  fadeInLeft,
+  sectionHeaderTransition,
+  staggerContainer,
+} from "@/lib/motion-variants";
 
 // サンプルデータ（後でMicroCMSから取得）
 const sampleNews = [
@@ -37,38 +43,13 @@ function formatDate(dateString: string) {
   });
 }
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.12,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, x: -20 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      duration: 0.5,
-      ease: "easeOut" as const,
-    },
-  },
-};
-
 export function NewsSection() {
   return (
     <section id="news" className="py-20 bg-muted/50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           className="flex items-end justify-between gap-4 mb-8"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.7 }}
+          {...sectionHeaderTransition}
         >
           <div>
             <h2 className="text-3xl font-bold">お知らせ</h2>
@@ -85,15 +66,15 @@ export function NewsSection() {
 
         <motion.div
           className="space-y-4"
-          variants={containerVariants}
+          variants={staggerContainer(0.12)}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={defaultViewport}
         >
           {sampleNews.map((news) => (
             <motion.div
               key={news.id}
-              variants={itemVariants}
+              variants={fadeInLeft}
               whileHover={{
                 x: 8,
                 transition: { duration: 0.2 },

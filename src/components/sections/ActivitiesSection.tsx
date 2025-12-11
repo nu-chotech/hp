@@ -1,9 +1,12 @@
 "use client";
 
 import { Code, Speech, Users } from "lucide-react";
+import type { Variants } from "motion/react";
 import { motion } from "motion/react";
+import { SectionHeader } from "@/components/shared/SectionHeader";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { defaultViewport, staggerContainer } from "@/lib/motion-variants";
 
 const activities = [
   {
@@ -35,24 +38,14 @@ const activities = [
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-    },
-  },
-};
-
-const cardVariants = {
+const cardVariants: Variants = {
   hidden: { opacity: 0, y: 40 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
       duration: 0.7,
-      ease: "easeOut" as const,
+      ease: "easeOut",
     },
   },
 };
@@ -61,25 +54,17 @@ export function ActivitiesSection() {
   return (
     <section id="activities" className="py-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          className="text-center max-w-2xl mx-auto mb-12"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.7 }}
-        >
-          <h2 className="text-3xl font-bold mb-4">活動内容</h2>
-          <p className="text-muted-foreground">
-            3つの柱で「学ぶ・作る・話す」を実践しています。
-          </p>
-        </motion.div>
+        <SectionHeader
+          title="活動内容"
+          description="3つの柱で「学ぶ・作る・話す」を実践しています。"
+        />
 
         <motion.div
           className="grid grid-cols-1 lg:grid-cols-3 gap-6"
-          variants={containerVariants}
+          variants={staggerContainer(0.2)}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={defaultViewport}
         >
           {activities.map((activity, index) => (
             <motion.div key={activity.title} variants={cardVariants}>
