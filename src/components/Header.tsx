@@ -11,9 +11,10 @@ import {
   Users,
   X,
 } from "lucide-react";
+import { animate } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -36,6 +37,27 @@ const navLinks = [
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+
+  const scrollToSection = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+      e.preventDefault();
+      const targetId = href.replace("#", "");
+      const element = document.getElementById(targetId);
+
+      if (element) {
+        const headerOffset = 80;
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = window.scrollY + elementPosition - headerOffset;
+
+        animate(window.scrollY, offsetPosition, {
+          duration: 0.8,
+          ease: [0.25, 0.1, 0.25, 1],
+          onUpdate: (value) => window.scrollTo(0, value),
+        });
+      }
+    },
+    [],
+  );
 
   useEffect(() => {
     const handleScroll = () => {
@@ -80,6 +102,7 @@ export function Header() {
               <Link
                 key={link.href}
                 href={link.href}
+                onClick={(e) => scrollToSection(e, link.href)}
                 className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 {link.label}
@@ -135,7 +158,10 @@ export function Header() {
                     <li key={link.href}>
                       <Link
                         href={link.href}
-                        onClick={() => setIsOpen(false)}
+                        onClick={(e) => {
+                          setIsOpen(false);
+                          scrollToSection(e, link.href);
+                        }}
                         className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-muted transition-colors group"
                       >
                         <link.icon className="w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors" />
@@ -158,6 +184,10 @@ export function Header() {
                 >
                   <Link
                     href="#contact"
+                    onClick={(e) => {
+                      setIsOpen(false);
+                      scrollToSection(e, "#contact");
+                    }}
                     className="flex items-center justify-center gap-2"
                   >
                     <MessageSquare className="w-4 h-4" />

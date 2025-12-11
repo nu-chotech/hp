@@ -1,6 +1,10 @@
+"use client";
+
 import { Github, Instagram, Twitter } from "lucide-react";
+import { animate } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useCallback } from "react";
 import { Separator } from "@/components/ui/separator";
 
 const footerLinks = [
@@ -18,6 +22,27 @@ const socialLinks = [
 ];
 
 export function Footer() {
+  const scrollToSection = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+      e.preventDefault();
+      const targetId = href.replace("#", "");
+      const element = document.getElementById(targetId);
+
+      if (element) {
+        const headerOffset = 80;
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = window.scrollY + elementPosition - headerOffset;
+
+        animate(window.scrollY, offsetPosition, {
+          duration: 0.8,
+          ease: [0.25, 0.1, 0.25, 1],
+          onUpdate: (value) => window.scrollTo(0, value),
+        });
+      }
+    },
+    [],
+  );
+
   return (
     <footer className="bg-muted">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -52,6 +77,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
+                    onClick={(e) => scrollToSection(e, link.href)}
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {link.label}

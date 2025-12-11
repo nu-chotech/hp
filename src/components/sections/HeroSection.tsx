@@ -1,10 +1,32 @@
 "use client";
 
-import { motion } from "motion/react";
+import { animate, motion } from "motion/react";
 import Link from "next/link";
+import { useCallback } from "react";
 import { Button } from "@/components/ui/button";
 
 export function HeroSection() {
+  const scrollToSection = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+      e.preventDefault();
+      const targetId = href.replace("#", "");
+      const element = document.getElementById(targetId);
+
+      if (element) {
+        const headerOffset = 80;
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = window.scrollY + elementPosition - headerOffset;
+
+        animate(window.scrollY, offsetPosition, {
+          duration: 0.8,
+          ease: [0.25, 0.1, 0.25, 1],
+          onUpdate: (value) => window.scrollTo(0, value),
+        });
+      }
+    },
+    [],
+  );
+
   return (
     <section className="min-h-screen flex items-center justify-center pt-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -65,10 +87,17 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.9 }}
           >
             <Button asChild size="lg">
-              <Link href="#recruit">参加する</Link>
+              <Link
+                href="#recruit"
+                onClick={(e) => scrollToSection(e, "#recruit")}
+              >
+                参加する
+              </Link>
             </Button>
             <Button asChild variant="outline" size="lg">
-              <Link href="#about">詳しく見る</Link>
+              <Link href="#about" onClick={(e) => scrollToSection(e, "#about")}>
+                詳しく見る
+              </Link>
             </Button>
           </motion.div>
         </motion.div>

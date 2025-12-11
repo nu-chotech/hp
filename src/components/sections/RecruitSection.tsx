@@ -1,8 +1,9 @@
 "use client";
 
 import { CheckCircle2 } from "lucide-react";
-import { motion } from "motion/react";
+import { animate, motion } from "motion/react";
 import Link from "next/link";
+import { useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -44,6 +45,27 @@ const listItemVariants = {
 };
 
 export function RecruitSection() {
+  const scrollToSection = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+      e.preventDefault();
+      const targetId = href.replace("#", "");
+      const element = document.getElementById(targetId);
+
+      if (element) {
+        const headerOffset = 80;
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = window.scrollY + elementPosition - headerOffset;
+
+        animate(window.scrollY, offsetPosition, {
+          duration: 0.8,
+          ease: [0.25, 0.1, 0.25, 1],
+          onUpdate: (value) => window.scrollTo(0, value),
+        });
+      }
+    },
+    [],
+  );
+
   return (
     <section id="recruit" className="py-20 bg-muted/50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -138,7 +160,12 @@ export function RecruitSection() {
             transition={{ duration: 0.6, delay: 0.4 }}
           >
             <Button asChild size="lg">
-              <Link href="#contact">Discordで参加する</Link>
+              <Link
+                href="#contact"
+                onClick={(e) => scrollToSection(e, "#contact")}
+              >
+                Discordで参加する
+              </Link>
             </Button>
             <motion.p
               className="text-sm text-muted-foreground mt-4"
