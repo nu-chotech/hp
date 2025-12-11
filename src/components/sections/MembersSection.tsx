@@ -218,7 +218,7 @@ export function MembersSection() {
                 <DialogHeader className="text-center sm:text-center">
                   {/* アバター */}
                   <motion.div
-                    className="w-20 h-20 mx-auto mb-4 rounded-full bg-linear-to-br from-primary/20 to-primary/40 flex items-center justify-center text-2xl font-bold"
+                    className="w-20 h-20 mx-auto mb-4 rounded-full bg-muted flex items-center justify-center text-2xl font-bold"
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{
@@ -239,7 +239,7 @@ export function MembersSection() {
                     <DialogTitle className="text-xl">
                       {selectedMember.name}
                     </DialogTitle>
-                    <DialogDescription className="text-primary font-medium">
+                    <DialogDescription className="text-sm text-muted-foreground">
                       {selectedMember.role}
                     </DialogDescription>
                   </motion.div>
@@ -304,9 +304,9 @@ export function MembersSection() {
                           href={selectedMember[key]}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="p-3 rounded-full bg-muted"
+                          className="p-2 rounded-full hover:bg-muted transition-all hover:scale-110 active:scale-95"
                         >
-                          <Icon className="w-5 h-5" />
+                          <Icon className="w-4 h-4" />
                         </motion.a>
                       ),
                   )}
