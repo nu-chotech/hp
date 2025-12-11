@@ -24,18 +24,23 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Logo & Description */}
           <div className="md:col-span-2">
-            <Link href="/" className="flex items-center gap-2 mb-4">
+            <Link href="/" className="flex items-center gap-3 mb-4">
               <Image
                 src="/icon.png"
                 alt="ChoTech"
-                width={32}
-                height={32}
+                width={40}
+                height={40}
                 className="rounded-lg"
               />
-              <span className="font-bold text-lg">ChoTech</span>
+              <div className="flex flex-col">
+                <span className="text-xs text-muted-foreground">
+                  学生エンジニアコミュニティ
+                </span>
+                <span className="font-bold text-lg leading-tight">ChoTech</span>
+              </div>
             </Link>
             <p className="text-muted-foreground text-sm max-w-md">
-              学生エンジニアが集まり、技術を学び、共に成長するコミュニティです。
+              共に学び、共に創り、共に発信する。
             </p>
           </div>
 
