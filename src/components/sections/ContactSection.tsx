@@ -1,12 +1,15 @@
 "use client";
 
-import { MessageSquare } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
+import { FaDiscord } from "react-icons/fa";
 import { SectionHeader } from "@/components/shared/SectionHeader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { externalLinks, socialLinks } from "@/config/site";
+
+// Discord公式カラー
+const discordColor = "#5865F2";
 
 export function ContactSection() {
   return (
@@ -31,21 +34,27 @@ export function ContactSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <Card className="mb-8">
-              <CardContent className="p-6">
+            <Card
+              className="mb-8 text-white"
+              style={{ backgroundColor: discordColor }}
+            >
+              <CardContent className="p-8">
                 <Link
                   href={externalLinks.discord}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-3"
+                  className="flex items-center gap-4"
                 >
-                  <MessageSquare className="w-8 h-8 text-primary" />
-                  <div className="text-left">
-                    <p className="font-semibold">Discord</p>
-                    <p className="text-sm text-muted-foreground">
+                  <FaDiscord className="w-8 h-8" />
+                  <div className="flex-1 text-left">
+                    <p className="font-bold">Discord</p>
+                    <p className="text-sm text-white/80">
                       コミュニティに参加して交流
                     </p>
                   </div>
+                  <Button variant="secondary" size="sm">
+                    参加する
+                  </Button>
                 </Link>
               </CardContent>
             </Card>

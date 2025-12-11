@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
+import Image from "next/image";
 import { useId } from "react";
 import { SmoothLink } from "@/components/shared/SmoothLink";
 import { Button } from "@/components/ui/button";
@@ -47,7 +48,7 @@ function AnimatedTitle({ text, delay = 0 }: { text: string; delay?: number }) {
 
   return (
     <motion.h1
-      className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6"
+      className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 text-white"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3, delay }}
@@ -73,12 +74,24 @@ function AnimatedTitle({ text, delay = 0 }: { text: string; delay?: number }) {
 
 export function HeroSection() {
   return (
-    <section className="min-h-screen flex items-center justify-center pt-16">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/background.webp"
+          alt=""
+          fill
+          priority
+          className="object-cover"
+        />
+        {/* Semi-transparent Black Overlay */}
+        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+      </div>
+      <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="max-w-3xl mx-auto">
           {/* Origin - シンプルなフェードイン */}
           <motion.p
-            className="text-xs text-muted-foreground mb-2"
+            className="text-xs text-white/60 mb-2"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -88,7 +101,7 @@ export function HeroSection() {
 
           {/* Description - シンプルなフェードイン */}
           <motion.p
-            className="text-sm text-muted-foreground mb-4"
+            className="text-sm text-white/60 mb-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}
@@ -101,7 +114,7 @@ export function HeroSection() {
 
           {/* Tagline - 文字単位アニメーション */}
           <motion.p
-            className="text-xl font-medium max-w-xl mx-auto mb-4"
+            className="text-xl font-medium max-w-xl mx-auto mb-8 text-white"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3, delay: 1.2 }}
@@ -111,7 +124,7 @@ export function HeroSection() {
 
           {/* サブテキスト - フェードアップ */}
           <motion.p
-            className="text-muted-foreground max-w-xl mx-auto mb-8"
+            className="text-white/60 max-w-xl mx-auto mb-8"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 1.8, ease: "easeOut" }}
