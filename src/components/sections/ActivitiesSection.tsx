@@ -1,13 +1,13 @@
 "use client";
 
-import { Code, Mic, Users } from "lucide-react";
+import { Code, Speech, Users } from "lucide-react";
 import { motion } from "motion/react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const activities = [
   {
-    icon: Mic,
+    icon: Speech,
     title: "Talk Day",
     subtitle: "ライトニングトーク・アイデアプレゼン",
     badge: "月1〜2回",

@@ -1,8 +1,7 @@
 "use client";
 
-import { Github, Twitter } from "lucide-react";
+import { Github, Instagram, Link2, Twitter } from "lucide-react";
 import { motion } from "motion/react";
-import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 
 // 運営メンバーデータ（5人）
@@ -11,34 +10,40 @@ const teamMembers = [
     id: "1",
     name: "田中 太郎",
     role: "代表",
-    github: "https://github.com",
     twitter: "https://twitter.com",
+    instagram: "https://instagram.com",
+    github: "https://github.com",
+    link: "https://example.com",
   },
   {
     id: "2",
     name: "佐藤 花子",
     role: "副代表",
+    twitter: "https://twitter.com",
+    instagram: "https://instagram.com",
     github: "https://github.com",
   },
   {
     id: "3",
     name: "鈴木 一郎",
     role: "技術リーダー",
-    github: "https://github.com",
     twitter: "https://twitter.com",
+    github: "https://github.com",
+    link: "https://example.com",
   },
   {
     id: "4",
     name: "山田 美咲",
     role: "広報",
+    instagram: "https://instagram.com",
     github: "https://github.com",
   },
   {
     id: "5",
     name: "高橋 健太",
     role: "イベント担当",
-    github: "https://github.com",
     twitter: "https://twitter.com",
+    github: "https://github.com",
   },
 ];
 
@@ -115,25 +120,45 @@ export function MembersSection() {
                     {member.role}
                   </p>
                   <div className="flex items-center justify-center gap-2">
-                    {member.github && (
-                      <Link
-                        href={member.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-2 rounded-full hover:bg-muted transition-all hover:scale-110 active:scale-95"
-                      >
-                        <Github className="w-4 h-4" />
-                      </Link>
-                    )}
                     {member.twitter && (
-                      <Link
+                      <a
                         href={member.twitter}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="p-2 rounded-full hover:bg-muted transition-all hover:scale-110 active:scale-95"
                       >
                         <Twitter className="w-4 h-4" />
-                      </Link>
+                      </a>
+                    )}
+                    {member.instagram && (
+                      <a
+                        href={member.instagram}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 rounded-full hover:bg-muted transition-all hover:scale-110 active:scale-95"
+                      >
+                        <Instagram className="w-4 h-4" />
+                      </a>
+                    )}
+                    {member.github && (
+                      <a
+                        href={member.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 rounded-full hover:bg-muted transition-all hover:scale-110 active:scale-95"
+                      >
+                        <Github className="w-4 h-4" />
+                      </a>
+                    )}
+                    {member.link && (
+                      <a
+                        href={member.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 rounded-full hover:bg-muted transition-all hover:scale-110 active:scale-95"
+                      >
+                        <Link2 className="w-4 h-4" />
+                      </a>
                     )}
                   </div>
                 </CardContent>
