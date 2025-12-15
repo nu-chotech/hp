@@ -137,9 +137,11 @@ export function Header() {
                         className="rounded-xl"
                       />
                       <div className="text-left">
-                        <p className="font-bold text-lg">{siteConfig.name}</p>
                         <p className="text-xs text-muted-foreground font-normal">
                           {siteConfig.description}
+                        </p>
+                        <p className="font-bold text-lg leading-tight">
+                          {siteConfig.name}
                         </p>
                       </div>
                     </SheetTitle>
