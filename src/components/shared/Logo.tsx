@@ -1,5 +1,7 @@
+"use client";
+
 import Image from "next/image";
-import Link from "next/link";
+import { SmoothLink } from "@/components/shared/SmoothLink";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 
@@ -10,7 +12,7 @@ interface LogoProps {
   showSubtitle?: boolean;
   /** サブタイトルをモバイルで非表示にするか (default: false) */
   hideSubtitleOnMobile?: boolean;
-  /** リンク先 (default: "/") */
+  /** リンク先 (default: "#hero") */
   href?: string;
   /** 追加のクラス名 */
   className?: string;
@@ -24,11 +26,14 @@ export function Logo({
   size = 40,
   showSubtitle = true,
   hideSubtitleOnMobile = false,
-  href = "/",
+  href = "#hero",
   className,
 }: LogoProps) {
   return (
-    <Link href={href} className={cn("flex items-center gap-3", className)}>
+    <SmoothLink
+      href={href}
+      className={cn("flex items-center gap-3", className)}
+    >
       <Image
         src="/icon.png"
         alt={siteConfig.name}
@@ -51,6 +56,6 @@ export function Logo({
           {siteConfig.name}
         </span>
       </div>
-    </Link>
+    </SmoothLink>
   );
 }
