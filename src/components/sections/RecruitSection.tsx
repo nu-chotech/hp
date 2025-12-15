@@ -2,11 +2,16 @@
 
 import { CheckCircle2 } from "lucide-react";
 import { motion } from "motion/react";
+import Link from "next/link";
+import { FaDiscord } from "react-icons/fa";
 import { SectionHeader } from "@/components/shared/SectionHeader";
-import { SmoothLink } from "@/components/shared/SmoothLink";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { externalLinks, socialLinks } from "@/config/site";
 import { defaultViewport, fadeInUp, listItem } from "@/lib/motion-variants";
+
+// Discord公式カラー
+const discordColor = "#5865F2";
 
 const participationStyles = [
   "会員制ではない — いつでも気軽に参加可能",
@@ -101,25 +106,89 @@ export function RecruitSection() {
             </motion.div>
           </div>
 
+          {/* Discord参加カード */}
           <motion.div
-            className="text-center"
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="mb-8"
+          >
+            <Card
+              className="text-white"
+              style={{ backgroundColor: discordColor }}
+            >
+              <CardContent className="p-8">
+                <Link
+                  href={externalLinks.discord}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-4"
+                >
+                  <FaDiscord className="w-8 h-8" />
+                  <div className="flex-1 text-left">
+                    <p className="font-bold">Discord</p>
+                    <p className="text-sm text-white/80">
+                      コミュニティに参加して交流
+                    </p>
+                  </div>
+                  <Button variant="secondary" size="sm">
+                    参加する
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* SNSリンク */}
+          <motion.p
+            className="text-sm text-muted-foreground mb-4 text-center"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+          >
+            SNSでも情報発信中
+          </motion.p>
+          <motion.div
+            className="flex items-center justify-center gap-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
           >
-            <Button asChild size="lg">
-              <SmoothLink href="#contact">Discordで参加する</SmoothLink>
-            </Button>
-            <motion.p
-              className="text-sm text-muted-foreground mt-4"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.6 }}
-            >
-              ※ いつでも参加できます
-            </motion.p>
+            {socialLinks.map((social, index) => (
+              <motion.div
+                key={social.label}
+                initial={{ opacity: 0, scale: 0 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{
+                  delay: 0.6 + index * 0.1,
+                  type: "spring",
+                  stiffness: 260,
+                  damping: 20,
+                }}
+                whileHover={{ scale: 1.15, rotate: 5 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <Button
+                  asChild
+                  variant="outline"
+                  size="icon"
+                  className="rounded-full"
+                >
+                  <Link
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={social.label}
+                  >
+                    <social.icon className="w-5 h-5" />
+                  </Link>
+                </Button>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </div>
