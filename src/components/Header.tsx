@@ -1,13 +1,12 @@
 "use client";
 
-import { ChevronRight, Menu, MessageSquare, X } from "lucide-react";
+import { ChevronRight, Menu, X } from "lucide-react";
 import { AnimatePresence, motion, type Variants } from "motion/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Logo } from "@/components/shared/Logo";
 import { SmoothLink } from "@/components/shared/SmoothLink";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { navLinks, siteConfig } from "@/config/site";
+import { navLinks } from "@/config/site";
 import { cn } from "@/lib/utils";
 
 // 内部コンテンツのスタッガー用コンテナ
@@ -79,6 +78,7 @@ const mobileNavItemVariants: Variants = {
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const headerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -88,6 +88,26 @@ export function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // クリックアウトサイドでメニューを閉じる
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (
+        isOpen &&
+        headerRef.current &&
+        !headerRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, [isOpen]);
 
   const closeMenu = () => setIsOpen(false);
   const toggleMenu = () => setIsOpen((prev) => !prev);
@@ -103,6 +123,7 @@ export function Header() {
         )}
       >
         <motion.div
+          ref={headerRef}
           variants={contentVariants}
           initial="hidden"
           animate="visible"
@@ -110,7 +131,7 @@ export function Header() {
         >
           <div className="flex items-center justify-between h-16">
             <motion.div variants={navItemVariants}>
-              <Logo size={40} hideSubtitleOnMobile />
+              <Logo size={40} />
             </motion.div>
 
             {/* Desktop Navigation */}
@@ -188,28 +209,6 @@ export function Header() {
                     ))}
                   </motion.ul>
                 </nav>
-
-                <Separator className="opacity-50" />
-
-                {/* Footer */}
-                <motion.div
-                  variants={mobileNavItemVariants}
-                  className="py-4 pb-6"
-                >
-                  <Button asChild className="w-full" onClick={closeMenu}>
-                    <SmoothLink
-                      href="#contact"
-                      onNavigate={closeMenu}
-                      className="flex items-center justify-center gap-2"
-                    >
-                      <MessageSquare className="w-4 h-4" />
-                      お問い合わせ
-                    </SmoothLink>
-                  </Button>
-                  <p className="text-xs text-center text-muted-foreground mt-4">
-                    {siteConfig.copyright}
-                  </p>
-                </motion.div>
               </motion.div>
             )}
           </AnimatePresence>
