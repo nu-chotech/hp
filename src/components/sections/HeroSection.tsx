@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronDown, Heart } from "lucide-react";
 import { motion } from "motion/react";
 import Image from "next/image";
 import { useId } from "react";
@@ -145,7 +146,10 @@ export function HeroSection() {
               transition={{ duration: 0.5, delay: 2.3, ease: "easeOut" }}
             >
               <Button asChild size="lg">
-                <SmoothLink href="#recruit">参加する</SmoothLink>
+                <SmoothLink href="#recruit">
+                  <Heart className="w-4 h-4 mr-2" />
+                  参加する
+                </SmoothLink>
               </Button>
             </motion.div>
             <motion.div
@@ -154,7 +158,10 @@ export function HeroSection() {
               transition={{ duration: 0.5, delay: 2.4, ease: "easeOut" }}
             >
               <Button asChild variant="outline" size="lg">
-                <SmoothLink href="#about">詳しく見る</SmoothLink>
+                <SmoothLink href="#about">
+                  <ChevronDown className="w-4 h-4 mr-2" />
+                  詳しく見る
+                </SmoothLink>
               </Button>
             </motion.div>
           </motion.div>
