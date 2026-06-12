@@ -3,12 +3,12 @@
 import { ArrowRight, Calendar } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
+import { SectionHeader } from "@/components/shared/SectionHeader";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   defaultViewport,
   fadeInLeft,
-  sectionHeaderTransition,
   staggerContainer,
 } from "@/lib/motion-variants";
 
@@ -47,22 +47,10 @@ export function NewsSection() {
   return (
     <section id="news" className="py-20 bg-muted/50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          className="flex items-end justify-between gap-4 mb-8"
-          {...sectionHeaderTransition}
-        >
-          <div>
-            <h2 className="text-3xl font-bold">お知らせ</h2>
-          </div>
-          <motion.div whileHover={{ x: 5 }} transition={{ duration: 0.2 }}>
-            <Button asChild variant="ghost" size="sm">
-              <Link href="/news" className="flex items-center gap-1">
-                すべて見る
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </Button>
-          </motion.div>
-        </motion.div>
+        <SectionHeader
+          title="お知らせ"
+          description="コミュニティの最新情報をお届けします。"
+        />
 
         <motion.div
           className="space-y-4"
@@ -102,6 +90,24 @@ export function NewsSection() {
               </Link>
             </motion.div>
           ))}
+        </motion.div>
+
+        {/* すべて見るボタン - ニュース一覧の下に配置 */}
+        <motion.div
+          className="flex justify-center mt-8"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4, duration: 0.5 }}
+        >
+          <motion.div whileHover={{ x: 5 }} transition={{ duration: 0.2 }}>
+            <Button asChild variant="outline" size="lg">
+              <Link href="/news" className="flex items-center gap-2">
+                すべてのお知らせを見る
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </Button>
+          </motion.div>
         </motion.div>
       </div>
     </section>
