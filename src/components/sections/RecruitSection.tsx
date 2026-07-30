@@ -7,6 +7,7 @@ import { SectionHeader } from "@/components/shared/SectionHeader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { externalLinks, socialLinks } from "@/config/site";
+import { spring } from "@/lib/motion-variants";
 
 // Discord公式カラー
 const discordColor = "#5865F2";
@@ -23,14 +24,16 @@ export function RecruitSection() {
 
           {/* Discord参加カード */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.96 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
+            transition={{ ...spring.default, delay: 0.08 }}
+            whileHover={{ y: -4, transition: spring.snappy }}
+            whileTap={{ scale: 0.99, transition: spring.snappy }}
             className="mb-8"
           >
             <Card
-              className="text-white"
+              className="text-white transition-shadow hover:shadow-lg"
               style={{ backgroundColor: discordColor }}
             >
               <CardContent className="p-8">
@@ -61,31 +64,27 @@ export function RecruitSection() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.4 }}
+            transition={{ duration: 0.3, delay: 0.14 }}
           >
             SNSでも情報発信中
           </motion.p>
           <motion.div
             className="flex items-center justify-center gap-4"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.5 }}
+            transition={{ ...spring.default, delay: 0.18 }}
           >
             {socialLinks.map((social, index) => (
               <motion.div
                 key={social.label}
-                initial={{ opacity: 0, scale: 0 }}
+                initial={{ opacity: 0, scale: 0.6 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{
-                  delay: 0.6 + index * 0.1,
-                  type: "spring",
-                  stiffness: 260,
-                  damping: 20,
-                }}
-                whileHover={{ scale: 1.15, rotate: 5 }}
-                whileTap={{ scale: 0.9 }}
+                transition={{ ...spring.momentum, delay: 0.22 + index * 0.04 }}
+                // rotate は何も予告しないので外した。動きは行き先を示すためにある
+                whileHover={{ scale: 1.12, transition: spring.snappy }}
+                whileTap={{ scale: 0.94, transition: spring.snappy }}
               >
                 <Button
                   asChild

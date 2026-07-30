@@ -34,8 +34,11 @@ export function SectionHeader({
       )}
       {...sectionHeaderTransition}
     >
+      {/* tracking / leading は globals.css の h2 で size 相応に調整済み */}
       <h2 className="text-3xl font-bold mb-4">{title}</h2>
-      {description && <p className="text-muted-foreground">{description}</p>}
+      {description && (
+        <p className="text-muted-foreground leading-relaxed">{description}</p>
+      )}
     </motion.div>
   );
 }

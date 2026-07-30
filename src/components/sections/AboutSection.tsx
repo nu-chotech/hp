@@ -44,7 +44,7 @@ export function AboutSection() {
 
         <motion.div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-          variants={staggerContainer(0.15)}
+          variants={staggerContainer(0.07)}
           initial="hidden"
           whileInView="visible"
           viewport={defaultViewport}

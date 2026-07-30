@@ -6,7 +6,11 @@ import { motion } from "motion/react";
 import { SectionHeader } from "@/components/shared/SectionHeader";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { defaultViewport, staggerContainer } from "@/lib/motion-variants";
+import {
+  defaultViewport,
+  spring,
+  staggerContainer,
+} from "@/lib/motion-variants";
 
 const activities = [
   {
@@ -39,14 +43,11 @@ const activities = [
 ];
 
 const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 40 },
+  hidden: { opacity: 0, y: 32 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.7,
-      ease: "easeOut",
-    },
+    transition: spring.default,
   },
 };
 
@@ -61,7 +62,7 @@ export function ActivitiesSection() {
 
         <motion.div
           className="grid grid-cols-1 lg:grid-cols-3 gap-6"
-          variants={staggerContainer(0.2)}
+          variants={staggerContainer(0.08)}
           initial="hidden"
           whileInView="visible"
           viewport={defaultViewport}
@@ -72,14 +73,12 @@ export function ActivitiesSection() {
                 <CardHeader>
                   <div className="flex items-center justify-between mb-2">
                     <motion.div
-                      initial={{ scale: 0 }}
-                      whileInView={{ scale: 1 }}
+                      initial={{ scale: 0.6, opacity: 0 }}
+                      whileInView={{ scale: 1, opacity: 1 }}
                       viewport={{ once: true }}
                       transition={{
-                        delay: 0.3 + index * 0.1,
-                        type: "spring",
-                        stiffness: 260,
-                        damping: 20,
+                        ...spring.momentum,
+                        delay: 0.1 + index * 0.05,
                       }}
                     >
                       <activity.icon className="w-8 h-8 text-primary" />
@@ -99,10 +98,13 @@ export function ActivitiesSection() {
                     {activity.features.map((feature, featureIndex) => (
                       <motion.div
                         key={feature}
-                        initial={{ opacity: 0, scale: 0.8 }}
+                        initial={{ opacity: 0, scale: 0.85 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
-                        transition={{ delay: 0.5 + featureIndex * 0.1 }}
+                        transition={{
+                          ...spring.snappy,
+                          delay: 0.18 + featureIndex * 0.04,
+                        }}
                       >
                         <Badge variant="outline">{feature}</Badge>
                       </motion.div>

@@ -17,6 +17,7 @@ import {
 import {
   cardScale,
   defaultViewport,
+  spring,
   staggerContainer,
 } from "@/lib/motion-variants";
 
@@ -120,7 +121,7 @@ function MemberSocialLinks({
             href={member[key]}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-2 rounded-full hover:bg-muted transition-all hover:scale-110 active:scale-95"
+            className="p-2 rounded-full hover:bg-muted transition-[background-color,transform] duration-150 ease-out hover:scale-110 active:scale-95 active:duration-75"
             onClick={onStopPropagation ? (e) => e.stopPropagation() : undefined}
           >
             <Icon className="w-4 h-4" />
@@ -160,15 +161,10 @@ function MemberAvatar({
   return (
     <motion.div
       className={`${sizeClasses} mx-auto mb-4 rounded-full bg-muted flex items-center justify-center font-bold`}
-      initial={{ scale: 0 }}
-      whileInView={{ scale: 1 }}
+      initial={{ scale: 0.6, opacity: 0 }}
+      whileInView={{ scale: 1, opacity: 1 }}
       viewport={{ once: true }}
-      transition={{
-        delay: 0.2 + index * 0.1,
-        type: "spring",
-        stiffness: 200,
-        damping: 15,
-      }}
+      transition={{ ...spring.momentum, delay: 0.1 + index * 0.05 }}
     >
       {name.charAt(0)}
     </motion.div>
@@ -203,11 +199,22 @@ export function MembersSection() {
             <motion.div
               key={member.id}
               variants={cardScale}
-              whileHover={{ y: -6, transition: { duration: 0.3 } }}
+              whileHover={{ y: -6, transition: spring.snappy }}
+              // 押した瞬間に返す。指を離すまで待たない
+              whileTap={{ scale: 0.98, transition: spring.snappy }}
             >
               <Card
-                className="h-full transition-shadow hover:shadow-lg cursor-pointer"
+                role="button"
+                tabIndex={0}
+                aria-haspopup="dialog"
+                className="h-full transition-shadow hover:shadow-lg cursor-pointer outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
                 onClick={() => handleMemberClick(member)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    handleMemberClick(member);
+                  }
+                }}
               >
                 <CardContent className="p-6 text-center">
                   <MemberAvatar name={member.name} index={index} />
@@ -230,30 +237,27 @@ export function MembersSection() {
             {selectedMember && (
               <motion.div
                 key={selectedMember.id}
-                initial={{ opacity: 0, y: 20 }}
+                // 出てきた経路をそのまま戻る。下から現れて上へ消えると
+                // 空間の連続性が壊れ、どこへ行ったのか分からなくなる。
+                initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
+                exit={{ opacity: 0, y: 16 }}
+                transition={spring.snappy}
               >
                 <DialogHeader className="text-center sm:text-center">
                   <motion.div
                     className="w-20 h-20 mx-auto mb-4 rounded-full bg-muted flex items-center justify-center text-2xl font-bold"
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 200,
-                      damping: 15,
-                      delay: 0.1,
-                    }}
+                    initial={{ scale: 0.6, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ ...spring.momentum, delay: 0.05 }}
                   >
                     {selectedMember.name.charAt(0)}
                   </motion.div>
 
                   <motion.div
-                    initial={{ opacity: 0, y: 10 }}
+                    initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
+                    transition={{ ...spring.snappy, delay: 0.08 }}
                   >
                     <DialogTitle className="text-xl">
                       {selectedMember.name}
@@ -267,9 +271,9 @@ export function MembersSection() {
                 {/* Bio */}
                 <motion.div
                   className="mt-4"
-                  initial={{ opacity: 0, y: 10 }}
+                  initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
+                  transition={{ ...spring.snappy, delay: 0.12 }}
                 >
                   <h4 className="text-sm font-semibold mb-2 text-muted-foreground">
                     プロフィール
@@ -282,9 +286,9 @@ export function MembersSection() {
                 {/* Skills */}
                 <motion.div
                   className="mt-4"
-                  initial={{ opacity: 0, y: 10 }}
+                  initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 }}
+                  transition={{ ...spring.snappy, delay: 0.16 }}
                 >
                   <h4 className="text-sm font-semibold mb-2 text-muted-foreground">
                     スキル
@@ -296,10 +300,8 @@ export function MembersSection() {
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{
-                          delay: 0.5 + index * 0.05,
-                          type: "spring",
-                          stiffness: 300,
-                          damping: 20,
+                          ...spring.momentum,
+                          delay: 0.2 + index * 0.03,
                         }}
                       >
                         <Badge variant="secondary">{skill}</Badge>
@@ -311,9 +313,9 @@ export function MembersSection() {
                 {/* SNS Links */}
                 <motion.nav
                   className="mt-6 flex items-center justify-center gap-3"
-                  initial={{ opacity: 0, y: 10 }}
+                  initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6 }}
+                  transition={{ ...spring.snappy, delay: 0.24 }}
                 >
                   {socialLinksConfig.map(({ key, icon: Icon }) =>
                     selectedMember[key] ? (
@@ -322,7 +324,7 @@ export function MembersSection() {
                         href={selectedMember[key]}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="p-2 rounded-full hover:bg-muted transition-all hover:scale-110 active:scale-95"
+                        className="p-2 rounded-full hover:bg-muted transition-[background-color,transform] duration-150 ease-out hover:scale-110 active:scale-95 active:duration-75"
                       >
                         <Icon className="w-4 h-4" />
                       </motion.a>

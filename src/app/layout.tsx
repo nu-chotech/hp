@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { MotionProvider } from "@/components/providers/MotionProvider";
 import "./globals.css";
 
 export const viewport: Viewport = {
@@ -41,7 +42,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased">
+        <MotionProvider>{children}</MotionProvider>
+      </body>
     </html>
   );
 }

@@ -145,4 +145,57 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /*
+   * tracking はサイズ固有の値。大きい文字ほど字間が開いて見えるので詰め、
+   * 本文は 0 付近に置く。全サイズ共通の letter-spacing はどこかで必ず間違う。
+   * leading はサイズと反比例させる。
+   */
+  h1 {
+    letter-spacing: -0.022em;
+    line-height: 1.15;
+  }
+  h2 {
+    letter-spacing: -0.016em;
+    line-height: 1.25;
+  }
+  h3 {
+    letter-spacing: -0.008em;
+    line-height: 1.35;
+  }
+}
+
+/*
+ * 動きの低減。動きを消すのではなく、前庭系を刺激しない等価物に置き換える。
+ * 色と不透明度のトランジションは理解を助けるので残す。
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+  * {
+    transition-property:
+      opacity, color, background-color, border-color, fill, stroke !important;
+  }
+}
+
+/* 透過の低減。ぼかしを外して背景を不透明にする */
+@media (prefers-reduced-transparency: reduce) {
+  [data-translucent] {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background-color: var(--background) !important;
+  }
+}
+
+/* コントラスト強調。半透明面に明確な境界を与える */
+@media (prefers-contrast: more) {
+  [data-translucent] {
+    background-color: var(--background) !important;
+    border-color: var(--foreground) !important;
+  }
 }
