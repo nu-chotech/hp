@@ -1,6 +1,5 @@
 "use client";
 
-import { CheckCircle2 } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
 import { FaDiscord } from "react-icons/fa";
@@ -8,24 +7,9 @@ import { SectionHeader } from "@/components/shared/SectionHeader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { externalLinks, socialLinks } from "@/config/site";
-import { defaultViewport, fadeInUp, listItem } from "@/lib/motion-variants";
 
 // Discord公式カラー
 const discordColor = "#5865F2";
-
-const participationStyles = [
-  "会員制ではない — いつでも気軽に参加可能",
-  "完全自由参加 — 聞くだけでもOK",
-  "初心者歓迎 — 知識ゼロでも安心",
-  "挙手制 — やりたいことがあれば主体的に",
-];
-
-const benefits = [
-  "実践的なスキル習得（プレゼン・技術力）",
-  "仲間との出会いとネットワーキング",
-  "T字型人材への成長・キャリアへの貢献",
-  "ポートフォリオの構築",
-];
 
 export function RecruitSection() {
   return (
@@ -36,75 +20,6 @@ export function RecruitSection() {
             title="コミュニティに参加する"
             description="一緒にChoTechで活動しませんか？"
           />
-
-          <div className="grid md:grid-cols-2 gap-6 mb-8">
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={defaultViewport}
-            >
-              <Card className="h-full">
-                <CardContent className="p-6">
-                  <h3 className="font-semibold mb-4">参加スタイル</h3>
-                  <motion.ul
-                    className="space-y-3"
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    transition={{ staggerChildren: 0.1, delayChildren: 0.3 }}
-                  >
-                    {participationStyles.map((item) => (
-                      <motion.li
-                        key={item}
-                        className="flex items-start gap-2"
-                        variants={listItem}
-                      >
-                        <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                        <span className="text-sm text-muted-foreground">
-                          {item}
-                        </span>
-                      </motion.li>
-                    ))}
-                  </motion.ul>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={defaultViewport}
-              transition={{ delay: 0.15 }}
-            >
-              <Card className="h-full">
-                <CardContent className="p-6">
-                  <h3 className="font-semibold mb-4">参加するメリット</h3>
-                  <motion.ul
-                    className="space-y-3"
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    transition={{ staggerChildren: 0.1, delayChildren: 0.45 }}
-                  >
-                    {benefits.map((item) => (
-                      <motion.li
-                        key={item}
-                        className="flex items-start gap-2"
-                        variants={listItem}
-                      >
-                        <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                        <span className="text-sm text-muted-foreground">
-                          {item}
-                        </span>
-                      </motion.li>
-                    ))}
-                  </motion.ul>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </div>
 
           {/* Discord参加カード */}
           <motion.div

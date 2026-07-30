@@ -3,7 +3,6 @@ import {
   Github,
   Heart,
   Instagram,
-  Newspaper,
   Rocket,
   Twitter,
   UserCircle,
@@ -34,14 +33,13 @@ export interface NavLink {
 export const navLinks: NavLink[] = [
   { href: "#about", label: "私たちについて", icon: Users },
   { href: "#activities", label: "活動内容", icon: Rocket },
-  { href: "#news", label: "お知らせ", icon: Newspaper },
   { href: "#members", label: "運営メンバー", icon: UserCircle },
   { href: "#recruit", label: "参加する", icon: Heart },
 ];
 
 /**
  * SNSリンク
- * Footer, ContactSection, MembersSection で共有
+ * Footer, RecruitSection で共有
  */
 export interface SocialLink {
   href: string;

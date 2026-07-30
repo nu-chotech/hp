@@ -34,21 +34,6 @@ export const fadeInUp: Variants = {
 };
 
 /**
- * フェードイン + 左方向からスライド
- */
-export const fadeInLeft: Variants = {
-  hidden: { opacity: 0, x: -20 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      duration: 0.5,
-      ease: "easeOut",
-    },
-  },
-};
-
-/**
  * カードアニメーション (スケール + フェード)
  */
 export const cardScale: Variants = {
@@ -59,20 +44,6 @@ export const cardScale: Variants = {
     transition: {
       duration: 0.5,
       ease: "easeOut",
-    },
-  },
-};
-
-/**
- * リストアイテム用 variants
- */
-export const listItem: Variants = {
-  hidden: { opacity: 0, x: -10 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      duration: 0.4,
     },
   },
 };
