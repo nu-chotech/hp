@@ -181,7 +181,7 @@ export function MembersSection() {
   };
 
   return (
-    <section id="members" className="py-20">
+    <section id="members" className="py-20 bg-muted/50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
           title="運営メンバー"

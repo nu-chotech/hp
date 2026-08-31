@@ -36,6 +36,12 @@ src/
   config/site.ts  サイト名・ナビ・SNS・外部リンクの一元管理
   lib/            motion-variants / utils
   hooks/          use-smooth-scroll
-docs/             コミュニティのコンセプト資料
+docs/             コミュニティのコンセプト資料（docs/README.md に索引）
 .claude/skills/   デザインシステム系の Claude スキル
 ```
+
+## デザイン方針
+
+- セクション背景は `bg-muted/50` と素の背景を交互に並べ、隣接セクションの境界を保つ（Hero → About(灰) → Activities → Members(灰) → Recruit → Footer(灰)）
+- モーションは `src/lib/motion-variants.ts` の spring 定義を使い、`MotionProvider` で reduced-motion を尊重する
+- 詳細は `.claude/skills/apple-design/SKILL.md` を参照
