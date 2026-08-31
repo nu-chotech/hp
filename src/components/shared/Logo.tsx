@@ -6,56 +6,36 @@ import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 
 interface LogoProps {
-  /** ロゴのサイズ (default: 40) */
+  /** アイコンの一辺 (px) */
   size?: number;
-  /** サブタイトルを表示するか (default: true) */
-  showSubtitle?: boolean;
-  /** サブタイトルをモバイルで非表示にするか (default: false) */
-  hideSubtitleOnMobile?: boolean;
-  /** リンク先 (default: "#hero") */
-  href?: string;
-  /** 追加のクラス名 */
   className?: string;
 }
 
 /**
- * 共通ロゴコンポーネント
- * Header, Footer, Mobile Menu で使用
+ * ロゴ。Header と Footer で使い、クリックでページ先頭 (Hero) へ戻る
  */
-export function Logo({
-  size = 40,
-  showSubtitle = true,
-  hideSubtitleOnMobile = false,
-  href = "#hero",
-  className,
-}: LogoProps) {
+export function Logo({ size = 40, className }: LogoProps) {
   return (
     <SmoothLink
-      href={href}
+      href="#hero"
       className={cn("flex items-center gap-3", className)}
     >
+      {/* 隣にサイト名が表示されるので、画像自体は読み上げない */}
       <Image
         src="/icon.png"
-        alt={siteConfig.name}
+        alt=""
         width={size}
         height={size}
         className="rounded-lg"
       />
-      <div className="flex flex-col">
-        {showSubtitle && (
-          <span
-            className={cn(
-              "text-xs text-muted-foreground",
-              hideSubtitleOnMobile && "hidden sm:block",
-            )}
-          >
-            {siteConfig.description}
-          </span>
-        )}
+      <span className="flex flex-col">
+        <span className="text-xs text-muted-foreground">
+          {siteConfig.description}
+        </span>
         <span className="font-bold text-lg leading-tight">
           {siteConfig.name}
         </span>
-      </div>
+      </span>
     </SmoothLink>
   );
 }

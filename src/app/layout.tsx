@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { MotionProvider } from "@/components/providers/MotionProvider";
+import { siteConfig } from "@/config/site";
+import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
 export const viewport: Viewport = {
@@ -8,20 +10,29 @@ export const viewport: Viewport = {
   maximumScale: 5,
   userScalable: true,
   viewportFit: "cover",
+  themeColor: siteConfig.themeColor,
+};
+
+const ogImage = {
+  url: "/icon-512.png",
+  width: 512,
+  height: 512,
+  alt: siteConfig.name,
 };
 
 export const metadata: Metadata = {
-  title: "ChoTech | 学生エンジニアコミュニティ",
-  description:
-    "長崎大学 情報データ科学部発の学生エンジニアコミュニティ。共に学び、共に創り、共に発信する仲間と一緒に、技術を学ぶ・作る・話すを気軽に楽しめます。",
-  keywords: ["ChoTech", "学生エンジニア", "プログラミング", "コミュニティ"],
+  metadataBase: new URL(getSiteUrl()),
+  title: {
+    default: siteConfig.title,
+    template: `%s | ${siteConfig.name}`,
+  },
+  description: siteConfig.longDescription,
+  keywords: [...siteConfig.keywords],
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "ChoTech",
+    title: siteConfig.name,
   },
-  themeColor: "#0a4c95",
-  manifest: "/site.webmanifest",
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },
@@ -38,26 +49,18 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: "ChoTech | 学生エンジニアコミュニティ",
-    description:
-      "長崎大学 情報データ科学部発の学生エンジニアコミュニティ。共に学び、共に創り、共に発信する。",
+    title: siteConfig.title,
+    description: siteConfig.shortDescription,
+    siteName: siteConfig.name,
     type: "website",
     locale: "ja_JP",
-    images: [
-      {
-        url: "/icon-512.png",
-        width: 512,
-        height: 512,
-        alt: "ChoTech",
-      },
-    ],
+    images: [ogImage],
   },
   twitter: {
     card: "summary_large_image",
-    title: "ChoTech | 学生エンジニアコミュニティ",
-    description:
-      "長崎大学 情報データ科学部発の学生エンジニアコミュニティ。共に学び、共に創り、共に発信する。",
-    images: ["/icon-512.png"],
+    title: siteConfig.title,
+    description: siteConfig.shortDescription,
+    images: [ogImage.url],
   },
 };
 
