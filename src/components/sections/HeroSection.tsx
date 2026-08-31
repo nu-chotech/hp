@@ -190,7 +190,7 @@ export function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: T.subtext, ease: "easeOut" }}
           >
-            「技術を学ぶ・作る・話す」を、みんなで気軽に楽しむコミュニティ
+            {siteConfig.lead}
           </motion.p>
 
           {/* ボタン群 - 両方を同時に出す。CTA を待たせない */}

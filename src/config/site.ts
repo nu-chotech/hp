@@ -11,12 +11,28 @@ import {
 
 /**
  * サイト全体の設定値
+ *
+ * 文言はここを一次情報とし、metadata / manifest / Hero / Logo / Footer が参照する。
  */
 export const siteConfig = {
   name: "ChoTech",
+  /** ロゴ横やタブタイトルに添える一言 */
   description: "学生エンジニアコミュニティ",
+  /** <title> と OGP のタイトル */
+  title: "ChoTech | 学生エンジニアコミュニティ",
   tagline: "共に学び、共に創り、共に発信する。",
+  /** Hero のサブテキスト */
+  lead: "「技術を学ぶ・作る・話す」を、みんなで気軽に楽しむコミュニティ",
   origin: "長崎大学 情報データ科学部発",
+  /** 検索結果向けの説明文 */
+  longDescription:
+    "長崎大学 情報データ科学部発の学生エンジニアコミュニティ。共に学び、共に創り、共に発信する仲間と一緒に、技術を学ぶ・作る・話すを気軽に楽しめます。",
+  /** SNS カード・manifest 向けの短い説明文 */
+  shortDescription:
+    "長崎大学 情報データ科学部発の学生エンジニアコミュニティ。共に学び、共に創り、共に発信する。",
+  keywords: ["ChoTech", "学生エンジニア", "プログラミング", "コミュニティ"],
+  /** ブラウザ UI / manifest のテーマカラー */
+  themeColor: "#0a4c95",
   copyright: `© ${new Date().getFullYear()} ChoTech`,
 } as const;
 

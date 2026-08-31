@@ -145,7 +145,7 @@ export function Header() {
         >
           <div className="flex items-center justify-between h-16">
             <motion.div variants={navItemVariants}>
-              <Logo size={40} />
+              <Logo />
             </motion.div>
 
             {/* Desktop Navigation */}
