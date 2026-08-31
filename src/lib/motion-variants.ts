@@ -67,19 +67,6 @@ export const cardScale: Variants = {
 };
 
 /**
- * アイコンやバッジなど、小さい要素が弾んで現れる
- * 勢いのある動きなので bounce を許可する
- */
-export const popIn: Variants = {
-  hidden: { opacity: 0, scale: 0.6 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: spring.momentum,
-  },
-};
-
-/**
  * セクションヘッダー用のデフォルト設定
  */
 export const sectionHeaderTransition = {
