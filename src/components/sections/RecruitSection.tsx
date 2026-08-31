@@ -1,6 +1,5 @@
 "use client";
 
-import { CheckCircle2 } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
 import { FaDiscord } from "react-icons/fa";
@@ -8,28 +7,14 @@ import { SectionHeader } from "@/components/shared/SectionHeader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { externalLinks, socialLinks } from "@/config/site";
-import { defaultViewport, fadeInUp, listItem } from "@/lib/motion-variants";
+import { spring } from "@/lib/motion-variants";
 
 // Discord公式カラー
 const discordColor = "#5865F2";
 
-const participationStyles = [
-  "会員制ではない — いつでも気軽に参加可能",
-  "完全自由参加 — 聞くだけでもOK",
-  "初心者歓迎 — 知識ゼロでも安心",
-  "挙手制 — やりたいことがあれば主体的に",
-];
-
-const benefits = [
-  "実践的なスキル習得（プレゼン・技術力）",
-  "仲間との出会いとネットワーキング",
-  "T字型人材への成長・キャリアへの貢献",
-  "ポートフォリオの構築",
-];
-
 export function RecruitSection() {
   return (
-    <section id="recruit" className="py-20 bg-muted/50">
+    <section id="recruit" className="py-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <SectionHeader
@@ -37,85 +22,18 @@ export function RecruitSection() {
             description="一緒にChoTechで活動しませんか？"
           />
 
-          <div className="grid md:grid-cols-2 gap-6 mb-8">
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={defaultViewport}
-            >
-              <Card className="h-full">
-                <CardContent className="p-6">
-                  <h3 className="font-semibold mb-4">参加スタイル</h3>
-                  <motion.ul
-                    className="space-y-3"
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    transition={{ staggerChildren: 0.1, delayChildren: 0.3 }}
-                  >
-                    {participationStyles.map((item) => (
-                      <motion.li
-                        key={item}
-                        className="flex items-start gap-2"
-                        variants={listItem}
-                      >
-                        <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                        <span className="text-sm text-muted-foreground">
-                          {item}
-                        </span>
-                      </motion.li>
-                    ))}
-                  </motion.ul>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={defaultViewport}
-              transition={{ delay: 0.15 }}
-            >
-              <Card className="h-full">
-                <CardContent className="p-6">
-                  <h3 className="font-semibold mb-4">参加するメリット</h3>
-                  <motion.ul
-                    className="space-y-3"
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    transition={{ staggerChildren: 0.1, delayChildren: 0.45 }}
-                  >
-                    {benefits.map((item) => (
-                      <motion.li
-                        key={item}
-                        className="flex items-start gap-2"
-                        variants={listItem}
-                      >
-                        <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                        <span className="text-sm text-muted-foreground">
-                          {item}
-                        </span>
-                      </motion.li>
-                    ))}
-                  </motion.ul>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </div>
-
           {/* Discord参加カード */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.96 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
+            transition={{ ...spring.default, delay: 0.08 }}
+            whileHover={{ y: -4, transition: spring.snappy }}
+            whileTap={{ scale: 0.99, transition: spring.snappy }}
             className="mb-8"
           >
             <Card
-              className="text-white"
+              className="text-white transition-shadow hover:shadow-lg"
               style={{ backgroundColor: discordColor }}
             >
               <CardContent className="p-8">
@@ -146,31 +64,27 @@ export function RecruitSection() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.4 }}
+            transition={{ duration: 0.3, delay: 0.14 }}
           >
             SNSでも情報発信中
           </motion.p>
           <motion.div
             className="flex items-center justify-center gap-4"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.5 }}
+            transition={{ ...spring.default, delay: 0.18 }}
           >
             {socialLinks.map((social, index) => (
               <motion.div
                 key={social.label}
-                initial={{ opacity: 0, scale: 0 }}
+                initial={{ opacity: 0, scale: 0.6 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{
-                  delay: 0.6 + index * 0.1,
-                  type: "spring",
-                  stiffness: 260,
-                  damping: 20,
-                }}
-                whileHover={{ scale: 1.15, rotate: 5 }}
-                whileTap={{ scale: 0.9 }}
+                transition={{ ...spring.momentum, delay: 0.22 + index * 0.04 }}
+                // rotate は何も予告しないので外した。動きは行き先を示すためにある
+                whileHover={{ scale: 1.12, transition: spring.snappy }}
+                whileTap={{ scale: 0.94, transition: spring.snappy }}
               >
                 <Button
                   asChild

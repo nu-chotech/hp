@@ -1,41 +1,63 @@
 "use client";
 
 import { ChevronDown, Heart } from "lucide-react";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import Image from "next/image";
 import { useId } from "react";
 import { SmoothLink } from "@/components/shared/SmoothLink";
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
 
-// 文字単位のブラーフェードインアニメーション
+/*
+ * 入場の総尺。CTA が出るまでの時間がそのままユーザーの待ち時間になるので、
+ * 「演出の気持ちよさ」ではなく「操作できるまでの速さ」を基準に決める。
+ * 現在: 最後のボタンが 0.62s で出そろう。
+ */
+const T = {
+  origin: 0,
+  description: 0.06,
+  title: 0.12,
+  titleStagger: 0.03,
+  tagline: 0.34,
+  taglineStagger: 0.014,
+  subtext: 0.46,
+  actions: 0.54,
+} as const;
+
+// 文字単位のフェードイン
 function AnimatedText({
   text,
   className,
   delay = 0,
+  stagger = T.taglineStagger,
 }: {
   text: string;
   className?: string;
   delay?: number;
+  stagger?: number;
 }) {
   const id = useId();
   const characters = text.split("");
 
+  // 一文字ずつの span はスクリーンリーダーが分割読みしうるので、
+  // 読み上げ用のテキストを別に持たせて演出側は隠す
   return (
     <span className={className}>
+      <span className="sr-only">{text}</span>
       {characters.map((char, index) => (
         <motion.span
           key={`${id}-${index.toString()}`}
+          aria-hidden="true"
           className="inline-block"
-          initial={{ opacity: 0, filter: "blur(8px)" }}
-          animate={{ opacity: 1, filter: "blur(0px)" }}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{
-            duration: 0.5,
-            delay: delay + index * 0.04,
+            duration: 0.35,
+            delay: delay + index * stagger,
             ease: [0.25, 0.46, 0.45, 0.94],
           }}
         >
-          {char === " " ? "\u00A0" : char}
+          {char === " " ? " " : char}
         </motion.span>
       ))}
     </span>
@@ -43,37 +65,49 @@ function AnimatedText({
 }
 
 // メインタイトル用のブラーフェードインアニメーション
-function AnimatedTitle({ text, delay = 0 }: { text: string; delay?: number }) {
+function AnimatedTitle({
+  text,
+  delay = 0,
+  className,
+}: {
+  text: string;
+  delay?: number;
+  className?: string;
+}) {
   const id = useId();
   const characters = text.split("");
 
   return (
-    <motion.h1
-      className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 text-white"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.3, delay }}
-    >
+    <h1 className={className} aria-label={text}>
       {characters.map((char, index) => (
         <motion.span
           key={`${id}-${index.toString()}`}
+          aria-hidden="true"
           className="inline-block"
-          initial={{ opacity: 0, filter: "blur(12px)", scale: 0.9 }}
+          initial={{ opacity: 0, filter: "blur(10px)", scale: 0.94 }}
           animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
           transition={{
-            duration: 0.6,
-            delay: delay + index * 0.08,
+            duration: 0.45,
+            delay: delay + index * T.titleStagger,
             ease: [0.25, 0.46, 0.45, 0.94],
           }}
         >
           {char}
         </motion.span>
       ))}
-    </motion.h1>
+    </h1>
   );
 }
 
+const titleClassName =
+  "text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 text-white";
+
 export function HeroSection() {
+  // 動きの低減時は連鎖そのものを組み立てない。
+  // ブラーや文字送りは MotionConfig の transform 無効化では消えないため、
+  // ここで明示的に静的な組版へ切り替える。
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <section
       id="hero"
@@ -89,84 +123,95 @@ export function HeroSection() {
           className="object-cover"
         />
         {/* Semi-transparent Black Overlay */}
-        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+        <div
+          data-translucent
+          className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        />
       </div>
       <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="max-w-3xl mx-auto">
-          {/* Origin - シンプルなフェードイン */}
+          {/* Origin */}
           <motion.p
             className="text-xs text-white/60 mb-2"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            transition={{ duration: 0.4, delay: T.origin }}
           >
             {siteConfig.origin}
           </motion.p>
 
-          {/* Description - シンプルなフェードイン */}
+          {/* Description */}
           <motion.p
             className="text-sm text-white/60 mb-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
+            transition={{ duration: 0.4, delay: T.description }}
           >
             {siteConfig.description}
           </motion.p>
 
-          {/* メインタイトル - 文字単位アニメーション + ループグロー */}
-          <AnimatedTitle text={siteConfig.name} delay={0.6} />
+          {/* メインタイトル */}
+          {shouldReduceMotion ? (
+            <motion.h1
+              className={titleClassName}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4, delay: T.title }}
+            >
+              {siteConfig.name}
+            </motion.h1>
+          ) : (
+            <AnimatedTitle
+              text={siteConfig.name}
+              delay={T.title}
+              className={titleClassName}
+            />
+          )}
 
-          {/* Tagline - 文字単位アニメーション */}
-          <motion.p
-            className="text-xl font-medium max-w-xl mx-auto mb-8 text-white"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3, delay: 1.2 }}
-          >
-            <AnimatedText text={siteConfig.tagline} delay={1.2} />
-          </motion.p>
+          {/* Tagline */}
+          <p className="text-xl font-medium max-w-xl mx-auto mb-8 text-white">
+            {shouldReduceMotion ? (
+              <motion.span
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4, delay: T.tagline }}
+              >
+                {siteConfig.tagline}
+              </motion.span>
+            ) : (
+              <AnimatedText text={siteConfig.tagline} delay={T.tagline} />
+            )}
+          </p>
 
-          {/* サブテキスト - フェードアップ */}
+          {/* サブテキスト */}
           <motion.p
             className="text-white/60 max-w-xl mx-auto mb-8"
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1.8, ease: "easeOut" }}
+            transition={{ duration: 0.4, delay: T.subtext, ease: "easeOut" }}
           >
             「技術を学ぶ・作る・話す」を、みんなで気軽に楽しむコミュニティ
           </motion.p>
 
-          {/* ボタン群 - 時間差フェードイン */}
+          {/* ボタン群 - 両方を同時に出す。CTA を待たせない */}
           <motion.div
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 2.2 }}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: T.actions, ease: "easeOut" }}
           >
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 2.3, ease: "easeOut" }}
-            >
-              <Button asChild size="lg">
-                <SmoothLink href="#recruit">
-                  <Heart className="w-4 h-4 mr-2" />
-                  参加する
-                </SmoothLink>
-              </Button>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 2.4, ease: "easeOut" }}
-            >
-              <Button asChild variant="outline" size="lg">
-                <SmoothLink href="#about">
-                  <ChevronDown className="w-4 h-4 mr-2" />
-                  詳しく見る
-                </SmoothLink>
-              </Button>
-            </motion.div>
+            <Button asChild size="lg">
+              <SmoothLink href="#recruit">
+                <Heart className="w-4 h-4 mr-2" />
+                参加する
+              </SmoothLink>
+            </Button>
+            <Button asChild variant="outline" size="lg">
+              <SmoothLink href="#about">
+                <ChevronDown className="w-4 h-4 mr-2" />
+                詳しく見る
+              </SmoothLink>
+            </Button>
           </motion.div>
         </div>
       </div>

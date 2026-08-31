@@ -7,6 +7,7 @@ import { Logo } from "@/components/shared/Logo";
 import { SmoothLink } from "@/components/shared/SmoothLink";
 import { Button } from "@/components/ui/button";
 import { navLinks } from "@/config/site";
+import { spring } from "@/lib/motion-variants";
 import { cn } from "@/lib/utils";
 
 // 内部コンテンツのスタッガー用コンテナ
@@ -15,8 +16,8 @@ const contentVariants: Variants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.08,
-      delayChildren: 0.1,
+      staggerChildren: 0.05,
+      delayChildren: 0.05,
     },
   },
 };
@@ -27,14 +28,12 @@ const navItemVariants: Variants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.3,
-      ease: "easeOut",
-    },
+    transition: spring.snappy,
   },
 };
 
 // モバイルメニューコンテナのアニメーション
+// 開閉は spring。開いている途中でもう一度押せば、その場から閉じに転じる。
 const mobileMenuVariants: Variants = {
   hidden: {
     height: 0,
@@ -44,18 +43,19 @@ const mobileMenuVariants: Variants = {
     height: "auto",
     opacity: 1,
     transition: {
-      height: { duration: 0.4, ease: [0.25, 0.8, 0.25, 1] },
-      opacity: { duration: 0.3 },
-      staggerChildren: 0.05,
-      delayChildren: 0.15,
+      height: spring.sheet,
+      opacity: { duration: 0.15 },
+      staggerChildren: 0.04,
+      delayChildren: 0.06,
     },
   },
+  // 入場と退場は同じ経路をたどる (上から降りて、上へ戻る)
   exit: {
     height: 0,
     opacity: 0,
     transition: {
-      height: { duration: 0.3, ease: [0.25, 0.8, 0.25, 1] },
-      opacity: { duration: 0.2 },
+      height: spring.snappy,
+      opacity: { duration: 0.12 },
     },
   },
 };
@@ -66,12 +66,12 @@ const mobileNavItemVariants: Variants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.3, ease: "easeOut" },
+    transition: spring.snappy,
   },
   exit: {
     opacity: 0,
-    y: -8,
-    transition: { duration: 0.15 },
+    y: -12,
+    transition: { duration: 0.12 },
   },
 };
 
@@ -80,13 +80,25 @@ export function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
 
+  // スクロールは入力経路。毎イベントで setState せず、
+  // passive リスナー + rAF で 1 フレーム 1 回に畳む。
   useEffect(() => {
+    let frame = 0;
+
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        setIsScrolled(window.scrollY > 50);
+      });
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
   }, []);
 
   // クリックアウトサイドでメニューを閉じる
@@ -115,8 +127,10 @@ export function Header() {
   return (
     <header className="fixed top-4 left-0 right-0 z-50 px-4">
       <div
+        data-translucent
         className={cn(
-          "max-w-5xl mx-auto rounded-2xl border transition-all duration-500",
+          // transition-all は backdrop-filter まで巻き込むので対象を絞る
+          "max-w-5xl mx-auto rounded-2xl border transition-[background-color,border-color,box-shadow] duration-500 ease-out",
           isScrolled
             ? "bg-background/80 backdrop-blur-xl border-border/80 shadow-lg shadow-black/5"
             : "bg-background/60 backdrop-blur-lg border-border/50 shadow-md shadow-black/5",

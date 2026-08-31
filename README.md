@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ChoTech 公式サイト
 
-## Getting Started
+長崎大学 情報データ科学部発の学生エンジニアコミュニティ「ChoTech」の公式サイトです。
 
-First, run the development server:
+- 本番: Vercel（プロジェクト名 `chotech-hp`）
+- ブランチ運用: `dev` で開発 → `main` へマージ
+
+## 技術スタック
+
+- Next.js 16 (App Router, React Compiler) / React 19
+- Tailwind CSS v4 + shadcn/ui (new-york)
+- Motion (`motion/react`)
+- Biome (lint / format)
+- pnpm
+
+## 開発
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+pnpm dev      # http://localhost:3000
+pnpm lint     # biome check
+pnpm format   # biome format --write
+pnpm build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ディレクトリ
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+src/
+  app/            layout / page / globals.css
+  components/
+    sections/     Hero / About / Activities / Members / Recruit
+    shared/       Logo / SectionHeader / SmoothLink
+    ui/           shadcn/ui
+    providers/    MotionProvider (reduced-motion 対応)
+  config/site.ts  サイト名・ナビ・SNS・外部リンクの一元管理
+  lib/            motion-variants / utils
+  hooks/          use-smooth-scroll
+docs/             コミュニティのコンセプト資料（docs/README.md に索引）
+.claude/skills/   デザインシステム系の Claude スキル
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## デザイン方針
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- セクション背景は `bg-muted/50` と素の背景を交互に並べ、隣接セクションの境界を保つ（Hero → About(灰) → Activities → Members(灰) → Recruit → Footer(灰)）
+- モーションは `src/lib/motion-variants.ts` の spring 定義を使い、`MotionProvider` で reduced-motion を尊重する
+- 詳細は `.claude/skills/apple-design/SKILL.md` を参照
