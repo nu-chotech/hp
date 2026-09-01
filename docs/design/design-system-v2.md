@@ -950,7 +950,7 @@ Desktop / Mobile が同値の行は Mobile 列を「=」とする。根拠中の
 2. 同じ親の中で stack は最大 2 種類まで（例: card = `stack/md` と `stack/2xs`）。3 種類必要なら構造を分ける。
 3. 兄弟間の差は原則 2 段以上離す（8 と 12 を隣接させない。8 と 16、16 と 32）。
 4. Figma では CSS の非対称 margin を再現せず、auto-layout の `itemSpacing` = stack alias、個別差は wrapper frame の padding に alias を bind する。
-5. `space/2` は罫線グリッドの gap 専用。`space/4` は inline/icon・stack/2xs・`size/dot` 以外で使わない。
+5. `space/2` は罫線グリッドの gap 専用。`space/4` は inline/icon・stack/2xs 以外で使わない。
 
 ### 3.4 コントロールは高さで決める
 
@@ -981,7 +981,7 @@ Desktop / Mobile が同値の行は Mobile 列を「=」とする。根拠中の
 | `size/hero-max` | 960 | hero `min-height` の上限 | 10 × `space/96`。1440 × 900 では `100svh − 62` = 838 が効き、960 は縦 1022px 以上の画面でだけ効く上限 |
 | `size/cell-min` | 120 | 罫線グリッドの行の最小高、sponsor cell の高さ | 24 × 5。**床であって目標ではない**: kicker（Overline 16）+ `stack/md` 16 + Headline 2 行（48）+ inset 48 = 128 で、kicker + 2 行見出しの 1×1 セルは行ごと 128 に伸びる（stretch）。sponsor cell と 1 行見出しのセル（104）は 120 |
 | `size/avatar` | 24 | chat avatar（矩形） | = `icon/lg`。chat indent = 24 + `inline/xs` 8 = 32 |
-| `size/dot` | 4 | typing dot（円） | `space/4`。3 点 + gap 4 = 20 幅で 16px アイコン 1 個分の存在感 |
+| `size/dot` | 7 | typing dot（円） | 吹き出しの中に置くので、点そのものが見えるサイズが要る。3 点 + gap 5 = 31 幅（DECISION U-1 で 4 → 7） |
 | `size/illustration` | 96 | persona イラスト（円） | `space/96`、24 grid × 4 |
 | `size/mark-nav` / `size/mark-footer` | 28 / 24 | logo mark（両 viewport 同値） | 4 の倍数。wordmark Title 3 19 / Headline 17 に対する比 1.47 / 1.41（**DECISION L-21**） |
 | `size/rule-v` | 12 | 縦 hairline の高さ（brand tagline の左、hero meta の区切り） | 隣接文字の font-size（Caption / Overline 12）と同値。行送り 18 だと行を跨いで見え、cap 高 9 だと点に見える（**DECISION L-16**） |
@@ -1003,6 +1003,20 @@ CSS: `--size-nav: 3.875rem; --size-hero-max: 60rem; --size-cell-min: 7.5rem; --s
 **DECISION L-23** nav の内容は container ではなく viewport inset 24 に置く。sticky な帯は「紙」ではなく「窓枠」に属し、container に縛ると 1440 で帯の左右に 120 の空白が生じて帯が紙の一部に見える。コンセプトの実測（nav padding 12 / 24、CTA 右端 1440 − 24）と一致する。section 見出し（x 120）と brand（x 24）の不一致は意図。
 
 CSS: `.container { width: min(100% - 2 * var(--page-inset), 75rem); margin-inline: auto }`。
+
+**DECISION L-29 実装のブレークポイント（Figma には持たない）**
+
+本書は Desktop 1440 / Mobile 390 の 2 フレームしか定義しない。ブラウザの幅は連続なので、その間をどう扱うかは実装が決めなければならない。トークン（タイポ・余白）のモード切替は **1248px = 78rem** に置く — container が設計値 1200 に達し、§3.7 の 12 列幾何が成立する唯一の点で、本書が自ら言及している唯一の viewport 値でもある（`page/inset` の「viewport < 1248 で効く」）。
+
+ただし次の 2 つは「構造」の問題なので、トークンより早く切り替える:
+
+| 何を | いつ | なぜ |
+|---|---|---|
+| ナビを横並びに開く | 768px = 48rem | 英語 1 語のリンク 4 本 + CTA sm は 768 に余裕をもって収まる。ここでハンバーガーを維持するのは、タイプスケールの忠実さより明らかに悪い体験 |
+| 罫線グリッドを 2 列に開く | 768px = 48rem | L-10 が退けたのは列数ではなく「セル内容 128px（Body S で 9 字）」。768 の 2 列はセル内容 ≈ 320px（22 字）で閾値を満たす |
+| 罫線グリッドを設計どおりの列数（bento 4、persona / staff / partner 3）に開く | 1248px = 78rem | トークンのモードと一致させ、Figma の Desktop フレームと同一幾何にする |
+
+タイポグラフィを中間帯で流体補間（`clamp()`）しない: §2 の行長計算は「n 文字 = n em」の離散値に依存しており、補間した中間サイズでは §9.3 の文字数上限が検証されていない。CSS では `--breakpoint-tablet` 48rem / `--breakpoint-desktop` 78rem の 2 つだけを持ち、Tailwind の既定階梯は消す。
 
 ### 3.7 2 つのグリッド
 
@@ -1354,10 +1368,10 @@ Apple HIG「Feedback」: 操作の結果は即時に、しかし控えめに。�
 | G6 | 遷移 | 色・下線: `motion/duration/1` 100ms 入り / `motion/duration/2` 200ms 離脱、`motion/ease/color`。Pressed 入り `duration/0`。移動（Menu panel、Rotating word）は `motion/spring/*` | §7.2 |
 | G7 | Reduced motion | 色の遷移は維持、移動・ループは静止（§7.5） | Apple「reduced motion ≠ no feedback」 |
 | G8 | Hit area | 既定 44 × 44。可視ボックスが小さい部品は `::before { position:absolute; inset:-N }` で **レイアウトに影響せず** 拡張 | HIG 44pt、§8.3。§6.1.5 |
-| G9 | Link underline | `text-decoration` 1px、offset 0.2em（§4.2）。`border-bottom` は使わない。太さの変更はインラインの hover（1 → 2px）だけで、レイアウトには影響しない | 折返し行でも下線が続く |
+| G9 | Link underline | `text-decoration` 静止 2px / 状態 3px、offset 0.2em（§4.2、DECISION U-2）。`border-bottom` は使わない。太さの変更は `text-decoration-thickness` だけなのでレイアウトには影響しない | 折返し行でも下線が続く |
 | G10 | Focus order | DOM 順 = 視覚順。Skip link を先頭に | §6.1.7 |
 | G11 | アイコン | Tabler outline、24 grid、stroke 2、`icon/sm|md|lg` 16 / 20 / 24。装飾は `aria-hidden="true"`。絵文字・記号文字禁止 | §5、§6.1.9 |
-| G12 | 角丸 | `radius/none` 0。例外は Persona イラストと typing dot の `radius/full` | §4.1 |
+| G12 | 角丸 | `radius/none` 0。例外は Persona イラスト・typing dot・チャット avatar の `radius/full` と、チャット吹き出しの `radius/bubble` 18（DECISION U-1）だけ | §4.1 |
 | G13 | ラベル配置 | すべて左揃え（ボタン内も）。`text-align: left; justify-content: flex-start`。矢印はラベル直後 `inline/xs` 8（右端に送らない） | §3.4 DECISION L-3 |
 | G14 | Cursor | link / button に `cursor: pointer` | Web の慣習。**DECISION K-15** |
 | G15 | Selection | `color/selection`（ground 地）/ `color/inverse/selection`（ink 地）/ `color/poster/selection`（Poster）、文字は面の primary を強制。上の文字 10.23 / 10.28 / 10.27 | §1.3.6 |
@@ -2234,7 +2248,7 @@ CSS カスタムプロパティで持つ。Figma には Variables として置�
 #### 7.4.5 Chat セル
 
 - 14 s の再生ループは削除（DECISION M-5）: 5 秒超の自動更新領域で停止 UI が要り、隣接セルの読み取りと競合する。静止スレッドで意図は伝わる。
-- 入力中ドット: 3 点（`size/dot` 4、`radius/full`）、opacity 0.3⇄1、周期 1.2 s、ease-in-out、ドット間 200 ms、色 `color/ink-tertiary`。セルが可視の間のみ動き、スイッチと reduced-motion に従う。
+- 入力中ドット: 3 点（`size/dot` 7、`radius/full`）、opacity 0.3⇄1、周期 1.2 s、ease-in-out、ドット間 200 ms、色 `color/ink-tertiary`。`surface` の吹き出し（`radius/bubble` 18 + テール、inset 16 × 11）の中に置く。セルが可視の間のみ動き、スイッチと reduced-motion に従う。
 
 #### 7.4.6 Nav とアンカー移動
 
@@ -3042,6 +3056,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | L-26 | sponsor ロゴはセル中央 | 図であってラベルではない |
 | L-27 | marquee 帯は高さ駆動 56、区切りアイコン 20 | 内側 52 = 4 × 13、19px 文字の横は `icon/md` |
 | L-28 | marquee 停止セル 44 × 内側高、左 2px rule、ground、icon 24 | 帯と同じ罫線語彙で「セル」として切り出す |
+| L-29 | 実装のブレークポイントは 2 つ: 構造 48rem / トークン 78rem（§3.6） | 2 フレームしかない仕様と連続なブラウザ幅の橋渡し。ナビと列数だけ先に開き、タイポは離散のまま |
 
 ### A.4 Components（K）
 

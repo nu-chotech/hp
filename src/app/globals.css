@@ -1,201 +1,1133 @@
+/* =============================================================================
+ * ChoTech Design System v2 — トークン層
+ * 正本: docs/design/design-system-v2.md（このファイルはその転記であって解釈ではない）
+ *
+ * 構成
+ *   1. Tailwind
+ *   2. Primitives（:root の素の custom property。@theme に入れずユーティリティを生やさない）
+ *   3. Semantic roles（Lime accent = 既定モード）
+ *   4. レスポンシブなスカラー（Mobile が基底、Desktop は 1 本のメディアクエリで上書き）
+ *   5. @theme inline（Tailwind の名前空間への写像）
+ *   6. @layer base
+ *   7. ユーザー設定のメディアクエリ
+ *
+ * 命名: Figma 名の先頭 `color/` を落とし、`/` を `-` に置換する。
+ *   color/inverse/ink-secondary → --inverse-ink-secondary
+ * ========================================================================== */
+
+/* -----------------------------------------------------------------------------
+ * 1. Tailwind
+ * -------------------------------------------------------------------------- */
 @import "tailwindcss";
-@import "tw-animate-css";
 
-/* LINE Seed JP - Weight remapping: 400=Bold, 700=ExtraBold */
-@font-face {
-  font-family: "LINE Seed JP";
-  font-weight: 400;
-  font-display: swap;
-  src:
-    url("https://cdn.jsdelivr.net/npm/line-seed-jp@0.0.5/woff2/LINESeedJP_OTF_Bd.woff2")
-    format("woff2"),
-    url("https://cdn.jsdelivr.net/npm/line-seed-jp@0.0.5/woff/LINESeedJP_OTF_Bd.woff")
-    format("woff");
-}
-
-@font-face {
-  font-family: "LINE Seed JP";
-  font-weight: 700;
-  font-display: swap;
-  src:
-    url("https://cdn.jsdelivr.net/npm/line-seed-jp@0.0.5/woff2/LINESeedJP_OTF_Eb.woff2")
-    format("woff2"),
-    url("https://cdn.jsdelivr.net/npm/line-seed-jp@0.0.5/woff/LINESeedJP_OTF_Eb.woff")
-    format("woff");
-}
-
-@custom-variant dark (&:is(.dark *));
-
-@theme inline {
-  --height-screen: 100dvh;
-  --min-height-screen: 100dvh;
-  --max-height-screen: 100dvh;
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: "LINE Seed JP", sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-}
-
+/* =============================================================================
+ * 2. Primitives — 直接 bind しない素の値（Figma: Primitives コレクション相当）
+ *
+ * hex のまま置く。oklch に変換しない — spec の値と目視で差分が取れなくなるため。
+ * indigo ランプ（100–900）と alpha/indigo-* は Figma に記録用として残置されるが、
+ * spec 本文に hex の記載がなく参照するロールも無いので、ここには出さない。
+ * ========================================================================== */
 :root {
-  --radius: 0.65rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.141 0.005 285.823);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.141 0.005 285.823);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.141 0.005 285.823);
-  --primary: oklch(0.488 0.243 264.376);
-  --primary-foreground: oklch(0.97 0.014 254.604);
-  --secondary: oklch(0.967 0.001 286.375);
-  --secondary-foreground: oklch(0.21 0.006 285.885);
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.21 0.006 285.885);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.809 0.105 251.813);
-  --chart-2: oklch(0.623 0.214 259.815);
-  --chart-3: oklch(0.546 0.245 262.881);
-  --chart-4: oklch(0.488 0.243 264.376);
-  --chart-5: oklch(0.424 0.199 265.638);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.141 0.005 285.823);
-  --sidebar-primary: oklch(0.546 0.245 262.881);
-  --sidebar-primary-foreground: oklch(0.97 0.014 254.604);
-  --sidebar-accent: oklch(0.967 0.001 286.375);
-  --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
-  --sidebar-border: oklch(0.92 0.004 286.32);
-  --sidebar-ring: oklch(0.708 0 0);
+  /* neutral — 隣接段の輝度比が 1.5 前後で一定（500→600 1.49 / 600→700 1.52 / 700→800 1.55）。
+     neutral-600 は AA 化のために再調整しない（DECISION C-1）。役割を大テキスト・図形に限定する。 */
+  --neutral-50: #f8f4f4; /* Y 0.912 — 予備。テキスト不可。ページ未使用 */
+  --neutral-100: #f3f2f2; /* Y 0.890 — ground、暗い面のテキスト基底 */
+  --neutral-200: #eae7e7; /* Y 0.804 — surface、チップの塗り */
+  --neutral-300: #d7d3d3; /* Y 0.657 — アバター、グラウンド色ボタンのプレス */
+  --neutral-400: #bab6b6; /* Y 0.473 — 予備。無効時の輪郭のみ。ページ未使用 */
+  --neutral-500: #9b9797; /* Y 0.313 — divider。線専用、文字・図形不可 */
+  --neutral-600: #7d7979; /* Y 0.194 — ink-tertiary。大テキストと非テキスト図形（3:1）のみ */
+  --neutral-700: #605d5d; /* Y 0.111 — ink-secondary。明るい面の小さな補助文字すべて */
+  --neutral-800: #444141; /* Y 0.054 — インク色ボタンのホバー */
+  --neutral-900: #2d2b2b; /* Y 0.025 — ヒーロー格子線（inverse/hairline） */
+  --neutral-950: #201e1d; /* Y 0.013 — ink、インク面、ポスター面（Mono）、backdrop / shadow の基底 */
+
+  /* lime — アクセントは二極性を持つ（DECISION C-25 / C-26）。
+     明るい地の上では暗い段（700 図形 / 800 文字 / 900 小さな文字）が働き、
+     インク面とポスター面では lime-400 が面・印として働く。同じ段を両極に使えない。 */
+  --lime-200: #d8f999; /* accent-subtle（淡い塗り、ライブラリ） */
+  --lime-300: #bbf451; /* インク面のフォーカスリング */
+  --lime-400: #9ae600; /* accent 基底。明るい地では 1.37 で文字にも輪郭にも使えない */
+  --lime-500: #7ccf00; /* accent ホバー（面） */
+  --lime-600: #5ea500; /* accent プレス（面） */
+  --lime-700: #497d00; /* 地の上の図形専用（3:1 ✓ / 4.5 ✗） */
+  --lime-800: #3c6300; /* 地の上のアクセント文字の基底 */
+  --lime-900: #35530e; /* 12px 以下のアクセント文字、淡い塗り・ポスター面の上 */
+
+  /* alpha — 11 個（ink 5 / ground 5 / lime-400 1）。
+     6 → 12 → 24 → 48 は倍々（ティント・影・幕・無効）、72 = 3 × 24（tertiary 文字）、
+     88 は secondary 文字。合成 hex をハードコードせず color-mix で持つ
+     （固定値が要る prefers-reduced-transparency だけ §1.2.3 の合成 hex を使う）。 */
+  --alpha-ink-6: color-mix(in srgb, var(--neutral-950) 6%, transparent);
+  --alpha-ink-12: color-mix(in srgb, var(--neutral-950) 12%, transparent);
+  --alpha-ink-24: color-mix(in srgb, var(--neutral-950) 24%, transparent);
+  --alpha-ink-48: color-mix(in srgb, var(--neutral-950) 48%, transparent);
+  --alpha-ink-88: color-mix(in srgb, var(--neutral-950) 88%, transparent);
+  --alpha-ground-12: color-mix(in srgb, var(--neutral-100) 12%, transparent);
+  --alpha-ground-24: color-mix(in srgb, var(--neutral-100) 24%, transparent);
+  --alpha-ground-48: color-mix(in srgb, var(--neutral-100) 48%, transparent);
+  --alpha-ground-72: color-mix(in srgb, var(--neutral-100) 72%, transparent);
+  --alpha-ground-88: color-mix(in srgb, var(--neutral-100) 88%, transparent);
+  --alpha-lime-400-24: color-mix(in srgb, var(--lime-400) 24%, transparent);
 }
 
-.dark {
-  --background: oklch(0.141 0.005 285.823);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.21 0.006 285.885);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.21 0.006 285.885);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.488 0.243 264.376);
-  --primary-foreground: oklch(0.97 0.014 254.604);
-  --secondary: oklch(0.274 0.006 286.033);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.274 0.006 286.033);
-  --muted-foreground: oklch(0.705 0.015 286.067);
-  --accent: oklch(0.274 0.006 286.033);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.809 0.105 251.813);
-  --chart-2: oklch(0.623 0.214 259.815);
-  --chart-3: oklch(0.546 0.245 262.881);
-  --chart-4: oklch(0.488 0.243 264.376);
-  --chart-5: oklch(0.424 0.199 265.638);
-  --sidebar: oklch(0.21 0.006 285.885);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.623 0.214 259.815);
-  --sidebar-primary-foreground: oklch(0.97 0.014 254.604);
-  --sidebar-accent: oklch(0.274 0.006 286.033);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.439 0 0);
+/* =============================================================================
+ * 3. Semantic roles — 62 行（Figma: Color コレクション / 既定モード Lime accent）
+ *
+ * ページで色を触るときはここだけを参照する。primitive を直接使わない。
+ * 行末のコメントは対比比（vs ground / vs ink）。理由は各グループの見出しに書く。
+ * ========================================================================== */
+:root {
+  /* --- 1.3.1 面 ------------------------------------------------------------
+   * ground = 基準面（ページ、ナビ、マーキー帯、フッター）。
+   * surface は ground との比 1.10 = 罫線なしに輪郭が読める最小段。
+   * inverse/ground はインクを塗りに転用したもの（ヒーロー、統計セル、CTA セル）。
+   * poster/ground は Join セクションだけの唯一のアクセント面で、Mono では暗い面、
+   * Lime では明るい面に反転するため専用ロール群を持つ（DECISION C-28）。
+   * ---------------------------------------------------------------------- */
+  --ground: var(--neutral-100);
+  --surface: var(--neutral-200); /* ground 1.10 */
+  --inverse-ground: var(--neutral-950);
+  --poster-ground: var(--lime-400); /* 上の ink 10.83 */
+
+  /* --- 1.3.2 明るい面のテキスト --------------------------------------------
+   * ink-secondary は明るい面の小さな補助文字すべて。
+   * ink-tertiary は大テキスト（≥24px / ≥18.66px Bold）と非テキスト図形のみ。
+   * 明るい面に quaternary は置かず、文字にアルファを使わない。
+   * ---------------------------------------------------------------------- */
+  --ink: var(--neutral-950); /* ground 14.86 */
+  --ink-secondary: var(--neutral-700); /* ground 5.83 */
+  --ink-tertiary: var(--neutral-600); /* ground 3.85 */
+
+  /* --- 1.3.3 反転面のテキスト ----------------------------------------------
+   * 反転面だけはアルファで階層を作る（§1.4.3 / §1.4.4 で検算済み）。
+   * quaternary はディスプレイサイズ専用 — 12〜17px に使ってはならない（C-5）。
+   * ポスター面の階層は primary / secondary の 2 段に限定する（alpha/ink/72 は無い）。
+   * inverse/hairline はテクスチャで WCAG 対象外。
+   * ---------------------------------------------------------------------- */
+  --inverse-ink: var(--neutral-100); /* ink 14.86 */
+  --inverse-ink-secondary: var(--alpha-ground-88); /* ink 11.78 */
+  --inverse-ink-tertiary: var(--alpha-ground-72); /* ink 8.29 */
+  --inverse-ink-quaternary: var(--alpha-ground-48); /* ink 4.45 */
+  --poster-ink: var(--neutral-950); /* Lime 10.83 */
+  --poster-ink-secondary: var(--alpha-ink-88); /* Lime 8.23 */
+  --inverse-hairline: var(--neutral-900); /* ink 1.18 */
+
+  /* --- 1.3.4 罫線と枠 ------------------------------------------------------
+   * divider は一つの色、二つの太さ。強弱は色ではなく太さで出す。
+   * インク面に divider（n500）を置かない。部品境界（ボタン枠）にも使わない —
+   * 境界は 3:1 が要るので inverse/outline は実色 100%（R3）。
+   * chip/fill は非対話・枠なし。1px 線は行の仕切りに温存する（R2）。
+   * ---------------------------------------------------------------------- */
+  --divider: var(--neutral-500); /* ground 2.59 */
+  --divider-hairline: var(--divider); /* 1px 罫 */
+  --chip-fill: var(--surface); /* ground 1.10 */
+  --link-underline: currentColor; /* 文字色を継ぐ */
+  --inverse-outline: var(--inverse-ink); /* ink 14.86 */
+
+  /* --- 1.3.5 アクセント ----------------------------------------------------
+   * accent（lime-400）は明るい地の上では面としても文字としても使えない（1.37、C-25）。
+   * 地の上では暗い段が働く: 700 図形のみ / 800 文字 / 900 は 12px 以下の文字。
+   * accent-hover / -pressed / -subtle はライブラリのみ（ポスター面と競合させない）。
+   * pop/*・hero/word・poster/* はモードで値が変わる 10 行に含まれる。
+   * ---------------------------------------------------------------------- */
+  --accent: var(--lime-400); /* ink 10.83 */
+  --on-accent: var(--neutral-950); /* accent 10.83 */
+  --accent-hover: var(--lime-500); /* ラベル 8.52 */
+  --accent-pressed: var(--lime-600); /* ラベル 5.42 */
+  --accent-subtle: var(--lime-200); /* ground 1.05 */
+  --on-accent-subtle: var(--lime-900); /* 淡い塗り 7.49 */
+  --accent-text: var(--lime-800); /* ground 6.31 */
+  --accent-text-small: var(--lime-900); /* ground 7.85 */
+  --accent-on-ink: var(--lime-400); /* ink 面の印 */
+  --pop-separator: var(--lime-700); /* ground 4.46 */
+  --pop-badge: var(--lime-800); /* ground 6.31 */
+  --hero-word: var(--lime-400); /* ink 10.83 */
+  --poster-selection: var(--alpha-ink-12); /* Lime #8bce03 */
+  --poster-action-fill: var(--neutral-950); /* Lime 10.83 */
+  --poster-action-ink: var(--neutral-100); /* 上の面 14.86 */
+  --poster-focus-ring: var(--lime-900); /* lime-400 5.72 */
+
+  /* --- 1.3.6 状態 ----------------------------------------------------------
+   * ティントの上にアクセント文字を置かない（バッジのみ例外、900 で 6.22）。
+   * リンクの状態は太さで示し文字色をホバーで変えない（DECISION C-16）。
+   * 持続状態（aria-current）にアクセントを使わない → link/current は ink。
+   * ::selection は background と color を対で書き、文字は面の primary を強制（C-9）。
+   * ---------------------------------------------------------------------- */
+  --state-hover-tint: var(--alpha-ink-6); /* 上の ink 13.21 */
+  --state-pressed-tint: var(--alpha-ink-12); /* 上の ink 11.78 */
+  --inverse-state-hover-tint: var(--alpha-ground-12); /* ground 10.58 */
+  --inverse-state-pressed-tint: var(--alpha-ground-24); /* ground 7.06 */
+  --focus-ring: var(--lime-700); /* 明るい面 4.46 */
+  --focus-ring-inverse: var(--lime-300); /* ink 面 12.79 */
+  --selection: var(--alpha-lime-400-24); /* 上の ink 13.55 */
+  --inverse-selection: var(--alpha-lime-400-24); /* 上の ground 8.17 */
+  --link-hover: var(--accent-text); /* 2px 下線 6.31 */
+  --link-pressed: var(--accent-text-small); /* 文字 7.85 */
+  --link-current: var(--ink); /* 2px 下線 14.86 */
+  /* 表記上は Mono → inverse/ink、Lime → neutral-950 だが、ソーシャルリンクは
+     ポスター面上にあるので実質 poster/ink に追従する行（§11 の 10 行には非該当）。
+     poster/ink のエイリアスにすることで両モードで正しい値になる。 */
+  --inverse-link-hover: var(--poster-ink);
+  --opacity-disabled: 0.48; /* ライブラリのみ */
+
+  /* --- 1.3.7 アクション ----------------------------------------------------
+   * ホバーは基底から中間調へ 1 段（950 → 800。900 は 950 との差 1.18 で飛ばす）、
+   * プレスはさらに 1 段（700、800 との差 1.55）。プレスがホバーの手前に戻らない。
+   * ---------------------------------------------------------------------- */
+  --action-fill: var(--neutral-950); /* ラベル 14.86 */
+  --action-fill-hover: var(--neutral-800); /* ラベル 9.04 */
+  --action-fill-pressed: var(--neutral-700); /* ラベル 5.83 */
+  --action-ink: var(--neutral-100);
+  --inverse-action-fill: var(--neutral-100); /* ラベル 14.86 */
+  --inverse-action-fill-hover: var(--neutral-200); /* ラベル 13.51 */
+  --inverse-action-fill-pressed: var(--neutral-300); /* ラベル 11.19 */
+  --inverse-action-ink: var(--neutral-950);
+
+  /* --- 1.3.8 部品固有 ------------------------------------------------------
+   * 影はページに存在しない。段差は幾何だけで作り、色は 1 濃度に固定する（§4.4）。
+   * backdrop はダイアログの幕（ライブラリ）。
+   * ---------------------------------------------------------------------- */
+  --chip-ink: var(--ink-secondary); /* chip/fill 5.30 */
+  --avatar: var(--neutral-300); /* 頭文字 11.19 */
+  --image-placeholder: var(--surface);
+  --image-caption: var(--ink-secondary); /* surface 5.30 */
+  --shadow: var(--alpha-ink-24); /* shadow/sm md lg */
+  --backdrop: var(--alpha-ink-48); /* 幕 */
+
+  /* 専用ロールを置かないもの:
+     typing dot / placeholder アイコン → --ink-tertiary に直接 bind（3.85 / 3.50）
+     すべての Tabler アイコン           → currentColor（行のテキスト色を継ぐ）
+     例外は marquee 区切りの asterisk = --pop-separator */
 }
 
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
+/* -----------------------------------------------------------------------------
+ * Mono モード（検証用）— 値が変わるのは正確に 10 行（§11）
+ * 「4 つの出現」（マーキー区切り・活動バッジ・ヒーロー下線・ポスター面）＋
+ * ポスター面の明度反転に伴う 6 行。他はすべて Mono = Lime。
+ * 実行時の切替は設計上おこなわない（デザインモードのみ）ので既定では無効。
+ * 検証したくなったら次のブロックを有効にして <html data-color-mode="mono"> を付ける。
+ * （--inverse-link-hover は --poster-ink のエイリアスなので自動で追従する）
+ * -------------------------------------------------------------------------- */
+/*
+[data-color-mode="mono"] {
+  --poster-ground: var(--neutral-950);
+  --poster-ink: var(--inverse-ink);
+  --poster-ink-secondary: var(--inverse-ink-secondary);
+  --poster-selection: var(--inverse-selection);
+  --poster-action-fill: var(--inverse-action-fill);
+  --poster-action-ink: var(--inverse-action-ink);
+  --poster-focus-ring: var(--focus-ring-inverse);
+  --pop-separator: var(--ink-tertiary);
+  --pop-badge: var(--ink-secondary);
+  --hero-word: var(--inverse-ink);
+}
+*/
+
+/* =============================================================================
+ * 4. レスポンシブなスカラー
+ *
+ * Mobile が基底、Desktop は 1 本のメディアクエリで上書きする。
+ * ブレークポイントは 1248px = 78rem — spec が §3 で唯一名指しする viewport 数値
+ * （= container 1200 + page/inset 24 × 2）。これ以上で container がちょうど 1200 になり、
+ * 12 列レイアウトグリッドと罫線グリッドが Figma の Desktop フレームと一致する。
+ * spec 自身は「ブレークポイントなし（Desktop 1440 / Mobile 390 の 2 モード）」と書くので、
+ * これは実装上の唯一の切替点であって新しい数値ではない。
+ *
+ * 単位は rem（px ÷ 16）。html を 100% にしてあるので Figma の px と 1:1 で対応し、
+ * ユーザーの文字サイズ設定に追従する（WCAG 1.4.4）。
+ * ========================================================================== */
+:root {
+  /* --- 2.2 タイポグラフィ ---------------------------------------------------
+   * サイズ階梯: 12 · 13 · 14 · 15 · 16 · 17 · 19 · 22 · 26 · 32 · 40 · 56 · 72 · 96 · 124
+   * （72 は予約段で未使用）。半端値（10, 11, 18, 20, 24, 34, 52）は禁止。最小 12px。
+   * leading は必ず偶数 px（half-leading が整数ピクセルに落ちる）。
+   *
+   * 可変なのは Display XL / L / M と Title 1 の 4 ロールだけ。
+   * この 4 つは 390px で Mobile 値、1440px で Desktop 値になる線形補間として
+   * §2.8 の clamp を使う（メディアクエリで段跳びさせると 56 → 124px の跳躍になり、
+   * spec が明記する補間比の床 1.10 を通らないため）。残り 18 ロールは単一値。
+   * -------------------------------------------------------------------------- */
+
+  /* Display/XL — ヒーロー h1。124/138 ⇔ 56/62、EB。1 行 ≤ 9 全角（D） */
+  --display-xl-size: clamp(3.5rem, calc(1.9214rem + 6.476vw), 7.75rem);
+  --display-xl-leading: clamp(3.875rem, calc(2.1107rem + 7.238vw), 8.625rem);
+  --display-xl-tracking: -0.02em;
+  --display-xl-weight: 800;
+
+  /* Display/L — ポスター見出し。96/106 ⇔ 40/44、EB。2 行、≤12 全角（D）/ ≤8（M） */
+  --display-l-size: clamp(2.5rem, calc(1.2rem + 5.333vw), 6rem);
+  --display-l-leading: clamp(2.75rem, calc(1.3107rem + 5.905vw), 6.625rem);
+  --display-l-tracking: -0.02em;
+  --display-l-weight: 800;
+
+  /* Display/M — 活動タイトル、統計値「50」。56/62 ⇔ 32/36、EB */
+  --display-m-size: clamp(2rem, calc(1.4429rem + 2.286vw), 3.5rem);
+  --display-m-leading: clamp(2.25rem, calc(1.6464rem + 2.476vw), 3.875rem);
+  --display-m-tracking: -0.02em;
+  --display-m-weight: 800;
+
+  /* Title/1 — セクション h2（×5）、ヒーローリード、統計の「+」。32/40 ⇔ 26/32、EB */
+  --title-1-size: clamp(1.625rem, calc(1.4857rem + 0.571vw), 2rem);
+  --title-1-leading: clamp(2rem, calc(1.8143rem + 0.762vw), 2.5rem);
+  --title-1-tracking: -0.01em;
+  --title-1-weight: 800;
+
+  /* Title/2 — ベント 2×1 見出し、リーダー氏名。22/28、EB。≤2 行 */
+  --title-2-size: 1.375rem;
+  --title-2-leading: 1.75rem;
+  --title-2-tracking: 0;
+  --title-2-weight: 800;
+
+  /* Title/3 — ベント 1×1（中）見出し、CTA セル見出し、ナビのワードマーク。19/26、EB */
+  --title-3-size: 1.1875rem;
+  --title-3-leading: 1.625rem;
+  --title-3-tracking: 0;
+  --title-3-weight: 800;
+
+  /* Title/3 Caps — マーキー項目。19/26、EB、+3%、uppercase */
+  --title-3-caps-size: 1.1875rem;
+  --title-3-caps-leading: 1.625rem;
+  --title-3-caps-tracking: 0.03em;
+  --title-3-caps-weight: 800;
+
+  /* Text/Headline — ベント 1×1（小）見出し、ペルソナ見出し、フッターワードマーク。17/24、EB
+     800 が許される最小サイズ（14–15px の EB は漢字の counter が潰れるため禁止） */
+  --headline-size: 1.0625rem;
+  --headline-leading: 1.5rem;
+  --headline-tracking: 0;
+  --headline-weight: 800;
+
+  /* Text/Subheadline — 活動サブタイトル（Display/M とベースライン揃え）。15/24、B */
+  --subheadline-size: 0.9375rem;
+  --subheadline-leading: 1.5rem;
+  --subheadline-tracking: 0;
+  --subheadline-weight: 700;
+
+  /* Text/Callout — チャットバブル、ペルソナ引用。14/22、B。≤3 行 */
+  --callout-size: 0.875rem;
+  --callout-leading: 1.375rem;
+  --callout-tracking: 0;
+  --callout-weight: 700;
+
+  /* Body/L — 反転面のヒーロー段落。16/28（1.75、最も広い leading）、R */
+  --body-l-size: 1rem;
+  --body-l-leading: 1.75rem;
+  --body-l-tracking: 0;
+  --body-l-weight: 400;
+
+  /* Body/M — ポスター段落。15/26、R。measure/paragraph で 39 全角 */
+  --body-m-size: 0.9375rem;
+  --body-m-leading: 1.625rem;
+  --body-m-tracking: 0;
+  --body-m-weight: 400;
+
+  /* Body/S — 活動説明、パートナー紹介、ベント本文。14/24、R。段落に許される最小サイズ */
+  --body-s-size: 0.875rem;
+  --body-s-leading: 1.5rem;
+  --body-s-tracking: 0;
+  --body-s-weight: 400;
+
+  /* Footnote/Regular — フッターリンク、リーダー紹介文、CTA セル副文。13/20、R */
+  --footnote-size: 0.8125rem;
+  --footnote-leading: 1.25rem;
+  --footnote-tracking: 0;
+  --footnote-weight: 400;
+
+  /* Footnote/Bold — ペルソナ推薦文、パートナー応募リンク。13/20、B */
+  --footnote-bold-size: 0.8125rem;
+  --footnote-bold-leading: 1.25rem;
+  --footnote-bold-tracking: 0;
+  --footnote-bold-weight: 700;
+
+  /* Caption/Regular — ©、入力中…、タグ、画像キャプション、スタッフ紹介文。12/18、R */
+  --caption-size: 0.75rem;
+  --caption-leading: 1.125rem;
+  --caption-tracking: 0;
+  --caption-weight: 400;
+
+  /* Caption/Bold — タグライン、アバター頭文字、リアクション数。12/18、B */
+  --caption-bold-size: 0.75rem;
+  --caption-bold-leading: 1.125rem;
+  --caption-bold-tracking: 0;
+  --caption-bold-weight: 700;
+
+  /* Label/M — 44px コントロール。15/20、B。1 行 ≤12 全角、nowrap */
+  --label-m-size: 0.9375rem;
+  --label-m-leading: 1.25rem;
+  --label-m-tracking: 0;
+  --label-m-weight: 700;
+
+  /* Label/S — 36px コントロール。14/20、B。1 行、nowrap */
+  --label-s-size: 0.875rem;
+  --label-s-leading: 1.25rem;
+  --label-s-tracking: 0;
+  --label-s-weight: 700;
+
+  /* Label/Nav — ナビリンク、Mobile メニュー行。14/20、R。1 行、nowrap */
+  --label-nav-size: 0.875rem;
+  --label-nav-leading: 1.25rem;
+  --label-nav-tracking: 0;
+  --label-nav-weight: 400;
+
+  /* Overline/Latin — セクションラベル、キッカー、CASE 01、JOIN US。12/16、B、+12%、uppercase */
+  --overline-size: 0.75rem;
+  --overline-leading: 1rem;
+  --overline-tracking: 0.12em;
+  --overline-weight: 700;
+
+  /* Overline/JP — 和文キッカー、肩書、活動バッジ。12/16、B、+6%。textCase は ORIGINAL
+     （ブランド名を大文字化しない）。12px 以下の和文は画数対策で Bold 700 が床 */
+  --overline-jp-size: 0.75rem;
+  --overline-jp-leading: 1rem;
+  --overline-jp-tracking: 0.06em;
+  --overline-jp-weight: 700;
+
+  /* --- 3.2 spacing エイリアス -----------------------------------------------
+   * 生の space/* を直接 bind しない（§3.0 原則 4）。役割でエイリアスを選ぶ。
+   * 4px モジュール。2px は罫線専用。帯の総高（62 / 56）だけが例外。
+   * space/0–128 の素の階梯は Tailwind 既定の 0.25rem 刻み（p-2 = 8px …）が
+   * そのまま対応するので、ここには出さない。
+   * -------------------------------------------------------------------------- */
+
+  /* inset — 面の「内側」 */
+  --inset-xs: 0.5rem; /* 8 — バブル・引用の上下、チップの左右 */
+  --inset-sm: 0.75rem; /* 12 — バブル・引用の左右（横 = 1.5 × 縦で重心が安定する） */
+  --inset-md: 1rem; /* 16 — スタッフカード本文、36px ボタンの左右 */
+  --inset-control: 1.25rem; /* 20 — 44px ボタンの左右。H:V ≈ 1.7 */
+  --inset-cell: 1.25rem; /* 24 / 20 — ベントセル、カード、活動行の左右 */
+  --inset-row: 2rem; /* 32 — 活動行の上下。行が独立した「行」に読める距離 */
+
+  /* page / nav / band — 紙の縁と帯 */
+  --page-inset: 1.5rem; /* 24 — ページ左右。viewport < 1248 で container に効く */
+  --nav-pad-y: 0.5rem; /* 12 / 8 — 12+36+12 = 8+44+8 = 60（DECISION L-22） */
+  --band-pad-y: 0.75rem; /* 12 — マーキーの最小上下。帯はセクションではない */
+
+  /* stack — 縦に並ぶ兄弟の「間」 */
+  --stack-2xs: 0.25rem; /* 4 — 肩書 → 氏名、ドット群 → ラベル */
+  --stack-xs: 0.5rem; /* 8 — 見出し → 本文、説明 → タグ、チャット行間 */
+  --stack-sm: 0.75rem; /* 12 — セクション見出し → 導入文、段落間 */
+  --stack-md: 1rem; /* 16 — キッカー → 内容、カード内のブロック間 */
+  --stack-lg: 1.5rem; /* 24 — 導入 → グリッド。セル境界と同じ強さの切れ目 */
+  --stack-xl: 2rem; /* 32 — 見出し → グリッド、ヒーロー要素間 */
+
+  /* inline — 横に並ぶ兄弟の「間」 */
+  --inline-icon: 0.25rem; /* 4 — インラインアイコン ↔ 文字 */
+  --inline-xs: 0.5rem; /* 8 — コントロール内のアイコン ↔ ラベル、アバター ↔ バブル */
+  --inline-sm: 0.75rem; /* 12 — ヒーローのボタン間、ブランドロックアップ */
+  --inline-md: 1rem; /* 16 — ナビ項目間、CTA セルの文 ↔ ボタン */
+  --inline-lg: 1.5rem; /* 24 — 活動タイトル群 ↔ バッジ、フッター項目間 */
+  --inline-xl: 2rem; /* 32 — マーキー項目間（間に asterisk） */
+
+  /* grid — レイアウトグリッドの溝 */
+  --grid-gutter: 1rem; /* 24 / 16 — Mobile は 16（24 だと列 66 で 2 列 span が壊れる、L-24） */
+
+  /* section — ページの縦リズム */
+  --section-pad-top: 3rem; /* 64 / 48 — 2px 罫 → 見出し。罫と見出しを一つの塊に読ませる */
+  --section-pad-bottom: 4rem; /* 80 / 64 — 内容 → 次の 2px 罫。罫の上 ≥ 罫の下 */
+  --section-pad-display: 4rem; /* 96 / 64 — ヒーロー上、ポスター上下 */
+  --section-heading-mb: 1.5rem; /* 32 / 24 — 見出し → グリッド */
+  --section-heading-mb-list: 0.5rem; /* 8 — 見出し → hairline 行リスト（行が inset/row 32 を持つ） */
+  --section-heading-mb-intro: 0.75rem; /* 12 — 見出し → 導入文 */
+
+  /* footer */
+  --footer-pad-y: 2rem; /* 40 / 32 — セクションより静かで帯より広い */
+
+  /* --- 3.5 size（箱の寸法。spacing ではない） ------------------------------
+   * すべて min-height として渡す。200% ズームで内容が切れないようにするため。
+   * -------------------------------------------------------------------------- */
+  --size-control-sm: 2.25rem; /* 36 — ポインタ専用（WCAG 2.5.8 の 24 は満たす） */
+  --size-control-md: 2.75rem; /* 44 — Apple HIG 最小タップ領域。52 は存在しない（L-2） */
+  --size-chip: 1.5rem; /* 24 = Caption leading 18 + 3 × 2。24 アイコングリッドと同じ高さ */
+  --size-nav: 3.875rem; /* 62 — 2px 下罫を含むナビ帯の総高。scroll-margin-top にも使う */
+  --size-band-marquee: 3.5rem; /* 56 = 2 + 52 + 2。52 は停止セルの高さでもある */
+  --size-hero-max: 60rem; /* 960 = 10 × space/96。ヒーロー min-height の上限 */
+  --size-cell-min: 7.5rem; /* 120 = 24 × 5。床であって目標ではない */
+  --size-avatar: 1.5rem; /* 24 — チャットアバター（円）。= icon/lg */
+  --size-dot: 0.4375rem; /* 7 — 入力中ドット（円）。3 点 + gap 5 = 31 幅（U-1 で 4 → 7） */
+  --size-illustration: 6rem; /* 96 — ペルソナイラスト（円） */
+  --size-mark-nav: 1.75rem; /* 28 — ナビのロゴマーク。Title 3 19 に対し比 1.47（L-21） */
+  --size-mark-footer: 1.5rem; /* 24 — フッターのロゴマーク。Headline 17 に対し比 1.41 */
+  --size-rule-v: 0.75rem; /* 12 — 縦 hairline の高さ。隣接する文字サイズと等しい（L-16） */
+
+  /* --- 5.3 アイコン（Tabler outline、24 グリッド、stroke 2、round cap/join） -- */
+  --icon-sm: 1rem; /* 16 — 12〜14px の文字の横、36px コントロールのラベル横 */
+  --icon-md: 1.25rem; /* 20 — 15〜19px の文字の横、44px コントロールのラベル横、icon-only 36 */
+  --icon-lg: 1.5rem; /* 24 — icon-only 44、placeholder の写真アイコン。Tabler のネイティブ */
+
+  /* --- 3.10 measure --------------------------------------------------------
+   * Desktop 588 = 12 列のうち 6 列（6×78 + 5×24）、Mobile 342 = container 幅そのもの。
+   * min() で両方を再現できるのでメディアクエリを持たない（Mobile の 342 は container 幅）。
+   * 588 は 16/15/14px で 36.8 / 39.2 / 42.0 全角 = 35–45 全角の範囲内。
+   * max-width: 40em は使わない（ロールごとに px が変わり Figma と改行が合わない）。
+   * -------------------------------------------------------------------------- */
+  --measure-paragraph: min(36.75rem, 100%);
+
+  /* --- 4.2 線の太さ --------------------------------------------------------
+   * 段は 3 つだけ: 1px hairline（構成要素の内部）、2px rule（構成要素の間）、
+   * 4px 相当の下線（リンク）。3px 以上の枠は使わない。
+   * -------------------------------------------------------------------------- */
+  --stroke-hair: 1px; /* 活動行の罫、Menu row 間、縦 hairline、ink 面の outline ボタン枠 */
+  --stroke-rule: 2px; /* ナビ下、マーキー上下、section 上、footer 上、罫線グリッドの枠と gap */
+  --stroke-underline: 2px; /* リンク静止時の下線（DECISION U-2 で 1 → 2） */
+  --stroke-underline-strong: 3px; /* hover / pressed / current。静止 +1px、文字色は動かさない */
+  --stroke-focus: 2px; /* :focus-visible。prefers-contrast: more で 3 */
+  --focus-offset: 2px; /* outline-offset。要素の 1px 枠と混ざらない最小距離 */
+  --focus-offset-inset: -2px; /* full-bleed の行は inset にして隣接罫線と交差させない（K-7） */
+
+  /* --- 7. モーション -------------------------------------------------------
+   * 動くものはページ全体で 5 つだけ: reveal・回転語・マーキー・入力中ドット・Mobile メニュー。
+   * アニメーションできるのは transform と opacity のみ。scale() は使わない（M-6）。
+   * -------------------------------------------------------------------------- */
+  --dur-0: 0ms; /* 押下、フォーカスリング、アイコン差し替え、マーキーの一時停止・再開 */
+  --dur-1: 100ms; /* hover の入り、押下解除、aria-current の切替 */
+  --dur-2: 200ms; /* hover の離脱、下線、reduced-motion 時のクロスフェード */
+  --dur-3: 400ms; /* スプリング非対応環境の代替、Hero 開始のタイムアウト */
+
+  /* 減衰比 1.0 / response 0.40 s。reveal、回転語の入り、パネル展開。
+     --ease-spring / --ease-color は下の @theme（非 inline）で :root に出る。 */
+  --spring-default: 420ms var(--ease-spring);
+  /* 減衰比 1.0 / response 0.30 s。回転語の退出、Mobile メニュー */
+  --spring-quick: 320ms var(--ease-spring);
+
+  --stagger: 60ms; /* 80 / 60 — reveal の兄弟間ディレイ。Mobile は縦に密なので短く */
+  --stagger-max: 4; /* 5 番目以降は 4 番目と同時（最大待ち 320ms / 240ms） */
+  --reveal-y: 1rem; /* 16 = space/16。気づく最小距離で、視差には見えない */
+  --word-y: 0.15em; /* 回転語の translateY。距離は字面サイズに比例 */
+  --word-period: 2500ms; /* 回転語 1 語の周期（切替 ≈ 0.5s、静止 ≈ 2.0s） */
+  --word-transition-offset: 80ms; /* t=0 退出開始、t=80ms 入り開始 */
+  --dots-period: 1.2s; /* 入力中ドットの周期（= 3 × dur-3）。0.8 Hz */
+  --dots-stagger: 200ms; /* ドット間ディレイ */
+  --marquee-speed: 40; /* px/s。duration = グループ幅 ÷ 40 を ResizeObserver で書き込む */
+}
+
+/* -----------------------------------------------------------------------------
+ * Desktop（≥ 1248px = container 1200 + page/inset 24 × 2）
+ * ここでのみ container がちょうど 1200 = 12 × 78 + 11 × 24 になり、
+ * 罫線グリッドと 12 列グリッドが Figma の Desktop フレームと一致する。
+ * -------------------------------------------------------------------------- */
+@media (width >= 78rem) {
+  :root {
+    --inset-cell: 1.5rem; /* 24 */
+    --nav-pad-y: 0.75rem; /* 12 */
+    --grid-gutter: 1.5rem; /* 24 */
+    --section-pad-top: 4rem; /* 64 */
+    --section-pad-bottom: 5rem; /* 80 */
+    --section-pad-display: 6rem; /* 96 */
+    --section-heading-mb: 2rem; /* 32 */
+    --footer-pad-y: 2.5rem; /* 40 */
+    --stagger: 80ms;
   }
-  body {
-    @apply bg-background text-foreground;
+}
+
+/* =============================================================================
+ * 5. @theme inline — Tailwind の名前空間への写像
+ *
+ * `inline` が必須。ユーティリティが上の custom property を「参照」するので、
+ * §4 のメディアクエリ（と prefers-* の差し替え）に自動で追従する。
+ * `--spacing` の基底は設定しない（Tailwind 既定の 0.25rem 刻みをそのまま使う）。
+ * ========================================================================== */
+@theme inline {
+  /* --- 名前空間のリセット ----------------------------------------------------
+   * Tailwind 既定の階梯を全部消す。本書のトークンだけがユーティリティになる。
+   * これがないと text-lg（18）や rounded-lg のような禁止値（§2.2.1 の半端値、
+   * §4.1 の radius 例外 3 つ以外）が黙って生成され、コンパイルも通ってしまう。
+   * リセットは以降の宣言より前に置くこと（後勝ちで本書の値が残る）。
+   * --spacing（0.25rem 刻みの素の乗数）は §3.2 の方針どおり残す。
+   * --ease-* も残す（Tailwind の既定トランジションが参照する）。
+   * --font-mono は消える: このサイトに <code> / <pre> はなく、書体は 1 つだけ。
+   * ------------------------------------------------------------------------- */
+  --color-*: initial;
+  --text-*: initial;
+  --font-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+  --container-*: initial;
+  --breakpoint-*: initial;
+
+  /* --- フォント（§2.0）— LINE Seed JP のみ。sans-serif は読み込み中の代替 ------
+     変数は layout.tsx の next/font/local が供給する。 */
+  --font-sans: var(--font-line-seed-jp), sans-serif;
+
+  /* --- 色 ------------------------------------------------------------------ */
+  /* 面 */
+  --color-ground: var(--ground);
+  --color-surface: var(--surface);
+  --color-inverse-ground: var(--inverse-ground);
+  --color-poster-ground: var(--poster-ground);
+  /* 明るい面のテキスト */
+  --color-ink: var(--ink);
+  --color-ink-secondary: var(--ink-secondary);
+  --color-ink-tertiary: var(--ink-tertiary);
+  /* 反転面のテキスト */
+  --color-inverse-ink: var(--inverse-ink);
+  --color-inverse-ink-secondary: var(--inverse-ink-secondary);
+  --color-inverse-ink-tertiary: var(--inverse-ink-tertiary);
+  --color-inverse-ink-quaternary: var(--inverse-ink-quaternary);
+  --color-poster-ink: var(--poster-ink);
+  --color-poster-ink-secondary: var(--poster-ink-secondary);
+  --color-inverse-hairline: var(--inverse-hairline);
+  /* 罫線と枠 */
+  --color-divider: var(--divider);
+  --color-divider-hairline: var(--divider-hairline);
+  --color-chip-fill: var(--chip-fill);
+  --color-link-underline: var(--link-underline);
+  --color-inverse-outline: var(--inverse-outline);
+  /* アクセント */
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-pressed: var(--accent-pressed);
+  --color-accent-subtle: var(--accent-subtle);
+  --color-on-accent-subtle: var(--on-accent-subtle);
+  --color-accent-text: var(--accent-text);
+  --color-accent-text-small: var(--accent-text-small);
+  --color-accent-on-ink: var(--accent-on-ink);
+  --color-pop-separator: var(--pop-separator);
+  --color-pop-badge: var(--pop-badge);
+  --color-hero-word: var(--hero-word);
+  --color-poster-selection: var(--poster-selection);
+  --color-poster-action-fill: var(--poster-action-fill);
+  --color-poster-action-ink: var(--poster-action-ink);
+  --color-poster-focus-ring: var(--poster-focus-ring);
+  /* 状態 */
+  --color-state-hover-tint: var(--state-hover-tint);
+  --color-state-pressed-tint: var(--state-pressed-tint);
+  --color-inverse-state-hover-tint: var(--inverse-state-hover-tint);
+  --color-inverse-state-pressed-tint: var(--inverse-state-pressed-tint);
+  --color-focus-ring: var(--focus-ring);
+  --color-focus-ring-inverse: var(--focus-ring-inverse);
+  --color-selection: var(--selection);
+  --color-inverse-selection: var(--inverse-selection);
+  --color-link-hover: var(--link-hover);
+  --color-link-pressed: var(--link-pressed);
+  --color-link-current: var(--link-current);
+  --color-inverse-link-hover: var(--inverse-link-hover);
+  /* アクション */
+  --color-action-fill: var(--action-fill);
+  --color-action-fill-hover: var(--action-fill-hover);
+  --color-action-fill-pressed: var(--action-fill-pressed);
+  --color-action-ink: var(--action-ink);
+  --color-inverse-action-fill: var(--inverse-action-fill);
+  --color-inverse-action-fill-hover: var(--inverse-action-fill-hover);
+  --color-inverse-action-fill-pressed: var(--inverse-action-fill-pressed);
+  --color-inverse-action-ink: var(--inverse-action-ink);
+  /* 部品固有 */
+  --color-chip-ink: var(--chip-ink);
+  --color-avatar: var(--avatar);
+  --color-image-placeholder: var(--image-placeholder);
+  --color-image-caption: var(--image-caption);
+  /* color/shadow は --color-* に出さない。§4.4 では shadow/sm md lg の構成要素で
+     あって塗り・罫の色ではなく、Tailwind では shadow-shadow が影の階梯側に解決されて
+     --tw-shadow-color が壊れる。実体の --shadow は :root にあり shadow-* が参照する。 */
+  --color-backdrop: var(--backdrop);
+
+  /* --- テキストスタイル（22）------------------------------------------------
+     Tailwind の --text-* が持てるのは size / leading / tracking / weight だけなので、
+     uppercase（Overline/Latin と Title/3 Caps）と white-space: nowrap（Label 3 種）は
+     §6.5 の @layer components で同名クラスに足す（§2.8 はロール自体に持たせている）。
+     テキストスタイル自体は色を持たない。 */
+  --text-display-xl: var(--display-xl-size);
+  --text-display-xl--line-height: var(--display-xl-leading);
+  --text-display-xl--letter-spacing: var(--display-xl-tracking);
+  --text-display-xl--font-weight: var(--display-xl-weight);
+
+  --text-display-l: var(--display-l-size);
+  --text-display-l--line-height: var(--display-l-leading);
+  --text-display-l--letter-spacing: var(--display-l-tracking);
+  --text-display-l--font-weight: var(--display-l-weight);
+
+  --text-display-m: var(--display-m-size);
+  --text-display-m--line-height: var(--display-m-leading);
+  --text-display-m--letter-spacing: var(--display-m-tracking);
+  --text-display-m--font-weight: var(--display-m-weight);
+
+  --text-title-1: var(--title-1-size);
+  --text-title-1--line-height: var(--title-1-leading);
+  --text-title-1--letter-spacing: var(--title-1-tracking);
+  --text-title-1--font-weight: var(--title-1-weight);
+
+  --text-title-2: var(--title-2-size);
+  --text-title-2--line-height: var(--title-2-leading);
+  --text-title-2--letter-spacing: var(--title-2-tracking);
+  --text-title-2--font-weight: var(--title-2-weight);
+
+  --text-title-3: var(--title-3-size);
+  --text-title-3--line-height: var(--title-3-leading);
+  --text-title-3--letter-spacing: var(--title-3-tracking);
+  --text-title-3--font-weight: var(--title-3-weight);
+
+  --text-title-3-caps: var(--title-3-caps-size);
+  --text-title-3-caps--line-height: var(--title-3-caps-leading);
+  --text-title-3-caps--letter-spacing: var(--title-3-caps-tracking);
+  --text-title-3-caps--font-weight: var(--title-3-caps-weight);
+
+  --text-headline: var(--headline-size);
+  --text-headline--line-height: var(--headline-leading);
+  --text-headline--letter-spacing: var(--headline-tracking);
+  --text-headline--font-weight: var(--headline-weight);
+
+  --text-subheadline: var(--subheadline-size);
+  --text-subheadline--line-height: var(--subheadline-leading);
+  --text-subheadline--letter-spacing: var(--subheadline-tracking);
+  --text-subheadline--font-weight: var(--subheadline-weight);
+
+  --text-callout: var(--callout-size);
+  --text-callout--line-height: var(--callout-leading);
+  --text-callout--letter-spacing: var(--callout-tracking);
+  --text-callout--font-weight: var(--callout-weight);
+
+  --text-body-l: var(--body-l-size);
+  --text-body-l--line-height: var(--body-l-leading);
+  --text-body-l--letter-spacing: var(--body-l-tracking);
+  --text-body-l--font-weight: var(--body-l-weight);
+
+  --text-body-m: var(--body-m-size);
+  --text-body-m--line-height: var(--body-m-leading);
+  --text-body-m--letter-spacing: var(--body-m-tracking);
+  --text-body-m--font-weight: var(--body-m-weight);
+
+  --text-body-s: var(--body-s-size);
+  --text-body-s--line-height: var(--body-s-leading);
+  --text-body-s--letter-spacing: var(--body-s-tracking);
+  --text-body-s--font-weight: var(--body-s-weight);
+
+  --text-footnote: var(--footnote-size);
+  --text-footnote--line-height: var(--footnote-leading);
+  --text-footnote--letter-spacing: var(--footnote-tracking);
+  --text-footnote--font-weight: var(--footnote-weight);
+
+  --text-footnote-bold: var(--footnote-bold-size);
+  --text-footnote-bold--line-height: var(--footnote-bold-leading);
+  --text-footnote-bold--letter-spacing: var(--footnote-bold-tracking);
+  --text-footnote-bold--font-weight: var(--footnote-bold-weight);
+
+  --text-caption: var(--caption-size);
+  --text-caption--line-height: var(--caption-leading);
+  --text-caption--letter-spacing: var(--caption-tracking);
+  --text-caption--font-weight: var(--caption-weight);
+
+  --text-caption-bold: var(--caption-bold-size);
+  --text-caption-bold--line-height: var(--caption-bold-leading);
+  --text-caption-bold--letter-spacing: var(--caption-bold-tracking);
+  --text-caption-bold--font-weight: var(--caption-bold-weight);
+
+  --text-label-m: var(--label-m-size);
+  --text-label-m--line-height: var(--label-m-leading);
+  --text-label-m--letter-spacing: var(--label-m-tracking);
+  --text-label-m--font-weight: var(--label-m-weight);
+
+  --text-label-s: var(--label-s-size);
+  --text-label-s--line-height: var(--label-s-leading);
+  --text-label-s--letter-spacing: var(--label-s-tracking);
+  --text-label-s--font-weight: var(--label-s-weight);
+
+  --text-label-nav: var(--label-nav-size);
+  --text-label-nav--line-height: var(--label-nav-leading);
+  --text-label-nav--letter-spacing: var(--label-nav-tracking);
+  --text-label-nav--font-weight: var(--label-nav-weight);
+
+  --text-overline: var(--overline-size);
+  --text-overline--line-height: var(--overline-leading);
+  --text-overline--letter-spacing: var(--overline-tracking);
+  --text-overline--font-weight: var(--overline-weight);
+
+  --text-overline-jp: var(--overline-jp-size);
+  --text-overline-jp--line-height: var(--overline-jp-leading);
+  --text-overline-jp--letter-spacing: var(--overline-jp-tracking);
+  --text-overline-jp--font-weight: var(--overline-jp-weight);
+
+  /* --- spacing（エイリアス）------------------------------------------------ */
+  --spacing-inset-xs: var(--inset-xs);
+  --spacing-inset-sm: var(--inset-sm);
+  --spacing-inset-md: var(--inset-md);
+  --spacing-inset-control: var(--inset-control);
+  --spacing-inset-cell: var(--inset-cell);
+  --spacing-inset-row: var(--inset-row);
+  --spacing-page-inset: var(--page-inset);
+  --spacing-nav-pad-y: var(--nav-pad-y);
+  --spacing-band-pad-y: var(--band-pad-y);
+  --spacing-stack-2xs: var(--stack-2xs);
+  --spacing-stack-xs: var(--stack-xs);
+  --spacing-stack-sm: var(--stack-sm);
+  --spacing-stack-md: var(--stack-md);
+  --spacing-stack-lg: var(--stack-lg);
+  --spacing-stack-xl: var(--stack-xl);
+  --spacing-inline-icon: var(--inline-icon);
+  --spacing-inline-xs: var(--inline-xs);
+  --spacing-inline-sm: var(--inline-sm);
+  --spacing-inline-md: var(--inline-md);
+  --spacing-inline-lg: var(--inline-lg);
+  --spacing-inline-xl: var(--inline-xl);
+  --spacing-grid-gutter: var(--grid-gutter);
+  --spacing-section-pad-top: var(--section-pad-top);
+  --spacing-section-pad-bottom: var(--section-pad-bottom);
+  --spacing-section-pad-display: var(--section-pad-display);
+  --spacing-section-heading-mb: var(--section-heading-mb);
+  --spacing-section-heading-mb-list: var(--section-heading-mb-list);
+  --spacing-section-heading-mb-intro: var(--section-heading-mb-intro);
+  --spacing-footer-pad-y: var(--footer-pad-y);
+
+  /* --- spacing（size/*。min-height / width として渡す）--------------------- */
+  --spacing-control-sm: var(--size-control-sm);
+  --spacing-control-md: var(--size-control-md);
+  --spacing-chip: var(--size-chip);
+  --spacing-nav: var(--size-nav);
+  --spacing-band-marquee: var(--size-band-marquee);
+  --spacing-hero-max: var(--size-hero-max);
+  --spacing-cell-min: var(--size-cell-min);
+  --spacing-avatar: var(--size-avatar);
+  --spacing-dot: var(--size-dot);
+  --spacing-illustration: var(--size-illustration);
+  --spacing-mark-nav: var(--size-mark-nav);
+  --spacing-mark-footer: var(--size-mark-footer);
+  --spacing-rule-v: var(--size-rule-v);
+
+  /* --- spacing（アイコン）-------------------------------------------------- */
+  --spacing-icon-sm: var(--icon-sm);
+  --spacing-icon-md: var(--icon-md);
+  --spacing-icon-lg: var(--icon-lg);
+
+  /* --- spacing（線の太さ。罫線グリッドは gap / padding で描くので spacing 扱い）-- */
+  --spacing-hair: var(--stroke-hair);
+  --spacing-rule: var(--stroke-rule);
+
+  /* --- container（可変なので inline 側）------------------------------------ */
+  --container-measure: var(--measure-paragraph); /* 588 / 342 */
+
+  /* --- elevation（ページ上の要素はどれも影を持たない。ライブラリ用）-------
+     y と blur は段ごとに倍、色は ink@24 の 1 濃度に固定し段差は幾何だけで作る。 */
+  --shadow-sm: 0 1px 2px var(--shadow); /* 予備。ページで未使用 */
+  --shadow-md: 0 4px 8px var(--shadow); /* 予備。menu / popover 用 */
+  --shadow-lg: 0 16px 32px var(--shadow); /* dialog のみ。必ず backdrop と併用 */
+}
+
+/*
+ * 固定値・非レスポンシブのトークンは非 inline の @theme に置く。
+ * `static` が必須: 素の @theme は未使用の変数を刈るので、ユーティリティ以外
+ * （手書きの CSS、インラインスタイル、JS の getComputedStyle）から読みたい値は
+ * static でしか :root に出せない。
+ */
+@theme static {
+  /* --- breakpoint（DECISION L-27）--------------------------------------------
+     仕様は Desktop 1440 / Mobile 390 の 2 フレームしか定義しない。ブラウザは
+     連続なので、その間をどう扱うかは実装が決める必要がある。
+
+     desktop 78rem がトークンのモード切替。上の @media (width >= 78rem) と同値で、
+     バリアントとトークンが同じ 1 点で切り替わることを構造的に保証する。
+     ここでのみ container が設計値 1200 に達し §3.7 の 12 列幾何が成立する。
+
+     tablet 48rem は「構造だけ」先に開く点。タイポと余白は Mobile のまま:
+       - ナビを横並びに（英語 1 語 × 4 + CTA sm は 768 で余裕をもって収まる。
+         ここでハンバーガーを維持するのはタイプスケールの忠実さより悪い体験）
+       - 罫線グリッドを 2 列に（L-10 が退けたのは列数ではなくセル内容 128px。
+         768 の 2 列はセル内容 ≈ 320px = 22 字で、L-10 の閾値を満たす）
+     設計どおりの列数（bento 4 / persona・staff・partner 3）は desktop から。
+
+     タイポを中間帯で流体補間しない: §2 の行長計算（n 文字 = n em）が離散値に
+     依存していて、補間した中間サイズでは §9.3 の文字数上限が検証されていない。 */
+  --breakpoint-tablet: 48rem; /* 768 — 構造だけ開く。トークンは Mobile のまま */
+  --breakpoint-desktop: 78rem; /* 1248 = container 1200 + page/inset 24 × 2 */
+
+  /* --- container ----------------------------------------------------------- */
+  --container-page: 75rem; /* 1200 — Desktop の container 幅 */
+
+  /* --- radius（既定は角丸ゼロ。例外は 3 つだけ）---------------------------- */
+  --radius-none: 0;
+  --radius-full: 9999px; /* ペルソナイラスト・typing dot・チャットアバターのみ */
+  --radius-bubble: 1.125rem; /* 18 — チャット吹き出しと typing 吹き出しのみ（U-1） */
+  --radius-bubble-tail: 0.25rem; /* 4 — 吹き出しの外側の下角。テールが接する側を締める */
+
+  /* --- easing -------------------------------------------------------------- */
+  --ease-spring: linear(
+    0,
+    0.145,
+    0.387,
+    0.598,
+    0.752,
+    0.853,
+    0.916,
+    0.956,
+    0.979,
+    0.992,
+    1
+  );
+  --ease-color: ease-out;
+}
+
+/* =============================================================================
+ * 6. @layer base
+ * ========================================================================== */
+@layer base {
+  /*
+   * 既定の border 色。Tailwind v4 の既定は currentColor なので、罫の色を明示する。
+   * 部品境界（ボタン枠）は divider を使わない — ink 面の outline ボタンは
+   * --inverse-outline を自分で指定すること（3:1 が要る）。
+   */
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--divider);
   }
 
   /*
-   * tracking はサイズ固有の値。大きい文字ほど字間が開いて見えるので詰め、
-   * 本文は 0 付近に置く。全サイズ共通の letter-spacing はどこかで必ず間違う。
-   * leading はサイズと反比例させる。
+   * §2.8 グローバル。html は 100% = 1rem 16px なので Figma の px が 1:1 で対応する。
+   * font-feature-settings: normal — palt / halt / dlig を有効にしない。全角を 1em の
+   * 送りに保つことで「n 文字 = n em」の幅計算が成立し、Figma と CSS の改行が一致する。
+   * text-autospace: no-autospace — 和欧間の自動アキを入れない（既定の normal は 1/8em
+   * 入れるので CSS が Figma より広くなる）。
    */
-  h1 {
-    letter-spacing: -0.022em;
-    line-height: 1.15;
+  html {
+    font-size: 100%;
+    font-family: var(--font-sans);
+    font-synthesis: none; /* この書体に italic は無い。合成させない */
+    font-feature-settings: normal;
+    text-autospace: no-autospace;
+    text-spacing-trim: normal;
+    hanging-punctuation: none; /* ぶら下げ組みはしない */
+    line-break: strict; /* 、。」ー っ ゃ で行頭を作らない */
+    word-break: normal;
+    overflow-wrap: anywhere; /* URL 以外は語中で折らない */
+    text-align: start; /* 両端揃え禁止・中央揃えはこのページに存在しない */
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
   }
-  h2 {
-    letter-spacing: -0.016em;
-    line-height: 1.25;
+
+  body {
+    background-color: var(--ground);
+    color: var(--ink);
+    /* font-smoothing はここに置かない。§2.8 は反転地の .on-ink だけに与える。
+       text-rendering も宣言しない（optimizeLegibility は dlig / kern を有効にし、
+       Latin の送りが変わって Figma と CSS の折返しがずれる）。 */
   }
+
+  /* 段落は 1〜2 文字の孤立行を作らない */
+  p {
+    text-wrap: pretty;
+  }
+
+  /*
+   * paragraphSpacing 12 = stack/sm。末尾マージンではなく隣接セレクタで持つ:
+   * このページの縦組みはほぼ flex/grid の gap なので、p に末尾マージンを付けると
+   * gap と二重に効いて最後の段落の下だけ余分に空く。
+   */
+  p + p {
+    margin-block-start: var(--stack-sm);
+  }
+
+  /* 2 行見出しの行長を揃える。auto-phrase は補助で、正は著者の <br> / <wbr> */
+  h1,
+  h2,
   h3 {
-    letter-spacing: -0.008em;
-    line-height: 1.35;
+    text-wrap: balance;
+    word-break: auto-phrase;
+  }
+
+  /* 全セクションが sticky nav 分だけアンカー位置をずらす */
+  section {
+    scroll-margin-top: var(--size-nav);
+  }
+
+  /*
+   * リンク: 太さだけで状態を示し、文字色は動かさない（DECISION C-16 / M-9）。
+   * hover の 3px 化は text-decoration-thickness だけを変える（border-bottom は使わない）。
+   *
+   * 静止時に下線を持つのはインラインリンクだけ。ナビ・CTA・ワードマーク・
+   * フッター・ソーシャルは静止時に下線を持たない（hover 以降に出す）ので、
+   * それらのコンポーネントでは `no-underline` を当てて打ち消すこと。
+   */
+  a {
+    text-decoration-line: underline;
+    text-decoration-thickness: var(--stroke-underline);
+    text-underline-offset: 0.2em;
+    text-decoration-color: var(--link-underline);
+  }
+
+  /*
+   * 選択範囲（DECISION C-9）: background と color を必ず対で書き、選択中の文字は
+   * その面の primary を強制する。ink-secondary の和文は選択上 4.02 で AA を割るため。
+   */
+  ::selection {
+    background-color: var(--selection);
+    color: var(--ink);
+  }
+
+  [data-surface="ink"]::selection,
+  [data-surface="ink"] ::selection {
+    background-color: var(--inverse-selection);
+    color: var(--inverse-ink);
+  }
+
+  [data-surface="poster"]::selection,
+  [data-surface="poster"] ::selection {
+    background-color: var(--poster-selection);
+    color: var(--poster-ink);
+  }
+
+  /*
+   * フォーカス: 2px、offset 2、角丸ゼロ。地ごとにリング色を切り替える。
+   * Mono モードでもリングはライム。リングは duration/0 = 即時 — outline は
+   * 既定でトランジションしないので、outline-* を transition-property に含めないこと。
+   * full-bleed の行（activity row、Menu row、marquee 停止セル）は
+   * --focus-offset-inset（−2）を当てて隣接罫線と交差させない（DECISION K-7）。
+   */
+  :focus-visible {
+    outline: var(--stroke-focus) solid var(--focus-ring);
+    outline-offset: var(--focus-offset);
+    border-radius: var(--radius-none);
+  }
+
+  [data-surface="ink"] :focus-visible {
+    outline-color: var(--focus-ring-inverse);
+  }
+
+  [data-surface="poster"] :focus-visible {
+    outline-color: var(--poster-focus-ring);
+  }
+
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* 見出しが 「 で始まるとき左端を揃える（Figma は −0.5em のオフセットで補正） */
+  .trim-start {
+    text-spacing-trim: trim-start;
+  }
+
+  /* 反転面で細いウェイトが滲むのを止める */
+  .on-ink {
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /*
+   * reveal の隠し状態は JS が有効かつ reduced-motion でないときだけ付ける。
+   * JS が落ちてもコンテンツが消えない（§7 グローバル 5）。
+   */
+  html.js:not(.reduced) [data-reveal] {
+    opacity: 0;
+    transform: translateY(var(--reveal-y));
+  }
+}
+
+/* =============================================================================
+ * 6.5 @layer components — テキストロールの残り 2 プロパティ
+ *
+ * §2.8 は大文字化と nowrap をロール自体に持たせている（.overline / .title-3-caps /
+ * .label-*）。Tailwind の --text-* は size / leading / tracking / weight しか運べない
+ * ので、同名クラスを components レイヤーで補う。utilities は後のレイヤーなので
+ * サイズ側の宣言は上書きされず、text-overline 単体で必ず UPPER になる。
+ *
+ * 大文字化は Latin の Overline と Title/3 Caps だけ（§2.6.5）。DOM は正書法のまま
+ * （ChoTech / Discord / GitHub）で、和文キッカーは text-overline-jp を使う。
+ * ========================================================================== */
+@layer components {
+  .text-title-3-caps,
+  .text-overline {
+    text-transform: uppercase;
+  }
+
+  .text-label-m,
+  .text-label-s,
+  .text-label-nav {
+    white-space: nowrap;
+  }
+}
+
+/* =============================================================================
+ * 7. ユーザー設定のメディアクエリ
+ * ========================================================================== */
+
+/*
+ * 動きの低減（§7.5）: 「移動はすべてクロスフェード duration/2 か静止」。
+ * 色の変化（hover / current / 下線 / focus ring）は前庭刺激ではなく理解を助けるので残す。
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  /* biome-ignore lint/style/noDescendingSpecificity: 隠し状態のガードは
+     html.js:not(.reduced) 側にあり、reduced-motion 時は .reduced が付いて
+     そもそも適用されない。両者は競合しないので順序を入れ替える必要はない。 */
+  [data-reveal] {
+    transform: none;
+    transition: opacity var(--dur-2) var(--ease-color);
+    transition-delay: 0s;
+  }
+
+  .marquee__track,
+  .typing__dot {
+    animation: none;
+  }
+
+  .hero__word {
+    transition: none;
+  }
+
+  .menu__panel {
+    transition: opacity var(--dur-2) var(--ease-color);
+    transform: none;
   }
 }
 
 /*
- * 動きの低減。動きを消すのではなく、前庭系を刺激しない等価物に置き換える。
- * 色と不透明度のトランジションは理解を助けるので残す。
+ * 高コントラスト（§1.5.5）: 階層を 1 段ずつ持ち上げ、フォーカスリングを 3px にする。
+ * inverse/state/* は変更しない（48% に上げると ground ラベルが約 3.4 で N 不合格）。
+ * inverse/hairline も変更しない（テクスチャ）。
  */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
-  }
-  * {
-    transition-property:
-      opacity, color, background-color, border-color, fill, stroke !important;
-  }
-}
-
-/* 透過の低減。ぼかしを外して背景を不透明にする */
-@media (prefers-reduced-transparency: reduce) {
-  [data-translucent] {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    background-color: var(--background) !important;
-  }
-}
-
-/* コントラスト強調。半透明面に明確な境界を与える */
 @media (prefers-contrast: more) {
-  [data-translucent] {
-    background-color: var(--background) !important;
-    border-color: var(--foreground) !important;
+  :root {
+    --ink-secondary: var(--neutral-950); /* 5.83 → 14.86 */
+    --ink-tertiary: var(--neutral-700); /* 3.85 → 5.83 */
+    --divider: var(--neutral-700); /* 2.59 → 5.83（divider-hairline も追従） */
+    --inverse-ink-secondary: var(--neutral-100); /* 88% → 100% */
+    --inverse-ink-tertiary: var(--neutral-100); /* 72% → 100% */
+    --inverse-ink-quaternary: var(--neutral-100); /* 48% → 100% */
+    --accent-text: var(--lime-900); /* 6.31 → 7.85 */
+    --accent-text-small: var(--lime-900);
+    --pop-badge: var(--lime-900);
+    --state-hover-tint: var(--alpha-ink-12); /* 6 → 12（上の ink 11.78） */
+    --state-pressed-tint: var(--alpha-ink-24); /* 12 → 24（9.05） */
+    --backdrop: var(--alpha-ink-88); /* 48 → 88 */
+  }
+
+  :focus-visible {
+    outline-width: 3px;
+  }
+}
+
+/*
+ * 透過の低減。半透明マテリアル（backdrop-filter）は導入していないが、
+ * 反転面のテキスト階層・ティント・選択範囲・幕はアルファで作られている。
+ * ここだけ §1.2.3 の合成 hex を使う（それ以外でハードコードしない）。
+ */
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --inverse-ink-secondary: #dad9d8; /* ground@88 over ink */
+    --inverse-ink-tertiary: #b8b7b6; /* ground@72 over ink */
+    --inverse-ink-quaternary: #858483; /* ground@48 over ink */
+    --inverse-state-hover-tint: #393737; /* ground@12 over ink */
+    --inverse-state-pressed-tint: #535150; /* ground@24 over ink */
+    --state-hover-tint: #e6e5e5; /* ink@6 over ground */
+    --state-pressed-tint: #dad9d8; /* ink@12 over ground */
+    --selection: #deefb8; /* lime-400@24 over ground */
+    --inverse-selection: #3d4e16; /* lime-400@24 over ink */
+    --poster-ink-secondary: #2f361a; /* ink@88 over lime-400 */
+    --poster-selection: #8bce03; /* ink@12 over lime-400 */
+    /* 幕だけは 88% に上げる（§1.5.5 の高コントラストと同値） */
+    --backdrop: var(--alpha-ink-88);
+  }
+}
+
+/*
+ * 強制配色（§7 グローバル 7）。フォーカスは outline なので残る。
+ * 罫は塗り（background）なので消える — 罫線グリッドと 2px rule への
+ * 1px `border: solid` の補完は、その構造を持つコンポーネント側で行う。
+ */
+@media (forced-colors: active) {
+  svg {
+    stroke: currentColor;
   }
 }
