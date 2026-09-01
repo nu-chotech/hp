@@ -1,10 +1,11 @@
 "use client";
 
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef } from "react";
 import { Asterisk, Pause, Play } from "@/components/icons";
 import { Container } from "@/components/ui/container";
 import { Rule } from "@/components/ui/rule";
 import { type MarqueeItem, marqueeContent } from "@/content/marquee";
+import { useAwake } from "@/hooks/use-awake";
 import { useMotionSwitch } from "@/hooks/use-motion-switch";
 import { marquee as marqueeMotion } from "@/lib/motion";
 import { cn } from "@/lib/utils";
@@ -52,10 +53,15 @@ export interface MarqueeProps {
 
 export function Marquee({ className }: MarqueeProps) {
   const { playing, setPlaying } = useMotionSwitch();
-  const [awake, setAwake] = useState(true);
   const groupRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const bandRef = useRef<HTMLDivElement>(null);
+  /**
+   * 画面外とバックグラウンドタブでは止める（§7.5「バックグラウンド / 非可視」）。
+   * 帯は CSS アニメーションが実体で JS は止める側にしか関わらないので、
+   * 監視が始まるまでは動いている扱いにする（= JS の無い読者に届くのと同じ状態）。
+   */
+  const awake = useAwake(bandRef, { initial: true });
 
   // duration = グループ幅 ÷ 40 px/s。内容・字幅・フォント読込で幅が変わるたびに引き直す
   useEffect(() => {
@@ -76,26 +82,6 @@ export function Marquee({ className }: MarqueeProps) {
     const observer = new ResizeObserver(apply);
     observer.observe(group);
     return () => observer.disconnect();
-  }, []);
-
-  // 画面外とバックグラウンドタブでは止める（§7.5「バックグラウンド / 非可視」）
-  useEffect(() => {
-    const band = bandRef.current;
-    if (!band) return;
-
-    let onScreen = true;
-    const sync = () => setAwake(onScreen && !document.hidden);
-
-    const observer = new IntersectionObserver((entries) => {
-      onScreen = entries.some((entry) => entry.isIntersecting);
-      sync();
-    });
-    observer.observe(band);
-    document.addEventListener("visibilitychange", sync);
-    return () => {
-      observer.disconnect();
-      document.removeEventListener("visibilitychange", sync);
-    };
   }, []);
 
   return (

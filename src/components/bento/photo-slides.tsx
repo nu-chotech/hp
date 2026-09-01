@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ImageSlot } from "@/components/ui/image-slot";
+import { useAwake } from "@/hooks/use-awake";
 import { useMotionPlaying } from "@/hooks/use-motion-switch";
 import { motionVar, photoSlides } from "@/lib/motion";
 import { cn } from "@/lib/utils";
@@ -42,29 +43,10 @@ export function PhotoSlides({
   const rootRef = useRef<HTMLDivElement>(null);
   const playing = useMotionPlaying();
   /** セルが画面内 かつ タブが前面（§7.5「バックグラウンド / 非可視」） */
-  const [awake, setAwake] = useState(false);
+  const awake = useAwake(rootRef);
   const [index, setIndex] = useState(0);
   /** 複製から先頭へ飛ぶ 1 フレームだけトランジションを切る */
   const [snapping, setSnapping] = useState(false);
-
-  useEffect(() => {
-    const root = rootRef.current;
-    if (!root) return;
-
-    let onScreen = false;
-    const sync = () => setAwake(onScreen && !document.hidden);
-    const observer = new IntersectionObserver((entries) => {
-      for (const entry of entries) onScreen = entry.isIntersecting;
-      sync();
-    });
-
-    observer.observe(root);
-    document.addEventListener("visibilitychange", sync);
-    return () => {
-      observer.disconnect();
-      document.removeEventListener("visibilitychange", sync);
-    };
-  }, []);
 
   useEffect(() => {
     // 止まっているときは先頭の 1 枚（§7.5）。空の枠で止めない
