@@ -2,6 +2,11 @@ import { Slot, Slottable } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
 import type { ComponentProps, ComponentType, MouseEvent } from "react";
 import type { IconProps } from "@/components/icons";
+import {
+  colorTransition,
+  inverseStateTint,
+  stateTint,
+} from "@/components/ui/interaction";
 import { cn } from "@/lib/utils";
 
 /**
@@ -31,10 +36,9 @@ const buttonVariants = cva(
     "whitespace-nowrap rounded-none no-underline",
     // G1: 応答は pointer-down で。独自 Pressed に置き換えるので OS のハイライトは消す。
     "cursor-pointer touch-manipulation [-webkit-tap-highlight-color:transparent]",
-    // G6: 色は入り 100ms / 離脱 200ms、押下だけ即時。outline は状態で色が変わらないので
-    // transition-colors に含まれていても実質 duration/0 のまま（§4.5）。
-    "transition-colors ease-color duration-(--dur-2)",
-    "hover:duration-(--dur-1) active:duration-(--dur-0)",
+    // G6（§4.5）。outline は状態で色が変わらないので、transition-colors に
+    // 含まれていても実質 duration/0 のまま。
+    colorTransition,
     // G5: Disabled はタブ順に残したまま見た目だけ落とす。
     "aria-disabled:cursor-default aria-disabled:opacity-(--opacity-disabled)",
   ],
@@ -78,19 +82,13 @@ const buttonVariants = cva(
         variant: "outline",
         // ライブラリ専用（K-5）。枠だけがボタンを識別する情報なので divider ではなく
         // currentColor = ink を使い、非テキスト 3:1 を満たす（DECISION K-2）。
-        class: [
-          "inset-ring inset-ring-current text-ink",
-          "hover:bg-state-hover-tint active:bg-state-pressed-tint",
-        ],
+        class: ["inset-ring inset-ring-current text-ink", stateTint],
       },
       {
         surface: "ground",
         variant: "ghost",
         // ライブラリ専用（K-5）。ラベルは ink 固定（R21）。
-        class: [
-          "text-ink",
-          "hover:bg-state-hover-tint active:bg-state-pressed-tint",
-        ],
+        class: ["text-ink", stateTint],
       },
 
       /* --- 地 = ink ----------------------------------------------------- */
@@ -108,7 +106,7 @@ const buttonVariants = cva(
         // Outline はインク面専用。同じ面に主ボタンがあるときの副次（Hero 副・Bento CTA）。
         class: [
           "inset-ring inset-ring-inverse-outline text-inverse-ink",
-          "hover:bg-inverse-state-hover-tint active:bg-inverse-state-pressed-tint",
+          inverseStateTint,
         ],
       },
 

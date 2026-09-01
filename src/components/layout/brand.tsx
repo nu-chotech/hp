@@ -1,8 +1,9 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import Image from "next/image";
 import type { ComponentProps } from "react";
+import { groupLinkTransition } from "@/components/ui/interaction";
 import { Rule } from "@/components/ui/rule";
-import { siteConfig } from "@/config/site";
+import { sectionHref, sectionIds, siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 
 /**
@@ -55,8 +56,7 @@ const brandWordmark = cva(
     "group-active:underline group-active:text-link-pressed",
     "group-active:decoration-link-hover",
     "group-active:decoration-(length:--stroke-underline-strong)",
-    "transition-[color,text-decoration-color,text-decoration-thickness] ease-color",
-    "duration-(--dur-2) group-hover:duration-(--dur-1) group-active:duration-(--dur-0)",
+    groupLinkTransition,
   ],
   {
     variants: {
@@ -85,10 +85,9 @@ export interface BrandProps
 export function Brand({
   size = "nav",
   showTagline = size === "footer" ? true : "desktop",
-  // §6.6 の行き先は `#hero`（`#main` は §8.5 のスキップリンクの行き先で、
-  // ブランドと役割が違う）。config/site.ts の sectionIds は §6.3 のナビ 4 節しか
-  // 持たないので、hero の id はここで既定値として持ち、上書き可能にしておく
-  href = "#hero",
+  // §6.6 の行き先は Hero（`#main` は §8.5 のスキップリンクの行き先で、
+  // ブランドと役割が違う）。id の実体は config/site.ts が持つ
+  href = sectionHref(sectionIds.hero),
   className,
   ...props
 }: BrandProps) {

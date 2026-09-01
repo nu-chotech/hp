@@ -1,7 +1,8 @@
 "use client";
 
-import { type CSSProperties, useEffect, useRef, useState } from "react";
+import { type CSSProperties, useRef } from "react";
 import { chatIndent, Tail } from "@/components/chat/message";
+import { useAwake } from "@/hooks/use-awake";
 import { cn } from "@/lib/utils";
 
 /**
@@ -61,39 +62,15 @@ export interface TypingProps {
 
 export function Typing({ style }: TypingProps) {
   const ref = useRef<HTMLLIElement>(null);
-  // 既定は「動く」。JS が無い読者には常時アニメーションのまま届くほうが、
+  // 停止条件は「画面外」と「タブが裏」の 2 つ（§7.5 の「バックグラウンド / 非可視」）。
+  // 初期値は「動く」— JS が無い読者には常時アニメーションのまま届くほうが、
   // 一時停止したまま固まって届くより実態に近い
-  const [paused, setPaused] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    // 停止条件は「画面外」と「タブが裏」の 2 つ（§7.5 の「バックグラウンド / 非可視」）。
-    // IntersectionObserver はタブが隠れても交差を報告し続けるので、片方だけでは
-    // 裏に回したタブでドットが動き続ける。2 つの入力を 1 つの真偽値に畳んで、
-    // 後始末も 1 か所に保つ。
-    let onScreen = true;
-    const sync = () => {
-      setPaused(!onScreen || document.visibilityState !== "visible");
-    };
-
-    const observer = new IntersectionObserver(([entry]) => {
-      onScreen = entry.isIntersecting;
-      sync();
-    });
-    observer.observe(el);
-    document.addEventListener("visibilitychange", sync);
-    return () => {
-      observer.disconnect();
-      document.removeEventListener("visibilitychange", sync);
-    };
-  }, []);
+  const awake = useAwake(ref, { initial: true });
 
   return (
     <li
       className={chatIndent}
-      data-typing-paused={paused ? "" : undefined}
+      data-typing-paused={awake ? undefined : ""}
       ref={ref}
       style={style}
     >

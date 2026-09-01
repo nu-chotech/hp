@@ -20,8 +20,8 @@ import { MOTION_EVENT, MOTION_STORAGE_KEY } from "@/lib/motion";
  *   paused  … 読者が明示的に止めた
  *   （無し） … 既定。低減設定でなければ動く
  *
- * DOM に触るので "use client"。motion.ts（語彙の正本）はサーバからも読むので
- * フックを同居させられない。use-reveal.ts と同じ切り分け。
+ * DOM に触るので "use client"。lib/motion.ts（語彙の正本）はサーバからも読むので
+ * フックを同居させられない。src/hooks/ に置くのはその切り分けで、use-reveal.ts と同じ。
  */
 
 function readSwitch() {

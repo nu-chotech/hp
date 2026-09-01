@@ -9,9 +9,10 @@ import {
   useState,
 } from "react";
 import { heroContent } from "@/content/hero";
+import { useAwake } from "@/hooks/use-awake";
+import { useMotionPlaying } from "@/hooks/use-motion-switch";
+import { revealElement } from "@/hooks/use-reveal";
 import { duration, heroWord, motionVar } from "@/lib/motion";
-import { useMotionPlaying } from "@/lib/use-motion-switch";
-import { revealElement } from "@/lib/use-reveal";
 
 /**
  * Hero のクライアント側（§7.4.1 / §7.4.3）
@@ -196,7 +197,7 @@ export function RotatingWord() {
    */
   const playing = useMotionPlaying();
   /** Hero が画面内 かつ タブが前面（§7.4.3 の停止条件） */
-  const [awake, setAwake] = useState(false);
+  const awake = useAwake(boxRef);
   /** h1 が静定した。ここから motion/word/start-delay を数える（§6.8.3） */
   const [armed, setArmed] = useState(false);
   const [{ current, previous }, setWord] = useState<{
@@ -204,25 +205,6 @@ export function RotatingWord() {
     previous: number | null;
   }>({ current: 0, previous: null });
   const stepRef = useRef(0);
-
-  useEffect(() => {
-    const box = boxRef.current;
-    if (!box) return;
-
-    let onScreen = false;
-    const sync = () => setAwake(onScreen && !document.hidden);
-    const observer = new IntersectionObserver((entries) => {
-      for (const entry of entries) onScreen = entry.isIntersecting;
-      sync();
-    });
-
-    observer.observe(box);
-    document.addEventListener("visibilitychange", sync);
-    return () => {
-      observer.disconnect();
-      document.removeEventListener("visibilitychange", sync);
-    };
-  }, []);
 
   // 静定の待機は動くかどうかに依らず張っておく。後からオプトインした読者も
   // その場から回り始められる（heroSettle は低減設定なら即座に解決する）

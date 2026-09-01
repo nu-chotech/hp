@@ -2,7 +2,7 @@ import { Brand } from "@/components/layout/brand";
 import { Container } from "@/components/ui/container";
 import { Rule } from "@/components/ui/rule";
 import { TextLink } from "@/components/ui/text-link";
-import { navLinks, siteConfig } from "@/config/site";
+import { navLinks, sectionHref, siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 
 /**
@@ -36,8 +36,8 @@ export function Footer({ className }: FooterProps) {
         <nav aria-label="フッター">
           <ul className="flex flex-wrap items-center gap-inline-lg">
             {navLinks.map((link) => (
-              <li key={link.href}>
-                <TextLink variant="footer" href={link.href}>
+              <li key={link.id}>
+                <TextLink variant="footer" href={sectionHref(link.id)}>
                   {link.label}
                 </TextLink>
               </li>

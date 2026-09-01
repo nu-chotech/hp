@@ -1,12 +1,14 @@
 "use client";
 
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef } from "react";
 import { Asterisk, Pause, Play } from "@/components/icons";
 import { Container } from "@/components/ui/container";
+import { insetFocusRing, tintedControl } from "@/components/ui/interaction";
 import { Rule } from "@/components/ui/rule";
 import { type MarqueeItem, marqueeContent } from "@/content/marquee";
+import { useAwake } from "@/hooks/use-awake";
+import { useMotionSwitch } from "@/hooks/use-motion-switch";
 import { marquee as marqueeMotion } from "@/lib/motion";
-import { useMotionSwitch } from "@/lib/use-motion-switch";
 import { cn } from "@/lib/utils";
 
 /**
@@ -52,10 +54,15 @@ export interface MarqueeProps {
 
 export function Marquee({ className }: MarqueeProps) {
   const { playing, setPlaying } = useMotionSwitch();
-  const [awake, setAwake] = useState(true);
   const groupRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const bandRef = useRef<HTMLDivElement>(null);
+  /**
+   * 画面外とバックグラウンドタブでは止める（§7.5「バックグラウンド / 非可視」）。
+   * 帯は CSS アニメーションが実体で JS は止める側にしか関わらないので、
+   * 監視が始まるまでは動いている扱いにする（= JS の無い読者に届くのと同じ状態）。
+   */
+  const awake = useAwake(bandRef, { initial: true });
 
   // duration = グループ幅 ÷ 40 px/s。内容・字幅・フォント読込で幅が変わるたびに引き直す
   useEffect(() => {
@@ -76,26 +83,6 @@ export function Marquee({ className }: MarqueeProps) {
     const observer = new ResizeObserver(apply);
     observer.observe(group);
     return () => observer.disconnect();
-  }, []);
-
-  // 画面外とバックグラウンドタブでは止める（§7.5「バックグラウンド / 非可視」）
-  useEffect(() => {
-    const band = bandRef.current;
-    if (!band) return;
-
-    let onScreen = true;
-    const sync = () => setAwake(onScreen && !document.hidden);
-
-    const observer = new IntersectionObserver((entries) => {
-      onScreen = entries.some((entry) => entry.isIntersecting);
-      sync();
-    });
-    observer.observe(band);
-    document.addEventListener("visibilitychange", sync);
-    return () => {
-      observer.disconnect();
-      document.removeEventListener("visibilitychange", sync);
-    };
   }, []);
 
   return (
@@ -171,8 +158,8 @@ html[data-motion="playing"] .marquee__static{display:none}
         />
         {/* Button 部品はラベルを持つ横長のコントロールで、左右 inset を必ず持つ。
             この停止セルは「44 × 52 のセル全体が当たり判定のアイコンのみのボタン」
-            （§6.9.3）なので、同じ状態のレシピ（hover/pressed のティント、
-            色は入り 100 / 抜け 200 / 押下 0）だけを引き写して素の button で組む */}
+            （§6.9.3）なので、素の button で組み、状態の見え方だけを Button と
+            同じレシピ（ui/interaction.ts）から取る */}
         <button
           type="button"
           aria-pressed={!playing}
@@ -182,12 +169,9 @@ html[data-motion="playing"] .marquee__static{display:none}
             // セルは帯（full-bleed）ではなく viewport inset 24 の側に属する（§3.6 /
             // `page/inset` の用途行）。帯の右端ではなく紙の右端 1416 で終わる
             "me-page-inset",
-            "cursor-pointer [-webkit-tap-highlight-color:transparent]",
-            "hover:bg-state-hover-tint active:bg-state-pressed-tint",
-            "transition-colors ease-color duration-(--dur-2)",
-            "hover:duration-(--dur-1) active:duration-(--dur-0)",
+            tintedControl,
             // 帯の上下罫と交差させないため、リングは内側に入れる（K-7）
-            "focus-visible:outline-offset-(length:--focus-offset-inset)",
+            insetFocusRing,
           )}
         >
           {playing ? (

@@ -5,8 +5,9 @@ import { chatIndent, Message } from "@/components/chat/message";
 import { Typing } from "@/components/chat/typing";
 import { ReactionChip, type ReactionIconName } from "@/components/ui/chip";
 import type { ChatEntry } from "@/content/about";
+import { useAwake } from "@/hooks/use-awake";
+import { useMotionPlaying } from "@/hooks/use-motion-switch";
 import { chatThread, motionVar } from "@/lib/motion";
-import { useMotionPlaying } from "@/lib/use-motion-switch";
 import { cn } from "@/lib/utils";
 
 /**
@@ -54,27 +55,8 @@ export function ChatThread({ thread }: ChatThreadProps) {
   const listRef = useRef<HTMLUListElement>(null);
   const playing = useMotionPlaying();
   /** セルが画面内 かつ タブが前面（§7.5「バックグラウンド / 非可視」） */
-  const [awake, setAwake] = useState(false);
+  const awake = useAwake(listRef);
   const [revealed, setRevealed] = useState(thread.length);
-
-  useEffect(() => {
-    const list = listRef.current;
-    if (!list) return;
-
-    let onScreen = false;
-    const sync = () => setAwake(onScreen && !document.hidden);
-    const observer = new IntersectionObserver((entries) => {
-      for (const entry of entries) onScreen = entry.isIntersecting;
-      sync();
-    });
-
-    observer.observe(list);
-    document.addEventListener("visibilitychange", sync);
-    return () => {
-      observer.disconnect();
-      document.removeEventListener("visibilitychange", sync);
-    };
-  }, []);
 
   useEffect(() => {
     // 止まっているときは全行を見せる。何も見えない状態で止めない（§7.5）

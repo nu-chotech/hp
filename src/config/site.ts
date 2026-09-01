@@ -31,8 +31,19 @@ export const siteConfig = {
   },
 } as const;
 
-/** セクションの id。ナビとセクション見出しで共有する */
+/**
+ * セクションの id。ページ内アンカーの行き先はすべてここから来る。
+ *
+ * hero はナビに出さない（§6.3 のナビは 4 節）が、Brand ロックアップの行き先
+ * （= ページ先頭へ戻る、§6.6）なので id は共有する。ここに無いと Hero 側の
+ * `id="hero"` と Brand 側の `href="#hero"` が独立した 2 つの文字列になり、
+ * 片方だけ改名しても誰も気づけない。
+ *
+ * `#main`（スキップリンクの行き先、§8.5）はここに含めない — あれはセクションでは
+ * なく `<main>` ランドマークで、役割が違う。
+ */
 export const sectionIds = {
+  hero: "hero",
   about: "about",
   activities: "activities",
   forYou: "for-you",
@@ -41,17 +52,32 @@ export const sectionIds = {
   join: "join",
 } as const;
 
+export type SectionId = (typeof sectionIds)[keyof typeof sectionIds];
+
+/**
+ * セクション id からページ内アンカーの href を作る。
+ *
+ * `#` の付け外しを 1 か所に閉じるための関数。以前は navLinks が href を持ち、
+ * それを要る側（ナビの aria-current の判定）が `replace("#", "")` で id に
+ * 戻していた — 同じ対応を足す側と剥がす側の 2 回書いていたことになる。
+ * 正本は id で、href はそこから導かれる。
+ */
+export function sectionHref(id: SectionId) {
+  return `#${id}`;
+}
+
 export interface NavLink {
-  href: string;
+  /** 行き先セクション。href は sectionHref() で作る */
+  id: SectionId;
   /** ナビのラベルは英語 1 語。セクション見出しの欧文ラベルと対応させる（§6.3.3） */
   label: string;
 }
 
 export const navLinks: readonly NavLink[] = [
-  { href: `#${sectionIds.about}`, label: "About" },
-  { href: `#${sectionIds.activities}`, label: "Activities" },
-  { href: `#${sectionIds.members}`, label: "Members" },
-  { href: `#${sectionIds.partners}`, label: "Partners" },
+  { id: sectionIds.about, label: "About" },
+  { id: sectionIds.activities, label: "Activities" },
+  { id: sectionIds.members, label: "Members" },
+  { id: sectionIds.partners, label: "Partners" },
 ] as const;
 
 /** 対応する Tabler アイコン名。実体は src/components/icons.tsx が解決する */

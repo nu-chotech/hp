@@ -1,6 +1,7 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import type { ComponentProps } from "react";
 import { ArrowUpRight } from "@/components/icons";
+import { linkTransition } from "@/components/ui/interaction";
 import { cn } from "@/lib/utils";
 
 /**
@@ -21,8 +22,7 @@ const textLink = cva(
     // Tailwind v4 に decoration-skip-ink ユーティリティが無いので任意プロパティで書く
     "cursor-pointer [text-decoration-skip-ink:none]",
     // 色と下線は入り 100ms / 抜け 200ms、押下だけ即時（G6・G2）。outline は含めない（G4）
-    "transition-[color,text-decoration-color,text-decoration-thickness] ease-color",
-    "duration-(--dur-2) hover:duration-(--dur-1) active:duration-(--dur-0)",
+    linkTransition,
   ],
   {
     variants: {
