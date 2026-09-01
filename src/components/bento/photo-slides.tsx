@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ImageSlot } from "@/components/ui/image-slot";
+import { useMotionPlaying } from "@/hooks/use-motion-switch";
 import { motionVar, photoSlides } from "@/lib/motion";
-import { useMotionPlaying } from "@/lib/use-motion-switch";
 import { cn } from "@/lib/utils";
 
 /**

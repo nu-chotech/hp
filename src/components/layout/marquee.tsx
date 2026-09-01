@@ -5,8 +5,8 @@ import { Asterisk, Pause, Play } from "@/components/icons";
 import { Container } from "@/components/ui/container";
 import { Rule } from "@/components/ui/rule";
 import { type MarqueeItem, marqueeContent } from "@/content/marquee";
+import { useMotionSwitch } from "@/hooks/use-motion-switch";
 import { marquee as marqueeMotion } from "@/lib/motion";
-import { useMotionSwitch } from "@/lib/use-motion-switch";
 import { cn } from "@/lib/utils";
 
 /**

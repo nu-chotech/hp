@@ -1099,7 +1099,7 @@
  * ページ内のモーションスイッチ（§7 M8）
  *
  * 3 つのループが 1 つのスイッチを共有する。属性は <html> に置き、
- * src/lib/use-motion-switch.ts だけが書く — 同一ドキュメントの切替は storage
+ * src/hooks/use-motion-switch.ts だけが書く — 同一ドキュメントの切替は storage
  * イベントを飛ばさないので、JS の購読ではなく DOM の属性を唯一の真実にする。
  */
 html[data-motion="paused"] .marquee__track,

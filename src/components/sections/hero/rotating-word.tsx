@@ -9,9 +9,9 @@ import {
   useState,
 } from "react";
 import { heroContent } from "@/content/hero";
+import { useMotionPlaying } from "@/hooks/use-motion-switch";
+import { revealElement } from "@/hooks/use-reveal";
 import { duration, heroWord, motionVar } from "@/lib/motion";
-import { useMotionPlaying } from "@/lib/use-motion-switch";
-import { revealElement } from "@/lib/use-reveal";
 
 /**
  * Hero のクライアント側（§7.4.1 / §7.4.3）

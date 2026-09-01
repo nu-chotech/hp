@@ -13,7 +13,9 @@ import type { Transition } from "motion/react";
  * このファイルは "use client" を持たない — MOTION_BOOTSTRAP_SCRIPT を読むのは
  * layout.tsx（Server Component）で、react-server 条件の react は useEffect を
  * export しないため、フックを 1 つでも同居させるとサーバ側の import が壊れる。
- * DOM に触る側（reveal）は use-reveal.ts に分けてある。
+ * この制約は 1 モジュールの都合ではなくディレクトリの境界なので、DOM に触る側は
+ * まとめて src/hooks/ に置く（reveal は use-reveal.ts、スイッチは
+ * use-motion-switch.ts）。src/lib/ はサーバからも読める語彙と純関数だけを持つ。
  */
 
 /**

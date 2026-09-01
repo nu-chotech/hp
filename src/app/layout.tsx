@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
-import { MotionProvider } from "@/components/providers/MotionProvider";
+import { MotionProvider } from "@/components/providers/motion-provider";
 import { siteConfig } from "@/config/site";
 import { MOTION_BOOTSTRAP_SCRIPT } from "@/lib/motion";
 import { getSiteUrl } from "@/lib/site-url";

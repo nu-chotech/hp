@@ -1,13 +1,14 @@
 "use client";
 
-import { motionVar, revealMotion } from "./motion";
+import { motionVar, revealMotion } from "@/lib/motion";
 
 /**
  * reveal の実行側（§7.4.1）
  *
- * 語彙（motion.ts）と分けてあるのは、motion.ts の MOTION_BOOTSTRAP_SCRIPT を
+ * 語彙（lib/motion.ts）と分けてあるのは、motion.ts の MOTION_BOOTSTRAP_SCRIPT を
  * layout.tsx（Server Component）が読むため。フックを含むモジュールを
  * サーバから import すると react-server 条件の react に useEffect が無く build が落ちる。
+ * src/hooks/ はこの「クライアントでしか読めない側」を集めた場所。
  */
 
 import { useEffect } from "react";

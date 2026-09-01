@@ -1,7 +1,7 @@
 "use client";
 
 import { MotionConfig } from "motion/react";
-import { useReveal } from "@/lib/use-reveal";
+import { useReveal } from "@/hooks/use-reveal";
 
 /**
  * アプリ全体の motion 既定値

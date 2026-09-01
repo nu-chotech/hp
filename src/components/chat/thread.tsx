@@ -5,8 +5,8 @@ import { chatIndent, Message } from "@/components/chat/message";
 import { Typing } from "@/components/chat/typing";
 import { ReactionChip, type ReactionIconName } from "@/components/ui/chip";
 import type { ChatEntry } from "@/content/about";
+import { useMotionPlaying } from "@/hooks/use-motion-switch";
 import { chatThread, motionVar } from "@/lib/motion";
-import { useMotionPlaying } from "@/lib/use-motion-switch";
 import { cn } from "@/lib/utils";
 
 /**
