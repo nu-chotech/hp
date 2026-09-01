@@ -76,6 +76,15 @@ export const marquee = { speedPxPerSecond: 40 } as const;
 /** ページ内のモーションスイッチ（M8）。マーキー・回転語・ドットが共有する */
 export const MOTION_STORAGE_KEY = "chotech:motion";
 
+/**
+ * 同じスイッチの、同一ドキュメント向けの通知路。
+ * storage イベントは書いた当のドキュメントには届かない（HTML 仕様）ため、
+ * それだけでは押したタブで動きが止まらない。書き手（§6.9.3 の停止/再生ボタン）は
+ * localStorage への setItem の直後に `window.dispatchEvent(new Event(MOTION_EVENT))`
+ * を必ず呼ぶ — 読み手はこれと storage の両方を購読する。
+ */
+export const MOTION_EVENT = "chotech:motionchange";
+
 /** reveal（§7.4.1） */
 export const revealMotion = {
   /** 上端がビューポート下 10% を越えたら発火。視界に入ってから、読まれる前 */
