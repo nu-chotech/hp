@@ -3,6 +3,7 @@
 import { Fragment, useEffect, useRef } from "react";
 import { Asterisk, Pause, Play } from "@/components/icons";
 import { Container } from "@/components/ui/container";
+import { insetFocusRing, tintedControl } from "@/components/ui/interaction";
 import { Rule } from "@/components/ui/rule";
 import { type MarqueeItem, marqueeContent } from "@/content/marquee";
 import { useAwake } from "@/hooks/use-awake";
@@ -157,8 +158,8 @@ html[data-motion="playing"] .marquee__static{display:none}
         />
         {/* Button 部品はラベルを持つ横長のコントロールで、左右 inset を必ず持つ。
             この停止セルは「44 × 52 のセル全体が当たり判定のアイコンのみのボタン」
-            （§6.9.3）なので、同じ状態のレシピ（hover/pressed のティント、
-            色は入り 100 / 抜け 200 / 押下 0）だけを引き写して素の button で組む */}
+            （§6.9.3）なので、素の button で組み、状態の見え方だけを Button と
+            同じレシピ（ui/interaction.ts）から取る */}
         <button
           type="button"
           aria-pressed={!playing}
@@ -168,12 +169,9 @@ html[data-motion="playing"] .marquee__static{display:none}
             // セルは帯（full-bleed）ではなく viewport inset 24 の側に属する（§3.6 /
             // `page/inset` の用途行）。帯の右端ではなく紙の右端 1416 で終わる
             "me-page-inset",
-            "cursor-pointer [-webkit-tap-highlight-color:transparent]",
-            "hover:bg-state-hover-tint active:bg-state-pressed-tint",
-            "transition-colors ease-color duration-(--dur-2)",
-            "hover:duration-(--dur-1) active:duration-(--dur-0)",
+            tintedControl,
             // 帯の上下罫と交差させないため、リングは内側に入れる（K-7）
-            "focus-visible:outline-offset-(length:--focus-offset-inset)",
+            insetFocusRing,
           )}
         >
           {playing ? (

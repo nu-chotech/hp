@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { Close, Menu } from "@/components/icons";
 import { Container } from "@/components/ui/container";
+import { insetFocusRing, tintedControl } from "@/components/ui/interaction";
 import { Rule } from "@/components/ui/rule";
 import { TextLink } from "@/components/ui/text-link";
 import { navLinks } from "@/config/site";
@@ -131,12 +132,9 @@ function MenuRow({
       aria-current={current ? "true" : undefined}
       className={cn(
         "flex min-h-control-md items-center px-page-inset text-ink text-label-nav no-underline",
-        "cursor-pointer [-webkit-tap-highlight-color:transparent]",
-        "hover:bg-state-hover-tint active:bg-state-pressed-tint",
-        "transition-colors ease-color duration-(--dur-2)",
-        "hover:duration-(--dur-1) active:duration-(--dur-0)",
+        tintedControl,
         // 全幅の行なのでリングは内側に入れ、上下の hairline と交差させない（K-7）
-        "focus-visible:outline-offset-(length:--focus-offset-inset)",
+        insetFocusRing,
       )}
     >
       {/* 持続状態はラベル幅の 2px 下線。左の縦バーは §4.3 規則 6 に反する（R16） */}
@@ -295,10 +293,7 @@ export function NavBar({ brand, cta, menuCta, className }: NavBarProps) {
               onKeyDown={onButtonKeyDown}
               className={cn(
                 "flex size-control-md shrink-0 items-center justify-center text-ink tablet:hidden",
-                "cursor-pointer [-webkit-tap-highlight-color:transparent]",
-                "hover:bg-state-hover-tint active:bg-state-pressed-tint",
-                "transition-colors ease-color duration-(--dur-2)",
-                "hover:duration-(--dur-1) active:duration-(--dur-0)",
+                tintedControl,
               )}
             >
               {/* アイコンの差し替えは duration/0（§6.7.3）。名前は状態で変えない（APG） */}
