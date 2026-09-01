@@ -161,6 +161,13 @@ type ButtonOwnProps = {
    * サイト内 → `ArrowRight`、ページ内スクロールは渡さない。
    */
   icon?: ComponentType<IconProps>;
+  /**
+   * ラベル直前に置くブランドマーク（§6.1.9 / DECISION U-19）。
+   * 末尾の矢印は「外部へ出る」と言うが「どこへ」は言わない。ロゴだけが読む前に
+   * それを伝えるので、サービスへ出る導線に限ってここに置く。
+   * 節の見出しや本文には置かないこと — 例外はこの用途に閉じている。
+   */
+  brand?: ComponentType<IconProps>;
 };
 
 export type ButtonProps = ComponentProps<"button"> &
@@ -185,6 +192,7 @@ export function Button({
   size = "md",
   fullWidth = false,
   icon: Icon,
+  brand: Brand,
   asChild = false,
   className,
   children,
@@ -208,6 +216,8 @@ export function Button({
       {...(asChild ? {} : { type })}
       {...props}
     >
+      {/* ブランドマークはラベルの前。gap は container の inline/xs 8 が持つ */}
+      {Brand ? <Brand className={buttonIconVariants({ size })} /> : null}
       {/* Slottable がないと、asChild のとき矢印が `<a>` の外に出てしまう */}
       <Slottable>{children}</Slottable>
       {Icon ? <Icon className={buttonIconVariants({ size })} /> : null}

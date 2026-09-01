@@ -27,7 +27,7 @@ export function About() {
     official,
     stat,
     chat,
-    photo,
+    photos,
     onlineOffline,
     forEveryone,
     cta,
@@ -67,13 +67,15 @@ export function About() {
         {/* 行 2–3: Chat 2×2 · Image 2×2 */}
         <CellChat kicker={chat.kicker} note={chat.note} thread={chat.thread} />
         {/*
-          caption は「まだ素材が入っていない枠」を制作中に見分けるための印で、
+          label は「まだ素材が入っていない枠」を制作中に見分けるための印で、
           閲覧者に見せる情報ではない（§6.19「本番では caption を出さない」）。
-          実素材（photo.src / alt）を入れる時点で、この行ごと落とす。
+          実素材（src / alt）を入れる時点で label を落とせば、そのまま本番になる。
         */}
         <CellImage
-          caption={
-            process.env.NODE_ENV === "production" ? undefined : photo.label
+          photos={
+            process.env.NODE_ENV === "production"
+              ? photos.map(({ label: _label, ...photo }) => photo)
+              : photos
           }
         />
 

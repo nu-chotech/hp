@@ -66,11 +66,19 @@ export const aboutContent = {
     ] satisfies ChatEntry[],
   },
 
-  /** 実写に差し替えるまでのプレースホルダ（§6.19） */
-  photo: {
-    label: "活動の様子",
-    ratio: "16 / 9",
-  },
+  /**
+   * 活動の様子（§6.11.5 / DECISION U-18）
+   *
+   * 複数枚をスライドさせて回す。「いろいろやっている」は 1 枚の代表写真では出ない。
+   * NOTE: 実写に差し替えるまでのプレースホルダ。`src` と `alt` を対で足せば
+   * そのまま実素材になる（§8.6: alt は src とセットでしか存在しない）。
+   * 写真は装飾なので実素材の alt は "" — 活動の情報は Activities 節が本文で持つ。
+   */
+  photos: [
+    { label: "Talk Day の発表" },
+    { label: "Dev Day のハンズオン" },
+    { label: "ハッカソンのチーム開発" },
+  ],
 
   onlineOffline: {
     kicker: "ONLINE & OFFLINE",

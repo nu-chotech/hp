@@ -1,4 +1,4 @@
-import { ArrowUpRight } from "@/components/icons";
+import { ArrowUpRight, BrandDiscord } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { sectionVariants } from "@/components/ui/section";
@@ -98,7 +98,13 @@ export function Hero() {
           >
             {/* 主 = 外部の Discord。矢印と visually-hidden の「（外部）」を添え、
                 target="_blank" は使わない（DECISION M-15） */}
-            <Button surface="ink" variant="solid" asChild icon={ArrowUpRight}>
+            <Button
+              surface="ink"
+              variant="solid"
+              asChild
+              brand={BrandDiscord}
+              icon={ArrowUpRight}
+            >
               <a href={actions.primary.href}>
                 {actions.primary.label}
                 <span className="sr-only">（外部）</span>

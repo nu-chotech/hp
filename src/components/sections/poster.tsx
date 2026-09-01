@@ -1,4 +1,4 @@
-import { ArrowUpRight } from "@/components/icons";
+import { ArrowUpRight, BrandDiscord, brandIcons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Rule } from "@/components/ui/rule";
@@ -60,7 +60,14 @@ export function Poster() {
           className="mt-stack-xl flex flex-wrap items-center gap-x-inline-lg gap-y-stack-md"
           data-reveal
         >
-          <Button surface="poster" variant="solid" asChild icon={ArrowUpRight}>
+          {/* 行き先が Discord であることは矢印ではなくマークが言う（U-19） */}
+          <Button
+            surface="poster"
+            variant="solid"
+            asChild
+            brand={BrandDiscord}
+            icon={ArrowUpRight}
+          >
             <a href={posterContent.action.href}>
               {posterContent.action.label}
               <span className="sr-only">（外部）</span>
@@ -73,14 +80,20 @@ export function Poster() {
           {/* biome-ignore lint/a11y/noRedundantRoles: preflight の list-style: none で Safari が暗黙の list ロールを外すため明示が要る */}
           {/* biome-ignore lint/a11y/useSemanticElements: 既に ul。意味づけを戻しているだけで置換先の要素は無い */}
           <ul role="list" className="flex flex-wrap items-center gap-inline-md">
-            {socialLinks.map((link) => (
-              <li key={link.brand}>
-                {/* 表示は CSS で大文字化し、DOM は正書法のまま（§6.3.2） */}
-                <TextLink variant="social" href={link.href} external>
-                  {link.label}
-                </TextLink>
-              </li>
-            ))}
+            {socialLinks.map((link) => {
+              const Brand = brandIcons[link.brand];
+              return (
+                <li key={link.brand}>
+                  {/* 表示は CSS で大文字化し、DOM は正書法のまま（§6.3.2）。
+                      マークは先頭（U-19）— 末尾の矢印は「外部」を言うが「どこへ」は
+                      言わないので、読む前に行き先が分かる記号を頭に置く */}
+                  <TextLink variant="social" href={link.href} external>
+                    <Brand className="size-icon-sm" />
+                    {link.label}
+                  </TextLink>
+                </li>
+              );
+            })}
           </ul>
         </div>
       </Container>

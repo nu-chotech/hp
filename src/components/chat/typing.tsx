@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { type CSSProperties, useEffect, useRef, useState } from "react";
 import { chatIndent, Tail } from "@/components/chat/message";
 import { cn } from "@/lib/utils";
 
@@ -54,7 +54,12 @@ const DOT_GAP = "gap-inline-dot";
 /** 吹き出しの inset 16 × 11（§6.12.3）。横だけ専用トークン --inset-typing-x */
 const TYPING_INSET = "px-inset-typing-x py-inset-md";
 
-export function Typing() {
+export interface TypingProps {
+  /** 再生（§6.12 / U-16）の出方。スレッド側が 1 手ずつ渡す */
+  style?: CSSProperties;
+}
+
+export function Typing({ style }: TypingProps) {
   const ref = useRef<HTMLLIElement>(null);
   // 既定は「動く」。JS が無い読者には常時アニメーションのまま届くほうが、
   // 一時停止したまま固まって届くより実態に近い
@@ -90,6 +95,7 @@ export function Typing() {
       className={chatIndent}
       data-typing-paused={paused ? "" : undefined}
       ref={ref}
+      style={style}
     >
       {/* React 19 の style hoisting。href が同じなら何個描画しても head に 1 つ */}
       <style href="chotech-typing-dot" precedence="default">

@@ -1402,7 +1402,6 @@ Apple の `scale(0.97)` は「押し込める物体」の比喩で、影・奥�
 | Footer link | Footnote 行 20 | `::before { inset: -12px -4px }` |
 | Social link | Overline 行 16 | `::before { inset: -14px -4px }`。gap `inline/md` 16 |
 | Inline link（段落内） | 行内 | 例外（WCAG 2.5.8 inline）。Partner cell の単独リンクは Footer と同じ拡張 |
-| Activity セル | 行全体（≥ 120 高） | そのまま |
 | Menu row | 44 高 | `size/control/md` |
 | Brand lockup | 28 高 | `::before { inset: -8px -4px }` |
 | Chip、Marquee item | 非インタラクティブ | 不要 |
@@ -1449,9 +1448,11 @@ Rotating word: 可視部分は `aria-hidden`、`<h1>` の名前は visually-hidd
 | Pressed 入り・Focus ring・アイコン差し替え | `motion/duration/0` | 同じ |
 | Menu panel 開閉 | `motion/spring/quick`、Nav 下罫を起点に `translateY(−100% → 0)`（`overflow: hidden` のラッパー内）、閉じは逆再生 | `opacity` `duration/2` |
 | Marquee | `motion/marquee/speed` 40 px/s `linear`。hover / focus-within / pointer-down / control で停止 | 静止（先頭グループを折返し配置） |
-| Rotating word | `motion/word/period` 2.5s、退出 `spring/quick`、入り `spring/default`、`motion/word/cycles` 2 周で `学ぶ。` に静止 | 静止 `学ぶ。` |
+| Rotating word | `motion/word/period` 2.5s、退出 `spring/quick`、入り `spring/default`、**無限ループ**（DECISION U-15） | 静止 `学ぶ。` |
 | Typing dots | `motion/dots/period` 1.2s、セル可視時のみ | 静止（opacity 1） |
-| Activity セル / Button / Link hover | 色・下線のみ（矢印の移動など装飾の動きは足さない、M9） | 同じ |
+| Chat 再生 | `motion/chat/step` 900ms ごとに 1 手、一巡したら `motion/chat/hold` 2.4s 置いて先頭へ（U-16） | 静止（全行を表示） |
+| Photo 送り | `motion/photo/step` 4s ごとに 1 枚、`spring/default` でスライド（U-18） | 静止（先頭の 1 枚） |
+| Button / Link hover | 色・下線のみ（矢印の移動など装飾の動きは足さない、M9） | 同じ |
 
 Spring は移動にだけ使う（M2）。本章の部品で移動するのは Menu panel と Rotating word のみ。
 
@@ -1469,6 +1470,12 @@ Spring は移動にだけ使う（M2）。本章の部品で移動するのは M
 | Marquee 停止 / 再生 | `player-pause` / `player-play` | `icon/lg` 24 | — |
 | Mobile menu 開 / 閉 | `menu-2` / `x` | Icon button md 24（sm なら 20） | — |
 | Image placeholder | `photo` | 24 | — |
+| Discord への導線（ボタン） | `brand-discord`（**先頭**）+ `arrow-up-right`（末尾） | 16 / 20 | — |
+| SNS への導線（X / Instagram / GitHub） | `brand-x` / `brand-instagram` / `brand-github`（**先頭**）+ `arrow-up-right`（末尾） | 16 | — |
+
+**DECISION U-19** Discord と SNS の導線にはブランドマークを**先頭**に添える。行き先が「外部」であることは `arrow-up-right` が言うが、**どこへ**行くかは文字を読まないと分からない。ロゴは読む前に分かる唯一の記号で、ここだけは §5.1 の「アイコンは装飾、意味は隣の文字が運ぶ」の例外にあたる（マークそのものが固有名詞）。
+
+例外の範囲を閉じるため、次の 2 つは守る。(1) マークを置くのは**サービスへ出る導線だけ**。節の見出しや本文には置かない。(2) Nav の CTA には置かない — sm の 36 に 16 のマークと 8 の送りを足すと Mobile 390 の幅検算（§6.7.2 の 374）が 398 になって溢れる。
 
 - Icon button の径は 1 か所で決める: **sm 36 → 20、md 44 → 24**（§5.2）。
 - stroke-width は 24 grid の 2 のまま拡縮。数値を上書きしない。色は `currentColor`（例外は `pop/separator`）。
@@ -1776,7 +1783,7 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 | 語 | `学ぶ。` / `創る。` / `話す。`（ちょうど全角 3 字、§9.3）。`Display/XL`、**`color/hero/word`**（Mono inverse/ink 14.86 / Lime lime-400 10.83） |
 | 枠 | **幅 3em 固定**、新旧 2 語を絶対配置で重ねる（レイアウトシフトゼロ） |
 | 下線 | **持たない**（**DECISION U-3**）。語そのものを塗る。面ではなく**文字**なので、ライムを明るい地で面に使えない制約（1.37、C-25）に触れずアクセントを 124px で出せる。墨地の上で 10.83 |
-| 周期 | `motion/word/period` 2.5s、`motion/word/cycles` 2（6 遷移 ≈ 17.5s）で `学ぶ。` に静止。退出 `spring/quick`（上へ −0.15em）、入り `spring/default`（下から +0.15em → 0）。開始は h1 の reveal 静定 2.5s 後 |
+| 周期 | `motion/word/period` 2.5s で**回り続ける**（**DECISION U-15**）。退出 `spring/quick`（上へ −0.15em）、入り `spring/default`（下から +0.15em → 0）。開始は h1 の reveal 静定 2.5s 後 |
 | 停止 | Hero 非可視・タブ非表示・Marquee control（§6.9.3）・reduced-motion（静止 `学ぶ。`） |
 | 支援技術 | 可視部分 `aria-hidden`、名前は visually-hidden の全文（§6.1.7） |
 
@@ -1882,6 +1889,16 @@ fill `inverse/ground`。kicker `Overline/Latin` `MEMBERS` `inverse/ink-tertiary`
 
 fill `ground`、Image slot Rect / Cover を `inset: 0`。比率 **16:9**（DECISION L-20: Desktop は Chat セル高 ≈ 336 に stretch、Mobile 338 × 190）。B/W（§6.19）。`alt` = 被写体を 1 文 ≤ 60 字（§8.6）。
 
+**DECISION U-18** 1 枚ではなく複数枚を横にスライドさせて回す。活動の様子は「1 枚の代表写真」では出ない — Talk Day と Hackathon と勉強会が同じ枠に並んで初めて「いろいろやっている」が伝わる。ベントの中で唯一「時間を持つ」セルになるので、隣のチャットと合わせて 2 つ以上は作らない。
+
+| 項目 | 値 |
+|---|---|
+| 送り | `translateX(-n × 100%)`、`spring/default`。フェードではなく**スライド**（面が入れ替わる、という物理を保つ） |
+| 間隔 | `motion/photo/step` 4,000 ms。1 枚を見終える時間 |
+| ループ | 末尾に先頭の複製を 1 枚置き、そこまで送ったらトランジション無しで 0 に戻す。逆回しの掃引を見せない |
+| 停止 | セルが非可視、タブ非表示、ページのスイッチ、reduced-motion。止まっているときは**先頭の 1 枚**を出す |
+| 支援技術 | トラックは `aria-hidden`。写真は装飾（`alt=""`）で、活動の情報は Activities 節が本文として持つ |
+
 #### 6.11.6 Cell CTA（Ink、2×1）
 
 | 項目 | Desktop | Mobile |
@@ -1901,7 +1918,19 @@ K-8 の根拠: Mobile セル内幅 338 − 40 = 298。横並びでは title が 
 
 ### 6.12 Chat message / typing
 
-静的なモック。対話・状態はない（再生ループは §7 D5 で削除）。
+会話の「絵」。操作する UI ではないので状態も入力も持たないが、**静止画でもない** — 発言とスタンプが 1 つずつ順に現れ、最後まで出たら少し置いて先頭から繰り返す（**DECISION U-16**）。
+
+**DECISION U-16** チャットを再生する。当初は静止スレッドにしていた（旧 M-5）。理由は「5 秒超の自動更新領域には停止 UI が要る」だったが、§7 M8 のスイッチが既にページ内の全ループを止めるので、その条件は満たされている。静止スレッドは「会話のスクリーンショット」に見え、伝えたいこと — **いま誰かが喋っていて、返事が返ってくる場所である** — が伝わらない。順に現れることでしか出せない情報なので、装飾の動き（§7 M9 が禁じるもの）には当たらない。
+
+再生の規則:
+
+| 項目 | 値 |
+|---|---|
+| 1 手の間隔 | `motion/chat/step` 900 ms。読点まで目が追える最短 |
+| 一巡後の間 | `motion/chat/hold` 2,400 ms。最後の発言を読み終える時間を置いてから畳む |
+| 出方 | `opacity 0 → 1` と `translateY(8 → 0)`、`spring/default`。左右の寄せは変えない（動く方向が発言者を示す情報になってしまう） |
+| 高さ | **最初から全行ぶんの高さを取る**。1 行ずつ足すとセルが伸び縮みして隣の写真セルまで動く（CLS）。未再生の行は不透明度だけを 0 にする |
+| 停止 | セルが非可視、タブ非表示、ページのスイッチ、reduced-motion。止まっているときは**全行を最初から見せる**（何も見えない状態で止めない） |
 
 #### 6.12.1 Message
 
@@ -1936,7 +1965,7 @@ Chip / Reaction × 2（§6.4）。行は avatar 幅 + gap = **32** だけイン�
 
 ### 6.13 Activity cell + bento
 
-#### 6.13.1 解剖（セル全体がクリック可能、名前は見出しだけ）
+#### 6.13.1 解剖（読ませるための面。リンクではない）
 
 ```
 ┌ divider grid: frame fill divider, padding 2, gap 2 ────────────────────────────┐
@@ -1965,10 +1994,14 @@ Chip / Reaction × 2（§6.4）。行は avatar 幅 + gap = **32** だけイン�
 |---|---|
 | title | Feature `Display/M` **56 / 32**、Compact `Title/1` **32 / 26**、`ink`、`<h3>` 内。4 件は `Talk Day` / `Dev Day` / `Project` / `Hackathon` |
 | subtitle | `Subheadline` 15 Bold、`ink-secondary`（K-1）、title の**下**（`stack/2xs` 4）。セルが縦に伸びるので横並びにしない |
-| badge | `Overline/JP` 12、`pop/badge`（ink-secondary / lime-800）。**`showBadge` は既定 false**（**DECISION U-9**: 開催頻度が確定するまで出さない。空欄や「随時」で埋めると、確定した情報と見分けがつかなくなる）。`arrow-right` 16 は常時、title の右にリンクの印として残す |
+| badge | `Overline/JP` 12、`pop/badge`（ink-secondary / lime-800）。**`showBadge` は既定 false**（**DECISION U-9**: 開催頻度が確定するまで出さない。空欄や「随時」で埋めると、確定した情報と見分けがつかなくなる）。**矢印は置かない**（U-17: 行き先が無いのに遷移の印を出さない） |
 | description | `Body/S` 14、`ink-secondary`。Feature は `measure/paragraph` 588、Compact はセル幅いっぱい |
 | tags | Chip / Tag × 3、gap `inline/xs` 8、上 `stack/xs` 8。Compact では折返す |
-| Head の折返し | title 群と badge/arrow は `flex-wrap`。セル幅が足りなければ badge が title の下に落ちる |
+| Head の折返し | title 群と badge は `flex-wrap`。セル幅が足りなければ badge が title の下に落ちる |
+
+**DECISION U-17** セルをリンクにしない。当初はセル全体を Discord への外部リンクにしていたが、4 セルとも同じ Discord に着地するので「Talk Day を押した」のに「Discord のトップ」に出る — 押した対象と行き先が対応しない。活動ごとの行き先が用意できるまでは、ここは**読ませるための面**に徹する。参加への導線は Hero・About の CTA・Poster が 3 度受け持っていて足りている。
+
+したがってこのセルは hover / pressed / focus を持たず、矢印も持たない。「押せそうに見えて押せない」より「押せるように見えない」ほうが誠実で、状態を持たないぶん罫線グリッドの静けさも保てる。
 
 内容の区別（**DECISION U-8b**）:
 
@@ -1983,19 +2016,16 @@ Project と Hackathon を分ける理由: 前者は継続的な営み、後者�
 
 #### 6.13.2 状態
 
-| 状態 | 背景 | セル内文字の比 |
-|---|---|---|
-| Default | `ground` | ink 14.86 / n700 5.83 / lime-800 6.31 |
-| Hover | `state/hover-tint`（`duration/1` 入り / `duration/2` 離脱） | ink 13.21 / n700 5.19 / lime-800 5.61 |
-| Pressed | `state/pressed-tint`（`duration/0`） | ink 11.78 / n700 4.62 / lime-800 5.00 |
-| Focus-visible | **inset** リング（offset −2、K-7）。罫線グリッドの枠と交差させない | |
+**持たない**（U-17）。リンクでもボタンでもないので hover / pressed / focus は無く、
+地は `ground` のまま動かない。文字の比は ink 14.86 / n700 5.83 / lime-800 6.31。
 
-矢印の移動・その他の装飾モーションは足さない（§7 M9、D8）。
+これは「機能を削った」のではなく、状態を出さないことが正しい表示だという判断である。
+押せない面がポインタに反応すると、読み手は一度クリックして何も起きないことを確かめる。
 
 #### 6.13.3 アクセシビリティ
 
-- DOM（DECISION M-12）: `<li><a href aria-labelledby="t1 s1"><h3><span id="t1">Talk Day</span> <span id="s1">ライトニングトーク</span></h3> …説明・タグ… </a></li>`。名前 = 題 + 副題、説明・タグは名前に含めないがリンク内容として読める。
-- セル内に別のリンク・ボタンを置かない（入れ子リンク禁止）。トレードオフ: リンク内のテキストはドラッグ選択しにくい（マーケティング面では許容）。
+- DOM（**DECISION M-12 改**）: `<li><h3><span>Talk Day</span> <span>ライトニングトーク</span></h3> …説明・タグ… </li>`。リンクではなくなった（U-17）ので `aria-labelledby` は要らず、見出しがそのまま節の名前になる。
+- セル内にリンク・ボタンを置かない。面全体を押させないので、テキストは普通にドラッグ選択できる（旧 M-12 のトレードオフが消えた）。
 - グリッドは `<ul>`。ベントの見た目上の並び（Feature が大きい）と DOM 順を一致させる。
 
 #### 6.13.4 Figma
@@ -2156,7 +2186,7 @@ Figma: `Media / Image Slot` `Shape` {Rect, Circle} × `Fit` {Cover, Contain} × 
 | M6 | compositor プロパティのみ | アニメーションは `transform` と `opacity` のみ（色は `background-color` / `color` / `text-decoration-color` / `text-decoration-thickness` を固定時間で）。`height` / `top` / `clip-path` / `filter` は不可 | 60 fps とジッターのなさが craft の最低条件。`clip-path` は全エンジンで compositor 処理されない |
 | M7 | 減速運動の停止は 1 % 残りで判定 | スプリングの「見かけの長さ」= 目標との差が 1 % を切る時刻 | 0.1 % まで待つと約 1.4 倍長くなり、体感と一致しない |
 | M8 | ループは有限・停止可能 | 自動で動くもの（マーキー、回転語、入力中ドット）は **1 つのページ内スイッチ** で全停止でき、`prefers-reduced-motion` で初期状態が停止 | WCAG 2.2.2（5 秒超の自動移動は停止手段が必須） |
-| M9 | 追加しない | 装飾のためだけの動きは足さない。コンセプトの未定義ループ（チャット再生・ヒーロー浮遊バブル）と Activity セル の矢印 nudge は **採用しない** | Apple「Purpose」: 動きはユーザーの注意を消費する予算。1 つの状態に 2 つの信号を出さない |
+| M9 | 追加しない | 装飾のためだけの動きは足さない。ヒーローの浮遊バブルと矢印の nudge は **採用しない**。チャットの再生と写真の送りは装飾ではなく情報（順に現れることでしか出せない、U-16 / U-18） | Apple「Purpose」: 動きはユーザーの注意を消費する予算。1 つの状態に 2 つの信号を出さない |
 
 ### 7.2 トークン
 
@@ -2181,8 +2211,10 @@ CSS カスタムプロパティで持つ。Figma には Variables として置�
 | `motion/reveal/root-margin` | — | `0 0 -10% 0` | 要素上端がビューポート下 10 % を越えたら発火 | 900 px で 90 px。視界に入ってから、読まれる前 |
 | `motion/marquee/speed` | `--marquee-speed` | **40 px/s** | マーキー速度（duration ではなく速度で指定） | 19 px 級の大文字を約 2 字/秒で追える。内容量が変わっても速さが変わらない |
 | `motion/word/period` | `--word-period` | **2.5 s** | 回転語 1 語の周期（切替 ≈ 0.5 s、静止 ≈ 2.0 s） | 3 文字の読取 0.5 s + 余裕。概念版 2.6 s を丸めた（DECISION M-4） |
-| `motion/word/cycles` | — | **2** | 3 語 × 2 周で停止、`学ぶ。` で静止 | 有限化（M8）。総時間 ≈ 17.5 s |
 | `motion/dots/period` | `--dots-period` | **1.2 s**（= 3 × `duration/3`）、ドット間 **200 ms** | 入力中ドット | 0.8 Hz。Apple が避けよと言う 0.2 Hz 級の緩慢な振動から離す |
+| `motion/chat/step` | — | **900 ms** | チャットの 1 手（U-16） | 短い台詞を読み終える最短。これより速いと会話ではなく点滅に見える |
+| `motion/chat/hold` | — | **2,400 ms** | 一巡後の間（U-16） | 最後の発言を読み切ってから畳む。`chat/step` の約 2.7 倍 |
+| `motion/photo/step` | — | **4,000 ms** | 写真の送り（U-18） | 1 枚を見終える時間。文字より情報が多いので `chat/step` の 4 倍以上取る |
 
 ### 7.3 ページのモーション・インベントリ
 
@@ -2193,8 +2225,7 @@ CSS カスタムプロパティで持つ。Figma には Variables として置�
 | Pressed | — | 入り `duration/0`、戻り `duration/1` | 同じ |
 | Focus ring | 未定義 | `duration/0`、トランジションなし | 同じ |
 | Marquee | translateX 0→−50 %, 26 s linear infinite | 速度 **40 px/s** linear（duration = グループ幅 ÷ 40）。hover / focus-within / pointer-down で `duration/0` 停止。右端に **停止/再生ボタン**（§7.4.2） | **静止**: 先頭グループを container 内に折返し、クリップなし |
-| Hero 回転語 | 2.6 s ごと、wordIn 0.55 s | 周期 **2.5 s**。退出 `spring/quick`（opacity→0, y→−0.15 em）、80 ms 後に入り `spring/default`（opacity→1, y +0.15 em→0）。**2 周で停止** | 静止 `学ぶ。`（下線あり） |
-| Activity セル hover | background 0.2 s | 背景のみ: 入り `duration/1` → `state/hover-tint`、離脱 `duration/2`。押下 `duration/0` → `state/pressed-tint`。矢印は動かさない（M9、DECISION M-8） | 同じ |
+| Hero 回転語 | 2.6 s ごと、wordIn 0.55 s | 周期 **2.5 s**。退出 `spring/quick`（opacity→0, y→−0.15 em）、80 ms 後に入り `spring/default`（opacity→1, y +0.15 em→0）。**無限ループ**（U-15） | 静止 `学ぶ。` |
 | Button hover / press | hover のみ | hover: 塗りを 1 段（`duration/1` / `duration/2`）。press: さらに 1 段を `duration/0`。**transform なし** | 同じ |
 | Link hover（Nav / Brand / Footer / Social / Inline） | 色・下線 | `text-decoration-thickness` と `text-decoration-color` を `duration/1` / `duration/2`。Nav / Brand は 2 px アクセント下線、文字は ink（§1.3.6） | 同じ |
 | Chat 再生ループ（14 s） | 未定義 | **削除**。スレッドは静止（DECISION M-5） | — |
@@ -2238,11 +2269,12 @@ CSS カスタムプロパティで持つ。Figma には Variables として置�
 - 語列 `学ぶ。→創る。→話す。` を 2 周し `学ぶ。` で静止（遷移 6 回、≈ 17.5 s）。開始は Hero reveal の h1 が静定した 2.5 s 後。
 - 語枠は **幅 3 em 固定**、新旧 2 語を絶対配置で重ねる。3 語とも全角 3 字なのでレイアウトシフトはゼロ（§9.3）。下線は持たない（U-3）。変わるのは語そのものと、その色だけ。
 - 停止条件: Hero が非可視、タブ非表示、ページのスイッチ、reduced-motion。
+
+**DECISION U-15** 回転語は 2 周で静止せず、回り続ける。当初「2 周で止める」を選んだのは WCAG 2.2.2 を停止 UI 無しで満たすためだったが、§7 M8 のページ内モーションスイッチ（マーキー帯の停止ボタン）が回転語・マーキー・入力中ドットの 3 つすべてを止めるので、2.2.2 の「一時停止する手段」は既に存在する。止める理由が消えた以上、3 語を見せ切って静止する動きは「途中で力尽きた」ようにしか見えない。スイッチはヒーローの直下（マーキー帯）にあり、5 秒を超えて動くものと同じ画面内で見つかる。
 - アクセシブルネーム（§8.5）: `<h1>` の可視部分は `aria-hidden`、visually-hidden の「仲間と、学ぶ。創る。話す。」が名前になる。`aria-live` は使わない。
 
 #### 7.4.4 Hover / Press
 
-- Activity セル: hover で `state/hover-tint`（`duration/1`）、離脱 `duration/2`。押下 `duration/0` で `state/pressed-tint`、解除で hover 値へ `duration/1`。矢印は動かさない（M9）。
 - Button: hover = 塗りをランプ 1 段（Ink → n800、Ground solid → n200、Outline on ink → `inverse/state/hover-tint` ground@12）`duration/1` / `duration/2`。press = さらに 1 段（n700 / n300 / `inverse/state/pressed-tint` ground@24）を `duration/0`（§1.3.7）。**`scale()` は使わない**（DECISION M-6）— 2 px 罫に接するボタンが縮むと格子が壊れる。フィードバックは塗りの段差で足りる。
 - Link: 下線は `text-decoration-line: underline; text-decoration-thickness; text-underline-offset: 0.2em`。`text-decoration-thickness` の変更は **レイアウトに影響しない**（行ボックス外に描画される）ので、`border-bottom` は使わない（DECISION M-9）。Nav / Brand: hover = 2 px `color/link/hover` 下線、文字は `ink` のまま。Footer: hover = 文字 `ink` + 1 px 下線。Social: hover = 文字 `poster/ink` + 1 px 下線。Inline: 常時 1 px、hover 2 px。pressed は文字 `color/link/pressed`（Social はホバーと同じ、R5）。
 - Focus: リング `duration/0`（§8.4）。
@@ -2396,7 +2428,6 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | Hero 主・副ボタン | `size/control/md` 44 | ✓ | — |
 | Marquee 停止ボタン | 44 × 52（セル） | ✓ | セル全体をヒット領域に |
 | Bento CTA | `size/control/md` 44 | ✓ | — |
-| Activity セル（セル全体がリンク） | ≥ `size/cell-min` 120 高 | ✓ | — |
 | Member の SNS アイコン | 20 | ::before inset −12 で 44 | 同じカード内で 3 個並ぶため、間隔 12–16 を確保 |
 | Partner インラインリンク | Footnote Bold 13 / 20 | 44 | 上下 −12（セル内に余白あり） |
 | Poster CTA | `size/control/md` 44 | ✓ | — |
@@ -2415,7 +2446,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | 色（インク面） | `color/focus/ring-inverse` = lime-300。ink 12.79 / inverse hover-tint 9.11 | §1.3.6 |
 | 色（ポスター面） | `color/poster/focus/ring` = lime-900。lime-400 上 5.72 | C-8 改・C-28: 面の明度が反転するため 3 トークンに分ける |
 | 適用面の決め方 | リングは `outline-offset` により **親の地** に乗る。ground 上の Ink ボタン → `ring`、ink 上の Ground ボタン → `ring-inverse`、Poster → `ring-inverse` | 部品の塗りではなく親で選ぶ（§6.2.6: Set ごとに固定） |
-| inset リング | Activity セル / Menu row / Marquee control は `outline-offset: -2px`（K-7）。リングは行自身の地（ground / hover-tint / pressed-tint）に乗り、4.59 以上 | 全幅の行で外側リングが隣接罫線と交差するのを避ける |
+| inset リング | Menu row / Marquee control は `outline-offset: -2px`（K-7）。リングは行自身の地（ground / hover-tint / pressed-tint）に乗り、4.59 以上 | 全幅の行で外側リングが隣接罫線と交差するのを避ける |
 | タイミング | `duration/0` | 即時性が要件 |
 | 適用 | `:focus-visible` のみ。マウスクリックでは出さない | ノイズを避ける（HIG: フォーカスはキーボード操作の道標） |
 | 順序 | DOM 順 = 視覚順。`tabindex > 0` 禁止 | 2.4.3 |
@@ -2846,7 +2877,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | reveal 0.7 s cubic-bezier、y 18 | `spring/default`、y 16、stagger 80 / 60 上限 4、1 回のみ |
 | 状態遷移 0.2 s | 入り 100 / 離脱 200、`ease-out`。押下 0 |
 | marquee 26 s infinite | 40 px/s、停止ボタン、reduced-motion で静止 |
-| 回転語 2.6 s / 0.55 s、無限 | 2.5 s、スプリング、2 周で停止 |
+| 回転語 2.6 s / 0.55 s、無限 | 2.5 s、スプリング、無限（停止はページのスイッチ、U-15） |
 | chat 14 s ループ、浮遊バブル | 削除 |
 | Mobile メニュー未定義 | `translateY` + `spring/quick` |
 | `scale(0.97)` 押下（Apple 既定） | 塗り 1 段、scale なし |
@@ -3095,8 +3126,8 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | M-1 | スプリング 2 種（default 1.0/0.40、quick 1.0/0.30）+ 予約 momentum 0.8/0.40。固定時間は 0/100/200/400 ms。`linear()` 曲線は 1 本 | Apple 値をそのまま採り、色は倍数スケールで |
 | M-2 | Reveal: 16 px、once、root-margin −10 %、stagger 80/60 ms 上限 4 | 読まれる前に静定し、待ち時間 ≤ 320 ms |
 | M-3 | Marquee は速度 40 px/s で定義し、右端のセルに 44 の停止/再生ボタンをページ内モーション・スイッチとして置く | 内容量に依存しない速さ。WCAG 2.2.2 はページ内の手段を求める |
-| M-4 | 回転語: 周期 2.5 s、上抜け・下入りのドラム運動、2 周で `学ぶ。` に静止、名前は全文 | 有限化、CLS ゼロ、1.3.1 |
-| M-5 | チャット再生ループとヒーロー浮遊バブルを削除。入力中ドットのみ可視時に動かす | 5 秒超の自動更新を減らす。Purpose |
+| M-4 改 | 回転語: 周期 2.5 s、上抜け・下入りのドラム運動、**無限ループ**（U-15）、名前は全文 | CLS ゼロ、1.3.1 |
+| M-5 改 | ヒーロー浮遊バブルは削除。チャットの再生は U-16 で復活（スイッチが停止手段を持つため） | Purpose |
 | M-6 | 押下フィードバックは塗り 1 段を 0 ms、`scale()` 禁止 | 2 px 罫の格子を壊さない |
 | M-7 | Nav は縮小・自動隠しなし | 位置把握の予測可能性 |
 | M-8 | Activity セル hover は背景ティントのみ。矢印 4 px nudge は不採用 | M9: 1 状態に 2 信号を出さない |
@@ -3146,6 +3177,11 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 | U-12 | Member カードに SNS / 個人サイトのアイコンリンク（20 × 最大 3、`showSocials`） | 顔と実績が見えることが入会判断の材料になる。本文で列挙すると紹介文が読みにくいので 1 行に閉じる。同じアイコンが 5 枚並ぶので、支援技術向けの名前には**人名を含める** |
 | U-13 | メタストリップに「サポーターズ 技育プロジェクト 学生団体公式パートナー」を長崎大学公認と同じ強さで併記 | どちらも第三者が裏づけた事実。片方だけ本文に落とすと格が下がって見える |
 | U-14 | `Bento / Cell Text` の `body` プロパティを全 6 variant で `characters` に配線（バグ修正）。`body` は全 Kind で使える | 値を入れても既定文が出ていた。OFFICIAL セルに 2 つ目の裏づけを入れるために必要だった |
+| U-15 | 回転語は 2 周で静止せず**回り続ける** | §7 M8 のスイッチが停止手段を提供済みで、有限化の理由（WCAG 2.2.2）が消えた。3 語を見せて止まる動きは「力尽きた」ようにしか見えない |
+| U-16 | チャットは静止画をやめ、発言・スタンプ単位で順に現れて**ループ**する | 静止スレッドは「会話のスクリーンショット」に見える。伝えたいのは「いま誰かが喋っていて返事が返ってくる場所だ」ということで、順に現れることでしか出せない |
+| U-17 | 活動セルを**リンクにしない**。hover / pressed / focus / 矢印も持たない | 4 セルとも同じ Discord に着地するので、押した対象と行き先が対応しない。参加への導線は Hero・Bento CTA・Poster が 3 度受け持っている |
+| U-18 | About の写真セルは複数枚を**スライドさせて回す** | 「いろいろやっている」は 1 枚の代表写真では出ない。ベントで唯一「時間を持つ」セルなので、隣のチャットと合わせて 2 つ以上は作らない |
+| U-19 | Discord / SNS の導線にブランドマークを**先頭**に添える | `arrow-up-right` は「外部」を言うが「どこへ」は言わない。ロゴは読む前に分かる唯一の記号。Nav の CTA だけは Mobile の幅検算が溢れるので置かない |
 
 ## 付録 B. 検証
 

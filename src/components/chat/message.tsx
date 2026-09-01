@@ -1,4 +1,5 @@
 import { cva, type VariantProps } from "class-variance-authority";
+import type { CSSProperties } from "react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -68,7 +69,7 @@ const bubbleVariants = cva(
 
 type MessageSide = NonNullable<VariantProps<typeof bubbleVariants>["side"]>;
 
-export type MessageProps =
+export type MessageProps = { style?: CSSProperties } & (
   | {
       side: Extract<MessageSide, "incoming">;
       /** アバターに出す頭文字。1 文字（`Caption/Bold` 12） */
@@ -79,18 +80,19 @@ export type MessageProps =
       side: Extract<MessageSide, "outgoing">;
       initial?: never;
       message: string;
-    };
+    }
+);
 
 /**
  * スレッド（`<ul>`）の 1 行。発言者は visually-hidden で渡す（§8.5）。
  * 自分側は avatar を持たない（Messages と同じで、右寄せが送り手を示す）ぶん、
  * 読み上げには手掛かりが何も残らないので「自分」を必ず補う。
  */
-export function Message({ side, initial, message }: MessageProps) {
+export function Message({ side, initial, message, style }: MessageProps) {
   if (side === "outgoing") {
     return (
       // 右に 6 の padding。テールのはみ出しを行の枠内に収める（§6.12.1）
-      <li className="flex justify-end pe-1.5">
+      <li className="flex justify-end pe-1.5" style={style}>
         <span className="sr-only">自分</span>
         <p className={bubbleVariants({ side })}>
           {message}
@@ -102,7 +104,7 @@ export function Message({ side, initial, message }: MessageProps) {
 
   return (
     // avatar は吹き出しの「下端」に揃える（§6.12.1）
-    <li className="flex items-end gap-inline-xs">
+    <li className="flex items-end gap-inline-xs" style={style}>
       <span
         aria-hidden="true"
         className="grid size-avatar shrink-0 place-items-center rounded-full bg-avatar text-caption-bold text-ink"

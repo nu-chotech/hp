@@ -72,7 +72,6 @@ export function Activities() {
           {activities.map((activity, index) => (
             <ActivityCell
               activity={activity}
-              cellId={`activity-${index}`}
               className={cellSpans[index] ?? fallbackSpan}
               key={activity.title}
               // 1 件目だけ Feature。入口の太さの差を面積で示す（DECISION U-8）

@@ -57,18 +57,47 @@ export const spring = {
   quick: { type: "spring", bounce: 0, visualDuration: 0.3 },
 } as const satisfies Record<string, Transition>;
 
-/** ヒーローの回転語（§7.4.3）。3 語 × 2 周で停止する */
+/**
+ * ヒーローの回転語（§7.4.3）。**回り続ける**（DECISION U-15）。
+ *
+ * 有限化していたのは WCAG 2.2.2 を停止 UI 無しで満たすためだったが、
+ * ページ内のモーションスイッチが 3 つのループを全部止めるので条件は満たされている。
+ */
 export const heroWord = {
   periodMs: 2500,
   /** t=0 で退出、t=80ms で入りを始める。重なりが「ドラム」の連続性を作る */
   transitionOffsetMs: 80,
-  cycles: 2,
   /** h1 が静定してから回し始める（reveal の spring 1 周期ぶん待つ） */
   startDelayMs: 2500,
 } as const;
 
 /** 入力中ドット（§7.4.5）。0.8Hz。セルが可視の間だけ動かす */
 export const typingDots = { periodMs: 1200, staggerMs: 200 } as const;
+
+/**
+ * チャットの再生（§6.12 / DECISION U-16）
+ *
+ * 発言とスタンプが 1 手ずつ現れ、一巡したら間を置いて先頭から繰り返す。
+ * 高さは最初から全行ぶん取り、未再生の行は不透明度だけを 0 にする — 1 行ずつ
+ * 足すとセルが伸び縮みして隣の写真セルまで動く。
+ */
+export const chatThread = {
+  /** 1 手の間隔。短い台詞を読み終える最短で、これより速いと点滅に見える */
+  stepMs: 900,
+  /** 一巡後の間。最後の発言を読み切ってから畳む */
+  holdMs: 2400,
+} as const;
+
+/**
+ * 写真の送り（§6.11.5 / DECISION U-18）
+ *
+ * 末尾に先頭の複製を 1 枚置き、そこまで送ったらトランジション無しで 0 に戻す。
+ * 逆回しの掃引を見せないための定石。
+ */
+export const photoSlides = {
+  /** 1 枚を見終える時間。文字より情報が多いのでチャットの 4 倍以上取る */
+  stepMs: 4000,
+} as const;
 
 /** マーキー（§7.4.2）。duration ではなく速度で持つので内容量が変わっても速さが一定 */
 export const marquee = { speedPxPerSecond: 40 } as const;

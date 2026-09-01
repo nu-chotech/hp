@@ -131,8 +131,6 @@ export function HeroReveal({ children }: { children: ReactNode }) {
 }
 
 const words = heroContent.headline.words;
-/** 3 語 × 2 周 = 6 遷移。最後は最初の語（学ぶ。）に戻って静止する（M8） */
-const TOTAL_STEPS = words.length * heroWord.cycles;
 
 type WordState = "active" | "exiting" | "idle";
 
@@ -238,10 +236,17 @@ export function RotatingWord() {
     };
   }, []);
 
+  /**
+   * 回り続ける（DECISION U-15）。止める手段はページ内のモーションスイッチが持つ
+   * ので、2 周で静止させる必要がなくなった。
+   *
+   * 画面外やタブ非表示で止めたあと戻ってきたときは、1 周期ぶん置いてから次の語へ。
+   * 初回だけ start-delay を使うのは、h1 が静定した直後に語が動くと reveal の
+   * 続きに見えてしまい、「回っている」ことに気づかれないため。
+   */
   useEffect(() => {
     // 止まっているときは「学ぶ。」で静止する。動かないだけで、語は最初から読める
     if (!playing || !armed || !awake) return;
-    if (stepRef.current >= TOTAL_STEPS) return;
 
     let interval: ReturnType<typeof setInterval> | undefined;
     const step = () => {
@@ -250,16 +255,12 @@ export function RotatingWord() {
         current: (state.current + 1) % words.length,
         previous: state.current,
       }));
-      if (stepRef.current >= TOTAL_STEPS) clearInterval(interval);
     };
 
-    // 1 語目は静定から start-delay ぶん置く。以降は 1 周期ごと
     const first = setTimeout(
       () => {
         step();
-        if (stepRef.current < TOTAL_STEPS) {
-          interval = setInterval(step, heroWord.periodMs);
-        }
+        interval = setInterval(step, heroWord.periodMs);
       },
       stepRef.current === 0 ? heroWord.startDelayMs : heroWord.periodMs,
     );

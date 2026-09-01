@@ -1,5 +1,5 @@
 import type { ComponentProps } from "react";
-import { ArrowUpRight } from "@/components/icons";
+import { ArrowUpRight, BrandDiscord } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Cell } from "@/components/ui/ruled-grid";
 import { cn } from "@/lib/utils";
@@ -54,6 +54,8 @@ export function CellCta({
           asChild
           className="w-full shrink-0 desktop:w-auto"
           icon={ArrowUpRight}
+          // 行き先が Discord であることは矢印ではなくマークが言う（U-19）
+          brand={BrandDiscord}
           surface="ink"
           variant="outline"
         >
