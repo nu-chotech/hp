@@ -9,13 +9,8 @@ import {
   useState,
 } from "react";
 import { heroContent } from "@/content/hero";
-import {
-  duration,
-  heroWord,
-  MOTION_EVENT,
-  MOTION_STORAGE_KEY,
-  motionVar,
-} from "@/lib/motion";
+import { duration, heroWord, motionVar } from "@/lib/motion";
+import { useMotionPlaying } from "@/lib/use-motion-switch";
 import { revealElement } from "@/lib/use-reveal";
 
 /**
@@ -186,54 +181,6 @@ function wordState(
   return "idle";
 }
 
-/** OS の設定は実行中に変わりうる。ブートストラップの html.reduced と同じ問いを見る */
-function usePrefersReducedMotion() {
-  const [reduced, setReduced] = useState(false);
-
-  useEffect(() => {
-    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const sync = () => setReduced(query.matches);
-    sync();
-    query.addEventListener("change", sync);
-    return () => query.removeEventListener("change", sync);
-  }, []);
-
-  return reduced;
-}
-
-/**
- * ページ内の動きスイッチ（§7.4.2、M8）。マーキーの停止ボタンが
- * localStorage["chotech:motion"] に "paused" / "running" を書き、回転語もそれに従う。
- *
- * storage イベントは書いた当のドキュメントには **届かない** 仕様なので、それだけを
- * 見ていると押したタブで止まらない。回転語は 17.5s 動く = WCAG 2.2.2 の 5s を超え、
- * 止める手段は必須なので、同一ドキュメント用に MOTION_EVENT も購読する（他タブ = storage、
- * 自タブ = MOTION_EVENT）。スイッチ側は setItem の直後にこれを dispatch する契約。
- */
-function useMotionPaused() {
-  const [paused, setPaused] = useState(false);
-
-  useEffect(() => {
-    const read = () => {
-      try {
-        setPaused(localStorage.getItem(MOTION_STORAGE_KEY) === "paused");
-      } catch {
-        // プライベートモード等で読めないときは動かす側に倒す
-        setPaused(false);
-      }
-    };
-    read();
-    window.addEventListener("storage", read);
-    window.addEventListener(MOTION_EVENT, read);
-    return () => {
-      window.removeEventListener("storage", read);
-      window.removeEventListener(MOTION_EVENT, read);
-    };
-  }, []);
-
-  return paused;
-}
-
 /**
  * Hero / Rotating word（§6.8.3）
  *
@@ -243,8 +190,13 @@ function useMotionPaused() {
  */
 export function RotatingWord() {
   const boxRef = useRef<HTMLSpanElement>(null);
-  const reduced = usePrefersReducedMotion();
-  const paused = useMotionPaused();
+  /**
+   * 動くかどうかは 1 つのスイッチが決める（§7.4.2 / M8）。低減設定は「既定で停止」
+   * であって「絶対に動かない」ではないので、reduced-motion を直接見ずに
+   * オプトインまで畳み込んだ playing を見る — 読者が帯の再生ボタンを押したら
+   * マーキー・ドットと一緒に回転語も戻る。
+   */
+  const playing = useMotionPlaying();
   /** Hero が画面内 かつ タブが前面（§7.4.3 の停止条件） */
   const [awake, setAwake] = useState(false);
   /** h1 が静定した。ここから motion/word/start-delay を数える（§6.8.3） */
@@ -274,8 +226,9 @@ export function RotatingWord() {
     };
   }, []);
 
+  // 静定の待機は動くかどうかに依らず張っておく。後からオプトインした読者も
+  // その場から回り始められる（heroSettle は低減設定なら即座に解決する）
   useEffect(() => {
-    if (reduced) return;
     let cancelled = false;
     heroSettle().then(() => {
       if (!cancelled) setArmed(true);
@@ -283,11 +236,11 @@ export function RotatingWord() {
     return () => {
       cancelled = true;
     };
-  }, [reduced]);
+  }, []);
 
   useEffect(() => {
-    // reduced-motion では「学ぶ。」で静止する。動かないだけで、語は最初から読める
-    if (reduced || paused || !armed || !awake) return;
+    // 止まっているときは「学ぶ。」で静止する。動かないだけで、語は最初から読める
+    if (!playing || !armed || !awake) return;
     if (stepRef.current >= TOTAL_STEPS) return;
 
     let interval: ReturnType<typeof setInterval> | undefined;
@@ -315,7 +268,7 @@ export function RotatingWord() {
       clearTimeout(first);
       clearInterval(interval);
     };
-  }, [reduced, paused, armed, awake]);
+  }, [playing, armed, awake]);
 
   return (
     // 枠幅 3em は「全角 3 字」という語の設計そのもの（§6.8.3）。対応するトークンは無い。
@@ -328,7 +281,7 @@ export function RotatingWord() {
           <span
             key={word}
             className={wordVariants({ state })}
-            style={reduced ? undefined : wordTransition[state]}
+            style={playing ? wordTransition[state] : undefined}
           >
             {word}
           </span>

@@ -96,18 +96,24 @@ const textLink = cva(
   },
 );
 
-/** 外部リンクの矢印（§6.1.9）。文中は 4、コントロール状の行では gap の 8 で送る */
+/**
+ * 外部リンクの矢印（§6.1.9）。許される送りは 2 つだけ — 文中の 4 と、
+ * コントロール状に並ぶときの 8。
+ *
+ * 送りを「どの variant か」ではなく「余白を誰が持つか」で切るのは、
+ * 単独 inline リンク（Partner セル）が inline-flex + gap 8 を持つため:
+ * そこに文中用の margin 4 を足すと 12 になり、どちらでもない値になる。
+ */
 const textLinkIcon = cva("size-icon-sm", {
   variants: {
-    variant: {
-      nav: "",
-      footer: "",
-      social: "",
+    spacing: {
       // 段落内は flex にできない（折返しが壊れる）ので、gap ではなく margin で 4 を作る
-      inline: "ms-inline-icon align-middle",
+      inflow: "ms-inline-icon align-middle",
+      // 親が inline-flex で gap を持つ側。ここで margin を足さない
+      gap: "",
     },
   },
-  defaultVariants: { variant: "inline" },
+  defaultVariants: { spacing: "gap" },
 });
 
 export interface TextLinkProps
@@ -141,7 +147,11 @@ export function TextLink({
       {external ? (
         <>
           <span className="sr-only">（外部）</span>
-          <ArrowUpRight className={textLinkIcon({ variant })} />
+          <ArrowUpRight
+            className={textLinkIcon({
+              spacing: variant === "inline" && !standalone ? "inflow" : "gap",
+            })}
+          />
         </>
       ) : null}
     </a>

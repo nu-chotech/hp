@@ -398,6 +398,9 @@
 
   /* inset — 面の「内側」 */
   --inset-xs: 0.5rem; /* 8 — バブル・引用の上下、チップの左右 */
+  /* 11 — 入力中バブルの左右（§6.12.3）。7px の点 3 つ + gap 5 × 2 = 31 の左右に
+     11 を置くと総幅 53 で、隣の吹き出し（Callout 14 の 1 行）と釣り合う */
+  --inset-typing-x: 0.6875rem;
   --inset-sm: 0.75rem; /* 12 — バブル・引用の左右（横 = 1.5 × 縦で重心が安定する） */
   --inset-md: 1rem; /* 16 — スタッフカード本文、36px ボタンの左右 */
   --inset-control: 1.25rem; /* 20 — 44px ボタンの左右。H:V ≈ 1.7 */
@@ -419,6 +422,9 @@
 
   /* inline — 横に並ぶ兄弟の「間」 */
   --inline-icon: 0.25rem; /* 4 — インラインアイコン ↔ 文字 */
+  /* 5 — 入力中ドットの間隔（§6.12.3）。4px モジュールから外れる唯一の間隔で、
+     7px の点が 4 では繋がって見え、8 では 3 点が 1 つの群に見えなくなる */
+  --inline-dot: 0.3125rem;
   --inline-xs: 0.5rem; /* 8 — コントロール内のアイコン ↔ ラベル、アバター ↔ バブル */
   --inline-sm: 0.75rem; /* 12 — ヒーローのボタン間、ブランドロックアップ */
   --inline-md: 1rem; /* 16 — ナビ項目間、CTA セルの文 ↔ ボタン */
@@ -747,6 +753,7 @@
 
   /* --- spacing（エイリアス）------------------------------------------------ */
   --spacing-inset-xs: var(--inset-xs);
+  --spacing-inset-typing-x: var(--inset-typing-x);
   --spacing-inset-sm: var(--inset-sm);
   --spacing-inset-md: var(--inset-md);
   --spacing-inset-control: var(--inset-control);
@@ -762,6 +769,7 @@
   --spacing-stack-lg: var(--stack-lg);
   --spacing-stack-xl: var(--stack-xl);
   --spacing-inline-icon: var(--inline-icon);
+  --spacing-inline-dot: var(--inline-dot);
   --spacing-inline-xs: var(--inline-xs);
   --spacing-inline-sm: var(--inline-sm);
   --spacing-inline-md: var(--inline-md);
@@ -1065,12 +1073,19 @@
     transition-delay: 0s;
   }
 
-  .marquee__track,
-  .typing__dot {
+  /*
+   * ループする動き（マーキー・入力中ドット・回転語）だけは、読者本人が明示的に
+   * オプトインしたときに戻せる（§7 M8 / §6.9.3「低減設定でも押せば再生できる」）。
+   * だからここは無条件ではなく html[data-motion="playing"] を除いて掛ける。
+   * これが無いと停止/再生ボタンは自分のアイコンを変えるだけの飾りになり、
+   * aria-pressed が事実と違うことを言い続ける。
+   */
+  html:not([data-motion="playing"]) .marquee__track,
+  html:not([data-motion="playing"]) .typing__dot {
     animation: none;
   }
 
-  .hero__word {
+  html:not([data-motion="playing"]) .hero__word {
     transition: none;
   }
 
@@ -1078,6 +1093,18 @@
     transition: opacity var(--dur-2) var(--ease-color);
     transform: none;
   }
+}
+
+/*
+ * ページ内のモーションスイッチ（§7 M8）
+ *
+ * 3 つのループが 1 つのスイッチを共有する。属性は <html> に置き、
+ * src/lib/use-motion-switch.ts だけが書く — 同一ドキュメントの切替は storage
+ * イベントを飛ばさないので、JS の購読ではなく DOM の属性を唯一の真実にする。
+ */
+html[data-motion="paused"] .marquee__track,
+html[data-motion="paused"] .typing__dot {
+  animation-play-state: paused;
 }
 
 /*

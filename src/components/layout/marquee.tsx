@@ -53,7 +53,6 @@ export interface MarqueeProps {
 export function Marquee({ className }: MarqueeProps) {
   const { playing, setPlaying } = useMotionSwitch();
   const [awake, setAwake] = useState(true);
-  const [reducedOptIn, setReducedOptIn] = useState(false);
   const groupRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const bandRef = useRef<HTMLDivElement>(null);
@@ -79,23 +78,6 @@ export function Marquee({ className }: MarqueeProps) {
     return () => observer.disconnect();
   }, []);
 
-  /**
-   * 低減設定の読者が「押して再生」した状態だけを CSS に渡す（§6.9.3 効果行）
-   *
-   * 静止／動作の切替をメディアクエリ単独で書くと、スイッチを押しても表示が
-   * 変わらず、aria-pressed だけが嘘をつく。かといって `playing` をそのまま
-   * 属性に出すと、SSR の初期値（= 再生中）が JS の無い低減設定の読者にも
-   * 届いて静止フォールバックが消える。だから「マウント済み ∧ 低減設定 ∧ 再生」
-   * のときだけ属性を出す。
-   */
-  useEffect(() => {
-    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const sync = () => setReducedOptIn(playing && query.matches);
-    sync();
-    query.addEventListener("change", sync);
-    return () => query.removeEventListener("change", sync);
-  }, [playing]);
-
   // 画面外とバックグラウンドタブでは止める（§7.5「バックグラウンド / 非可視」）
   useEffect(() => {
     const band = bandRef.current;
@@ -119,19 +101,15 @@ export function Marquee({ className }: MarqueeProps) {
   return (
     <div
       ref={bandRef}
-      data-motion={reducedOptIn ? "playing" : undefined}
       className={cn("flex min-h-band-marquee flex-col bg-ground", className)}
     >
-      {/* 動きの既定は CSS 側に置く。globals.css の
-          `@media (prefers-reduced-motion) .marquee__track { animation: none }` に
-          必ず負けるよう、既定側は :where() で詳細度 0 にしてある。
+      {/* 動きの既定は CSS 側に置き、詳細度 0（:where）で書く。止める側 —
+          globals.css の低減設定と `html[data-motion="paused"]` — に必ず負けるため。
 
-          例外は `[data-motion="playing"]` の規則群（詳細度 0,2,0 以上）。§6.9.3 が
-          求める「低減設定でも押せば再生できる」は、読者本人の明示的なオプトインで
-          あって装飾の動きではない。globals.css の低減規則がメディアクエリ単独で
-          書かれている間は、コンポーネント側で詳細度を上げる以外にこれを実装する
-          手段がない（トークン層に `:where([data-motion="playing"])` 等のガードが
-          入ったら、この規則群も :where() に戻す）。
+          このファイルが持つのは「低減設定のときに何を見せるか」だけ。読者が押して
+          再生を選んだ状態（`html[data-motion="playing"]`）では動く側に戻す。
+          アニメーションを殺す規則は globals.css 側が同じ属性を見て外れるので、
+          ここで再宣言しない — 再生の条件が 2 か所に散ると必ず食い違う。
 
           `style` は precedence 付きで <head> へ巻き上げる（React 19）。body 内の
           <style> は metadata content の置き場所ではない */}
@@ -144,13 +122,8 @@ export function Marquee({ className }: MarqueeProps) {
 @media (prefers-reduced-motion: reduce){
 :where(.marquee__view){display:none}
 :where(.marquee__static){display:flex}
-[data-motion="playing"] .marquee__view{display:block}
-[data-motion="playing"] .marquee__static{display:none}
-[data-motion="playing"] .marquee__track{animation:marquee-scroll var(--marquee-duration,26s) linear infinite}
-[data-motion="playing"] .marquee__track[data-paused="true"]{animation-play-state:paused}
-[data-motion="playing"] .marquee__view:hover .marquee__track,
-[data-motion="playing"] .marquee__view:focus-within .marquee__track,
-[data-motion="playing"] .marquee__view:active .marquee__track{animation-play-state:paused}
+html[data-motion="playing"] .marquee__view{display:block}
+html[data-motion="playing"] .marquee__static{display:none}
 }`}</style>
 
       <Rule />

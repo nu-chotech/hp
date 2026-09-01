@@ -102,7 +102,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja" className={lineSeedJP.variable}>
+    /*
+     * suppressHydrationWarning: 下のブートストラップが React より前に <html> へ
+     * `js` / `reduced` を足すので、サーバの className とクライアントの実物が必ず食い違う。
+     * これは意図した差分で、抑止は 1 階層にしか及ばない（中身の不一致は今までどおり出る）。
+     */
+    <html lang="ja" className={lineSeedJP.variable} suppressHydrationWarning>
       <body className="bg-ground text-ink font-sans">
         {/* reveal の隠し状態は html.js が付いている間だけ効く（§7 グローバル 5）。
             本文より前に同期で走らせないと、隠れる前の一瞬が見えてしまう。

@@ -49,10 +49,10 @@ const DOT_KEYFRAMES = `
 }
 `;
 
-/** ドット間 5px。4px モジュールに乗らない唯一の値で、対応するトークンが無い（§3.5 の size/dot 注記） */
-const DOT_GAP = "gap-[0.3125rem]";
-/** 吹き出しの inset 16 × 11。11 に対応するトークンが無いので横だけ実値で置く（§6.12.3） */
-const TYPING_INSET = "px-[0.6875rem] py-inset-md";
+/** ドット間 5。4px モジュールから外れる唯一の間隔（§6.12.3、--inline-dot） */
+const DOT_GAP = "gap-inline-dot";
+/** 吹き出しの inset 16 × 11（§6.12.3）。横だけ専用トークン --inset-typing-x */
+const TYPING_INSET = "px-inset-typing-x py-inset-md";
 
 export function Typing() {
   const ref = useRef<HTMLLIElement>(null);
