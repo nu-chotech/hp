@@ -7,7 +7,7 @@ import { Container } from "@/components/ui/container";
 import { insetFocusRing, tintedControl } from "@/components/ui/interaction";
 import { Rule } from "@/components/ui/rule";
 import { TextLink } from "@/components/ui/text-link";
-import { navLinks } from "@/config/site";
+import { navLinks, sectionHref } from "@/config/site";
 import { cn } from "@/lib/utils";
 
 /**
@@ -24,7 +24,7 @@ import { cn } from "@/lib/utils";
  */
 
 /** ナビが指すセクション id。DOM 順に持つ（aria-current の決定に使う） */
-const SECTION_IDS = navLinks.map((link) => link.href.replace("#", ""));
+const SECTION_IDS = navLinks.map((link) => link.id);
 
 /**
  * アンカー移動後にフォーカスを移す（§7.4.6 / WCAG 2.4.3）
@@ -269,11 +269,11 @@ export function NavBar({ brand, cta, menuCta, className }: NavBarProps) {
           {/* 横並びに開くのは tablet 48rem から。トークンは Mobile のまま（L-29） */}
           <ul className="hidden items-center gap-inline-md tablet:flex">
             {navLinks.map((link) => (
-              <li key={link.href}>
+              <li key={link.id}>
                 <TextLink
                   variant="nav"
-                  href={link.href}
-                  current={current === link.href.replace("#", "")}
+                  href={sectionHref(link.id)}
+                  current={current === link.id}
                 >
                   {link.label}
                 </TextLink>
@@ -327,13 +327,13 @@ export function NavBar({ brand, cta, menuCta, className }: NavBarProps) {
           >
             <ul>
               {navLinks.map((link, index) => (
-                <li key={link.href}>
+                <li key={link.id}>
                   {/* 行間は 1px hairline（構成要素の内部の仕切り、§4.2） */}
                   {index > 0 ? <Rule weight="hair" tone="hairline" /> : null}
                   <MenuRow
-                    href={link.href}
+                    href={sectionHref(link.id)}
                     label={link.label}
-                    current={current === link.href.replace("#", "")}
+                    current={current === link.id}
                   />
                 </li>
               ))}

@@ -1,4 +1,4 @@
-import { externalLinks, sectionIds } from "@/config/site";
+import { externalLinks, sectionHref, sectionIds } from "@/config/site";
 
 /**
  * Hero（§6.8）
@@ -27,7 +27,7 @@ export const heroContent = {
     primary: { label: "参加する", href: externalLinks.discord, external: true },
     secondary: {
       label: "活動を見る",
-      href: `#${sectionIds.activities}`,
+      href: sectionHref(sectionIds.activities),
       external: false,
     },
   },

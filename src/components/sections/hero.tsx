@@ -2,6 +2,7 @@ import { ArrowUpRight, BrandDiscord } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { sectionVariants } from "@/components/ui/section";
+import { sectionIds } from "@/config/site";
 import { heroContent } from "@/content/hero";
 import { cn } from "@/lib/utils";
 import { MetaStrip } from "./hero/meta-strip";
@@ -31,7 +32,7 @@ export function Hero() {
     <section
       /* Nav / Footer の brand lockup がここへ戻る（§6.6）。
          §3.9 の scroll-margin-top: var(--size-nav) も id が無ければ働かない */
-      id="hero"
+      id={sectionIds.hero}
       data-surface="ink"
       className={cn(
         sectionVariants({ surface: "ink" }),
