@@ -145,6 +145,10 @@
   --hero-word: var(--lime-400); /* ink 10.83 */
   --poster-selection: var(--alpha-ink-12); /* Lime #8bce03 */
   --poster-action-fill: var(--neutral-950); /* Lime 10.83 */
+  /* 面側の 1 段（§1.3.7）。汎用 action/fill-hover を直接引くと Mono で反転しないので、
+     ポスター専用ロールとして持つ（C-28 の原則をホバー・プレスにも通す） */
+  --poster-action-fill-hover: var(--neutral-800); /* ポスター上 7.61 */
+  --poster-action-fill-pressed: var(--neutral-700); /* ポスター上 5.29 */
   --poster-action-ink: var(--neutral-100); /* 上の面 14.86 */
   --poster-focus-ring: var(--lime-900); /* lime-400 5.72 */
 
@@ -216,6 +220,8 @@
   --poster-ink-secondary: var(--inverse-ink-secondary);
   --poster-selection: var(--inverse-selection);
   --poster-action-fill: var(--inverse-action-fill);
+  --poster-action-fill-hover: var(--inverse-action-fill-hover);
+  --poster-action-fill-pressed: var(--inverse-action-fill-pressed);
   --poster-action-ink: var(--inverse-action-ink);
   --poster-focus-ring: var(--focus-ring-inverse);
   --pop-separator: var(--ink-tertiary);
@@ -588,6 +594,8 @@
   --color-hero-word: var(--hero-word);
   --color-poster-selection: var(--poster-selection);
   --color-poster-action-fill: var(--poster-action-fill);
+  --color-poster-action-fill-hover: var(--poster-action-fill-hover);
+  --color-poster-action-fill-pressed: var(--poster-action-fill-pressed);
   --color-poster-action-ink: var(--poster-action-ink);
   --color-poster-focus-ring: var(--poster-focus-ring);
   /* 状態 */

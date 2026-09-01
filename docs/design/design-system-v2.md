@@ -276,7 +276,9 @@ Tailwind v4 lime をそのまま採用。段の変更なし。**インディゴ�
 | `color/action/fill` / `fill-hover` / `fill-pressed` | neutral-950 / 800 / 700 | FF | ナビ CTA「参加する」、Mobile メニュー CTA、スキップリンク | ラベル 14.86 / 9.04 / 5.83 |
 | `color/action/ink` | neutral-100 | TF SF | 同ラベルとアイコン | — |
 | `color/inverse/action/fill` / `fill-hover` / `fill-pressed` | neutral-100 / 200 / 300 | FF | ヒーロー主ボタン（**インク面のみ**） | ラベル 14.86 / 13.51 / 11.19 |
-| `color/poster/action/fill` | Mono → inverse/action/fill (neutral-100) / Lime neutral-950 | FF | ポスター CTA の面。ホバー・プレスは面側の 1 段（Mono neutral-200 / 300、Lime `action/fill-hover` neutral-800 = ポスター上 7.61） | 面 vs ポスター 14.86 / 10.83 |
+| `color/poster/action/fill` | Mono → inverse/action/fill (neutral-100) / Lime neutral-950 | FF | ポスター CTA の面 | 面 vs ポスター 14.86 / 10.83 |
+| `color/poster/action/fill-hover` | Mono → inverse/action/fill-hover (neutral-200) / Lime neutral-800 | FF | 同ホバー。汎用 `action/fill-hover` を直接引くと Mono で反転しないので専用ロールにする（C-28 の原則をホバーにも通す） | 13.51 / 7.61 |
+| `color/poster/action/fill-pressed` | Mono → inverse/action/fill-pressed (neutral-300) / Lime neutral-700 | FF | 同プレス。ホバーの次の 1 段 | 11.19 / 5.29 |
 | `color/poster/action/ink` | Mono → inverse/action/ink (neutral-950) / Lime neutral-100 | TF SF | 同ラベルとアイコン | 14.86 / 14.86 |
 | `color/inverse/action/ink` | neutral-950 | TF SF | 同ラベルとアイコン | — |
 
@@ -1512,9 +1514,9 @@ Focus-visible は全スタイル共通で **リング 2px offset 2**、色は地
 | **Ink solid** | Default | `action/fill` 950 | `action/ink` ground（14.86） | — | Ground / Ink（H:28） |
 | | Hover | `action/fill-hover` 800 | ground（9.04） | — | |
 | | Pressed | `action/fill-pressed` 700 | ground（5.83） | — | |
-| **Accent primary**（ライブラリ） | Default | `accent` 600 | `on-accent`（5.79） | — | Ground / Primary（S:81） |
-| | Hover | `accent-hover` 700 | （7.24） | — | |
-| | Pressed | `accent-pressed` 800 | （8.89） | — | |
+| **Accent primary**（ライブラリ） | Default | `accent` lime-400 | `on-accent` ink（10.83） | — | Ground / Primary（S:81） |
+| | Hover | `accent-hover` lime-500 | ink（8.52） | — | |
+| | Pressed | `accent-pressed` lime-600 | ink（5.42） | — | |
 | **Outline**（ライブラリ） | Default | なし | `ink` | currentColor（ink） | Ground / Secondary（S:84） |
 | | Hover | `state/hover-tint` | ink（13.21） | ink | |
 | | Pressed | `state/pressed-tint` | ink（11.78） | ink | |

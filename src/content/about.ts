@@ -8,7 +8,10 @@ import { externalLinks } from "@/config/site";
 export type ChatEntry =
   | { kind: "incoming"; initial: string; message: string }
   | { kind: "outgoing"; message: string }
-  | { kind: "reactions"; reactions: { icon: "thumbUp" | "eye"; count: string }[] }
+  | {
+      kind: "reactions";
+      reactions: { icon: "thumbUp" | "eye"; count: string }[];
+    }
   | { kind: "typing" };
 
 /**
@@ -44,7 +47,11 @@ export const aboutContent = {
     kicker: "#general — いつものChoTech",
     note: "こんな会話が、毎日どこかで。",
     thread: [
-      { kind: "incoming", initial: "田", message: "ハッカソン誰か一緒に出ない？" },
+      {
+        kind: "incoming",
+        initial: "田",
+        message: "ハッカソン誰か一緒に出ない？",
+      },
       {
         kind: "reactions",
         reactions: [

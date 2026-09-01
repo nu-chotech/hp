@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { MotionProvider } from "@/components/providers/MotionProvider";
 import { siteConfig } from "@/config/site";
+import { MOTION_BOOTSTRAP_SCRIPT } from "@/lib/motion";
 import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
@@ -102,7 +103,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja" className={lineSeedJP.variable}>
-      <body className="bg-ground text-ink font-sans antialiased">
+      <body className="bg-ground text-ink font-sans">
+        {/* reveal の隠し状態は html.js が付いている間だけ効く（§7 グローバル 5）。
+            本文より前に同期で走らせないと、隠れる前の一瞬が見えてしまう。
+            font-smoothing は body に置かない — §2.8 は反転地の .on-ink だけに与える */}
+        {/* biome-ignore lint/security/noDangerouslySetInnerHtml: 実行前に描画を止める必要があるので、外部ファイルではなくインラインの固定文字列で流し込む */}
+        <script dangerouslySetInnerHTML={{ __html: MOTION_BOOTSTRAP_SCRIPT }} />
         <MotionProvider>{children}</MotionProvider>
       </body>
     </html>

@@ -66,7 +66,11 @@ export interface SocialLink {
 
 export const socialLinks: readonly SocialLink[] = [
   { brand: "x", href: "https://x.com/", label: "X" },
-  { brand: "instagram", href: "https://www.instagram.com/", label: "Instagram" },
+  {
+    brand: "instagram",
+    href: "https://www.instagram.com/",
+    label: "Instagram",
+  },
   { brand: "github", href: "https://github.com/nu-chotech", label: "GitHub" },
 ] as const;
 
