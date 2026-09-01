@@ -1,0 +1,56 @@
+export interface Persona {
+  /** Case 01 … 06。連番はここだけに残る（DECISION U-4） */
+  caseNo: string;
+  title: string;
+  /** 一人称の声。鉤括弧はコンテンツ側に持つ（§6.14） */
+  quote: string;
+  /** 次の一歩。先頭に arrow-right を添える */
+  recommendation: string;
+}
+
+/**
+ * こんな人に、おすすめ（§6.14）
+ *
+ * 「誰に向けたものか」を人物像で示す節。カードはリンクではない。
+ */
+export const personasContent = {
+  heading: { title: "こんな人に、おすすめ。", label: "FOR YOU" },
+  personas: [
+    {
+      caseNo: "Case 01",
+      title: "これから始めたい人",
+      quote: "「プログラミング、何から始めればいいか分からない…」",
+      recommendation: "Dev Dayで一緒に手を動かそう",
+    },
+    {
+      caseNo: "Case 02",
+      title: "開発が好きなエンジニア",
+      quote: "「個人開発、一人だと続かないんだよね」",
+      recommendation: "Projectで仲間と作り切ろう",
+    },
+    {
+      caseNo: "Case 03",
+      title: "UI/UXが好きな人",
+      quote: "「デザインの話ができる仲間がほしい」",
+      recommendation: "ProjectでアプリのUIを担当しよう",
+    },
+    {
+      caseNo: "Case 04",
+      title: "ハッカソンに出たい人",
+      quote: "「出たいけど、チームメイトが見つからない」",
+      recommendation: "Discordで一声かければ集まります",
+    },
+    {
+      caseNo: "Case 05",
+      title: "研究の話をしたい人",
+      quote: "「自分の研究、誰かに聞いてほしい」",
+      recommendation: "Talk Dayのテーマは技術も研究もOK",
+    },
+    {
+      caseNo: "Case 06",
+      title: "発信してみたい人",
+      quote: "「LT、一回やってみたいかも」",
+      recommendation: "Talk Dayは5分・経験ゼロでOK",
+    },
+  ] satisfies Persona[],
+} as const;

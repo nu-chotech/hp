@@ -1,8 +1,40 @@
 import type { Metadata, Viewport } from "next";
+import localFont from "next/font/local";
 import { MotionProvider } from "@/components/providers/MotionProvider";
 import { siteConfig } from "@/config/site";
+import { MOTION_BOOTSTRAP_SCRIPT } from "@/lib/motion";
 import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
+
+/**
+ * LINE Seed JP のみ（§2.0）。フォールバックは sans-serif だけ（DECISION M-20）。
+ *
+ * npm パッケージの woff2 を next/font/local で self-host する。CDN を挟まないので
+ * 追加のオリジンへの接続が要らず、preload と font-display を Next 側で制御できる。
+ */
+const lineSeedJP = localFont({
+  src: [
+    {
+      path: "../../node_modules/line-seed-jp/woff2/LINESeedJP_OTF_Rg.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../node_modules/line-seed-jp/woff2/LINESeedJP_OTF_Bd.woff2",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../../node_modules/line-seed-jp/woff2/LINESeedJP_OTF_Eb.woff2",
+      weight: "800",
+      style: "normal",
+    },
+  ],
+  display: "swap",
+  variable: "--font-line-seed-jp",
+  fallback: ["sans-serif"],
+  preload: true,
+});
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -26,7 +58,7 @@ export const metadata: Metadata = {
     default: siteConfig.title,
     template: `%s | ${siteConfig.name}`,
   },
-  description: siteConfig.longDescription,
+  description: siteConfig.description,
   keywords: [...siteConfig.keywords],
   appleWebApp: {
     capable: true,
@@ -70,8 +102,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja">
-      <body className="font-sans antialiased">
+    /*
+     * suppressHydrationWarning: 下のブートストラップが React より前に <html> へ
+     * `js` / `reduced` を足すので、サーバの className とクライアントの実物が必ず食い違う。
+     * これは意図した差分で、抑止は 1 階層にしか及ばない（中身の不一致は今までどおり出る）。
+     */
+    <html lang="ja" className={lineSeedJP.variable} suppressHydrationWarning>
+      <body className="bg-ground text-ink font-sans">
+        {/* reveal の隠し状態は html.js が付いている間だけ効く（§7 グローバル 5）。
+            本文より前に同期で走らせないと、隠れる前の一瞬が見えてしまう。
+            font-smoothing は body に置かない — §2.8 は反転地の .on-ink だけに与える */}
+        {/* biome-ignore lint/security/noDangerouslySetInnerHtml: 実行前に描画を止める必要があるので、外部ファイルではなくインラインの固定文字列で流し込む */}
+        <script dangerouslySetInnerHTML={{ __html: MOTION_BOOTSTRAP_SCRIPT }} />
         <MotionProvider>{children}</MotionProvider>
       </body>
     </html>
