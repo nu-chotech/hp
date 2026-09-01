@@ -1,8 +1,39 @@
 import type { Metadata, Viewport } from "next";
+import localFont from "next/font/local";
 import { MotionProvider } from "@/components/providers/MotionProvider";
 import { siteConfig } from "@/config/site";
 import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
+
+/**
+ * LINE Seed JP のみ（§2.0）。フォールバックは sans-serif だけ（DECISION M-20）。
+ *
+ * npm パッケージの woff2 を next/font/local で self-host する。CDN を挟まないので
+ * 追加のオリジンへの接続が要らず、preload と font-display を Next 側で制御できる。
+ */
+const lineSeedJP = localFont({
+  src: [
+    {
+      path: "../../node_modules/line-seed-jp/woff2/LINESeedJP_OTF_Rg.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../node_modules/line-seed-jp/woff2/LINESeedJP_OTF_Bd.woff2",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../../node_modules/line-seed-jp/woff2/LINESeedJP_OTF_Eb.woff2",
+      weight: "800",
+      style: "normal",
+    },
+  ],
+  display: "swap",
+  variable: "--font-line-seed-jp",
+  fallback: ["sans-serif"],
+  preload: true,
+});
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -26,7 +57,7 @@ export const metadata: Metadata = {
     default: siteConfig.title,
     template: `%s | ${siteConfig.name}`,
   },
-  description: siteConfig.longDescription,
+  description: siteConfig.description,
   keywords: [...siteConfig.keywords],
   appleWebApp: {
     capable: true,
@@ -70,8 +101,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja">
-      <body className="font-sans antialiased">
+    <html lang="ja" className={lineSeedJP.variable}>
+      <body className="bg-ground text-ink font-sans antialiased">
         <MotionProvider>{children}</MotionProvider>
       </body>
     </html>
