@@ -1757,6 +1757,7 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 | 要素 | 仕様 |
 |---|---|
 | 面 | `color/inverse/ground`。`min-height: min(100svh − var(--size-nav), var(--size-hero-max))`、内容は垂直中央（DECISION L-7）。full-bleed、内容は container 1200 / 342 |
+| 背景写真 | ink 面の**上**に `--hero-backdrop-opacity` **0.2** で重ねる（`cover`、白黒 §5.7.1、`aria-hidden`）。格子線はその上。動きは §7.3（U-20）。**不透明度は測って決める値**: 実レンダリングの合成結果から測った文字コントラストの最小は ink 8.94 / secondary 7.37 / **tertiary 5.55**（12px の meta strip が最も厳しい）で、AA 4.5 を下回る面積は 0 %。素材を替えたら測り直す — 明部の多い写真は同じ 0.2 で通らない |
 | 格子線 | 1px × 4、`color/inverse/hairline` neutral-900（1.18、テクスチャ）。viewport を 4 等分する位置（x = 25 / 50 / 75 / 100%）。`aria-hidden`。**DECISION K-12** |
 | Meta strip | §6.8.2 |
 | h1 | `Display/XL` 124 / 56。lead-in `仲間と、` **`inverse/ink`**（14.86）+ Rotating word（§6.8.3、`color/hero/word`）。**白 → アクセントの 2 色**で「仲間と ＋ 動詞」を対比させる（DECISION U-3）。Desktop 1 行（7 全角 × 124 × 0.98 ≈ 851 ≤ 1200）。Mobile は読点で 2 行（`仲間と、` / `学ぶ。`）。`text-wrap: balance` は使わず著者改行 |
@@ -2172,7 +2173,7 @@ Figma: `Media / Image Slot` `Shape` {Rect, Circle} × `Fit` {Cover, Contain} × 
 ---
 ## 7. Motion
 
-本章がモーションのオーナー。§6 の部品はここで定義するトークン名で動きを参照し、値を再記述しない。原則の出典: Apple *Designing Fluid Interfaces* / HIG、WCAG 2.2。本ページにジェスチャ駆動 UI（ドラッグ、シート、スワイプ）はなく、動くものは reveal・回転語・マーキー・入力中ドット・Mobile メニューの 5 つだけ。
+本章がモーションのオーナー。§6 の部品はここで定義するトークン名で動きを参照し、値を再記述しない。原則の出典: Apple *Designing Fluid Interfaces* / HIG、WCAG 2.2。本ページにジェスチャ駆動 UI（ドラッグ、シート、スワイプ）はなく、動くものは reveal・回転語・マーキー・入力中ドット・Mobile メニュー・Hero の背景写真の 6 つだけ。
 
 ### 7.1 原則
 
@@ -2186,7 +2187,7 @@ Figma: `Media / Image Slot` `Shape` {Rect, Circle} × `Fit` {Cover, Contain} × 
 | M6 | compositor プロパティのみ | アニメーションは `transform` と `opacity` のみ（色は `background-color` / `color` / `text-decoration-color` / `text-decoration-thickness` を固定時間で）。`height` / `top` / `clip-path` / `filter` は不可 | 60 fps とジッターのなさが craft の最低条件。`clip-path` は全エンジンで compositor 処理されない |
 | M7 | 減速運動の停止は 1 % 残りで判定 | スプリングの「見かけの長さ」= 目標との差が 1 % を切る時刻 | 0.1 % まで待つと約 1.4 倍長くなり、体感と一致しない |
 | M8 | ループは有限・停止可能 | 自動で動くもの（マーキー、回転語、入力中ドット）は **1 つのページ内スイッチ** で全停止でき、`prefers-reduced-motion` で初期状態が停止 | WCAG 2.2.2（5 秒超の自動移動は停止手段が必須） |
-| M9 | 追加しない | 装飾のためだけの動きは足さない。ヒーローの浮遊バブルと矢印の nudge は **採用しない**。チャットの再生と写真の送りは装飾ではなく情報（順に現れることでしか出せない、U-16 / U-18） | Apple「Purpose」: 動きはユーザーの注意を消費する予算。1 つの状態に 2 つの信号を出さない |
+| M9 | 追加しない | 装飾のためだけの動きは足さない。ヒーローの浮遊バブルと矢印の nudge は **採用しない**。チャットの再生と写真の送りは装飾ではなく情報（順に現れることでしか出せない、U-16 / U-18）。**唯一の例外が Hero の背景写真の漂い**（U-20）— 情報を運ぶのは写真であって動きではないと認めたうえで採った | Apple「Purpose」: 動きはユーザーの注意を消費する予算。1 つの状態に 2 つの信号を出さない |
 
 ### 7.2 トークン
 
@@ -2215,6 +2216,10 @@ CSS カスタムプロパティで持つ。Figma には Variables として置�
 | `motion/chat/step` | — | **900 ms** | チャットの 1 手（U-16） | 短い台詞を読み終える最短。これより速いと会話ではなく点滅に見える |
 | `motion/chat/hold` | — | **2,400 ms** | 一巡後の間（U-16） | 最後の発言を読み切ってから畳む。`chat/step` の約 2.7 倍 |
 | `motion/photo/step` | — | **4,000 ms** | 写真の送り（U-18） | 1 枚を見終える時間。文字より情報が多いので `chat/step` の 4 倍以上取る |
+| `motion/hero-backdrop/period` | `--hero-backdrop-period` | **48 s**（片道・`alternate` で往復 96 s） | Hero 背景写真の漂い（U-20） | 1440 幅で片道 ≈ 29 px = 0.6 px/s。マーキー 40 px/s の 1/60 で、視線を引かない上限 |
+| `motion/hero-backdrop/drift` | `--hero-backdrop-drift` | **2 %**（片道、縦は 1 %） | 同上の移動量 | `scale` の余白 6 % の 1/3。往復しても縁が出ない |
+| `motion/hero-backdrop/scale` | `--hero-backdrop-scale` | **1.12** | 移動の余白（**静的**でアニメーションではない） | 個別プロパティ `scale` に置き、動く `translate` と 1 つの transform を奪い合わせない |
+| `color/hero/backdrop-opacity` | `--hero-backdrop-opacity` | **0.2** | Hero 背景写真の不透明度 | §6.8.1 の実測上限。`prefers-reduced-transparency` で 0 |
 
 ### 7.3 ページのモーション・インベントリ
 
@@ -2231,6 +2236,7 @@ CSS カスタムプロパティで持つ。Figma には Variables として置�
 | Chat 再生ループ（14 s） | 未定義 | **削除**。スレッドは静止（DECISION M-5） | — |
 | 入力中ドット | 未定義 | opacity 0.3⇄1、周期 1.2 s、ドット間 200 ms、**セルが可視の間のみ** | 静止（不透明度 100 %） |
 | Hero 浮遊バブル | 未定義 | **削除** | — |
+| Hero 背景写真（`.hero__backdrop`） | 未定義 | `scale` 1.12 を静的に当て、`translate` を ±2 % / ±1 % に `48s ease-in-out infinite alternate`。不透明度 0.2 で ink 面に重ね、白黒（U-20） | **静止**（`animation: none`）。写真は残る。`prefers-reduced-transparency` と `forced-colors` では層ごと消える |
 | Nav（sticky） | sticky | 縮小・隠れなし。アンカー移動は `scroll-behavior: smooth` | `scroll-behavior: auto` |
 | Mobile メニュー | — | `overflow: hidden` のラッパー内でパネルを `translateY(−100 %) → 0` に `spring/quick`。閉じは逆再生。アイコン `menu-2` ⇄ `x` は `duration/0` | opacity `duration/2` |
 | Mono ⇄ Lime | — | デザインモード。ランタイム切替なし | — |
@@ -3182,6 +3188,7 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 | U-17 | 活動セルを**リンクにしない**。hover / pressed / focus / 矢印も持たない | 4 セルとも同じ Discord に着地するので、押した対象と行き先が対応しない。参加への導線は Hero・Bento CTA・Poster が 3 度受け持っている |
 | U-18 | About の写真セルは複数枚を**スライドさせて回す** | 「いろいろやっている」は 1 枚の代表写真では出ない。ベントで唯一「時間を持つ」セルなので、隣のチャットと合わせて 2 つ以上は作らない |
 | U-19 | Discord / SNS の導線にブランドマークを**先頭**に添える | `arrow-up-right` は「外部」を言うが「どこへ」は言わない。ロゴは読む前に分かる唯一の記号。Nav の CTA だけは Mobile の幅検算が溢れるので置かない |
+| U-20 | Hero の ink 面に**背景写真**を不透明度 0.2 で重ね、48 s 周期で漂わせる | 「仲間と、学ぶ／創る／話す」を字だけで言っていた。誰がどこで何をしているのかは 1 枚の写真が先に答える。動きは M9 の唯一の例外で、装飾だと認めたうえで採った — 引き換えに (1) 不透明度は好みではなく AA から逆算した測定値、(2) 速さは 0.6 px/s（マーキーの 1/60）で視線を引かない上限、(3) M8 のスイッチ 1 つで止まり、`prefers-reduced-transparency` / `forced-colors` では層ごと消える、の 3 つを課す |
 
 ## 付録 B. 検証
 

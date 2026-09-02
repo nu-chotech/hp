@@ -24,8 +24,30 @@ import { HeroReveal, RotatingWord } from "./hero/rotating-word";
  */
 const GRID_LINES = ["left-1/4", "left-1/2", "left-3/4", "right-0"] as const;
 
+/**
+ * 背景写真の動き（DECISION U-20）
+ *
+ * 動きの既定を詳細度 0（`:where`）で置くのはマーキーと同じ理由 — 止める側
+ * （globals.css の低減設定と `html[data-motion="paused"]`）に必ず負けるため。
+ * 停止の規則をここで再宣言しないのも同じで、再生の条件が 2 か所に散ると必ず食い違う。
+ *
+ * 動かすのは `translate` だけ。`scale` は静的な余白（移動しても縁が出ないための
+ * 1.12）であってアニメーションではないので、M6「compositor プロパティのみ」にも
+ * DECISION M-6 の `scale()` 禁止（押下フィードバックの規定）にも触れない。
+ * 個別プロパティで書けば、静的な拡大と動く移動が 1 つの transform を奪い合わない。
+ */
+const BACKDROP_KEYFRAMES = `
+@keyframes chotech-hero-backdrop{
+from{translate:calc(var(--hero-backdrop-drift) * -1) calc(var(--hero-backdrop-drift) * -0.5)}
+to{translate:var(--hero-backdrop-drift) calc(var(--hero-backdrop-drift) * 0.5)}
+}
+:where(.hero__backdrop){
+scale:var(--hero-backdrop-scale);
+animation:chotech-hero-backdrop var(--hero-backdrop-period) ease-in-out infinite alternate
+}`;
+
 export function Hero() {
-  const { headline, lead, body, actions } = heroContent;
+  const { backdrop, headline, lead, body, actions } = heroContent;
 
   return (
     <section
@@ -41,6 +63,38 @@ export function Hero() {
         "min-h-[min(100svh_-_var(--size-nav),var(--size-hero-max))]",
       )}
     >
+      {/*
+       * 背景写真（DECISION U-20）。ink 面を置き換えず、その上に低い不透明度で重ねる。
+       * 「コミュニティの実像」という情報を運ぶ層なので M9「装飾のためだけの動きは
+       * 足さない」の例外にあたるが、動き自体は M8 のスイッチ 1 つで止まる。
+       *
+       * 格子線より前に置いて奥に敷く。overflow-hidden は移動する画像の受け皿で、
+       * これが無いと拡大したぶんが Hero の外へこぼれる。
+       */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+      >
+        {/* `style` は precedence 付きで <head> へ巻き上げる（React 19） */}
+        <style href="hero-backdrop" precedence="components">
+          {BACKDROP_KEYFRAMES}
+        </style>
+        {/* biome-ignore lint/performance/noImgElement: 実素材が確定するまで next/image は入れない（ImageSlot と同じ方針）。この層は素材待ちの「枠」ではなく面の一部なので ImageSlot は使わない — 未読込時に placeholder の明るい地 #eae7e7 が Hero 全面で光る */}
+        <img
+          src={backdrop.src}
+          alt=""
+          // ファーストビューの地。遅れて入ると「後から暗くなる」ように見える
+          fetchPriority="high"
+          decoding="async"
+          className={cn(
+            "hero__backdrop absolute inset-0 size-full object-cover",
+            // 白黒は写真の規定どおり（§5.7.1）。色を乗せない
+            "grayscale contrast-108",
+            "opacity-(--hero-backdrop-opacity)",
+          )}
+        />
+      </div>
+
       {/* 比 1.18 の地のテクスチャ。構造ではないので読み上げから外す */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         {GRID_LINES.map((position) => (

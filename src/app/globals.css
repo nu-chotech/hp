@@ -488,7 +488,8 @@
   --focus-offset-inset: -2px; /* full-bleed の行は inset にして隣接罫線と交差させない（K-7） */
 
   /* --- 7. モーション -------------------------------------------------------
-   * 動くものはページ全体で 5 つだけ: reveal・回転語・マーキー・入力中ドット・Mobile メニュー。
+   * 動くものはページ全体で 6 つだけ: reveal・回転語・マーキー・入力中ドット・Mobile メニュー・
+   * Hero の背景写真。
    * アニメーションできるのは transform と opacity のみ。scale() は使わない（M-6）。
    * -------------------------------------------------------------------------- */
   --dur-0: 0ms; /* 押下、フォーカスリング、アイコン差し替え、マーキーの一時停止・再開 */
@@ -511,6 +512,14 @@
   --dots-period: 1.2s; /* 入力中ドットの周期（= 3 × dur-3）。0.8 Hz */
   --dots-stagger: 200ms; /* ドット間ディレイ */
   --marquee-speed: 40; /* px/s。duration = グループ幅 ÷ 40 を ResizeObserver で書き込む */
+
+  /* Hero の背景写真（DECISION U-20）。動く 6 つ目で、唯一 1 分近い周期を持つ。
+     速いものは「起きたこと」を伝えるが、これは「そこに在る」だけの層なので、
+     1 フレームぶんの変化が知覚の閾値を下回る速さでしか動かしてはいけない。 */
+  --hero-backdrop-opacity: 0.2; /* 実測上限（§6.8.1）。素材を替えたら測り直す */
+  --hero-backdrop-scale: 1.12; /* 移動の余白。静的な拡大でアニメーションではない */
+  --hero-backdrop-drift: 2%; /* 片道の移動量。scale の余白 6% の 1/3 で縁を出さない */
+  --hero-backdrop-period: 48s; /* 片道。往復 96s ≈ 0.4 px/s で、追える速さの 1/100 */
 }
 
 /* -----------------------------------------------------------------------------
@@ -1081,7 +1090,8 @@
    * aria-pressed が事実と違うことを言い続ける。
    */
   html:not([data-motion="playing"]) .marquee__track,
-  html:not([data-motion="playing"]) .typing__dot {
+  html:not([data-motion="playing"]) .typing__dot,
+  html:not([data-motion="playing"]) .hero__backdrop {
     animation: none;
   }
 
@@ -1103,7 +1113,8 @@
  * イベントを飛ばさないので、JS の購読ではなく DOM の属性を唯一の真実にする。
  */
 html[data-motion="paused"] .marquee__track,
-html[data-motion="paused"] .typing__dot {
+html[data-motion="paused"] .typing__dot,
+html[data-motion="paused"] .hero__backdrop {
   animation-play-state: paused;
 }
 
@@ -1153,6 +1164,11 @@ html[data-motion="paused"] .typing__dot {
     --poster-selection: #8bce03; /* ink@12 over lime-400 */
     /* 幕だけは 88% に上げる（§1.5.5 の高コントラストと同値） */
     --backdrop: var(--alpha-ink-88);
+    /* Hero の背景写真は合成そのもの（ink 面に α で重ねた層）なので、
+       合成 hex に置き換える先が無い。層ごと落として素の ink 面に戻す。
+       これは階層の再計算も要らない — 上の 3 行が前提にしている「ink 面の上」に
+       文字が戻るので、#dad9d8 / #b8b7b6 の比が spec の値どおりになる（U-20） */
+    --hero-backdrop-opacity: 0;
   }
 }
 
@@ -1164,5 +1180,17 @@ html[data-motion="paused"] .typing__dot {
 @media (forced-colors: active) {
   svg {
     stroke: currentColor;
+  }
+
+  /* 強制配色は面と文字を OS の 2 色に置き換えるが、<img> はそのまま残る。
+     Hero の背景写真だけは残っても「読みにくさ」にしかならない — 置き換えられた
+     文字色は写真を前提に選ばれていないので、層ごと落とす（U-20） */
+  /* biome-ignore lint/style/noDescendingSpecificity: 上の
+     html:not([data-motion="playing"]) .hero__backdrop が触るのは animation で、
+     こちらは display。同じプロパティを奪い合っていないので順序も詳細度も効かない。
+     詳細度を揃えるために html を足すと、この規則が「モーションの状態に依る」
+     ように読めてしまう — 強制配色では状態に関係なく必ず消す */
+  .hero__backdrop {
+    display: none;
   }
 }

@@ -3,6 +3,7 @@ import { CellCta } from "@/components/bento/cell-cta";
 import { CellImage } from "@/components/bento/cell-image";
 import { CellStat } from "@/components/bento/cell-stat";
 import { CellText } from "@/components/bento/cell-text";
+import type { PhotoSlide } from "@/components/bento/photo-slides";
 import { RuledGrid } from "@/components/ui/ruled-grid";
 import { Section } from "@/components/ui/section";
 import { SectionHeading } from "@/components/ui/section-heading";
@@ -69,12 +70,19 @@ export function About() {
         {/*
           label は「まだ素材が入っていない枠」を制作中に見分けるための印で、
           閲覧者に見せる情報ではない（§6.19「本番では caption を出さない」）。
-          実素材（src / alt）を入れる時点で label を落とせば、そのまま本番になる。
+          実素材（src / alt）が入った今は落とすものが無いが、規則は content の
+          現在の中身ではなく **枠の契約** なので残す — 素材待ちの枠が 1 つでも
+          戻った瞬間に、その label が本番へ出ていく。
+
+          content 側は `as const` で個々の値まで固定されていて label を持たない型に
+          なるため、ここで PhotoSlide に広げてから落とす。
         */}
         <CellImage
           photos={
             process.env.NODE_ENV === "production"
-              ? photos.map(({ label: _label, ...photo }) => photo)
+              ? (photos as readonly PhotoSlide[]).map(
+                  ({ label: _label, ...photo }) => photo,
+                )
               : photos
           }
         />

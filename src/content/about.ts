@@ -70,14 +70,24 @@ export const aboutContent = {
    * 活動の様子（§6.11.5 / DECISION U-18）
    *
    * 複数枚をスライドさせて回す。「いろいろやっている」は 1 枚の代表写真では出ない。
-   * NOTE: 実写に差し替えるまでのプレースホルダ。`src` と `alt` を対で足せば
-   * そのまま実素材になる（§8.6: alt は src とセットでしか存在しない）。
-   * 写真は装飾なので実素材の alt は "" — 活動の情報は Activities 節が本文で持つ。
+   * 順に Talk Day の発表 / Dev Day のハンズオン / ハッカソンのチーム開発。
+   *
+   * 写真は装飾なので alt は ""（§8.6）— 活動の情報は Activities 節が本文で持つ。
+   * NOTE: 実写に差し替えるまでのプレースホルダ（Unsplash）。差し替えは src の 1 行。
    */
   photos: [
-    { label: "Talk Day の発表" },
-    { label: "Dev Day のハンズオン" },
-    { label: "ハッカソンのチーム開発" },
+    {
+      src: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=1200&h=675&q=75",
+      alt: "",
+    },
+    {
+      src: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&h=675&q=75",
+      alt: "",
+    },
+    {
+      src: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&h=675&q=75",
+      alt: "",
+    },
   ],
 
   onlineOffline: {

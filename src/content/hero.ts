@@ -7,6 +7,20 @@ import { externalLinks, sectionIds } from "@/config/site";
  * 枠幅を固定してレイアウトシフトをゼロにする（§6.8.3）。
  */
 export const heroContent = {
+  /**
+   * 面の奥に敷く写真（DECISION U-20）
+   *
+   * ink 面を置き換えるのではなく、ink 面の上に低い不透明度で重ねる。だから文字の
+   * 階層（inverse/ink 14.86 / secondary 11.78 / tertiary 8.29）は写真ぶんだけ必ず
+   * 下がる — 不透明度は「好みで薄い」のではなく、この写真の**最も明るい画素**でも
+   * 12px の meta strip が AA を割らない上限として測って決めてある（§6.8.1）。
+   * 素材を差し替えたら測り直す。明部の多い写真は同じ不透明度では通らない。
+   *
+   * NOTE: 実写に差し替えるまでのプレースホルダ（Unsplash）。
+   */
+  backdrop: {
+    src: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1920&q=65",
+  },
   /** 区切り罫で連結される。見出しではなく <p>（§8.5） */
   meta: [
     { text: "SINCE 2025", lang: "en" },

@@ -92,13 +92,26 @@ export function MemberCard({ member, size }: MemberCardProps) {
     <Cell asChild inset="none">
       <li>
         {/* 人物写真の alt は空。氏名がすぐ隣に可視テキストとしてあるので、
-            読み上げに同じ名前を二度出さない（§8.6）。focal は顔が上 1/3 に来る前提 */}
-        <ImageSlot
-          ratio={PHOTO_RATIO[size]}
-          focal="face"
-          sizes={PHOTO_SIZES[size]}
-          className="shrink-0"
-        />
+            読み上げに同じ名前を二度出さない（§8.6）。focal は顔が上 1/3 に来る前提。
+            alt を content 側に持たせないのは、この判断が「人物写真である」ことから
+            一意に決まるからで、5 人ぶんの空文字列を書き写す余地を残さない */}
+        {member.photo ? (
+          <ImageSlot
+            ratio={PHOTO_RATIO[size]}
+            focal="face"
+            sizes={PHOTO_SIZES[size]}
+            className="shrink-0"
+            src={member.photo}
+            alt=""
+          />
+        ) : (
+          <ImageSlot
+            ratio={PHOTO_RATIO[size]}
+            focal="face"
+            sizes={PHOTO_SIZES[size]}
+            className="shrink-0"
+          />
+        )}
 
         <div className={cardBody({ size })}>
           {/* 肩書は和文と欧文が混在する（代表 / Tech Lead）。片方に寄せると、

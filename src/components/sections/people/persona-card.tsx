@@ -29,7 +29,11 @@ export function PersonaCard({ persona }: PersonaCardProps) {
           </p>
           {/* イラストは装飾。人物像を運ぶのは見出しと引用なので alt を持たない（§8.6）。
               径は shape が持つ（96 = size/illustration）。sizes は next/image 移行用 */}
-          <ImageSlot shape="circle" sizes="96px" />
+          {persona.photo ? (
+            <ImageSlot shape="circle" sizes="96px" src={persona.photo} alt="" />
+          ) : (
+            <ImageSlot shape="circle" sizes="96px" />
+          )}
         </div>
 
         <h3 className="text-headline text-ink">{persona.title}</h3>
