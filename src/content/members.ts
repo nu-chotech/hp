@@ -10,11 +10,16 @@ export interface MemberSocial {
 
 export interface Member {
   id: string;
-  /** 姓 名（分かち書き 1 つ） */
+  /** 姓 名（分かち書き 1 つ）。氏名が確定していない間は姓だけを置く */
   name: string;
   role: string;
   /** 1〜2 行の紹介 */
   bio: string;
+  /**
+   * 顔写真。無い間は ImageSlot の placeholder が出る（§6.19）。
+   * alt は member-card 側が空で固定する — 氏名がすぐ隣にある（§8.6）。
+   */
+  photo?: string;
   /** 最大 3 件。無い場合は行ごと落とす（DECISION U-12） */
   socials: readonly MemberSocial[];
 }
@@ -22,8 +27,18 @@ export interface Member {
 /**
  * 運営メンバー（§6.15）
  *
- * NOTE: 写真とリンクはプレースホルダ。実データに差し替える際はここだけ更新すればよい。
  * 先頭 2 名が Leader（16:9・2 列）、残りが Staff（4:3・3 列）として組まれる。
+ *
+ * 出典と確からしさが 3 段に分かれている。混ぜると「どこまで本物か」が読めなくなるので、
+ * 行ごとに区別して持つ:
+ *
+ *   確定 … bio は Issue #9–12 本文、上原は ut42tech.com。GitHub は Issue の起票者
+ *   未定 … **氏名**。Issue にもプロフィールにも姓しか無いので姓だけ置く。
+ *          名が分かった時点で「姓 名」に直す（§6.15 の name は分かち書き 1 つ）
+ *   仮   … **役職**と**顔写真**。代表 / 副代表だけは確定で、残り 3 名の役職は
+ *          本人の関心（3D・イベント企画・デザイン）から当てた仮。写真は Unsplash
+ *
+ * Issue #8（上原）は本文が空のままなので、bio は本人サイト ut42tech.com から取った。
  */
 export const membersContent = {
   heading: { title: "運営メンバー", label: "MEMBERS" },
@@ -31,52 +46,53 @@ export const membersContent = {
   leaderCount: 2,
   members: [
     {
-      id: "tanaka",
-      name: "田中 太郎",
+      id: "uehara",
+      name: "上原",
       role: "代表",
-      bio: "ChoTechの立ち上げメンバー。コミュニティの運営全体をリードしています。",
+      bio: "修士1年。デザインとテクノロジーで最高のユーザ体験を届けたい人。Webから3D・AIまでフルスタックに作ります。",
+      photo:
+        "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?auto=format&fit=facearea&facepad=6&w=1200&h=675&q=75",
       socials: [
-        { kind: "x", href: "https://x.com/" },
-        { kind: "github", href: "https://github.com/" },
-        { kind: "website", href: "https://example.com/" },
+        { kind: "x", href: "https://x.com/ut42tech" },
+        { kind: "github", href: "https://github.com/ut42tech" },
+        { kind: "website", href: "https://ut42tech.com" },
       ],
     },
     {
-      id: "sato",
-      name: "佐藤 花子",
+      id: "nishiyama",
+      name: "西山",
       role: "副代表",
-      bio: "デザインとフロントエンドが好き。イベントの企画・運営もサポートしています。",
-      socials: [
-        { kind: "x", href: "https://x.com/" },
-        { kind: "instagram", href: "https://www.instagram.com/" },
-      ],
+      bio: "修士1年。データ分析やAIを活用したサービス開発に取り組んでいます。ユーザーの課題を起点に、データから得た気づきを役立つ仕組みへ。",
+      photo:
+        "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=1200&h=675&q=75",
+      socials: [{ kind: "github", href: "https://github.com/nikkiy30" }],
     },
     {
-      id: "suzuki",
-      name: "鈴木 一郎",
+      id: "makiyama",
+      name: "牧山",
       role: "Tech Lead",
-      bio: "バックエンドとインフラ担当。勉強会の技術面を支えています。",
-      socials: [
-        { kind: "github", href: "https://github.com/" },
-        { kind: "website", href: "https://example.com/" },
-      ],
+      bio: "修士1年。ピラミッドや旧日系人収容所などの遺産をITで読み解き、後世に残す研究。3D、機械学習、Web開発。",
+      photo:
+        "https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?auto=format&fit=facearea&facepad=4&w=800&h=600&q=75",
+      socials: [{ kind: "github", href: "https://github.com/shin3akiyama" }],
     },
     {
-      id: "yamada",
-      name: "山田 美咲",
-      role: "広報",
-      bio: "SNS運営とイベント告知担当。ChoTechの魅力を発信しています。",
-      socials: [
-        { kind: "x", href: "https://x.com/" },
-        { kind: "instagram", href: "https://www.instagram.com/" },
-      ],
-    },
-    {
-      id: "takahashi",
-      name: "高橋 健太",
+      id: "miyazaki",
+      name: "宮崎",
       role: "イベント",
-      bio: "ハッカソンや勉強会の企画・運営担当。楽しく学べる場をつくります。",
-      socials: [{ kind: "x", href: "https://x.com/" }],
+      bio: "修士1年。研究ではPythonでのデータ解析や音響信号処理に取り組んでいます。長大祭などのイベント企画も。",
+      photo:
+        "https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=facearea&facepad=4&w=800&h=600&q=75",
+      socials: [{ kind: "github", href: "https://github.com/yuinosuke92" }],
+    },
+    {
+      id: "mukai",
+      name: "向井",
+      role: "デザイン",
+      bio: "修士1年。3D Gaussian Splattingの絶対スケール復元を研究。3Dモデリングとデザインも独学で学んでいます。",
+      photo:
+        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=facearea&facepad=4&w=800&h=600&q=75",
+      socials: [{ kind: "github", href: "https://github.com/mk-no" }],
     },
   ] satisfies Member[],
 } as const;
