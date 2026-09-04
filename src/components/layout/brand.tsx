@@ -97,7 +97,7 @@ export function Brand({
     <a href={href} className={cn(brandLockup({ size }), className)} {...props}>
       {/* ロゴは装飾。リンクの名前は wordmark の文字が運ぶ（§8.6） */}
       <Image
-        src="/favicon.svg"
+        src="/icons/favicon.svg"
         alt=""
         width={markSize}
         height={markSize}

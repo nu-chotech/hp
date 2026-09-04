@@ -4,13 +4,18 @@ export interface Partner {
   /** ロゴの代替テキストは団体名（§8.6） */
   name: string;
   href?: string;
+  /**
+   * ロゴ画像。public/images/partners/ に置き、"/images/partners/<団体>.svg" の形で渡す。
+   * 無い間は Image slot の placeholder が出て、団体名は visually-hidden で読まれる（§6.16）。
+   */
+  logo?: string;
 }
 
 /**
  * パートナー（§6.16）
  *
  * 「スポンサー」「協賛」は使わない。金銭支援に限らない関係を指すため（DECISION U-7）。
- * NOTE: ロゴはプレースホルダ。実データに差し替える際はここだけ更新すればよい。
+ * NOTE: ロゴは未着。素材が届いたら public/images/partners/ に置いて logo を足す — 更新はここだけでよい。
  */
 export const partnersContent = {
   heading: { title: "パートナー", label: "PARTNERS" },

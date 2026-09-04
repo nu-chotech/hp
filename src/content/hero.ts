@@ -16,10 +16,12 @@ export const heroContent = {
    * 12px の meta strip が AA を割らない上限として測って決めてある（§6.8.1）。
    * 素材を差し替えたら測り直す。明部の多い写真は同じ不透明度では通らない。
    *
-   * NOTE: 実写に差し替えるまでのプレースホルダ（Unsplash）。
+   * NOTE: 実写に差し替えるまでのプレースホルダ（Unsplash 由来）。実体は public/images/hero/
+   * に保存してあるので、同名で上書きするか src の 1 行を書き換えれば差し替わる。
+   * 旧サイトの実写 nutic-entrance.webp（NUTIC 入口、4032×3024・未使用）も同じ場所に残してある。
    */
   backdrop: {
-    src: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1920&q=65",
+    src: "/images/hero/backdrop.jpg",
   },
   /** 区切り罫で連結される。見出しではなく <p>（§8.5） */
   meta: [

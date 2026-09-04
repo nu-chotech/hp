@@ -1,14 +1,16 @@
-import { readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { Resvg } from "@resvg/resvg-js";
 import pngToIco from "png-to-ico";
 
 const projectRoot = process.cwd();
-const publicDir = resolve(projectRoot, "public");
+/** favicon / PWA アイコン一式の置き場。元になる favicon.svg も同じ場所に置く */
+const iconsDir = resolve(projectRoot, "public/icons");
 const appDir = resolve(projectRoot, "src/app");
-const sourceSvgPath = resolve(publicDir, "favicon.svg");
+const sourceSvgPath = resolve(iconsDir, "favicon.svg");
 
 const sourceSvg = await readFile(sourceSvgPath, "utf8");
+await mkdir(iconsDir, { recursive: true });
 
 const faviconSizes = [16, 32, 48, 64, 128, 256];
 
@@ -20,7 +22,7 @@ const renderPng = async (size, outputName) => {
     },
   }).render();
 
-  await writeFile(resolve(publicDir, outputName), rendered.asPng());
+  await writeFile(resolve(iconsDir, outputName), rendered.asPng());
 };
 
 await Promise.all([
@@ -31,11 +33,12 @@ await Promise.all([
   renderPng(512, "icon-512-maskable.png"),
 ]);
 
+/**
+ * favicon.ico だけは src/app/ に置く。Next の metadata file convention が /favicon.ico で
+ * 配信するので、public 側に同じものを重ねて持たない。
+ */
 const faviconIco = await pngToIco(
-  faviconSizes.map((size) => resolve(publicDir, `favicon-${size}x${size}.png`)),
+  faviconSizes.map((size) => resolve(iconsDir, `favicon-${size}x${size}.png`)),
 );
 
-await Promise.all([
-  writeFile(resolve(publicDir, "favicon.ico"), faviconIco),
-  writeFile(resolve(appDir, "favicon.ico"), faviconIco),
-]);
+await writeFile(resolve(appDir, "favicon.ico"), faviconIco);

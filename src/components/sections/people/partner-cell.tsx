@@ -16,14 +16,16 @@ import { type Partner, partnersContent } from "@/content/partners";
 
 export interface PartnerLogoCellProps {
   partner: Partner;
-  /**
-   * 実素材が確定したら渡す。渡した瞬間 alt が団体名になり、下の visually-hidden の
-   * 控えは消える（同じ名前を二度読み上げさせない）。差し替えはこの 1 行で済む。
-   */
-  logoSrc?: string;
 }
 
-export function PartnerLogoCell({ partner, logoSrc }: PartnerLogoCellProps) {
+export function PartnerLogoCell({ partner }: PartnerLogoCellProps) {
+  /**
+   * 実素材は content 側の logo が持つ（public/images/partners/）。入った瞬間 alt が
+   * 団体名になり、下の visually-hidden の控えは消える（同じ名前を二度読み上げさせない）。
+   * 差し替えは content の 1 行で済む。
+   */
+  const logoSrc = partner.logo;
+
   return (
     <Cell asChild>
       <li>

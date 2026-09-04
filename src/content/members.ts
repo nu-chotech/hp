@@ -36,7 +36,8 @@ export interface Member {
  *   未定 … **氏名**。Issue にもプロフィールにも姓しか無いので姓だけ置く。
  *          名が分かった時点で「姓 名」に直す（§6.15 の name は分かち書き 1 つ）
  *   仮   … **役職**と**顔写真**。代表 / 副代表だけは確定で、残り 3 名の役職は
- *          本人の関心（3D・イベント企画・デザイン）から当てた仮。写真は Unsplash
+ *          本人の関心（3D・イベント企画・デザイン）から当てた仮。写真は Unsplash 由来の
+ *          プレースホルダで、実体は public/images/members/<id>.jpg に保存してある
  *
  * Issue #8（上原）は本文が空のままなので、bio は本人サイト ut42tech.com から取った。
  */
@@ -50,8 +51,7 @@ export const membersContent = {
       name: "上原",
       role: "代表",
       bio: "修士1年。デザインとテクノロジーで最高のユーザ体験を届けたい人。Webから3D・AIまでフルスタックに作ります。",
-      photo:
-        "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?auto=format&fit=facearea&facepad=6&w=1200&h=675&q=75",
+      photo: "/images/members/uehara.jpg",
       socials: [
         { kind: "x", href: "https://x.com/ut42tech" },
         { kind: "github", href: "https://github.com/ut42tech" },
@@ -63,8 +63,7 @@ export const membersContent = {
       name: "西山",
       role: "副代表",
       bio: "修士1年。データ分析やAIを活用したサービス開発に取り組んでいます。ユーザーの課題を起点に、データから得た気づきを役立つ仕組みへ。",
-      photo:
-        "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=1200&h=675&q=75",
+      photo: "/images/members/nishiyama.jpg",
       socials: [{ kind: "github", href: "https://github.com/nikkiy30" }],
     },
     {
@@ -72,8 +71,7 @@ export const membersContent = {
       name: "牧山",
       role: "Tech Lead",
       bio: "修士1年。ピラミッドや旧日系人収容所などの遺産をITで読み解き、後世に残す研究。3D、機械学習、Web開発。",
-      photo:
-        "https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?auto=format&fit=facearea&facepad=4&w=800&h=600&q=75",
+      photo: "/images/members/makiyama.jpg",
       socials: [{ kind: "github", href: "https://github.com/shin3akiyama" }],
     },
     {
@@ -81,8 +79,7 @@ export const membersContent = {
       name: "宮崎",
       role: "イベント",
       bio: "修士1年。研究ではPythonでのデータ解析や音響信号処理に取り組んでいます。長大祭などのイベント企画も。",
-      photo:
-        "https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=facearea&facepad=4&w=800&h=600&q=75",
+      photo: "/images/members/miyazaki.jpg",
       socials: [{ kind: "github", href: "https://github.com/yuinosuke92" }],
     },
     {
@@ -90,8 +87,7 @@ export const membersContent = {
       name: "向井",
       role: "デザイン",
       bio: "修士1年。3D Gaussian Splattingの絶対スケール復元を研究。3Dモデリングとデザインも独学で学んでいます。",
-      photo:
-        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=facearea&facepad=4&w=800&h=600&q=75",
+      photo: "/images/members/mukai.jpg",
       socials: [{ kind: "github", href: "https://github.com/mk-no" }],
     },
   ] satisfies Member[],
