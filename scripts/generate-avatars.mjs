@@ -23,29 +23,30 @@ const stroke = "201e1d";
 
 /**
  * Case 01 … 06 の順（content/personas.ts と対応）。女性像 3・男性像 3 で半々にする。
- * 配色は明るく（肌は桃色寄り、服はパステル）、小物は「可愛い」側から選ぶ —
- * 暗い色と実用的な小物（ゴーグル・アンテナ）は野暮ったく見えた（2026-09-05 レビュー）。
+ * 基準は Case 02 / 05（2026-09-05 に「好み」とされた 2 体）: すっきりした髪型 +
+ * 小物か眼鏡をひとつ + 落ち着いた 1 色。暗い色と実用的な小物（ゴーグル・アンテナ）は
+ * 野暮ったく見えたので使わない。パステルに限らない。
  */
 const personas = [
   {
-    // これから始めたい人 — ふわっとしたボブにアヒル
+    // これから始めたい人 — ポニーテールに芽、コーラルのドレープ T
     file: "case-01",
     selections: {
-      head: "fluffy-bob",
-      body: "tee",
-      bottom: "flared-skirt",
-      item: "duck",
+      head: "ponytail",
+      body: "drape-tee",
+      bottom: "culottes",
+      item: "sprout",
       glasses: "none",
     },
     colors: {
-      skin: "FBE3D3",
-      hair: "6B4A3A",
-      clothes: "FFD6A5",
-      bottom: "F4A7B9",
+      skin: "F8D9C4",
+      hair: "5B3A29",
+      clothes: "F2B8A2",
+      bottom: "3F4A5A",
     },
   },
   {
-    // 開発が好きなエンジニア — 短髪にパーカー、肩に黒猫
+    // 開発が好きなエンジニア — 短髪にパーカー、頭に黒猫
     file: "case-02",
     selections: {
       head: "short",
@@ -62,41 +63,41 @@ const personas = [
     },
   },
   {
-    // UI/UX が好きな人 — ロブに花
+    // UI/UX が好きな人 — 切りそろえたボブに小さな眼鏡、ネイビーのシャツ
     file: "case-03",
     selections: {
-      head: "lob",
-      body: "drape-tee",
+      head: "blunt-bob",
+      body: "shirt",
       bottom: "midi-skirt",
-      item: "flower",
-      glasses: "none",
+      item: "none",
+      glasses: "tiny",
     },
     colors: {
       skin: "FBE3D3",
-      hair: "3B2A26",
-      clothes: "E8D5F2",
-      bottom: "9F86C0",
+      hair: "1D1D1D",
+      clothes: "1E3A5F",
+      bottom: "C9C2B8",
     },
   },
   {
-    // ハッカソンに出たい人 — くるくる短髪に王冠
+    // ハッカソンに出たい人 — 無造作な短髪に深緑のジャケット
     file: "case-04",
     selections: {
-      head: "curly-short",
-      body: "tee",
+      head: "messy-short",
+      body: "jacket",
       bottom: "tapered-pants",
-      item: "crown",
+      item: "none",
       glasses: "none",
     },
     colors: {
       skin: "F1C9AE",
-      hair: "5B3A29",
-      clothes: "FFF1A8",
-      bottom: "4F6D8F",
+      hair: "2B2B2B",
+      clothes: "2E7D5B",
+      bottom: "1F2937",
     },
   },
   {
-    // 研究の話をしたい人 — お団子に丸眼鏡
+    // 研究の話をしたい人 — 横お団子に丸眼鏡、ミントのシャツ
     file: "case-05",
     selections: {
       head: "low-side-bun",
@@ -113,20 +114,20 @@ const personas = [
     },
   },
   {
-    // 発信してみたい人 — 横に流した短髪にカメラ
+    // 発信してみたい人 — 前髪短髪にカメラ、青いシャツ
     file: "case-06",
     selections: {
-      head: "side-swept-short",
-      body: "polo",
-      bottom: "cropped-pants",
+      head: "short-bangs",
+      body: "shirt",
+      bottom: "wide-pants",
       item: "camera",
-      glasses: "tiny",
+      glasses: "none",
     },
     colors: {
-      skin: "F6D3BC",
-      hair: "1D1D1D",
-      clothes: "F7C6C7",
-      bottom: "8C6F5E",
+      skin: "F1C9AE",
+      hair: "4A3728",
+      clothes: "8FB3D9",
+      bottom: "1F2937",
     },
   },
 ];
