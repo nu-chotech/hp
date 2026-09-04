@@ -21,108 +21,112 @@ const outDir = resolve(process.cwd(), "public/images/personas");
 /** 線はページのインク（neutral-950）と同じ */
 const stroke = "201e1d";
 
-/** Case 01 … 06 の順。人物像に合わせて部位を選ぶ（content/personas.ts と対応） */
+/**
+ * Case 01 … 06 の順（content/personas.ts と対応）。女性像 3・男性像 3 で半々にする。
+ * 配色は明るく（肌は桃色寄り、服はパステル）、小物は「可愛い」側から選ぶ —
+ * 暗い色と実用的な小物（ゴーグル・アンテナ）は野暮ったく見えた（2026-09-05 レビュー）。
+ */
 const personas = [
   {
-    // これから始めたい人 — 芽（sprout）を持つ
+    // これから始めたい人 — ふわっとしたボブにアヒル
     file: "case-01",
     selections: {
-      head: "short-bangs",
+      head: "fluffy-bob",
       body: "tee",
-      bottom: "tapered-pants",
-      item: "sprout",
+      bottom: "flared-skirt",
+      item: "duck",
       glasses: "none",
     },
     colors: {
-      skin: "F4C9A8",
-      hair: "2B2B2B",
-      clothes: "7A8C6E",
-      bottom: "3F4A5A",
+      skin: "FBE3D3",
+      hair: "6B4A3A",
+      clothes: "FFD6A5",
+      bottom: "F4A7B9",
     },
   },
   {
-    // 開発が好きなエンジニア — パーカーと眼鏡
+    // 開発が好きなエンジニア — 短髪にパーカー、肩に黒猫
     file: "case-02",
     selections: {
-      head: "messy-short",
+      head: "short",
       body: "hoodie",
       bottom: "wide-pants",
       item: "black-cat",
-      glasses: "round",
-    },
-    colors: {
-      skin: "E8B48E",
-      hair: "1D1D1D",
-      clothes: "3B6EA5",
-      bottom: "2A2A2A",
-    },
-  },
-  {
-    // UI/UX が好きな人 — ボブと花
-    file: "case-03",
-    selections: {
-      head: "blunt-bob",
-      body: "shirt",
-      bottom: "midi-skirt",
-      item: "flower",
-      glasses: "tiny",
-    },
-    colors: {
-      skin: "F7D7BF",
-      hair: "6B4423",
-      clothes: "EDE6D6",
-      bottom: "B85C5C",
-    },
-  },
-  {
-    // ハッカソンに出たい人 — ジャケットとゴーグル
-    file: "case-04",
-    selections: {
-      head: "ponytail",
-      body: "jacket",
-      bottom: "cropped-pants",
-      item: "goggles",
       glasses: "none",
     },
     colors: {
-      skin: "D9A27C",
-      hair: "4A3728",
-      clothes: "5C6B8C",
-      bottom: "2A2A2A",
+      skin: "F6D3BC",
+      hair: "2B2B2B",
+      clothes: "AFCBEB",
+      bottom: "5C7BA6",
     },
   },
   {
-    // 研究の話をしたい人 — お団子と丸眼鏡
+    // UI/UX が好きな人 — ロブに花
+    file: "case-03",
+    selections: {
+      head: "lob",
+      body: "drape-tee",
+      bottom: "midi-skirt",
+      item: "flower",
+      glasses: "none",
+    },
+    colors: {
+      skin: "FBE3D3",
+      hair: "3B2A26",
+      clothes: "E8D5F2",
+      bottom: "9F86C0",
+    },
+  },
+  {
+    // ハッカソンに出たい人 — くるくる短髪に王冠
+    file: "case-04",
+    selections: {
+      head: "curly-short",
+      body: "tee",
+      bottom: "tapered-pants",
+      item: "crown",
+      glasses: "none",
+    },
+    colors: {
+      skin: "F1C9AE",
+      hair: "5B3A29",
+      clothes: "FFF1A8",
+      bottom: "4F6D8F",
+    },
+  },
+  {
+    // 研究の話をしたい人 — お団子に丸眼鏡
     file: "case-05",
     selections: {
-      head: "bun",
-      body: "polo",
-      bottom: "culottes",
+      head: "low-side-bun",
+      body: "shirt",
+      bottom: "long-skirt",
       item: "none",
       glasses: "round",
     },
     colors: {
-      skin: "F1C6A5",
-      hair: "3A3A3A",
-      clothes: "D9A441",
-      bottom: "6A5B4C",
+      skin: "F8D9C4",
+      hair: "4A3728",
+      clothes: "CFE8D9",
+      bottom: "6C9A8B",
     },
   },
   {
-    // 発信してみたい人 — アンテナ（antennae）
+    // 発信してみたい人 — 横に流した短髪にカメラ
     file: "case-06",
     selections: {
-      head: "wavy-medium",
-      body: "drape-tee",
-      bottom: "long-skirt",
-      item: "antennae",
-      glasses: "none",
+      head: "side-swept-short",
+      body: "polo",
+      bottom: "cropped-pants",
+      item: "camera",
+      glasses: "tiny",
     },
     colors: {
-      skin: "C68B62",
-      hair: "8C5A3C",
-      clothes: "B85C5C",
-      bottom: "3F4A5A",
+      skin: "F6D3BC",
+      hair: "1D1D1D",
+      clothes: "F7C6C7",
+      bottom: "8C6F5E",
     },
   },
 ];

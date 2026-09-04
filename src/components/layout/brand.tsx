@@ -25,12 +25,13 @@ const brandLockup = cva(
   ],
   {
     variants: {
-      // 上下の拡張量は size ごとに違う。視覚ボックスは mark が決める（Nav 32 /
-      // Footer 28、L-30）ので、44 にするには Nav ±6、Footer ±8 が要る。
+      // 上下の拡張量は size ごとに違う。視覚ボックスは wordmark の行ボックスが決める
+      // （Nav: Title 3 の 26 > mark 24、Footer: Headline の 24 > mark 20、L-30）ので、
+      // 44 にするには Nav ±9、Footer ±10 が要る。
       // 必要なのは「44 になること」であって特定の数値ではない
       size: {
-        nav: "text-ink before:-inset-y-1.5",
-        footer: "text-ink before:-inset-y-2",
+        nav: "text-ink before:-inset-y-2.25",
+        footer: "text-ink before:-inset-y-2.5",
       },
     },
     defaultVariants: { size: "nav" },
@@ -70,7 +71,7 @@ const brandWordmark = cva(
  * 表示寸法を決めるのは size/mark-* トークン（class）で、この数値は
  * next/image に内在比率を伝えて CLS を防ぐためだけのもの（§6.19）。
  */
-const MARK_INTRINSIC = { nav: 32, footer: 28 } as const;
+const MARK_INTRINSIC = { nav: 24, footer: 20 } as const;
 
 export interface BrandProps
   extends Omit<ComponentProps<"a">, "children">,
@@ -95,9 +96,11 @@ export function Brand({
 
   return (
     <a href={href} className={cn(brandLockup({ size }), className)} {...props}>
-      {/* ロゴは装飾。リンクの名前は wordmark の文字が運ぶ（§8.6） */}
+      {/* ロゴは装飾。リンクの名前は wordmark の文字が運ぶ（§8.6）。
+          favicon.svg は余白込み（図が箱の 65%）なので lockup には使わない —
+          図の外接矩形で切った mark.svg を置くと、gap 12 が見た目どおりの 12 になる（L-30） */}
       <Image
-        src="/icons/favicon.svg"
+        src="/icons/mark.svg"
         alt=""
         width={markSize}
         height={markSize}

@@ -106,6 +106,7 @@ export function ChatThread({ thread }: ChatThreadProps) {
               playing={playing}
               reactions={entry.reactions}
               shown={shown}
+              side={entry.side}
               style={style}
             />
           );

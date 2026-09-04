@@ -1,4 +1,4 @@
-import { ArrowUpRight, BrandDiscord } from "@/components/icons";
+import { ArrowUpRight } from "@/components/icons";
 import { Brand } from "@/components/layout/brand";
 import { NavBar } from "@/components/layout/nav-bar";
 import { Button } from "@/components/ui/button";
@@ -36,7 +36,8 @@ export function Nav({
   className,
 }: NavProps) {
   // 外部へ出るリンクなので、矢印（ArrowUpRight）だけでなく読み上げにも言う（§8.6）。
-  // 先頭の Discord マークは行き先を読む前に伝える（U-19、Nav にも置く: DECISION U-27）
+  // Discord マークは置かない（U-19。U-27 で一度足したが、帯の CTA は文言だけで足りると
+  // 同日に撤回。Mobile の幅検算 §6.7.2 も矢印ありの元の式に戻る）
   const label = (
     <>
       {ctaLabel}
@@ -52,14 +53,11 @@ export function Nav({
         <>
           {/* CTA は Mobile 44 / 横並び以降 36（§6.7.1・§6.7.2）。
               サイズはトークンの段そのものなので、responsive class ではなく
-              2 つの箱を出し分ける。hidden 側はフォーカス順にも乗らない。
-              Mobile は末尾の矢印を持たない（§6.7.2 の検算: 390 で brand 139 + CTA 155 +
-              12 + menu 44 = 350 > 342 となり wordmark が折れる。マークが行き先を言うので
-              矢印を落として 127 に収める。「（外部）」は読み上げに残る） */}
+              2 つの箱を出し分ける。hidden 側はフォーカス順にも乗らない */}
           <Button
             asChild
             size="md"
-            brand={BrandDiscord}
+            icon={ArrowUpRight}
             className="tablet:hidden"
           >
             <a href={ctaHref}>{label}</a>
@@ -67,7 +65,6 @@ export function Nav({
           <Button
             asChild
             size="sm"
-            brand={BrandDiscord}
             icon={ArrowUpRight}
             className="hidden tablet:inline-flex"
           >
@@ -76,13 +73,7 @@ export function Nav({
         </>
       }
       menuCta={
-        <Button
-          asChild
-          size="md"
-          fullWidth
-          brand={BrandDiscord}
-          icon={ArrowUpRight}
-        >
+        <Button asChild size="md" fullWidth icon={ArrowUpRight}>
           <a href={ctaHref}>{label}</a>
         </Button>
       }

@@ -18,7 +18,12 @@ export interface ChatReaction {
 export type ChatEntry =
   | { kind: "incoming"; avatar: string; message: string }
   | { kind: "outgoing"; message: string }
-  | { kind: "reactions"; reactions: ChatReaction[] }
+  | {
+      kind: "reactions";
+      /** 直前の発言の側。自分側は右寄せになる。既定は相手側 */
+      side?: "incoming" | "outgoing";
+      reactions: ChatReaction[];
+    }
   | { kind: "typing" };
 
 /**
@@ -48,11 +53,25 @@ export const aboutContent = {
     suffix: "+",
     /** 数字は装飾。読み上げは文で渡す（§6.11.3） */
     accessibleName: "メンバー 50人以上",
+    /**
+     * 所属の内訳（DECISION U-29）。人数は確定していないので出さず、大学名だけ並べる。
+     * 長崎大学は学部・研究科まで書く（学内の複数の学部から来ていることが情報）。
+     */
+    affiliations: [
+      { name: "長崎大学", detail: "情報データ科学部・工学部・大学院" },
+      { name: "長崎県立大学" },
+      { name: "長崎総合科学大学" },
+    ],
   },
 
   chat: {
     kicker: "#general — いつものChoTech",
     note: "こんな会話が、毎日どこかで。",
+    /**
+     * 発言のたびにスタンプが付く（U-25 改）。「反応が返ってくる場所」を見せるのが
+     * この図の仕事なので、反応の無い発言を残さない。絵文字は発言ごとに変える —
+     * 同じ 2 つが 4 回並ぶと定型に見える。数は 1〜4 に留め、巻き上げを短く保つ。
+     */
     thread: [
       {
         kind: "incoming",
@@ -69,12 +88,35 @@ export const aboutContent = {
       },
       { kind: "outgoing", message: "私もそれ興味ある！" },
       {
+        kind: "reactions",
+        side: "outgoing",
+        reactions: [
+          { emoji: "🎉", label: "やった", count: 2 },
+          { emoji: "🔥", label: "アツい", count: 1 },
+        ],
+      },
+      {
         kind: "incoming",
-        // 開発が好きなエンジニア（Case 02）
-        avatar: "/images/personas/case-02.svg",
+        // UI/UX が好きな人（Case 03）
+        avatar: "/images/personas/case-03.svg",
         message: "こんなやり方もあるよ！",
       },
+      {
+        kind: "reactions",
+        reactions: [
+          { emoji: "💡", label: "なるほど", count: 3 },
+          { emoji: "👏", label: "拍手", count: 2 },
+        ],
+      },
       { kind: "outgoing", message: "UIは私がやりたい！" },
+      {
+        kind: "reactions",
+        side: "outgoing",
+        reactions: [
+          { emoji: "✨", label: "すてき", count: 2 },
+          { emoji: "🙌", label: "頼もしい", count: 1 },
+        ],
+      },
       { kind: "typing" },
     ] satisfies ChatEntry[],
   },

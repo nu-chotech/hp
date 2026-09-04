@@ -95,7 +95,7 @@ src/
     site-url.ts       metadataBase 用のサイト URL 解決
 scripts/              generate-icons.mjs / generate-avatars.mjs
 public/
-  icons/              favicon / PWA アイコン一式（favicon.svg から generate-icons.mjs が生成）
+  icons/              favicon / PWA アイコン一式（favicon.svg から generate-icons.mjs が生成）。mark.svg はロックアップ用に図の外接矩形で切ったもの
   images/             写真・ロゴの実体。hero / about / members / personas / partners
 docs/design/          デザインシステムの正本
 ```

@@ -18,6 +18,8 @@ import { cn } from "@/lib/utils";
  */
 export interface ReactionRowProps {
   reactions: readonly ChatReaction[];
+  /** 直前の発言の側。自分側は bubble と同じく右寄せ・右 padding 6（§6.12.1） */
+  side?: "incoming" | "outgoing";
   /** スレッドの再生でこの行が見えているか */
   shown: boolean;
   /** ページのモーションスイッチと低減設定。false なら最終値で静止 */
@@ -27,6 +29,7 @@ export interface ReactionRowProps {
 
 export function ReactionRow({
   reactions,
+  side = "incoming",
   shown,
   playing,
   style,
@@ -68,8 +71,15 @@ export function ReactionRow({
   }, [playing, shown, reactions]);
 
   return (
-    // リアクションは直前の発言に属するので、吹き出しの左端に揃える
-    <li className={cn("flex gap-inline-xs", chatIndent)} style={style}>
+    // リアクションは直前の発言に属する: 相手側は吹き出しの左端（avatar ぶんインデント）、
+    // 自分側は右寄せで bubble のテールと同じ右 padding 6 を持つ
+    <li
+      className={cn(
+        "flex gap-inline-xs",
+        side === "outgoing" ? "justify-end pe-1.5" : chatIndent,
+      )}
+      style={style}
+    >
       {reactions.map((reaction, i) => (
         <ReactionChip
           count={counts[i] ?? reaction.count}
