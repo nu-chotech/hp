@@ -18,7 +18,6 @@ export const heroContent = {
    *
    * NOTE: 実写に差し替えるまでのプレースホルダ（Unsplash 由来）。実体は public/images/hero/
    * に保存してあるので、同名で上書きするか src の 1 行を書き換えれば差し替わる。
-   * 旧サイトの実写 nutic-entrance.webp（NUTIC 入口、4032×3024・未使用）も同じ場所に残してある。
    */
   backdrop: {
     src: "/images/hero/backdrop.jpg",
