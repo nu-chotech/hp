@@ -1656,13 +1656,14 @@ Activity セル のキーワードと Chat のリアクションを **同じ 24p
 | Tag ラベル | `Caption/Regular` 12、`color/chip/ink`（→ ink-secondary、5.30） |
 | Reaction | 絵文字（👍 / 👀）16 相当 + `inline/icon` 4 + `Caption/Bold` 数字 `ink`（13.51）。絵文字は Discord の実際のリアクションを写すので実文字で置く（**DECISION U-25**、§5.1 の例外）。数字は再生中に 1 から最終値まで 1 ずつ巻き上がる — 旧値が上へ抜け、新値が下から入る `spring/quick`（間隔は §6.12） |
 | Accent（ライブラリ） | 面 `accent-subtle` lime-200、文字 `on-accent-subtle` lime-900（7.49）。ページに出さない（K-5） |
+| Inverse（ink 面） | 面 `color/inverse/chip/fill`（→ ground@12、hover tint と同じ段）、文字 `color/inverse/chip/ink`（→ inverse/ink-secondary、≈ 8.3）。Cell Stat の所属バッジ（U-29）だけに出る |
 | radius | `radius/none` |
 
 - コンセプトの Tag 塗り neutral-50 は ground 比 1.02 で輪郭が見えない。hairline 枠案は「1px 線 = 行・語の仕切り」という語彙を崩すので採らない（R2）。
 - Reaction の `<span role="img" aria-label="いいね 3">`（内部の svg と数字は presentational）。Tag は `<ul aria-label="キーワード">` の `<li>`。
 - フィルタとして対話化する必要が生じたら Chip ではなく Button Outline sm を使う（24px は hit area 拡張でも隣接が密になり過ぎる）。
 
-Figma: `Chip` `Kind` {Tag, Reaction} × `Tone` {Neutral, Accent} sparse 3。Props: `label` `emoji` TEXT。
+Figma: `Chip` `Kind` {Tag, Reaction} × `Tone` {Neutral, Accent, Inverse} sparse 4。Props: `label` `emoji` TEXT。
 
 ### 6.5 Rule
 
@@ -1883,7 +1884,7 @@ Figma: `Section / Heading` `Layout` {Row, Stacked} 2。Props: `title` `label` TE
 
 #### 6.11.3 Cell Stat（Ink）
 
-fill `inverse/ground`。kicker `Overline/Latin` `MEMBERS` `inverse/ink-tertiary`（8.29）。value `50` **`Display/L` 96 / 40** + `+` **`Display/M` 56 / 32**、ベースライン揃え、**`inverse/ink`**（14.86、**DECISION U-24**: U-6 のアクセントを撤回。規模は色ではなく大きさで語る — lime の Display/M は kicker との間に空きが目立ち、アクセントの枠を 1 つ使うわりに釣り合わなかった）。数字の下 `stack/sm` 12 に所属の内訳 `<ul aria-label="所属">`: 大学名 `Footnote` `inverse/ink-secondary`（11.78）、学部・研究科 `Caption` `inverse/ink-tertiary`（8.29）、行間 `stack/2xs` 4。人数は確定するまで出さない（**DECISION U-29**）。数字と内訳は 1 つの塊としてセルの底に置く。`<p><span aria-hidden="true">50+</span><span class="vh">メンバー 50人以上</span></p>`。数字は半角（書体に `tnum` はない）。
+fill `inverse/ground`。kicker `Overline/Latin` `MEMBERS` `inverse/ink-tertiary`（8.29）。value `50` **`Display/L` 96 / 40** + `+` **`Display/M` 56 / 32**、ベースライン揃え、**`inverse/ink`**（14.86、**DECISION U-24**: U-6 のアクセントを撤回。規模は色ではなく大きさで語る — lime の Display/M は kicker との間に空きが目立ち、アクセントの枠を 1 つ使うわりに釣り合わなかった）。数字の下 `stack/sm` 12 に所属のバッジ `<ul aria-label="所属">` > Chip / Tag / **Inverse**（§6.4）× 5: `長崎大学 情報データ科学部` `長崎大学 工学部` `長崎大学 大学院` `長崎県立大学` `長崎総合科学大学`。`flex-wrap`、chip 間 `inline/xs` 8。人数は確定するまで出さない（**DECISION U-29**: 文の列ではなく、Activity のキーワードと同じ装置で「タグ」として読ませる — 一覧性が高く、学部ごとに 1 つずつ数えられる）。数字とバッジは 1 つの塊としてセルの底に置く。`<p><span aria-hidden="true">50+</span><span class="vh">メンバー 50人以上</span></p>`。数字は半角（書体に `tnum` はない）。
 
 #### 6.11.4 Cell Chat
 
@@ -2941,7 +2942,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 |---|---|---|---|---|
 | `Icon / *`（13 セット） | `Size` {16, 20, 24} | 3 each | — | Tabler SVG。fill `color/ink` を既定 bind（DECISION F-2） |
 | `Rule` | `Weight` {2, 1} × `Orientation` {Horizontal, Vertical} | 4 | `length` | Shape、Color |
-| `Chip` | `Kind` {Tag, Reaction} × `Tone` {Neutral, Accent}（sparse） | 3 | `label` TEXT、`icon` INSTANCE_SWAP | Icon |
+| `Chip` | `Kind` {Tag, Reaction} × `Tone` {Neutral, Accent, Inverse}（sparse） | 4 | `label` `emoji` TEXT | — |
 | `Button / Ground` | `Style` {Ink, Accent} × `Size` {sm, md} × `State` {Default, Hover, Pressed, Disabled} | 16 | `label` TEXT、`showIcon` BOOL、`icon` INSTANCE_SWAP、`focus` BOOL、`fullWidth` BOOL | Icon |
 | `Button / Ground Quiet` | `Style` {Outline, Ghost} × Size 2 × State 4 | 16 | 同上 | Icon |
 | `Button / On Ink` | `Style` {Ground, Outline} × Size 2 × State 4 | 16 | 同上 | Icon |
@@ -3202,7 +3203,7 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 | U-26 | ペルソナとチャットのアバターは Humation のイラスト（生成スクリプトで SVG 化） | 実在しない人物像に実写の顔を当てると「誰？」が先に立つ |
 | U-27 | ~~Nav の CTA にも Discord マークを添える~~ **同日に撤回** — Nav の CTA は文言 + 矢印のまま（U-19 どおり） | 帯の CTA は文言だけで足りる。マークを足すと Mobile で矢印を落とす代償も要った |
 | U-28 | Poster の Social はマーク 20 のみ。ラベルと矢印を落とす | マークが行き先を言い切るので文字は冗長。CTA と同じ行で目立ち過ぎていた |
-| U-29 | Cell Stat の数字の下に所属の内訳（長崎大学 情報データ科学部・工学部・大学院 / 長崎県立大学 / 長崎総合科学大学）を人数なしで並べる | 「50+」だけでは「どこの学生か」が分からない。複数大学からの参加が「誰でも」の裏づけになる |
+| U-29 | Cell Stat の数字の下に所属を Chip（Inverse トーン）のバッジで並べる（長崎大学 情報データ科学部 / 工学部 / 大学院、長崎県立大学、長崎総合科学大学）。人数は出さない | 「50+」だけでは「どこの学生か」が分からない。複数大学からの参加が「誰でも」の裏づけになる。文の列よりタグのほうが一覧性が高い |
 
 ## 付録 B. 検証
 

@@ -20,6 +20,8 @@ const chip = cva(
         neutral: "bg-chip-fill text-chip-ink",
         /* ライブラリのみ。ページには出さない（K-5） */
         accent: "bg-accent-subtle text-on-accent-subtle",
+        /* ink 面の上。面は ground@12（hover tint と同じ段）、文字は inverse/ink-secondary（U-29） */
+        inverse: "bg-inverse-chip-fill text-inverse-chip-ink",
       },
     },
     defaultVariants: { tone: "neutral" },
