@@ -27,7 +27,6 @@ export const heroContent = {
     { text: "SINCE 2025", lang: "en" },
     { text: "長崎大学公認" },
     { text: "技育プロジェクト 学生団体公式パートナー" },
-    { text: "MEMBERS 50+", lang: "en" },
   ],
   headline: {
     leadIn: "仲間と、",
