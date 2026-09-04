@@ -63,13 +63,13 @@ const personas = [
     },
   },
   {
-    // UI/UX が好きな人 — ゆるいロングに天使の輪。明るい髪とラベンダーで「キラキラ」側
+    // UI/UX が好きな人 — ゆるいロングに頭上のサングラス。明るい髪とラベンダーで華やか側
     file: "case-03",
     selections: {
       head: "wavy-long",
       body: "drape-tee",
       bottom: "long-skirt",
-      item: "halo",
+      item: "sunglasses",
       glasses: "none",
     },
     colors: {
@@ -80,13 +80,13 @@ const personas = [
     },
   },
   {
-    // ハッカソンに出たい人 — 横に流した短髪にネイビーのパーカー、頭にラムネ。学生の夏
+    // ハッカソンに出たい人 — 横に流した短髪にネイビーのパーカー、頭に王冠（優勝したい人）
     file: "case-04",
     selections: {
       head: "side-swept-short",
       body: "hoodie",
       bottom: "wide-pants",
-      item: "ramune",
+      item: "crown",
       glasses: "none",
     },
     colors: {
