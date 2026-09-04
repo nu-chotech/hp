@@ -64,7 +64,7 @@ const personas = [
   },
   {
     // UI/UX が好きな人 — 片側に流したロブ（クライアント指定）に T シャツ、頭上のサングラス。
-    // 髪は黒のまま、T シャツは白（クライアント指定）
+    // 髪は黒のまま、T シャツは薄い檸檬色（クライアント指定）
     file: "case-03",
     selections: {
       head: "side-swept-lob",
@@ -76,7 +76,7 @@ const personas = [
     colors: {
       skin: "FBE3D3",
       hair: "1D1D1D",
-      clothes: "FFFFFF",
+      clothes: "FFF3B0",
       bottom: "3B2A4A",
     },
   },
