@@ -55,7 +55,7 @@ export function Poster() {
           {posterContent.paragraph}
         </p>
 
-        {/* ボタン ↔ ソーシャルは inline/lg 24。Mobile はボタンが 1 行を占めて折り返す */}
+        {/* ボタン ↔ ソーシャルも、ソーシャル同士も inline/lg 24。Mobile はボタンが 1 行を占めて折り返す */}
         <div
           className="mt-stack-xl flex flex-wrap items-center gap-x-inline-lg gap-y-stack-md"
           data-reveal
@@ -79,17 +79,21 @@ export function Poster() {
               lint が言う「暗黙だから冗長」は、まさにその暗黙が消える環境の話 */}
           {/* biome-ignore lint/a11y/noRedundantRoles: preflight の list-style: none で Safari が暗黙の list ロールを外すため明示が要る */}
           {/* biome-ignore lint/a11y/useSemanticElements: 既に ul。意味づけを戻しているだけで置換先の要素は無い */}
-          <ul role="list" className="flex flex-wrap items-center gap-inline-md">
+          <ul role="list" className="flex flex-wrap items-center gap-inline-lg">
             {socialLinks.map((link) => {
               const Brand = brandIcons[link.brand];
               return (
                 <li key={link.brand}>
-                  {/* 表示は CSS で大文字化し、DOM は正書法のまま（§6.3.2）。
-                      マークは先頭（U-19）— 末尾の矢印は「外部」を言うが「どこへ」は
-                      言わないので、読む前に行き先が分かる記号を頭に置く */}
-                  <TextLink variant="social" href={link.href} external>
-                    <Brand className="size-icon-sm" />
-                    {link.label}
+                  {/* マークだけ（DECISION U-28）。行き先はマークが言い切るので文字も矢印も
+                      置かず、名前は visually-hidden に残す（§8.6）。可視 20 を ::before で
+                      44 角に広げる（§6.1.5）— 間隔 inline/lg 24 なので隣の判定と重ならない */}
+                  <TextLink
+                    variant="social"
+                    href={link.href}
+                    className="before:-inset-x-3"
+                  >
+                    <Brand className="size-icon-md" />
+                    <span className="sr-only">{link.label}（外部）</span>
                   </TextLink>
                 </li>
               );

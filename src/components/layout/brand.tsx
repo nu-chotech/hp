@@ -25,20 +25,18 @@ const brandLockup = cva(
   ],
   {
     variants: {
-      // 上下の拡張量は size ごとに違う。§8.3 の −8 は Nav の視覚ボックス 28
-      // （mark 28 / Title 3 の行ボックス 26）が前提で、Footer は 24（mark 24 /
-      // Headline の行ボックス 24）なので同じ −8 では 40 にしかならない。
-      // 必要なのは「44 になること」であって −8 という数値ではない
+      // 上下の拡張量は size ごとに違う。視覚ボックスは mark が決める（Nav 32 /
+      // Footer 28、L-30）ので、44 にするには Nav ±6、Footer ±8 が要る。
+      // 必要なのは「44 になること」であって特定の数値ではない
       size: {
-        nav: "text-ink before:-inset-y-2",
-        footer: "text-ink before:-inset-y-2.5",
+        nav: "text-ink before:-inset-y-1.5",
+        footer: "text-ink before:-inset-y-2",
       },
     },
     defaultVariants: { size: "nav" },
   },
 );
 
-/** ロゴは B/W 化しない（§6.6）。imagery の grayscale 処理の対象外 */
 const brandMark = cva("shrink-0", {
   variants: {
     size: { nav: "size-mark-nav", footer: "size-mark-footer" },
@@ -50,6 +48,8 @@ const brandWordmark = cva(
   [
     // 静止時は下線なし。状態は太さだけで示し、文字色はホバーで動かさない（C-16 / §6.1.6）
     "no-underline [text-decoration-skip-ink:none]",
+    // 名前は 1 語。狭い帯で flex に縮められても途中で折らない（§6.7.2）
+    "whitespace-nowrap",
     "group-hover:underline group-hover:decoration-link-hover",
     "group-hover:decoration-(length:--stroke-underline-strong)",
     // タッチには hover が無いので、押下でも自分で下線を出す（K-3 改）
@@ -70,7 +70,7 @@ const brandWordmark = cva(
  * 表示寸法を決めるのは size/mark-* トークン（class）で、この数値は
  * next/image に内在比率を伝えて CLS を防ぐためだけのもの（§6.19）。
  */
-const MARK_INTRINSIC = { nav: 28, footer: 24 } as const;
+const MARK_INTRINSIC = { nav: 32, footer: 28 } as const;
 
 export interface BrandProps
   extends Omit<ComponentProps<"a">, "children">,

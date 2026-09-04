@@ -4,14 +4,21 @@ import { externalLinks } from "@/config/site";
  * Discord の様子を写した「絵」。操作する UI ではない（§6.12）
  *
  * 送り手は右寄せ・アクセント面、相手は左寄せ・アバター付き。
+ * アバターはペルソナと同じ Humation のイラスト（public/images/personas/、DECISION U-26）。
  */
+export interface ChatReaction {
+  /** 実際の絵文字 1 文字。Discord のリアクションを写すのでアイコンにしない（DECISION U-25） */
+  emoji: string;
+  /** 読み上げ名の前半。「いいね 3」のように count と連結する（§6.4） */
+  label: string;
+  /** 最終値。再生中は 1 からここまで巻き上がる（§6.12.2） */
+  count: number;
+}
+
 export type ChatEntry =
-  | { kind: "incoming"; initial: string; message: string }
+  | { kind: "incoming"; avatar: string; message: string }
   | { kind: "outgoing"; message: string }
-  | {
-      kind: "reactions";
-      reactions: { icon: "thumbUp" | "eye"; count: string }[];
-    }
+  | { kind: "reactions"; reactions: ChatReaction[] }
   | { kind: "typing" };
 
 /**
@@ -49,18 +56,24 @@ export const aboutContent = {
     thread: [
       {
         kind: "incoming",
-        initial: "田",
+        // ハッカソンに出たい人（Case 04）
+        avatar: "/images/personas/case-04.svg",
         message: "ハッカソン誰か一緒に出ない？",
       },
       {
         kind: "reactions",
         reactions: [
-          { icon: "thumbUp", count: "3" },
-          { icon: "eye", count: "4" },
+          { emoji: "👍", label: "いいね", count: 3 },
+          { emoji: "👀", label: "気になる", count: 4 },
         ],
       },
       { kind: "outgoing", message: "私もそれ興味ある！" },
-      { kind: "incoming", initial: "鈴", message: "こんなやり方もあるよ！" },
+      {
+        kind: "incoming",
+        // 開発が好きなエンジニア（Case 02）
+        avatar: "/images/personas/case-02.svg",
+        message: "こんなやり方もあるよ！",
+      },
       { kind: "outgoing", message: "UIは私がやりたい！" },
       { kind: "typing" },
     ] satisfies ChatEntry[],

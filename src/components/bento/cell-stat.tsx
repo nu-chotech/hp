@@ -5,10 +5,10 @@ import { cn } from "@/lib/utils";
 /**
  * Cell Stat（§6.11.3）
  *
- * ページ全体で数字はここにしかないので、ここだけアクセントを当てて「規模」を
- * 一撃で読ませる（DECISION U-6）。逆に言えば、他のどこにも数字を置かないことが
- * この一撃の前提になっている。インク面の上の lime-400 は 10.83 で文字として成立する
- * （明るい地の上では 1.37 で成立しない — だからこのセルはインク面でなければならない）。
+ * ページ全体で数字はここにしかない。規模を語るのは色ではなく**大きさ**で、
+ * 数字は白（inverse/ink 14.86）、Display/L で kicker と釣り合わせる（DECISION U-24 —
+ * 当初の lime の数字（U-6）は撤回。アクセントの枠を 1 つ使うわりに、同じセルの中で
+ * kicker との釣り合いが取れていなかった）。
  *
  * 「50+」は字面であって語ではない。読み上げには「メンバー 50人以上」という文を渡し、
  * 可視側は aria-hidden で外す（§8.5）。
@@ -39,11 +39,11 @@ export function CellStat({
       {...props}
     >
       <p className="text-overline text-inverse-ink-tertiary">{kicker}</p>
-      <p className="text-accent">
-        {/* 値と単位はベースライン揃え。Display/M 56 と Title/1 32 の重心を揃える */}
+      <p className="text-inverse-ink">
+        {/* 値と単位はベースライン揃え。Display/L 96 と Display/M 56 の重心を揃える */}
         <span aria-hidden="true" className="flex items-baseline">
-          <span className="text-display-m">{value}</span>
-          <span className="text-title-1">{suffix}</span>
+          <span className="text-display-l">{value}</span>
+          <span className="text-display-m">{suffix}</span>
         </span>
         <span className="sr-only">{accessibleName}</span>
       </p>

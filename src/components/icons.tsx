@@ -3,20 +3,18 @@ import {
   IconArrowUp,
   IconArrowUpRight,
   IconAsterisk,
-  IconBrandDiscord,
+  IconBrandDiscordFilled,
   IconBrandGithub,
   IconBrandInstagram,
   IconBrandX,
   IconCheck,
   IconExternalLink,
-  IconEye,
   IconHeart,
   IconMail,
   IconMenu2,
   IconPhoto,
   IconPlayerPause,
   IconPlayerPlay,
-  IconThumbUp,
   IconX,
 } from "@tabler/icons-react";
 import type { ComponentProps } from "react";
@@ -25,6 +23,8 @@ import type { ComponentProps } from "react";
  * アイコン（§5）
  *
  * Tabler Icons の outline のみ。24 グリッド・stroke 2 で統一し、他のセットは混ぜない。
+ * 例外は Discord のブランドマークだけ filled（DECISION U-23）— 輪郭版は顔の目が線になって
+ * 崩れて見える。塗り版は 24 グリッドのまま stroke を持たない。
  * ページ上のアイコンはすべて装飾で、意味は必ず隣接するテキストが運ぶ。だからここで
  * 一律に aria-hidden を付ける — 呼び出し側で付け忘れると読み上げにゴミが混ざる。
  */
@@ -66,9 +66,6 @@ export const Close = decorative(IconX, "Close");
 /** マーキーの停止・再生 */
 export const Pause = decorative(IconPlayerPause, "Pause");
 export const Play = decorative(IconPlayerPlay, "Play");
-/** チャットのリアクション */
-export const ThumbUp = decorative(IconThumbUp, "ThumbUp");
-export const Eye = decorative(IconEye, "Eye");
 export const Heart = decorative(IconHeart, "Heart");
 export const Check = decorative(IconCheck, "Check");
 export const Mail = decorative(IconMail, "Mail");
@@ -77,7 +74,8 @@ export const Photo = decorative(IconPhoto, "Photo");
 /** 個人サイト */
 export const Website = decorative(IconExternalLink, "Website");
 
-export const BrandDiscord = decorative(IconBrandDiscord, "BrandDiscord");
+/** 唯一の filled（U-23）。stroke は無視される */
+export const BrandDiscord = decorative(IconBrandDiscordFilled, "BrandDiscord");
 export const BrandX = decorative(IconBrandX, "BrandX");
 export const BrandInstagram = decorative(IconBrandInstagram, "BrandInstagram");
 export const BrandGithub = decorative(IconBrandGithub, "BrandGithub");
@@ -89,9 +87,4 @@ export const brandIcons = {
   github: BrandGithub,
   discord: BrandDiscord,
   website: Website,
-} as const;
-
-export const reactionIcons = {
-  thumbUp: ThumbUp,
-  eye: Eye,
 } as const;

@@ -42,6 +42,12 @@ importers:
       '@biomejs/biome':
         specifier: 2.3.8
         version: 2.3.8
+      '@humation/assets-humation-1':
+        specifier: ^1.0.2
+        version: 1.0.2
+      '@humation/core':
+        specifier: ^1.0.2
+        version: 1.0.2
       '@resvg/resvg-js':
         specifier: ^2.6.2
         version: 2.6.2
@@ -147,6 +153,14 @@ packages:
 
   '@emnapi/runtime@1.11.3':
     resolution: {integrity: sha512-Xz4Tpyki7XyrpbUK1jR1AhdAdaXyhhY4lZ3neLodmhpuWfy2PAQN5B46sAiU4liOXGLkHypn/qU+jvfWSCYYLA==}
+
+  '@humation/assets-humation-1@1.0.2':
+    resolution: {integrity: sha512-EafHQ8TxiiFW+r1hiYWKvwhePXjBcpRmRpbEIxIHmlU15+KfQ9vpnAUURHnAQ0PUSZA8FCOq8nfK8IagLbd1HA==}
+    engines: {node: '>=18.0.0'}
+
+  '@humation/core@1.0.2':
+    resolution: {integrity: sha512-yRkTpwcJaSrUgssV6trInlZ+osyJyJlwBQBr33GO2r8CeWWwSg8sJ/gq8UyBlQ5zioyxZO8MxZuzCRxzpNUvHg==}
+    engines: {node: '>=18.0.0'}
 
   '@img/colour@1.1.0':
     resolution: {integrity: sha512-Td76q7j57o/tLVdgS746cYARfSyxk8iEfRxewL9h4OMzYhbW4TAcppl0mT4eyqXddh6L/jwoM75mo7ixa/pCeQ==}
@@ -903,6 +917,12 @@ snapshots:
     dependencies:
       tslib: 2.8.1
     optional: true
+
+  '@humation/assets-humation-1@1.0.2':
+    dependencies:
+      '@humation/core': 1.0.2
+
+  '@humation/core@1.0.2': {}
 
   '@img/colour@1.1.0':
     optional: true

@@ -12,18 +12,12 @@ import { HeroReveal, RotatingWord } from "./hero/rotating-word";
  * Section / Hero（§6.8.1）
  *
  * ページ上端のインク面。Section 部品ではなく素の <section> で組むのは、Hero だけが
- * (1) 内容を垂直中央に置く min-height を持ち、(2) Container の外側に格子線を敷くため。
+ * (1) 内容を垂直中央に置く min-height を持ち、(2) Container の外側に背景写真を敷くため。
  * 面の配色と data-surface の語彙は Section と同じ sectionVariants を引く。
  *
  * 縦リズムは §3.9 の Hero 行: 上 section/pad-display 96 (M 64)、下 section/pad-bottom 80 (M 64)。
  * 上罫線は持たない — 色面の切り替えそのものが境界になる。
  */
-
-/**
- * 格子線（DECISION K-12）: container ではなく **viewport** を 4 等分する位置に立てる。
- * 4 本目は右端なので自身の 1px ぶん内側に置く。
- */
-const GRID_LINES = ["left-1/4", "left-1/2", "left-3/4", "right-0"] as const;
 
 /**
  * 背景写真の動き（DECISION U-20）
@@ -69,8 +63,8 @@ export function Hero() {
        * 「コミュニティの実像」という情報を運ぶ層なので M9「装飾のためだけの動きは
        * 足さない」の例外にあたるが、動き自体は M8 のスイッチ 1 つで止まる。
        *
-       * 格子線より前に置いて奥に敷く。overflow-hidden は移動する画像の受け皿で、
-       * これが無いと拡大したぶんが Hero の外へこぼれる。
+       * overflow-hidden は移動する画像の受け皿で、これが無いと拡大したぶんが Hero の外へ
+       * こぼれる。格子線（旧 K-12）は置かない — 写真の上に線が乗ると写真の一部に見える（U-22）。
        */}
       <div
         aria-hidden="true"
@@ -89,28 +83,14 @@ export function Hero() {
           decoding="async"
           className={cn(
             "hero__backdrop absolute inset-0 size-full object-cover",
-            // 白黒は写真の規定どおり（§5.7.1）。色を乗せない
-            "grayscale contrast-108",
+            // 色はそのまま（U-21）。不透明度だけで ink 面に沈める
             "opacity-(--hero-backdrop-opacity)",
           )}
         />
       </div>
 
-      {/* 比 1.18 の地のテクスチャ。構造ではないので読み上げから外す */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        {GRID_LINES.map((position) => (
-          <div
-            key={position}
-            className={cn(
-              "absolute inset-y-0 w-hair bg-inverse-hairline",
-              position,
-            )}
-          />
-        ))}
-      </div>
-
       <HeroReveal>
-        {/* relative: 位置指定された格子線より後ろに描かれないようにする */}
+        {/* relative: 絶対配置の背景写真より前に描く */}
         <Container className="relative flex flex-col gap-stack-xl pt-section-pad-display pb-section-pad-bottom">
           <MetaStrip />
 

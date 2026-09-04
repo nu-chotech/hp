@@ -458,8 +458,8 @@
   --size-avatar: 1.5rem; /* 24 — チャットアバター（円）。= icon/lg */
   --size-dot: 0.4375rem; /* 7 — 入力中ドット（円）。3 点 + gap 5 = 31 幅（U-1 で 4 → 7） */
   --size-illustration: 6rem; /* 96 — ペルソナイラスト（円） */
-  --size-mark-nav: 1.75rem; /* 28 — ナビのロゴマーク。Title 3 19 に対し比 1.47（L-21） */
-  --size-mark-footer: 1.5rem; /* 24 — フッターのロゴマーク。Headline 17 に対し比 1.41 */
+  --size-mark-nav: 2rem; /* 32 — ナビのロゴマーク。SVG の版面に余白があるので図は約 19。Title 3 19 に対し比 1.68（L-30） */
+  --size-mark-footer: 1.75rem; /* 28 — フッターのロゴマーク。Headline 17 に対し比 1.65 */
   --size-rule-v: 0.75rem; /* 12 — 縦 hairline の高さ。隣接する文字サイズと等しい（L-16） */
 
   /* --- 5.3 アイコン（Tabler outline、24 グリッド、stroke 2、round cap/join） -- */
