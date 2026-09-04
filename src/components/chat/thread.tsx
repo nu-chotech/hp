@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { chatIndent, Message } from "@/components/chat/message";
+import { Message } from "@/components/chat/message";
+import { ReactionRow } from "@/components/chat/reaction-row";
 import { Typing } from "@/components/chat/typing";
-import { ReactionChip, type ReactionIconName } from "@/components/ui/chip";
 import type { ChatEntry } from "@/content/about";
 import { useAwake } from "@/hooks/use-awake";
 import { useMotionPlaying } from "@/hooks/use-motion-switch";
 import { chatThread, motionVar } from "@/lib/motion";
-import { cn } from "@/lib/utils";
 
 /**
  * チャットの再生（§6.12 / DECISION U-16）
@@ -24,18 +23,6 @@ import { cn } from "@/lib/utils";
  * SSR と JS 無しでは全行が見えている（初期値が `thread.length`）。畳むのは
  * 再生できると分かってからで、§7 グローバル 5 の「JS が落ちても内容は見える」を守る。
  */
-
-/**
- * リアクションの読み上げ名（§6.4）。
- *
- * 絵文字そのものには名前が無いので、Chip 側が「いいね 3」という 1 つの像として
- * 名前を要求する。content/about.ts はアイコン名と数だけを持つので、
- * その対応はここで解決する。
- */
-const REACTION_LABELS: Record<ReactionIconName, string> = {
-  thumbUp: "いいね",
-  eye: "気になる",
-};
 
 /**
  * 兄弟の中で一意に決まる鍵。
@@ -113,21 +100,15 @@ export function ChatThread({ thread }: ChatThreadProps) {
 
         if (entry.kind === "reactions") {
           return (
-            // リアクションは直前の発言に属するので、吹き出しの左端に揃える
-            <li
-              className={cn("flex gap-inline-xs", chatIndent)}
+            // 数字の巻き上げ（U-25）は行が持つ。見えているかと再生中かを渡す
+            <ReactionRow
               key={entryKey(entry, index)}
+              playing={playing}
+              reactions={entry.reactions}
+              shown={shown}
+              side={entry.side}
               style={style}
-            >
-              {entry.reactions.map((reaction) => (
-                <ReactionChip
-                  count={reaction.count}
-                  icon={reaction.icon}
-                  key={reaction.icon}
-                  label={REACTION_LABELS[reaction.icon]}
-                />
-              ))}
-            </li>
+            />
           );
         }
 
@@ -138,7 +119,7 @@ export function ChatThread({ thread }: ChatThreadProps) {
             {...(entry.kind === "incoming"
               ? {
                   side: "incoming" as const,
-                  initial: entry.initial,
+                  avatar: entry.avatar,
                   message: entry.message,
                 }
               : { side: "outgoing" as const, message: entry.message })}

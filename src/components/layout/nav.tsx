@@ -35,7 +35,9 @@ export function Nav({
   ctaHref = externalLinks.discord,
   className,
 }: NavProps) {
-  // 外部へ出るリンクなので、矢印（ArrowUpRight）だけでなく読み上げにも言う（§8.6）
+  // 外部へ出るリンクなので、矢印（ArrowUpRight）だけでなく読み上げにも言う（§8.6）。
+  // Discord マークは置かない（U-19。U-27 で一度足したが、帯の CTA は文言だけで足りると
+  // 同日に撤回。Mobile の幅検算 §6.7.2 も矢印ありの元の式に戻る）
   const label = (
     <>
       {ctaLabel}

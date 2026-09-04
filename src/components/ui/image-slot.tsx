@@ -46,32 +46,26 @@ const slot = cva(
   },
 );
 
-const image = cva(
-  [
-    "absolute inset-0 size-full",
-    // 白黒（§5.7.1）。色を乗せない・hover で色を戻さない。ロゴマークにだけは適用しない
-    "grayscale contrast-108",
-  ],
-  {
-    variants: {
-      /** 写真は cover、ロゴは contain（セル中央、DECISION L-26） */
-      fit: {
-        cover: "object-cover",
-        contain: "object-contain",
-      },
-      /** §5.7.2 の焦点。人物は顔が上 1/3 に来るので中央より上を残す */
-      focal: {
-        center: "object-center",
-        subject: "object-[50%_40%]",
-        face: "object-[50%_30%]",
-      },
+// 色はそのまま（DECISION U-21）。filter も tint も掛けない
+const image = cva("absolute inset-0 size-full", {
+  variants: {
+    /** 写真は cover、ロゴは contain（セル中央、DECISION L-26） */
+    fit: {
+      cover: "object-cover",
+      contain: "object-contain",
     },
-    defaultVariants: {
-      fit: "cover",
-      focal: "center",
+    /** §5.7.2 の焦点。人物は顔が上 1/3 に来るので中央より上を残す */
+    focal: {
+      center: "object-center",
+      subject: "object-[50%_40%]",
+      face: "object-[50%_30%]",
     },
   },
-);
+  defaultVariants: {
+    fit: "cover",
+    focal: "center",
+  },
+});
 
 type ImageSlotBaseProps = ComponentProps<"div"> &
   VariantProps<typeof slot> &

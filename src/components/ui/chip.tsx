@@ -1,6 +1,6 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import type { ComponentProps } from "react";
-import { reactionIcons } from "@/components/icons";
+import { RollingNumber } from "@/components/ui/rolling-number";
 import { cn } from "@/lib/utils";
 
 /**
@@ -20,6 +20,8 @@ const chip = cva(
         neutral: "bg-chip-fill text-chip-ink",
         /* ライブラリのみ。ページには出さない（K-5） */
         accent: "bg-accent-subtle text-on-accent-subtle",
+        /* ink 面の上。面は ground@12（hover tint と同じ段）、文字は inverse/ink-secondary（U-29） */
+        inverse: "bg-inverse-chip-fill text-inverse-chip-ink",
       },
     },
     defaultVariants: { tone: "neutral" },
@@ -48,43 +50,45 @@ export function Chip({
   return <Component className={cn(chip({ tone }), className)} {...rest} />;
 }
 
-export type ReactionIconName = keyof typeof reactionIcons;
-
 export interface ReactionChipProps
   extends Omit<ChipProps, "children" | "role"> {
-  icon: ReactionIconName;
-  /** content が文字列で持つのでそのまま受ける */
-  count: string;
-  /** 読み上げ名の前半。「いいね 3」のように count と連結する（§6.4） */
+  /** 実際の絵文字 1 文字（👍 / 👀）。Discord のリアクションを写す絵なのでアイコンに置き換えない（DECISION U-25） */
+  emoji: string;
+  /** 表示する数。再生中は chat 側が 1 から目標値まで 1 ずつ上げて渡す（§6.12.2） */
+  count: number;
+  /** 読み上げ名の前半。「いいね 3」のように finalCount と連結する（§6.4） */
   label: string;
+  /** 読み上げに渡す最終値。省略時は count。巻き上げの途中経過を読み上げさせない */
+  finalCount?: number;
 }
 
 /**
- * Reaction — 16 アイコン + 数字。
+ * Reaction — 絵文字 + 数字。
  * 中身は絵ではなく「いいね 3」という一つの像なので、外側だけを role="img" で名付け、
- * svg と数字は presentational に落とす（role="img" の子孫は自動でそうなる）。
+ * 絵文字と数字は presentational に落とす（role="img" の子孫は自動でそうなる）。
+ * 数字は RollingNumber が持ち、値が変わるたび下から巻き上がる。
  */
 export function ReactionChip({
-  icon,
+  emoji,
   count,
   label,
+  finalCount = count,
   tone,
   className,
   ...props
 }: ReactionChipProps) {
-  const Icon = reactionIcons[icon];
-
   return (
     <Chip
-      aria-label={`${label} ${count}`}
+      aria-label={`${label} ${finalCount}`}
       className={className}
       role="img"
       tone={tone}
       {...props}
     >
-      <Icon className="size-icon-sm" />
+      {/* 絵文字は 16 相当。Caption の行ボックス 18 に収め、チップ高 24 を崩さない */}
+      <span className="text-[1rem] leading-[1.125rem]">{emoji}</span>
       {/* 数字だけは chip/ink ではなく ink。小さい数字は面に対して最大の比が要る */}
-      <span className="text-caption-bold text-ink">{count}</span>
+      <RollingNumber className="text-caption-bold text-ink" value={count} />
     </Chip>
   );
 }

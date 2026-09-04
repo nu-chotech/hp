@@ -14,8 +14,11 @@ export interface MarqueeItem {
 export const marqueeContent = {
   items: [
     { kind: "label", text: "PARTNERS" },
-    { kind: "word", text: "長崎大学" },
-    { kind: "ghost", text: "YOUR COMPANY HERE" },
-    { kind: "word", text: "パートナー募集中" },
+    { kind: "word", text: "サポーターズ 技育プロジェクト" },
+    { kind: "word", text: "カラビナテクノロジー株式会社" },
+    { kind: "word", text: "NPO法人 N-BARCO" },
+    { kind: "word", text: "長崎大学 アントレプレナーシップセンター" },
+    { kind: "word", text: "Progate Path" },
+    { kind: "ghost", text: "パートナー募集中" },
   ] satisfies MarqueeItem[],
 } as const;

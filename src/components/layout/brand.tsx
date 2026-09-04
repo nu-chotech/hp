@@ -25,12 +25,12 @@ const brandLockup = cva(
   ],
   {
     variants: {
-      // 上下の拡張量は size ごとに違う。§8.3 の −8 は Nav の視覚ボックス 28
-      // （mark 28 / Title 3 の行ボックス 26）が前提で、Footer は 24（mark 24 /
-      // Headline の行ボックス 24）なので同じ −8 では 40 にしかならない。
-      // 必要なのは「44 になること」であって −8 という数値ではない
+      // 上下の拡張量は size ごとに違う。視覚ボックスは wordmark の行ボックスが決める
+      // （Nav: Title 3 の 26 > mark 24、Footer: Headline の 24 > mark 20、L-30）ので、
+      // 44 にするには Nav ±9、Footer ±10 が要る。
+      // 必要なのは「44 になること」であって特定の数値ではない
       size: {
-        nav: "text-ink before:-inset-y-2",
+        nav: "text-ink before:-inset-y-2.25",
         footer: "text-ink before:-inset-y-2.5",
       },
     },
@@ -38,7 +38,6 @@ const brandLockup = cva(
   },
 );
 
-/** ロゴは B/W 化しない（§6.6）。imagery の grayscale 処理の対象外 */
 const brandMark = cva("shrink-0", {
   variants: {
     size: { nav: "size-mark-nav", footer: "size-mark-footer" },
@@ -50,6 +49,8 @@ const brandWordmark = cva(
   [
     // 静止時は下線なし。状態は太さだけで示し、文字色はホバーで動かさない（C-16 / §6.1.6）
     "no-underline [text-decoration-skip-ink:none]",
+    // 名前は 1 語。狭い帯で flex に縮められても途中で折らない（§6.7.2）
+    "whitespace-nowrap",
     "group-hover:underline group-hover:decoration-link-hover",
     "group-hover:decoration-(length:--stroke-underline-strong)",
     // タッチには hover が無いので、押下でも自分で下線を出す（K-3 改）
@@ -70,7 +71,7 @@ const brandWordmark = cva(
  * 表示寸法を決めるのは size/mark-* トークン（class）で、この数値は
  * next/image に内在比率を伝えて CLS を防ぐためだけのもの（§6.19）。
  */
-const MARK_INTRINSIC = { nav: 28, footer: 24 } as const;
+const MARK_INTRINSIC = { nav: 24, footer: 20 } as const;
 
 export interface BrandProps
   extends Omit<ComponentProps<"a">, "children">,
@@ -95,9 +96,11 @@ export function Brand({
 
   return (
     <a href={href} className={cn(brandLockup({ size }), className)} {...props}>
-      {/* ロゴは装飾。リンクの名前は wordmark の文字が運ぶ（§8.6） */}
+      {/* ロゴは装飾。リンクの名前は wordmark の文字が運ぶ（§8.6）。
+          favicon.svg は余白込み（図が箱の 65%）なので lockup には使わない —
+          図の外接矩形で切った mark.svg を置くと、gap 12 が見た目どおりの 12 になる（L-30） */}
       <Image
-        src="/favicon.svg"
+        src="/icons/mark.svg"
         alt=""
         width={markSize}
         height={markSize}

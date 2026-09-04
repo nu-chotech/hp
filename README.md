@@ -14,7 +14,7 @@
 方向は「ポスター × ベント」:
 
 - 書体は **LINE Seed JP のみ**（400 / 700 / 800）
-- アイコンは **Tabler Icons outline のみ**（24 グリッド、stroke 2）。絵文字・記号文字は使わない
+- アイコンは **Tabler Icons outline のみ**（24 グリッド、stroke 2）。例外は Discord のマーク（filled）とチャットのリアクション（実際の絵文字）だけ
 - **角丸ゼロ**。例外はチャットの吹き出しと 3 つの円だけ
 - 影ゼロ。段差は 1px / 2px の罫線と面の色だけで作る
 - 全要素フラッシュレフト
@@ -36,7 +36,8 @@ pnpm dev             # http://localhost:3000
 pnpm lint            # biome check
 pnpm format          # biome format --write
 pnpm build
-pnpm generate:icons  # public/favicon.svg から favicon / PWA アイコン一式を再生成
+pnpm generate:icons  # public/icons/favicon.svg から favicon / PWA アイコン一式を再生成
+pnpm generate:avatars # scripts/generate-avatars.mjs の部位・色から Humation のアバター SVG を生成
 ```
 
 ## トークン層の読み方
@@ -92,7 +93,10 @@ src/
     use-reveal.ts     [data-reveal] のオブザーバ
     utils.ts          cn()
     site-url.ts       metadataBase 用のサイト URL 解決
-scripts/              generate-icons.mjs
+scripts/              generate-icons.mjs / generate-avatars.mjs
+public/
+  icons/              favicon / PWA アイコン一式（favicon.svg から generate-icons.mjs が生成）。mark.svg はロックアップ用に図の外接矩形で切ったもの
+  images/             写真・ロゴの実体。hero / about / members / personas / partners
 docs/design/          デザインシステムの正本
 ```
 
@@ -102,4 +106,16 @@ docs/design/          デザインシステムの正本
 - 各セクションの文言とデータ → `src/content/*.ts`（コンポーネントは触らなくてよい）
 - OGP / manifest の文言は `siteConfig` から自動で反映される
 
-写真・運営メンバー・パートナーは**プレースホルダ**です。差し替えは `src/content/` と `ImageSlot` に実画像を渡すだけで完結します。
+## 画像を差し替えたいとき
+
+写真・運営メンバー・パートナーロゴは**プレースホルダ**です（Unsplash 由来）。ペルソナとチャットのアバターは Humation で生成した本番用のイラストです。実体はすべて `public/images/` にあり、参照は `src/content/*.ts` が持ちます。コンポーネントは触らなくてよい。
+
+| 場所 | ファイル | 参照 | 比率・目安サイズ |
+|---|---|---|---|
+| Hero 背景 | `public/images/hero/backdrop.jpg` | `content/hero.ts` | 横 1920 |
+| About の活動写真 | `public/images/about/{talk-day,dev-day,hackathon}.jpg` | `content/about.ts` | 16:9、1200×675 |
+| 運営メンバー | `public/images/members/<id>.jpg` | `content/members.ts` | Leader 16:9 1200×675 / Staff 4:3 800×600 |
+| こんな人に・チャットのアバター | `public/images/personas/case-0N.svg` | `content/personas.ts` / `content/about.ts` | 1:1。Humation のイラスト。`scripts/generate-avatars.mjs` の部位・色を変えて `pnpm generate:avatars` |
+| パートナーロゴ | `public/images/partners/` | `content/partners.ts` の `logo` | 任意（contain、内側 349×72） |
+
+同じファイル名で上書きすればコードは触らずに済みます。名前や拡張子を変えるときは `src/content/` の該当 1 行を書き換えてください。書き出しはスロット幅の 2 倍（DPR 2）が目安です（仕様書 §5.7.2）。Hero 背景だけは、不透明度を写真の最も明るい画素で測って決めているので、差し替えたら測り直します（`content/hero.ts` のコメント）。

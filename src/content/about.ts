@@ -4,13 +4,25 @@ import { externalLinks } from "@/config/site";
  * Discord の様子を写した「絵」。操作する UI ではない（§6.12）
  *
  * 送り手は右寄せ・アクセント面、相手は左寄せ・アバター付き。
+ * アバターはペルソナと同じ Humation のイラスト（public/images/personas/、DECISION U-26）。
  */
+export interface ChatReaction {
+  /** 実際の絵文字 1 文字。Discord のリアクションを写すのでアイコンにしない（DECISION U-25） */
+  emoji: string;
+  /** 読み上げ名の前半。「いいね 3」のように count と連結する（§6.4） */
+  label: string;
+  /** 最終値。再生中は 1 からここまで巻き上がる（§6.12.2） */
+  count: number;
+}
+
 export type ChatEntry =
-  | { kind: "incoming"; initial: string; message: string }
+  | { kind: "incoming"; avatar: string; message: string }
   | { kind: "outgoing"; message: string }
   | {
       kind: "reactions";
-      reactions: { icon: "thumbUp" | "eye"; count: string }[];
+      /** 直前の発言の側。自分側は右寄せになる。既定は相手側 */
+      side?: "incoming" | "outgoing";
+      reactions: ChatReaction[];
     }
   | { kind: "typing" };
 
@@ -41,27 +53,72 @@ export const aboutContent = {
     suffix: "+",
     /** 数字は装飾。読み上げは文で渡す（§6.11.3） */
     accessibleName: "メンバー 50人以上",
+    /**
+     * 所属の内訳（DECISION U-29）。人数は確定していないので出さず、所属だけをバッジで並べる。
+     * 長崎大学は学部・研究科ごとに 1 つ（学内の複数の学部から来ていることが情報）。
+     */
+    affiliations: [
+      { university: "長崎大学", unit: "情報データ科学部" },
+      { university: "長崎大学", unit: "工学部" },
+      { university: "長崎大学", unit: "大学院" },
+      { university: "長崎県立大学" },
+      { university: "長崎総合科学大学" },
+    ],
   },
 
   chat: {
     kicker: "#general — いつものChoTech",
     note: "こんな会話が、毎日どこかで。",
+    /**
+     * 発言のたびにスタンプが付く（U-25 改）。「反応が返ってくる場所」を見せるのが
+     * この図の仕事なので、反応の無い発言を残さない。絵文字は発言ごとに変える —
+     * 同じ 2 つが 4 回並ぶと定型に見える。数は 1〜4 に留め、巻き上げを短く保つ。
+     */
     thread: [
       {
         kind: "incoming",
-        initial: "田",
+        // ハッカソンに出たい人（Case 04）
+        avatar: "/images/personas/case-04.svg",
         message: "ハッカソン誰か一緒に出ない？",
       },
       {
         kind: "reactions",
         reactions: [
-          { icon: "thumbUp", count: "3" },
-          { icon: "eye", count: "4" },
+          { emoji: "👍", label: "いいね", count: 3 },
+          { emoji: "👀", label: "気になる", count: 4 },
         ],
       },
       { kind: "outgoing", message: "私もそれ興味ある！" },
-      { kind: "incoming", initial: "鈴", message: "こんなやり方もあるよ！" },
+      {
+        kind: "reactions",
+        side: "outgoing",
+        reactions: [
+          { emoji: "🎉", label: "やった", count: 2 },
+          { emoji: "🔥", label: "アツい", count: 1 },
+        ],
+      },
+      {
+        kind: "incoming",
+        // UI/UX が好きな人（Case 03）
+        avatar: "/images/personas/case-03.svg",
+        message: "こんなやり方もあるよ！",
+      },
+      {
+        kind: "reactions",
+        reactions: [
+          { emoji: "💡", label: "なるほど", count: 3 },
+          { emoji: "👏", label: "拍手", count: 2 },
+        ],
+      },
       { kind: "outgoing", message: "UIは私がやりたい！" },
+      {
+        kind: "reactions",
+        side: "outgoing",
+        reactions: [
+          { emoji: "✨", label: "すてき", count: 2 },
+          { emoji: "🙌", label: "頼もしい", count: 1 },
+        ],
+      },
       { kind: "typing" },
     ] satisfies ChatEntry[],
   },
@@ -73,19 +130,20 @@ export const aboutContent = {
    * 順に Talk Day の発表 / Dev Day のハンズオン / ハッカソンのチーム開発。
    *
    * 写真は装飾なので alt は ""（§8.6）— 活動の情報は Activities 節が本文で持つ。
-   * NOTE: 実写に差し替えるまでのプレースホルダ（Unsplash）。差し替えは src の 1 行。
+   * NOTE: 実写に差し替えるまでのプレースホルダ（Unsplash 由来）。実体は public/images/about/
+   * に保存してある。差し替えは同名で上書きするか、src の 1 行。
    */
   photos: [
     {
-      src: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=1200&h=675&q=75",
+      src: "/images/about/talk-day.jpg",
       alt: "",
     },
     {
-      src: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&h=675&q=75",
+      src: "/images/about/dev-day.jpg",
       alt: "",
     },
     {
-      src: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&h=675&q=75",
+      src: "/images/about/hackathon.jpg",
       alt: "",
     },
   ],

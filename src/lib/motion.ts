@@ -88,6 +88,12 @@ export const chatThread = {
   stepMs: 900,
   /** 一巡後の間。最後の発言を読み切ってから畳む */
   holdMs: 2400,
+  /** リアクション数の巻き上げ（§6.12.2 / U-25）: 行が現れてから最初の +1 まで */
+  reactionDelayMs: 300,
+  /** +1 ごとの間隔。押した人が 1 人ずつ増えて見える最短 */
+  reactionTickMs: 260,
+  /** 2 つ目のチップの出遅れ。同時に増えると 1 人が 2 つ押したように読める */
+  reactionStaggerMs: 130,
 } as const;
 
 /**

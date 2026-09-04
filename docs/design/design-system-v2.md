@@ -9,6 +9,7 @@
 > - アクセントは **アシッドライム（Tailwind v4 lime）に確定**。本文の数値はすべて Lime モードの実測値。比較の経緯と Indigo の数値は付録 C
 > - Color コレクションは 3 モード（Mono / Indigo accent / Lime accent）・62 行、Shape 10 行、Spacing 64 行
 > - **2026-09-01 の実装レビューを反映**（付録 A.8 / U-1〜U-14）: 角丸はチャットのみ例外（Messages 風）、リンク下線 2 / 3px、ヒーロー回転語はアクセント文字（下線廃止）、セクション見出しの連番廃止・和文の題が先、活動内容はベント 4 セル（Hackathon 追加）、用語は「パートナー」に統一、Member カードに SNS リンク
+> - **2026-09-05 の実装レビューを反映**（U-21〜U-29 / L-30）: 写真・イラスト・ロゴは原色（B/W 撤回）、Hero の格子線撤去、Discord マークは filled、Stat の数字は白の Display/L + 所属の内訳、全発言にリアクション（実際の絵文字、数字が巻き上がる）、ペルソナとチャットのアバターは Humation（女 3・男 3）、Poster の Social はマークのみ、ロゴマークは外接矩形の mark.svg を 24 / 20（U-27 の Nav CTA マークは同日撤回）
 
 # ChoTech Design Guidelines
 
@@ -29,7 +30,7 @@
 | **Purpose（目的）** | ページの仕事は「ChoTech を知り、Discord に来てもらう」の 1 つ。要素はこの仕事に寄与するときだけ置く | 主 CTA は 1 画面 1 つ。装飾のためだけの動き・色・影を足さない（M9）。落としたもの: チャット再生ループ、浮遊バブル、編集ヒント、accent-2、絵文字 |
 | **Clarity（明快）** | 読めることが最初。インク・オン・グラウンド（14.86:1）で成立させ、色は構造を補わない | 明るい面の文字は ink / ink-secondary の 2 段、暗い面は ground のアルファ 100 / 88 / 72 / 48。全ペアを計算し AA を満たす。12px 未満の文字はない |
 | **Hierarchy（階層）** | 階層は「ウェイト × サイズ × 行送り」の組と、罫線の太さ（1 / 2 / 4px）と余白の段（4px モジュール）で作る。色で作らない | Display 800 −2%、見出し 800、声 700、本文 400。2px rule = 区画、1px hairline = 行、4px = ポスターの下線。罫線の上 80 ≥ 下 64 |
-| **Restraint（抑制）** | 一書体、一色相、角丸ゼロ、影ゼロ、中央揃えなし。Mono モードで成立しない設計は Lime でも不可 | アクセントの出現は Lime で 4 箇所（マーキー区切り、活動バッジ、ポスター面、ヒーロー下線）+ 状態 4 種（hover 下線 / pressed 文字 / focus / selection）だけ。写真とロゴは B/W |
+| **Restraint（抑制）** | 一書体、一色相、角丸ゼロ、影ゼロ、中央揃えなし。Mono モードで成立しない設計は Lime でも不可 | アクセントの出現は Lime で 4 箇所（マーキー区切り、活動バッジ、ポスター面、ヒーロー下線）+ 状態 4 種（hover 下線 / pressed 文字 / focus / selection）だけ。写真・イラスト・ロゴは原色（U-21） |
 | **Craft（精度）** | すべての値が梯子の段であり、根拠を言える。Figma と CSS が同じ構造で同じ数を持つ | 4px モジュール、整数 px の行送り、高さ駆動のコントロール（36 / 44）、fill + gap で描く罫線グリッド、`n 文字 = n em` の和文組版、compositor プロパティだけの動き |
 
 Familiarity（慣れ）・Agency（主体性）・Flexibility（柔軟）・Responsibility（責任）は個別規則に溶かした: 矢印の意味を 2 種に固定する（§5）、`target="_blank"` を使わない（§8）、ループはページ内スイッチで止められる（§7）、Mobile は 1 列で DOM 順（§3）、200% 拡大とリフローで壊れない（§8）。
@@ -46,7 +47,7 @@ Familiarity（慣れ）・Agency（主体性）・Flexibility（柔軟）・Resp
 
 ### 0.3 ページの骨格（コンセプトの認識可能な部分）
 
-Nav（sticky、2px 下罫）→ Hero（インク面、格子線、回転語をアクセントで塗る）→ Marquee 帯（2px 上下罫、asterisk 区切り、停止ボタン）→ About（ベント 4 列罫線グリッド: テキスト / 統計 / チャット / 写真 / CTA）→ Activities（ベント 4 セル: Feature 1 + Compact 3）→ For You（ペルソナカード 3 × 2）→ Members（リーダー 2 列 + スタッフ 3 列）→ Partners（ロゴセル 3 列 + プレースホルダ）→ Poster（クロージング CTA、唯一のアクセント面）→ Footer。全要素左揃え。
+Nav（sticky、2px 下罫）→ Hero（インク面、背景写真、回転語をアクセントで塗る）→ Marquee 帯（2px 上下罫、asterisk 区切り、停止ボタン）→ About（ベント 4 列罫線グリッド: テキスト / 統計 / チャット / 写真 / CTA）→ Activities（ベント 4 セル: Feature 1 + Compact 3）→ For You（ペルソナカード 3 × 2）→ Members（リーダー 2 列 + スタッフ 3 列）→ Partners（ロゴセル 3 列 + プレースホルダ）→ Poster（クロージング CTA、唯一のアクセント面）→ Footer。全要素左揃え。
 
 ### 0.4 分冊間の矛盾と解決
 
@@ -95,7 +96,7 @@ Figma: コレクション `Primitives`（単一モード）と `Color`（モー�
 | 5 | **状態は反対の極の不透明度で表す** | 明るい面のホバー/プレスはインクのアルファ、暗い面はグラウンドのアルファ。どの面でも同じ規則で、色を増やさない。フォーカスは常にアクセント（面ごとに段を変える: 明るい面 700 / インク面 300 / ポスター面 900） |
 | 6 | **モードは「抑制の度合い」** | `Mono` はアクセントが状態（フォーカス／選択／ホバー下線／プレス文字）にしか現れない状態で、アクセントが情報を担っていないことの証明として機能する。`Lime accent` はそこに正確に 4 つの出現（マーキー区切り、活動バッジ、ポスター面、ヒーロー下線）を加える。Mono で成立しない設計は Lime でも不可 |
 | 7 | **色だけに頼らない（WCAG 1.4.1）** | リンクは下線で示す（インライン常時 1px、ナビ・ワードマークはホバーで 2px、フッター・ソーシャルはホバーで 1px）。現在地は 2px インク下線。バッジは文字を持つ。フォーカスは 2px オフセットのリング。モード切替で情報が失われないことがその検証になる |
-| 8 | **写真とロゴはモノクロ** | 画像に色相を持ち込まない（grayscale 100%、contrast +8%）。パートナーロゴも B/W。例外は ChoTech のロゴマークと、ブランド規定で色が必須なロゴ 1 枚のみ（原色のまま、ティントしない）。ページ上の彩度はアクセント一色に集約される |
+| 8 | **写真とロゴは原色のまま** | 画像に処理を掛けない（grayscale・tint・duotone を使わない、**DECISION U-21**）。実写と Humation のイラストの色は「コミュニティの実像」を運ぶ情報で、モノクロ化はそれを削っていた。当初の「彩度をアクセント一色に集約する」規則は撤回。パートナーロゴもブランド規定の色のまま |
 
 ### 1.2 プリミティブ
 
@@ -408,7 +409,7 @@ Tailwind v4 lime をそのまま採用。段の変更なし。**インディゴ�
 | 暗い面ではグラウンドのアルファで階層を組む | 暗い面に n300 / n400 を実色で置く |
 | リンクは下線で示し、ホバーは下線（ナビは 2px アクセント）、プレスは文字を 600 | ホバーで文字色だけを変える。持続状態にアクセントを使う |
 | ホバー／プレスは反対の極のアルファ | ホバーにアクセント塗りを使う（フォーカスと区別がつかない） |
-| 写真・ロゴは B/W、ロゴマークは原色 | 写真をライムでデュオトーンにする、セピアにする |
+| 写真・ロゴは原色のまま（U-21） | 写真をライムでデュオトーンにする、セピアにする、白黒にする |
 | 新しい色が要るときは既存の段から選び、比を再計算する | 段の間の値を作る（ランプが「値の袋」に戻る） |
 | Mono で先に検証する | Lime でしか読めない設計 |
 
@@ -586,7 +587,7 @@ CSS 変数名は Figma 名の `/` を `-` に置換する（例 `--color-inverse
 | Bento | チャット見出し #general — いつものChoTech | 10 UPPER | Overline/JP（ORIGINAL） | `color/ink-secondary` | ブランド名を大文字化しない |
 | Bento | アバター頭文字 | 12 B | Caption/Bold | `color/ink`（`color/avatar` 上） | — |
 | Bento | 吹き出し | 13.5 B | Callout（14 / 22） | `color/ink`（surface）/ `color/inverse/ink`（ink） | 13.5 → 14 |
-| Bento | リアクション数 3 / 4 | 11 | Caption/Bold | `color/ink` | 絵文字 → `thumb-up` / `eye`（§9.6） |
+| Bento | リアクション数 3 / 4 | 11 | Caption/Bold | `color/ink` | 絵文字はそのまま 👍 / 👀（U-25、§9.6） |
 | Bento | 入力中…、注記 こんな会話が、毎日どこかで。 | 12 | Caption/Regular | `color/ink-secondary` | 「↑」は削除（§9.6） |
 | Bento | CTA セル見出し / 副文 | 19 / 12.5 | Title/3 / Footnote/Regular | `color/inverse/ink` / `color/inverse/ink-secondary` | 12.5 → 13 |
 | Bento | CTA ボタン（44） | 14 EB | Label/M | §6.2 | コピーは §9.6 |
@@ -1171,7 +1172,7 @@ tag / reaction chip に枠はない（塗り `color/chip/fill` が境界、§3.4
 3. 交差は「+」で連続させる（グリッドは fill + gap で描くので自動）。線を線の上に載せない。
 4. 2px rule どうしを隣接させない（§3.9）。hairline と 2px rule の最小距離 8（`section/heading-mb-list`）。
 5. 内容と罫線の最小距離: hairline から 8、2px rule から 24（セルの inset）。帯（nav / marquee）だけ 12。
-6. 縦線は (a) 罫線グリッドの仕切り、(b) `size/rule-v` 12 の hairline（brand tagline、hero meta 区切り）、(c) marquee 停止セルの左罫のみ。**例外**: hero 背景の格子線 — 1px `color/inverse/hairline`、viewport の 25 / 50 / 75 / 100% に右端を揃えた 4 本（概念 R4: x 359 / 719 / 1079 / 1439）、hero の全高。テクスチャであり構造ではないので、内容の揃えには使わない。（DECISION K-12）
+6. 縦線は (a) 罫線グリッドの仕切り、(b) `size/rule-v` 12 の hairline（brand tagline、hero meta 区切り）、(c) marquee 停止セルの左罫のみ。例外だった hero 背景の格子線（K-12）は撤去した（U-22）。
 7. **DECISION L-16** hero meta 行の区切りは asterisk アイコンではなく **1 × 12 の hairline**（tagline の縦線と同じ装置 `size/rule-v`）。Overline 12 の大文字 kicker（cap 高 ≈ 9px）の横に 16px 以上のアイコンは大きすぎ、asterisk は marquee の display モチーフに限定した方が強い。
 
 ### 4.4 Elevation
@@ -1206,8 +1207,8 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 
 ### 5.1 セットと描画規則
 
-- Tabler Icons **outline** のみ。24 grid、stroke 2、round cap / round join（Tabler 既定）。filled 版・他セット（lucide、react-icons）は混ぜない。
-- 絵文字・記号文字（✳ → ↑ 🙌 👀）をアイコン代わりに使わない。矢印は `Icon/ArrowRight`（サイト内へ進む）と `Icon/ArrowUpRight`（外部へ出る: Discord、X、Instagram、GitHub、mailto）の 2 つ。ページ内スクロール（hero「活動を見る」、Nav リンク）はアイコンなし（R9）。
+- Tabler Icons **outline** のみ。24 grid、stroke 2、round cap / round join（Tabler 既定）。filled 版・他セット（lucide、react-icons）は混ぜない。例外は Discord のブランドマークだけ `brand-discord-filled`（**DECISION U-23**: 輪郭版は顔の目が線になって崩れて見える。塗り版は 24 grid のまま stroke を持たない）。
+- 絵文字・記号文字（✳ → ↑ 🙌 👀）をアイコン代わりに使わない。矢印は `Icon/ArrowRight`（サイト内へ進む）と `Icon/ArrowUpRight`（外部へ出る: Discord、X、Instagram、GitHub、mailto）の 2 つ。ページ内スクロール（hero「活動を見る」、Nav リンク）はアイコンなし（R9）。例外はチャットのリアクション（§6.4、**DECISION U-25**）: Discord の実際のリアクションを写す絵なので、アイコンではなく実際の絵文字を置く。
 - stroke: 16 / 20 / 24 では **2**（16 では実効 1.33px だが Retina では鮮明、Tabler の意図通り）。**32 以上は 1.5**（そのままだと 2.67px になり太る）。現ページに 32 以上の用途はない。
 
 ### 5.2 サイズ
@@ -1253,7 +1254,7 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 | `Icon/ArrowRight` | `arrow-right` | `IconArrowRight` | 16 / 20 | activity badge（行リンク、サイト内）、persona rec の先頭 | trailing 4（badge）/ leading 4（rec）/ trailing 8（サイト内 CTA が生じた場合） |
 | `Icon/ArrowUpRight` | `arrow-up-right` | `IconArrowUpRight` | 16 / 20 | nav CTA、hero 主 CTA、bento CTA、poster CTA（Discord）、sponsor link（mailto） | trailing 8（コントロール）/ trailing 4（文中） |
 | `Icon/Asterisk` | `asterisk` | `IconAsterisk` | 20 | marquee の区切り（4 個 / 群） | 単独。`color/pop/separator` |
-| `Icon/ThumbUp` | `thumb-up` | `IconThumbUp` | 16 | reaction chip「3」 | leading 4 |
+| ~~`Icon/ThumbUp`~~ | — | — | — | reaction chip は実際の絵文字（U-25）。アイコンは使わない | — |
 | `Icon/Eye` | `eye` | `IconEye` | 16 | reaction chip「4」 | leading 4 |
 | `Icon/Menu2` | `menu-2` | `IconMenu2` | 24 | Mobile nav の開く | icon button 44 |
 | `Icon/X` | `x` | `IconX` | 24 / 20 | Mobile nav の閉じる（icon button 44 → 24）、library dialog の閉じる（36 → 20） | 中央 |
@@ -1271,12 +1272,12 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 
 ### 5.7 Imagery
 
-#### 5.7.1 モノクロ処理
+#### 5.7.1 色の扱い
 
-- 写真とパートナーロゴは白黒: CSS `filter: grayscale(1) contrast(1.08)`。Figma は image fill の Saturation −100 / Contrast +8（近似）。安全策は事前変換した B/W 素材。
-- 例外: ChoTech の logo mark（`size/mark-nav` 28 / `size/mark-footer` 24）。**DECISION L-21** mark の径は 28 / 24 を維持（4 の倍数。wordmark Title 3 19 / Headline 17 に対する比 1.47 / 1.41 — mark が文字の cap 高の 2 倍弱で、lockup が「印 + 名前」に読める）。
-- 色を乗せない（duotone・tint 禁止）。Lime accent mode でも写真は白黒のまま。
-- **DECISION L-20 / C-23** パートナーロゴも白黒。ブランド規定で色指定が必須の場合は、その 1 枚だけ色のまま ground に置く（tint はしない）。
+- **DECISION U-21（2026-09-05）** B/W 処理を撤回。写真・イラスト・パートナーロゴは原色のまま置き、CSS の `filter` も Figma の Saturation −100 も掛けない。理由: 実写と Humation のイラスト（§6.14）の色は「コミュニティの実像」を運ぶ情報で、モノクロ化はそれを削っていた。以降の節に残る「B/W」の表記は失効。
+- 色を乗せない（duotone・tint 禁止）。写真の上に面や線を重ねない（Hero の格子線を撤去した理由、U-22）。
+- logo mark は図の外接矩形で切った `icons/mark.svg` を `size/mark-nav` 24 / `size/mark-footer` 20 で置く（**DECISION L-30**、§6.6）。favicon.svg は余白込みなので lockup には使わない。
+- パートナーロゴはブランド規定の色のまま ground に置く（L-20 / C-23 の「白黒」は U-21 で失効、「tint しない」は維持）。
 
 #### 5.7.2 スロットと比率
 
@@ -1308,7 +1309,7 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 | Do | Don't |
 |---|---|
 | アイコンは Tabler outline、stroke 2、`currentColor`、内部 / 外部で矢印を分ける | 絵文字・記号文字、他セットの混在、divider 色のアイコン、3 つ目の矢印 |
-| 写真は白黒、16:9 / 4:3 / 1:1 の 3 比率 | tint、任意比率、logo mark の白黒化 |
+| 写真は原色のまま、16:9 / 4:3 / 1:1 の 3 比率 | tint・duotone・grayscale（U-21）、任意比率 |
 | focus ring は `color/focus/ring`（明るい面）/ `color/focus/ring-inverse`（インク面）/ `color/poster/focus/ring`（ポスター面） | インク面やポスター面に lime-700 の ring、面をまたいで 1 つの ring token で済ませる |
 
 ---
@@ -1466,7 +1467,7 @@ Spring は移動にだけ使う（M2）。本章の部品で移動するのは M
 | Persona の推薦行 | `arrow-right`（先頭。「次に」を指す指示子） | 16 | `→` |
 | Marquee separator | `asterisk` | `icon/md` 20 | `✳` |
 | Hero meta separator | Rule 1/V（1 × 12 hairline） | — | `✳`（§4.3 規則 7） |
-| Chat reaction | `thumb-up`、`eye` | 16 | `🙌`、`👀` |
+| Chat reaction | 実際の絵文字 👍 / 👀（U-25） | 16 相当 | `🙌` → 👍 |
 | Marquee 停止 / 再生 | `player-pause` / `player-play` | `icon/lg` 24 | — |
 | Mobile menu 開 / 閉 | `menu-2` / `x` | Icon button md 24（sm なら 20） | — |
 | Image placeholder | `photo` | 24 | — |
@@ -1653,15 +1654,16 @@ Activity セル のキーワードと Chat のリアクションを **同じ 24p
 | 面 | `color/chip/fill`（→ surface、neutral-200）、枠なし（罫線は構造専用、§6.5） |
 | 面 vs 地 | ground 1.10（罫線なしに輪郭が読める最小段）。pressed-tint 上 1.15 |
 | Tag ラベル | `Caption/Regular` 12、`color/chip/ink`（→ ink-secondary、5.30） |
-| Reaction | `thumb-up` / `eye` 16 + `inline/icon` 4 + `Caption/Bold` 数字。アイコン `chip/ink`（5.30 ✓ UI）、数字 `ink`（13.51） |
+| Reaction | 絵文字（👍 / 👀）16 相当 + `inline/icon` 4 + `Caption/Bold` 数字 `ink`（13.51）。絵文字は Discord の実際のリアクションを写すので実文字で置く（**DECISION U-25**、§5.1 の例外）。数字は再生中に 1 から最終値まで 1 ずつ巻き上がる — 旧値が上へ抜け、新値が下から入る `spring/quick`（間隔は §6.12） |
 | Accent（ライブラリ） | 面 `accent-subtle` lime-200、文字 `on-accent-subtle` lime-900（7.49）。ページに出さない（K-5） |
+| Inverse（ink 面） | 面 `color/inverse/chip/fill`（→ ground@12、hover tint と同じ段）、文字 `color/inverse/chip/ink`（→ inverse/ink-secondary、≈ 8.3）。Cell Stat の所属バッジ（U-29）だけに出る |
 | radius | `radius/none` |
 
 - コンセプトの Tag 塗り neutral-50 は ground 比 1.02 で輪郭が見えない。hairline 枠案は「1px 線 = 行・語の仕切り」という語彙を崩すので採らない（R2）。
 - Reaction の `<span role="img" aria-label="いいね 3">`（内部の svg と数字は presentational）。Tag は `<ul aria-label="キーワード">` の `<li>`。
 - フィルタとして対話化する必要が生じたら Chip ではなく Button Outline sm を使う（24px は hit area 拡張でも隣接が密になり過ぎる）。
 
-Figma: `Chip` `Kind` {Tag, Reaction} × `Tone` {Neutral, Accent} sparse 3。Props: `label` TEXT、`icon` INSTANCE_SWAP。
+Figma: `Chip` `Kind` {Tag, Reaction} × `Tone` {Neutral, Accent, Inverse} sparse 4。Props: `label` `emoji` TEXT。
 
 ### 6.5 Rule
 
@@ -1673,7 +1675,7 @@ Figma: `Chip` `Kind` {Tag, Reaction} × `Tone` {Neutral, Accent} sparse 3。Prop
 | Rule 2 / V | 2 | 縦 | `divider` | Marquee control の左、（ライブラリ）横並びセルの区切り |
 
 - 2px = 構造（セクション・グリッド）、1px = 行・語の区切り。**この 2 段しか使わない**（§4.2）。
-- Ink 地には罫線を引かない（Hero の格子線 `inverse/hairline` は背景テクスチャであり Rule ではない）。
+- Ink 地には罫線を引かない。
 - 罫線は装飾（1.4.11 対象外）なので `divider` 2.59 で良いが、**部品の境界**（ボタン枠）には使わない（K-2）。
 
 Figma: `Rule` `Weight` {2, 1} × `Orientation` {Horizontal, Vertical} = 4。
@@ -1686,13 +1688,15 @@ Figma: `Rule` `Weight` {2, 1} × `Orientation` {Horizontal, Vertical} = 4。
 
 | 要素 | Nav | Footer |
 |---|---|---|
-| mark | `size/mark-nav` 28 × 28（ロゴ、B/W 化しない） | `size/mark-footer` 24 × 24 |
+| mark | `icons/mark.svg`（図の外接矩形 704 × 704、原色）を `size/mark-nav` **24** × 24 | `size/mark-footer` **20** × 20 |
 | wordmark | `Title/3` 19、`ink` | `Headline` 17 |
 | tagline | Rule 1/V（高さ 12）+ `Caption/Bold` 12、`ink-secondary`（5.83）、`lang="en"` | 同 |
 | gap | `inline/sm` 12（DECISION L-12） | 同 |
 | showTagline | Desktop true / Mobile **false**（Nav 幅の検算 §6.7.2） | true |
 
 状態（全体が `#hero` へのリンク）: Hover = wordmark の下に 2px `link/hover` 下線（Nav link と同じレシピ）、Pressed = wordmark 文字 `link/pressed`、Focus = `focus/ring`。mark と tagline は変化しない。
+
+**DECISION L-30** mark は favicon.svg ではなく、図の外接矩形で切った `icons/mark.svg` を 24 / 20 で置く。favicon.svg は図が箱の 65% しかなく（maskable アイコン用の余白）、28 の箱では図が 18 前後にしか見えないうえ、余白ぶん wordmark から離れて見えた — gap `inline/sm` 12 は図の縁から測って 12 でなければならない。図の実寸は旧 18 → 24 / 16 → 20。hit area 44 は wordmark の行ボックス（26 / 24）を Nav ±9 / Footer ±10 に広げて保つ（§8.3）。Footer も同じ部品なので同時に変わる。
 
 Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。Props: `name` `tagline` TEXT、`showTagline` BOOL、`focus` BOOL。
 
@@ -1704,7 +1708,7 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 |---|---|
 | 高さ | **62** = `nav/pad-y` 12 + `size/control/sm` 36 + 12 + `stroke/rule` 2 |
 | 横 | full-bleed、`page/inset` 24（container に縛らない: バーは紙の端まで、DECISION L-23） |
-| 構成 | Brand lockup（左）← `margin-right: auto` → Link Nav × 4（gap `inline/md` 16）→ 16 → Button Ground / Ink / sm `参加する` |
+| 構成 | Brand lockup（左）← `margin-right: auto` → Link Nav × 4（gap `inline/md` 16）→ 16 → Button Ground / Ink / sm `参加する` + `arrow-up-right`（Discord マークは置かない: U-19。U-27 で一度足したが同日に撤回 — 帯の CTA は文言だけで足りる） |
 | 塗り | `ground`、下辺 Rule 2/H |
 | 固定 | `position: sticky; top: 0`。不透明（半透明マテリアルは使わない: フラット原則、`prefers-reduced-transparency` 分岐不要） |
 | スクロール中 | 変化なし（影・縮小・自動隠しをしない、§7 D7）。セクションに `scroll-margin-top: var(--size-nav)` |
@@ -1714,8 +1718,8 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 | 項目 | 値 |
 |---|---|
 | 高さ | 62 = 8 + `size/control/md` 44 + 8 + 2（DECISION L-22） |
-| 構成 | Brand（tagline なし）← auto → Button Ground / Ink / md `参加する` → `inline/sm` 12 → Icon button md `menu-2` |
-| 幅検算 | 24 + mark 28 + 12 + wordmark 86（`ChoTech` 7 字 × 0.649em × 19）+ ≥ 16 + CTA 128 + 12 + 44 + 24 = **374 ≤ 390** |
+| 構成 | Brand（tagline なし）← auto → Button Ground / Ink / md `参加する` + `arrow-up-right` → `inline/sm` 12 → Icon button md `menu-2` |
+| 幅検算 | 24 + mark 24 + 12 + wordmark 95（`ChoTech` Title 3 19、実測）+ ≥ 16 + CTA 127（inset 20 + ラベル 59 + 8 + 矢印 20 + 20）+ 12 + 44 + 24 = **378 ≤ 390**（実測 2026-09-05: brand 131、CTA 127、余り 28）。wordmark は `white-space: nowrap` で折らない |
 
 #### 6.7.3 Menu panel（Mobile、DECISION K-6）
 
@@ -1737,7 +1741,7 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 #### 6.8.1 Section / Hero（解剖）
 
 ```
-┌ inverse/ground  ─ 格子線 4 本（inverse/hairline、viewport 4 等分の各右端）────┐
+┌ inverse/ground  ─ 背景写真（不透明度 0.2、原色）────────────────────────────┐
 │ section/pad-display 96 (M 64)                                                  │
 │ SINCE 2025 | 長崎大学公認 学生団体 |                     meta strip（折返し）  │
 │ サポーターズ 技育プロジェクト 学生団体公式パートナー | MEMBERS 50+              │
@@ -1757,8 +1761,8 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 | 要素 | 仕様 |
 |---|---|
 | 面 | `color/inverse/ground`。`min-height: min(100svh − var(--size-nav), var(--size-hero-max))`、内容は垂直中央（DECISION L-7）。full-bleed、内容は container 1200 / 342 |
-| 背景写真 | ink 面の**上**に `--hero-backdrop-opacity` **0.2** で重ねる（`cover`、白黒 §5.7.1、`aria-hidden`）。格子線はその上。動きは §7.3（U-20）。**不透明度は測って決める値**: 実レンダリングの合成結果から測った文字コントラストの最小は ink 8.94 / secondary 7.37 / **tertiary 5.55**（12px の meta strip が最も厳しい）で、AA 4.5 を下回る面積は 0 %。素材を替えたら測り直す — 明部の多い写真は同じ 0.2 で通らない |
-| 格子線 | 1px × 4、`color/inverse/hairline` neutral-900（1.18、テクスチャ）。viewport を 4 等分する位置（x = 25 / 50 / 75 / 100%）。`aria-hidden`。**DECISION K-12** |
+| 背景写真 | ink 面の**上**に `--hero-backdrop-opacity` **0.2** で重ねる（`cover`、原色 U-21、`aria-hidden`）。動きは §7.3（U-20）。**不透明度は測って決める値**: 実レンダリングの合成結果から測った文字コントラストの最小は ink 8.94 / secondary 7.37 / **tertiary 5.55**（12px の meta strip が最も厳しい）で、AA 4.5 を下回る面積は 0 %。素材を替えたら測り直す — 明部の多い写真は同じ 0.2 で通らない |
+| 格子線 | **なし**（**DECISION U-22**: K-12 の 4 本を撤去。写真の上に線が乗ると写真の一部に見え、何の線か分からない。`color/inverse/hairline` は用途を失うが、トークンは残す） |
 | Meta strip | §6.8.2 |
 | h1 | `Display/XL` 124 / 56。lead-in `仲間と、` **`inverse/ink`**（14.86）+ Rotating word（§6.8.3、`color/hero/word`）。**白 → アクセントの 2 色**で「仲間と ＋ 動詞」を対比させる（DECISION U-3）。Desktop 1 行（7 全角 × 124 × 0.98 ≈ 851 ≤ 1200）。Mobile は読点で 2 行（`仲間と、` / `学ぶ。`）。`text-wrap: balance` は使わず著者改行 |
 | lead | `Title/1` **32 / 26**、`inverse/ink`（14.86）。Display 124 と本文 16 の間に中間の階層を作る（**DECISION U-5**） |
@@ -1880,7 +1884,7 @@ Figma: `Section / Heading` `Layout` {Row, Stacked} 2。Props: `title` `label` TE
 
 #### 6.11.3 Cell Stat（Ink）
 
-fill `inverse/ground`。kicker `Overline/Latin` `MEMBERS` `inverse/ink-tertiary`（8.29）。value `50` `Display/M` 56 / 32 + `+` `Title/1` 32 / 26（range 適用）、ベースライン揃え、**`color/accent`**（インク面 10.83、**DECISION U-6**）。ページ全体で数字は 1 か所しかないので、そこだけアクセントを当てて「規模」を一撃で読ませる。`<p><span aria-hidden="true">50+</span><span class="vh">メンバー 50人以上</span></p>`。数字は半角（書体に `tnum` はない）。
+fill `inverse/ground`。kicker `Overline/Latin` `MEMBERS` `inverse/ink-tertiary`（8.29）。value `50` **`Display/L` 96 / 40** + `+` **`Display/M` 56 / 32**、ベースライン揃え、**`inverse/ink`**（14.86、**DECISION U-24**: U-6 のアクセントを撤回。規模は色ではなく大きさで語る — lime の Display/M は kicker との間に空きが目立ち、アクセントの枠を 1 つ使うわりに釣り合わなかった）。数字の下 `stack/sm` 12 に所属のバッジ `<ul aria-label="所属">` > Chip / Tag / **Inverse**（§6.4）× 5: `長崎大学 情報データ科学部` `長崎大学 工学部` `長崎大学 大学院` `長崎県立大学` `長崎総合科学大学`。`flex-wrap`、chip 間 `inline/xs` 8。人数は確定するまで出さない（**DECISION U-29**: 文の列ではなく、Activity のキーワードと同じ装置で「タグ」として読ませる — 一覧性が高く、学部ごとに 1 つずつ数えられる）。数字とバッジは 1 つの塊としてセルの底に置く。`<p><span aria-hidden="true">50+</span><span class="vh">メンバー 50人以上</span></p>`。数字は半角（書体に `tnum` はない）。
 
 #### 6.11.4 Cell Chat
 
@@ -1888,7 +1892,7 @@ fill `inverse/ground`。kicker `Overline/Latin` `MEMBERS` `inverse/ink-tertiary`
 
 #### 6.11.5 Cell Image
 
-fill `ground`、Image slot Rect / Cover を `inset: 0`。比率 **16:9**（DECISION L-20: Desktop は Chat セル高 ≈ 336 に stretch、Mobile 338 × 190）。B/W（§6.19）。`alt` = 被写体を 1 文 ≤ 60 字（§8.6）。
+fill `ground`、Image slot Rect / Cover を `inset: 0`。比率 **16:9**（DECISION L-20: Desktop は Chat セル高 ≈ 336 に stretch、Mobile 338 × 190）。原色（U-21）。`alt` = 被写体を 1 文 ≤ 60 字（§8.6）。
 
 **DECISION U-18** 1 枚ではなく複数枚を横にスライドさせて回す。活動の様子は「1 枚の代表写真」では出ない — Talk Day と Hackathon と勉強会が同じ枠に並んで初めて「いろいろやっている」が伝わる。ベントの中で唯一「時間を持つ」セルになるので、隣のチャットと合わせて 2 つ以上は作らない。
 
@@ -1932,6 +1936,7 @@ K-8 の根拠: Mobile セル内幅 338 − 40 = 298。横並びでは title が 
 | 出方 | `opacity 0 → 1` と `translateY(8 → 0)`、`spring/default`。左右の寄せは変えない（動く方向が発言者を示す情報になってしまう） |
 | 高さ | **最初から全行ぶんの高さを取る**。1 行ずつ足すとセルが伸び縮みして隣の写真セルまで動く（CLS）。未再生の行は不透明度だけを 0 にする |
 | 停止 | セルが非可視、タブ非表示、ページのスイッチ、reduced-motion。止まっているときは**全行を最初から見せる**（何も見えない状態で止めない） |
+| リアクション数 | 行が現れて `motion/chat/reaction-delay` 300 ms 後、1 から最終値へ `motion/chat/reaction-tick` 260 ms 間隔で 1 ずつ巻き上げる。2 つ目の chip は `motion/chat/reaction-stagger` 130 ms 遅れて始める（同時に増えると 1 人が 2 つ押したように読める）。止まっているときは最終値（**DECISION U-25**） |
 
 #### 6.12.1 Message
 
@@ -1942,7 +1947,7 @@ K-8 の根拠: Mobile セル内幅 338 − 40 = 298。横並びでは title が 
 
 | 要素 | Left（相手） | Right（自分） |
 |---|---|---|
-| avatar | `size/avatar` 24 × 24、fill `color/avatar` neutral-300、頭文字 `Caption/Bold` 12 `ink`（11.19）、**`radius/full`**、bubble の下端に揃える | **持たない**（Messages と同じ。送り手は右寄せで示す） |
+| avatar | `size/avatar` 24 × 24、fill `color/avatar` neutral-300 の上に Humation のイラスト（§6.14 と同じ SVG、`alt=""`、**DECISION U-26**）、**`radius/full`**、bubble の下端に揃える | **持たない**（Messages と同じ。送り手は右寄せで示す） |
 | bubble | fill `surface`、`Callout` 14 Bold `ink`（**13.51**）、inset `inset/xs` 8 × `inset/sm` 12、`radius/bubble` 18（**左下だけ** `radius/bubble-tail` 4）+ テール | fill **`color/accent`**、文字 **`color/on-accent`**（**10.83**）、`radius/bubble` 18（**右下だけ** 4）+ テール |
 | テール | 幅 10 × 高さ 12 のベクター、吹き出しと同色。外側へ 6 はみ出し、下端は吹き出しと面一 | 同（左右反転）。コンポーネント右に padding 6 を持たせ、はみ出しを枠内に収める |
 | 最大幅 | 親の 80% | 同 |
@@ -1954,7 +1959,7 @@ K-8 の根拠: Mobile セル内幅 338 − 40 = 298。横並びでは title が 
 
 #### 6.12.2 Reaction row
 
-Chip / Reaction × 2（§6.4）。行は avatar 幅 + gap = **32** だけインデント、chip 間 `inline/xs` 8。
+**全ての発言**の直下に Chip / Reaction × 2（§6.4、U-25 改: 反応の無い発言を残さない — 「反応が返ってくる場所」を見せるのがこの図の仕事）。相手側の行は avatar 幅 + gap = **32** だけインデント、自分側の行は右寄せで bubble と同じ右 padding 6。chip 間 `inline/xs` 8。絵文字は発言ごとに変える（👍 👀 / 🎉 🔥 / 💡 👏 / ✨ 🙌）— 同じ 2 つが並び続けると定型に見える。数は 1〜4 に留め、巻き上げを短く保つ。
 
 #### 6.12.3 Typing
 
@@ -2047,7 +2052,7 @@ Project と Hackathon を分ける理由: 前者は継続的な営み、後者�
 | 要素 | 仕様 |
 |---|---|
 | caseNo | `Overline/Latin` 12 UPPER、`ink-secondary`、上 `stack/2xs` 4（円との視覚バランス） |
-| illustration | Image slot Circle `size/illustration` 96、B/W、`alt=""` |
+| illustration | Image slot Circle `size/illustration` 96、Humation のイラスト（hand-drawn kawaii avatar、MIT）、原色、`alt=""`。`scripts/generate-avatars.mjs` が部位と色から決定的に SVG を生成し `public/images/personas/` に置く（**DECISION U-26**: 実在しない人物像に実写の顔を当てると「誰？」が先に立つ。イラストなら人物像として読める） |
 | title | `Headline` 17、`ink`、`<h3>` |
 | quote | fill `surface`、inset `inset/xs` 8 × `inset/sm` 12、`Callout` 14 Bold `ink`（13.51）。鉤括弧はコンテンツ側 |
 | rec | `arrow-right` 16（先頭、`inline/icon` 4）+ `Footnote/Bold` 13 `ink-secondary`（5.83）。和欧間スペースなし（`Dev Dayで一緒に`） |
@@ -2061,7 +2066,7 @@ Figma: `Persona / Card` 1。Props: `caseNo` `title` `quote` `rec` TEXT、`image`
 
 | 要素 | Leader | Staff |
 |---|---|---|
-| photo | Image slot Rect / Cover、**16:9**、B/W、`alt=""`（氏名が隣に可視、§8.6） | 4:3、同 |
+| photo | Image slot Rect / Cover、**16:9**、原色（U-21）、`alt=""`（氏名が隣に可視、§8.6） | 4:3、同 |
 | body inset | `inset/cell` 24 / 20 | `inset/md` 16 |
 | role | `Overline/Latin` / `Overline/JP` 12、`ink-secondary`（5.83）、下 `stack/2xs` 4 | 同 |
 | name | `Title/2` 22 `ink`、`<h3>`、姓名の間は半角スペース | `Headline` 17 |
@@ -2090,7 +2095,7 @@ Figma: `Member / Card` `Size` {Leader, Staff} 2。Props: `role` `name` `skills` 
 
 | Type | 内容 |
 |---|---|
-| Logo | 高さ `size/cell-min` 120、`ground`、inset `inset/cell` 24 / 20、Image slot Rect / **Contain**（セル中央。画像の中央配置は左揃え原則の唯一の例外、DECISION L-26）、B/W、`alt` = 団体名 |
+| Logo | 高さ `size/cell-min` 120、`ground`、inset `inset/cell` 24 / 20、Image slot Rect / **Contain**（セル中央。画像の中央配置は左揃え原則の唯一の例外、DECISION L-26）、ブランド規定の色のまま（U-21）、`alt` = 団体名 |
 | Placeholder | 高さ 120、`ground`、inset 24 / 20、**左揃え・縦中央**: `YOUR LOGO HERE` `Overline/Latin` 12 UPPER `ink-secondary`（5.83）→ `stack/xs` 8 → Link Inline `Footnote/Bold` `パートナーになる` + `arrow-up-right` 16（mailto） |
 
 Placeholder の左揃えは DECISION L-19（「center labels」禁止）。縦位置は中央（120 高のセルで上寄せは空きが不自然）。
@@ -2108,7 +2113,7 @@ stack/md 16
 stack/lg 24
 段落 Body/M、measure/paragraph 588
 stack/xl 32
-[ Discordに参加する [arrow-up-right] ]  inline/lg 24  X  16  INSTAGRAM  16  GITHUB
+[ Discordに参加する [arrow-up-right] ]  inline/lg 24  [x]  24  [instagram]  24  [github]
 section/pad-display 96 (M 64)
 ```
 
@@ -2118,9 +2123,9 @@ section/pad-display 96 (M 64)
 | kicker | `Overline/Latin` 12 UPPER、`poster/ink-secondary`（11.78 / 4.82）、`<p>` |
 | display | `Display/L` **96 / 40**、`poster/ink`、`<h2>`、2 行（著者改行 `<br>`）。Mobile 6 全角 × 40 = 240 ≤ 272（320px リフロー ✓） |
 | 段落 | `Body/M` 15、`poster/ink-secondary`、`max-width: measure/paragraph` 588（39 全角、R18） |
-| actions | 横 flex、`align-items: center`、ボタン ↔ Social `inline/lg` 24、Social 間 `inline/md` 16、`flex-wrap`（Mobile: ボタン 207 → 次行に Social） |
+| actions | 横 flex、`align-items: center`、ボタン ↔ Social `inline/lg` 24、Social 間 **`inline/lg` 24**（44 角の hit area が重ならない間隔）、`flex-wrap`（Mobile: ボタン 207 → 次行に Social） |
 | CTA | `poster/action/*`（Mono: Ground solid / Lime: **Ink solid**）/ md、`Discordに参加する` + `arrow-up-right` 20。Lime 地で面 10.83 / hover 7.61（UI ✓）、ラベル 14.86 |
-| Social | Link Social × 3（§6.3.1） |
+| Social | ブランドマーク **20 のみ** × 3（Link Social の色と状態、ラベルは visually-hidden「X（外部）」、hit area 44 角、**DECISION U-28**: ラベルと矢印を落とす。マークが行き先を言い切るので文字は冗長で、CTA と同じ行で目立ち過ぎていた） |
 | Focus / Selection | `poster/focus/ring`（Mono → focus/ring-inverse lime-300 12.79 / Lime lime-900 5.72）、`poster/selection`（Mono → inverse/selection / Lime ink@12） |
 
 Lime モードの補助文字は ink@88（8.23 ✓）。面が明るいのでグラウンド色の文字は使えない（1.53）。Poster 上に Outline ボタンを置かない（§6.2.3）。
@@ -2149,7 +2154,7 @@ Figma: `Section / Footer` `Viewport` {Desktop, Mobile} 2。Props: `copyright` TE
 | Shape | Rect / Circle（Persona のみ） |
 | Fit | Cover（写真、`object-position` は §5.7.2）/ Contain（ロゴ、内側 inset 24） |
 | Placeholder | fill `image/placeholder`（surface）、`photo` 24 `ink-tertiary` を左上 `inset/md` 16、`stack/xs` 8 下に caption `Caption/Regular` `image/caption`（5.30）。**本番では caption を出さない**。円はアイコンのみ中央 |
-| B/W | `filter: grayscale(1) contrast(1.08)`。Figma: Saturation −100 / Contrast +8。ロゴマーク（Brand）には適用しない |
+| 色 | 原色のまま。`filter` を掛けない（U-21）。ロゴマーク（Brand）も同じ |
 | 比率 | Bento 写真 16:9 / Leader 16:9 / Staff 4:3 / Persona 1:1 円 96 / Partner ロゴ: セル 120 高（§5.7.2 の 3 比率） |
 | 読み込み | `loading="lazy"`（Bento 写真は `eager`）、`width` `height` 属性で CLS 防止。DPR 2 で AVIF / WebP |
 | alt | 活動写真 = 被写体 1 文 ≤ 60 字、人物 = `""`（氏名が隣に可視）、ロゴ = 団体名、イラスト = `""`。「写真」「画像」の接頭辞は付けない（§8.6） |
@@ -2236,7 +2241,7 @@ CSS カスタムプロパティで持つ。Figma には Variables として置�
 | Chat 再生ループ（14 s） | 未定義 | **削除**。スレッドは静止（DECISION M-5） | — |
 | 入力中ドット | 未定義 | opacity 0.3⇄1、周期 1.2 s、ドット間 200 ms、**セルが可視の間のみ** | 静止（不透明度 100 %） |
 | Hero 浮遊バブル | 未定義 | **削除** | — |
-| Hero 背景写真（`.hero__backdrop`） | 未定義 | `scale` 1.12 を静的に当て、`translate` を ±2 % / ±1 % に `48s ease-in-out infinite alternate`。不透明度 0.2 で ink 面に重ね、白黒（U-20） | **静止**（`animation: none`）。写真は残る。`prefers-reduced-transparency` と `forced-colors` では層ごと消える |
+| Hero 背景写真（`.hero__backdrop`） | 未定義 | `scale` 1.12 を静的に当て、`translate` を ±2 % / ±1 % に `48s ease-in-out infinite alternate`。不透明度 0.2 で ink 面に重ね、原色（U-20 / U-21） | **静止**（`animation: none`）。写真は残る。`prefers-reduced-transparency` と `forced-colors` では層ごと消える |
 | Nav（sticky） | sticky | 縮小・隠れなし。アンカー移動は `scroll-behavior: smooth` | `scroll-behavior: auto` |
 | Mobile メニュー | — | `overflow: hidden` のラッパー内でパネルを `translateY(−100 %) → 0` に `spring/quick`。閉じは逆再生。アイコン `menu-2` ⇄ `x` は `duration/0` | opacity `duration/2` |
 | Mono ⇄ Lime | — | デザインモード。ランタイム切替なし | — |
@@ -2650,7 +2655,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | `パートナーになる →` | ラベル + `arrow-up-right` 16（mailto） |
 | `→ Dev Day で一緒に手を動かそう`（Persona 推奨） | `arrow-right` 16 先頭 + 「Dev Dayで一緒に手を動かそう」 |
 | `↑ こんな会話が、毎日どこかで。` | 矢印を **削除**（DECISION M-14）— 注記は `<figcaption>` で図に属し、参照先（直上のスレッド）は隣接して一意。読み終えたものを指す矢印は冗長で、SR には何も伝えない |
-| `🙌 3` `👀 4` | `thumb-up` 16 + 3／`eye` 16 + 4 |
+| `🙌 3` `👀 4` | 👍 3／👀 4 — 実際の絵文字のまま（U-25）。🙌 だけ 👍 に置き換える |
 | Marquee `✳` | `asterisk` **20**（`color/pop/separator`） |
 | Hero Meta `✳` | アイコンではなく **1 × 12 の縦 hairline**（L-16） |
 | Mobile メニュー | `menu-2` ⇄ `x` 24 |
@@ -2689,7 +2694,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | `<title>` | 固有名詞（初出表記）→ ` — ` → 説明。**全角 32 字以内**（読みを含めると 31 字。検索結果で切れない上限） | `ChoTech（チョーテック）— 長崎大学公認の学生技術系コミュニティ` |
 | `meta[name=description]` | 90–110 文字（文字数。全角換算ではない）、§9.1 のボイス（言い切り、「ぜひ」なし）。対象者 3 語と Discord を含める | `ChoTechは長崎大学公認の学生技術系コミュニティです。エンジニアも、デザイナーも、研究好きも。Talk Day・Dev Day・Project・Hackathonで学ぶ・作る・話す。Discordに参加できます。`（108 文字） |
 | OG タイトル / 説明 | `<title>` / description と同一 | — |
-| OG 画像 | B/W 写真 + ワードマーク（ロゴマークのみ原色）。1200 × 630、文字は左寄せ | §5.7.1 のモノクロ規則に従う |
+| OG 画像 | 写真（原色）+ ワードマーク。1200 × 630、文字は左寄せ | §5.7.1（U-21） |
 | `lang` | `<html lang="ja">` | — |
 
 ### 9.10 コンセプトのコピーからの修正一覧
@@ -2937,7 +2942,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 |---|---|---|---|---|
 | `Icon / *`（13 セット） | `Size` {16, 20, 24} | 3 each | — | Tabler SVG。fill `color/ink` を既定 bind（DECISION F-2） |
 | `Rule` | `Weight` {2, 1} × `Orientation` {Horizontal, Vertical} | 4 | `length` | Shape、Color |
-| `Chip` | `Kind` {Tag, Reaction} × `Tone` {Neutral, Accent}（sparse） | 3 | `label` TEXT、`icon` INSTANCE_SWAP | Icon |
+| `Chip` | `Kind` {Tag, Reaction} × `Tone` {Neutral, Accent, Inverse}（sparse） | 4 | `label` `emoji` TEXT | — |
 | `Button / Ground` | `Style` {Ink, Accent} × `Size` {sm, md} × `State` {Default, Hover, Pressed, Disabled} | 16 | `label` TEXT、`showIcon` BOOL、`icon` INSTANCE_SWAP、`focus` BOOL、`fullWidth` BOOL | Icon |
 | `Button / Ground Quiet` | `Style` {Outline, Ghost} × Size 2 × State 4 | 16 | 同上 | Icon |
 | `Button / On Ink` | `Style` {Ground, Outline} × Size 2 × State 4 | 16 | 同上 | Icon |
@@ -3096,6 +3101,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | L-27 | marquee 帯は高さ駆動 56、区切りアイコン 20 | 内側 52 = 4 × 13、19px 文字の横は `icon/md` |
 | L-28 | marquee 停止セル 44 × 内側高、左 2px rule、ground、icon 24 | 帯と同じ罫線語彙で「セル」として切り出す |
 | L-29 | 実装のブレークポイントは 2 つ: 構造 48rem / トークン 78rem（§3.6） | 2 フレームしかない仕様と連続なブラウザ幅の橋渡し。ナビと列数だけ先に開き、タイポは離散のまま |
+| L-30 | logo mark は図の外接矩形で切った `icons/mark.svg` を 24 / 20 で置く | favicon.svg は余白込みで、図が小さく見え wordmark からも離れて見えた |
 
 ### A.4 Components（K）
 
@@ -3189,6 +3195,15 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 | U-18 | About の写真セルは複数枚を**スライドさせて回す** | 「いろいろやっている」は 1 枚の代表写真では出ない。ベントで唯一「時間を持つ」セルなので、隣のチャットと合わせて 2 つ以上は作らない |
 | U-19 | Discord / SNS の導線にブランドマークを**先頭**に添える | `arrow-up-right` は「外部」を言うが「どこへ」は言わない。ロゴは読む前に分かる唯一の記号。Nav の CTA だけは Mobile の幅検算が溢れるので置かない |
 | U-20 | Hero の ink 面に**背景写真**を不透明度 0.2 で重ね、48 s 周期で漂わせる | 「仲間と、学ぶ／創る／話す」を字だけで言っていた。誰がどこで何をしているのかは 1 枚の写真が先に答える。動きは M9 の唯一の例外で、装飾だと認めたうえで採った — 引き換えに (1) 不透明度は好みではなく AA から逆算した測定値、(2) 速さは 0.6 px/s（マーキーの 1/60）で視線を引かない上限、(3) M8 のスイッチ 1 つで止まり、`prefers-reduced-transparency` / `forced-colors` では層ごと消える、の 3 つを課す |
+| U-21 | 写真・イラスト・ロゴは原色。B/W 処理（grayscale + contrast）を撤回 | 色は「コミュニティの実像」を運ぶ情報。モノクロ化はそれを削っていた |
+| U-22 | Hero の格子線 4 本（K-12）を撤去 | 写真の上に線が乗ると写真の一部に見え、何の線か分からない |
+| U-23 | Discord のブランドマークだけ filled | 輪郭版は顔の目が線になって崩れて見える。Tabler outline のみの唯一の例外 |
+| U-24 | Cell Stat の数字は白（inverse/ink）、Display/L + Display/M。U-6 のアクセントを撤回 | 規模は色ではなく大きさで語る。lime の Display/M は kicker と釣り合わなかった |
+| U-25 | チャットのリアクションは実際の絵文字。数字は 1 から最終値へ 1 ずつ巻き上がる | Discord の実際のリアクションを写す絵。最初から「3」だと押した人がいないように見える |
+| U-26 | ペルソナとチャットのアバターは Humation のイラスト（生成スクリプトで SVG 化） | 実在しない人物像に実写の顔を当てると「誰？」が先に立つ |
+| U-27 | ~~Nav の CTA にも Discord マークを添える~~ **同日に撤回** — Nav の CTA は文言 + 矢印のまま（U-19 どおり） | 帯の CTA は文言だけで足りる。マークを足すと Mobile で矢印を落とす代償も要った |
+| U-28 | Poster の Social はマーク 20 のみ。ラベルと矢印を落とす | マークが行き先を言い切るので文字は冗長。CTA と同じ行で目立ち過ぎていた |
+| U-29 | Cell Stat の数字の下に所属を Chip（Inverse トーン）のバッジで並べる（長崎大学 情報データ科学部 / 工学部 / 大学院、長崎県立大学、長崎総合科学大学）。人数は出さない | 「50+」だけでは「どこの学生か」が分からない。複数大学からの参加が「誰でも」の裏づけになる。文の列よりタグのほうが一覧性が高い |
 
 ## 付録 B. 検証
 

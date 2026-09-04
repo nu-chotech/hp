@@ -60,6 +60,7 @@ export function About() {
         />
         <CellStat
           accessibleName={stat.accessibleName}
+          affiliations={stat.affiliations}
           kicker={stat.kicker}
           suffix={stat.suffix}
           value={stat.value}

@@ -72,13 +72,13 @@ type MessageSide = NonNullable<VariantProps<typeof bubbleVariants>["side"]>;
 export type MessageProps = { style?: CSSProperties } & (
   | {
       side: Extract<MessageSide, "incoming">;
-      /** アバターに出す頭文字。1 文字（`Caption/Bold` 12） */
-      initial: string;
+      /** アバター画像（Humation、public/images/personas/）。装飾なので alt は空（DECISION U-26） */
+      avatar: string;
       message: string;
     }
   | {
       side: Extract<MessageSide, "outgoing">;
-      initial?: never;
+      avatar?: never;
       message: string;
     }
 );
@@ -88,7 +88,7 @@ export type MessageProps = { style?: CSSProperties } & (
  * 自分側は avatar を持たない（Messages と同じで、右寄せが送り手を示す）ぶん、
  * 読み上げには手掛かりが何も残らないので「自分」を必ず補う。
  */
-export function Message({ side, initial, message, style }: MessageProps) {
+export function Message({ side, avatar, message, style }: MessageProps) {
   if (side === "outgoing") {
     return (
       // 右に 6 の padding。テールのはみ出しを行の枠内に収める（§6.12.1）
@@ -107,9 +107,16 @@ export function Message({ side, initial, message, style }: MessageProps) {
     <li className="flex items-end gap-inline-xs" style={style}>
       <span
         aria-hidden="true"
-        className="grid size-avatar shrink-0 place-items-center rounded-full bg-avatar text-caption-bold text-ink"
+        className="size-avatar shrink-0 overflow-hidden rounded-full bg-avatar"
       >
-        {initial}
+        {/* biome-ignore lint/performance/noImgElement: 24px の静的 SVG。next/image を通す価値が無い（ImageSlot と同じ方針） */}
+        <img
+          alt=""
+          className="size-full object-cover"
+          decoding="async"
+          loading="lazy"
+          src={avatar}
+        />
       </span>
       <span className="sr-only">参加者</span>
       <p className={bubbleVariants({ side })}>
