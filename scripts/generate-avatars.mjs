@@ -63,20 +63,21 @@ const personas = [
     },
   },
   {
-    // UI/UX が好きな人 — ゆるいロングに頭上のサングラス。明るい髪とラベンダーで華やか側
+    // UI/UX が好きな人 — 片側に流したロブにジャケット（クライアント指定の組み合わせ）。
+    // 髪は黒のまま、ジャケットをライラックにして華やか側
     file: "case-03",
     selections: {
-      head: "wavy-long",
-      body: "drape-tee",
-      bottom: "long-skirt",
-      item: "sunglasses",
+      head: "side-swept-lob",
+      body: "jacket",
+      bottom: "wide-pants",
+      item: "none",
       glasses: "none",
     },
     colors: {
       skin: "FBE3D3",
-      hair: "A67B5B",
-      clothes: "EDE6F5",
-      bottom: "B9A7D6",
+      hair: "1D1D1D",
+      clothes: "C9B6E4",
+      bottom: "3B2A4A",
     },
   },
   {
