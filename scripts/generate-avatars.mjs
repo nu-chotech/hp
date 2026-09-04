@@ -63,37 +63,37 @@ const personas = [
     },
   },
   {
-    // UI/UX が好きな人 — 切りそろえたボブに小さな眼鏡、ネイビーのシャツ
+    // UI/UX が好きな人 — ゆるいロングに天使の輪。明るい髪とラベンダーで「キラキラ」側
     file: "case-03",
     selections: {
-      head: "blunt-bob",
-      body: "shirt",
-      bottom: "midi-skirt",
-      item: "none",
-      glasses: "tiny",
-    },
-    colors: {
-      skin: "FBE3D3",
-      hair: "1D1D1D",
-      clothes: "1E3A5F",
-      bottom: "C9C2B8",
-    },
-  },
-  {
-    // ハッカソンに出たい人 — 無造作な短髪に深緑のジャケット
-    file: "case-04",
-    selections: {
-      head: "messy-short",
-      body: "jacket",
-      bottom: "tapered-pants",
-      item: "none",
+      head: "wavy-long",
+      body: "drape-tee",
+      bottom: "long-skirt",
+      item: "halo",
       glasses: "none",
     },
     colors: {
-      skin: "F1C9AE",
+      skin: "FBE3D3",
+      hair: "A67B5B",
+      clothes: "EDE6F5",
+      bottom: "B9A7D6",
+    },
+  },
+  {
+    // ハッカソンに出たい人 — 横に流した短髪にネイビーのパーカー、頭にラムネ。学生の夏
+    file: "case-04",
+    selections: {
+      head: "side-swept-short",
+      body: "hoodie",
+      bottom: "wide-pants",
+      item: "ramune",
+      glasses: "none",
+    },
+    colors: {
+      skin: "F8D9C4",
       hair: "2B2B2B",
-      clothes: "2E7D5B",
-      bottom: "1F2937",
+      clothes: "2B3A67",
+      bottom: "9AA5B1",
     },
   },
   {
