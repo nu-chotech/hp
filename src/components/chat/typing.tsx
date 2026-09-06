@@ -25,14 +25,10 @@ import { cn } from "@/lib/utils";
  * 重なると挿入順（この <style> は head に hoist される）で勝敗が決まってしまう。
  * 低減時はアニメーション自体が生成されず、不透明度 100% の静止した 3 点が残る（§7.5）。
  *
- * 停止の入力は 2 つあり、どちらも**祖先の属性**で受ける（子孫セレクタ）。
+ * 停止の入力は**祖先の属性**で受ける（子孫セレクタ）。
  * - `[data-typing-paused]`: このセルの可視・タブの表示（下の effect が自分の <li> に付ける）
- * - `[data-motion="paused"]`: ページ内のモーションスイッチ（M8 / §7.4.2）。
- *   マーキー・回転語・入力中ドットの 3 つを 1 つのスイッチで止める要件なので、
- *   状態の正本は DOM の 1 か所 —— スイッチ所有ストリームが `<html>` に
- *   `data-motion="paused"` を立て、`localStorage[MOTION_STORAGE_KEY]` に保存する。
- *   ドット側は CSS で購読するだけにして、JS の相互依存を作らない
- *   （WCAG 2.2.2 はページ内の停止手段を求める。OS 設定では代替にならない）。
+ * ページ内のモーションスイッチ（旧 M8 の `[data-motion="paused"]`）は DECISION U-31 で
+ * 撤去した。低減設定では上のメディアクエリでアニメーション自体が生成されない。
  */
 const DOT_KEYFRAMES = `
 @media (prefers-reduced-motion: no-preference) {
@@ -43,8 +39,7 @@ const DOT_KEYFRAMES = `
   .typing__dot {
     animation: chotech-typing-dot var(--dots-period) ease-in-out infinite;
   }
-  [data-typing-paused] .typing__dot,
-  [data-motion="paused"] .typing__dot {
+  [data-typing-paused] .typing__dot {
     animation-play-state: paused;
   }
 }

@@ -23,7 +23,7 @@ import { HeroReveal, RotatingWord } from "./hero/rotating-word";
  * 背景写真の動き（DECISION U-20）
  *
  * 動きの既定を詳細度 0（`:where`）で置くのはマーキーと同じ理由 — 止める側
- * （globals.css の低減設定と `html[data-motion="paused"]`）に必ず負けるため。
+ * （globals.css の低減設定）に必ず負けるため。
  * 停止の規則をここで再宣言しないのも同じで、再生の条件が 2 か所に散ると必ず食い違う。
  *
  * 動かすのは `translate` だけ。`scale` は静的な余白（移動しても縁が出ないための

@@ -4,12 +4,12 @@
 > 実装との既知の差分（2026-08-31 時点）:
 > - Color は 59 行 + Lime 検討で `poster/action/fill` `poster/action/ink` `poster/focus/ring` を追加（面の明度反転に備えたポスター専用ロール）
 > - 既定モードは **Lime accent**（2026-09-01 クライアント確定）。Mono は検証モード、Indigo accent は決定過程の記録として残置（付録 C）
-> - Icon は必須 10 + 任意 3 + ライブラリ予備 6 の **19 セット**（Size 16 / 20 / 24 variant)
+> - Icon は必須 8（U-31 で player-pause / play を撤去）+ 任意 3 + ライブラリ予備 6 の **19 セット**（Size 16 / 20 / 24 variant)
 > - `opacity/disabled` は Figma 上 **48**（Figma の opacity バインドは 0–100 解釈。CSS は 0.48）
 > - アクセントは **アシッドライム（Tailwind v4 lime）に確定**。本文の数値はすべて Lime モードの実測値。比較の経緯と Indigo の数値は付録 C
 > - Color コレクションは 3 モード（Mono / Indigo accent / Lime accent）・62 行、Shape 10 行、Spacing 64 行
 > - **2026-09-01 の実装レビューを反映**（付録 A.8 / U-1〜U-14）: 角丸はチャットのみ例外（Messages 風）、リンク下線 2 / 3px、ヒーロー回転語はアクセント文字（下線廃止）、セクション見出しの連番廃止・和文の題が先、活動内容はベント 4 セル（Hackathon 追加）、用語は「パートナー」に統一、Member カードに SNS リンク
-> - **2026-09-07**: Members の Staff（運営 3 名）は写真が揃うまで**写真枠ごと暫定非表示**（`showStaffPhotos` false。パスと素材は残置、§6.15 の写真つきが到達点）。Partner の Placeholder から「パートナーになる」（mailto）を撤去し、セルは `YOUR LOGO HERE` のみ（§6.16）。Partner セルは**正方形タイル**に変更（Desktop 6 列 197.67 / tablet 3 列 237.33 / Mobile 2 列 168、DECISION L-31）。マーキーの語は partners.ts から生成
+> - **2026-09-07**: Members の Staff（運営 3 名）は写真が揃うまで**写真枠ごと暫定非表示**（`showStaffPhotos` false。パスと素材は残置、§6.15 の写真つきが到達点）。Partner の Placeholder から「パートナーになる」（mailto）を撤去し、セルは `YOUR LOGO HERE` のみ（§6.16）。Partner セルは**正方形タイル**に変更（Desktop 6 列 197.67 / tablet 3 列 237.33 / Mobile 2 列 168、DECISION L-31）。マーキーの団体は partners.ts から生成し、**団体名ではなくロゴ**（80 角 `size/marquee-logo`。帯 `size/band-marquee` は 56 → **120**、項目間 `inline/2xl` 48、DECISION U-30）で出す。「パートナー募集中」の Ghost は撤去。複製数は viewport から自動計算し継ぎ目なく回す。停止 / 再生ボタンとページ内モーションスイッチ（旧 M8）は**撤去**（DECISION U-31、クライアント判断）。自動の動きは `prefers-reduced-motion` と画面外でのみ止まり、WCAG 2.2.2 の「ページ内の停止手段」は**未達**として §8 に記録。マーキーの ✳ は Label の両脇だけ（U-32）
 - **2026-09-05 の実装レビューを反映**（U-21〜U-29 / L-30）: 写真・イラスト・ロゴは原色（B/W 撤回）、Hero の格子線撤去、Discord マークは filled、Stat の数字は白の Display/L + 所属の内訳、全発言にリアクション（実際の絵文字、数字が巻き上がる）、ペルソナとチャットのアバターは Humation（女 3・男 3）、Poster の Social はマークのみ、ロゴマークは外接矩形の mark.svg を 24 / 20（U-27 の Nav CTA マークは同日撤回）
 
 # ChoTech Design Guidelines
@@ -48,7 +48,7 @@ Familiarity（慣れ）・Agency（主体性）・Flexibility（柔軟）・Resp
 
 ### 0.3 ページの骨格（コンセプトの認識可能な部分）
 
-Nav（sticky、2px 下罫）→ Hero（インク面、背景写真、回転語をアクセントで塗る）→ Marquee 帯（2px 上下罫、asterisk 区切り、停止ボタン）→ About（ベント 4 列罫線グリッド: テキスト / 統計 / チャット / 写真 / CTA）→ Activities（ベント 4 セル: Feature 1 + Compact 3）→ For You（ペルソナカード 3 × 2）→ Members（リーダー 2 列 + スタッフ 3 列）→ Partners（正方形ロゴタイル 6 列 + プレースホルダ）→ Poster（クロージング CTA、唯一のアクセント面）→ Footer。全要素左揃え。
+Nav（sticky、2px 下罫）→ Hero（インク面、背景写真、回転語をアクセントで塗る）→ Marquee 帯（2px 上下罫、パートナーロゴ 80 角、asterisk は PARTNERS の両脇のみ。停止ボタンは U-31 で撤去）→ About（ベント 4 列罫線グリッド: テキスト / 統計 / チャット / 写真 / CTA）→ Activities（ベント 4 セル: Feature 1 + Compact 3）→ For You（ペルソナカード 3 × 2）→ Members（リーダー 2 列 + スタッフ 3 列）→ Partners（正方形ロゴタイル 6 列 + プレースホルダ）→ Poster（クロージング CTA、唯一のアクセント面）→ Footer。全要素左揃え。
 
 ### 0.4 分冊間の矛盾と解決
 
@@ -61,9 +61,9 @@ Nav（sticky、2px 下罫）→ Hero（インク面、背景写真、回転語�
 | R3 | インク面のアウトラインボタン枠 | **`inverse/outline` = inverse/ink 100% の 1 種**（14.86） | Components の Soft（ground@72）/ Strong（100%）2 種 | 部品境界は 3:1 が要り、1 トークンで済む。主副の差は「塗り vs 枠」で十分に出る（Restraint）。variant 数も減る |
 | R4 | リンクの状態モデル | ホバーで **文字色を変えず下線で示す**: ナビ・ワードマーク 2px アクセント下線、フッター・ソーシャルは 1px currentColor 下線（フッターは同時に文字 ink-secondary → ink）、インラインは常時 1px → 2px。プレスは文字 `link/pressed`（lime-900、7.85）。現在地は 2px ink 下線 | Components §3.1 の「ホバーで文字を有彩色に変える + 1px 下線」 | Color D16 と Motion D9 が一致。Mono 原則「アクセントは一時的状態のみ、ホバーは下線」。1.4.1 の色以外の手がかり |
 | R5 | ソーシャルリンク（ポスター上）のプレス | **ホバーと同じ**（`poster/ink` + 1px 下線） | 全スタイル共通の `link/pressed` | lime-900 はポスター面（lime-400）上 1.89 で不可、lime-400 は同色 1.00。ポスター面にアクセント文字は置けない |
-| R6 | マーキー帯の高さ | **`size/band-marquee` 56**（高さ駆動、行ボックス 26 を中央、上下 2px 罫を含む）。停止セルは 44 × 52 | Typography の導出値 54、Components の 53.65 | 帯は Layout 原則 6「高さで決める」に従う。内側 52 = 4 × 13 で 4px モジュールに乗り、停止セルの高さも 4 の倍数。`band/pad-y` 12 は最小値（実効 13） |
+| R6 | マーキー帯の高さ | **`size/band-marquee` 56**（高さ駆動、行ボックス 26 を中央、上下 2px 罫を含む）。停止セルは 44 × 52。**2026-09-07 U-30 で 120 に改定**（内側 116 にロゴ 80、停止セルは U-31 で撤去） | Typography の導出値 54、Components の 53.65 | 帯は Layout 原則 6「高さで決める」に従う。内側 52 = 4 × 13 で 4px モジュールに乗り、停止セルの高さも 4 の倍数。`band/pad-y` 12 は最小値（実効 13） |
 | R7 | マーキー区切りアイコンの径 | **20**（`icon/md`） | Components の 16 | Layout §5.2 の判定「15–19px の文字の横は 20」。Title 3 Caps 19 の cap 高 ≈ 15 に釣り合う |
-| R8 | 停止ボタンのアクセシブルネーム | **固定「ページの動きを止める」+ `aria-pressed`** | ラベルを「止める / 再開する」で切り替える | トグルボタンは名前を変えず状態で伝える（ARIA APG）。Motion が支援技術の所有者 |
+| R8 | 停止ボタンのアクセシブルネーム | **固定「ページの動きを止める」+ `aria-pressed`** | ラベルを「止める / 再開する」で切り替える | トグルボタンは名前を変えず状態で伝える（ARIA APG）。Motion が支援技術の所有者。**2026-09-07 U-31 で停止ボタンごと撤去** |
 | R9 | ヒーロー副 CTA「活動を見る」 | **アイコンなし** | Components §2.7 の `arrow-right` | ページ内スクロールは遷移ではない（Motion §9.6、Layout §5.1）。矢印 = 別のページ／サイトへの遷移という規則を 1 つに保つ |
 | R10 | 最小文字サイズ | **12px、例外なし**。Overline S 11 は Overline 12 に統合 | Components 分冊の「Latin 大文字のみ 11 可」 | Typography P6。例外規定をなくす。11px の和文は潰れ、Latin だけ例外にする理由が階層にない |
 | R11 | ボタンラベルのウェイトと行ボックス | **700、行ボックス 20**（Label/M 15、Label/S 14）。36 = 8 + 20 + 8、44 = 12 + 20 + 12 | Components の 800 / 120% | 14–15px の ExtraBold は漢字のカウンターが潰れる。Typography D7 / D9 |
@@ -201,7 +201,7 @@ Tailwind v4 lime をそのまま採用。段の変更なし。**インディゴ�
 
 | ロール | Mono | Lime | Scopes | 使用箇所 | 根拠 |
 |---|---|---|---|---|---|
-| `color/divider` | neutral-500 | = | SC SF FF | 2px: ナビ下、マーキー上下、セクション上、フッター上、格子フレームの塗り＋ gap、マーキー停止ボタンの左罫 | 一つの色、二つの太さ。強弱は太さで出す。装飾（1.4.11 対象外、2.59） |
+| `color/divider` | neutral-500 | = | SC SF FF | 2px: ナビ下、マーキー上下、セクション上、フッター上、格子フレームの塗り＋ gap | 一つの色、二つの太さ。強弱は太さで出す。装飾（1.4.11 対象外、2.59） |
 | `color/divider-hairline` | → divider | = | SC SF | 1px: 活動セル、締めの罫、タグライン左罫、Mobile メニュー行間（明るい面のみ）。インク面の縦罫（ヒーローメタ行）は currentColor = `inverse/ink-tertiary` | 同上。インク面に divider（n500）を置かない |
 | `color/chip/fill` | → surface | = | FF | タグとリアクションチップの塗り（非対話、枠なし） | 罫線なしに輪郭が読める最小段（1.10）。1px 線は行の仕切りに温存する（R2） |
 | `color/link-underline` | currentColor | = | SF SC | インラインリンク（常時 1px）、フッター・ソーシャルのホバー下線（1px） | 下線は文字色を継ぐ。Figma は文字色を bind した高さ 1 の矩形、CSS は `text-decoration` |
@@ -248,7 +248,7 @@ Tailwind v4 lime をそのまま採用。段の変更なし。**インディゴ�
 
 | ロール | Mono | Lime | Scopes | 使用箇所 | 比・根拠 |
 |---|---|---|---|---|---|
-| `color/state/hover-tint` | `alpha/ink/6` | = | FF | 活動セルホバー、Mobile メニュー行ホバー、アウトライン／ゴースト／アイコンボタン・マーキー停止ボタンのホバー、**Lime のポスター面上の状態** | 上の ink 13.21、ink-secondary 5.19、accent-text-small 6.97 |
+| `color/state/hover-tint` | `alpha/ink/6` | = | FF | 活動セルホバー、Mobile メニュー行ホバー、アウトライン／ゴースト／アイコンボタンのホバー、**Lime のポスター面上の状態** | 上の ink 13.21、ink-secondary 5.19、accent-text-small 6.97 |
 | `color/state/pressed-tint` | `alpha/ink/12` | = | FF | 同プレス | 11.78 / 4.62 / 6.22 |
 | `color/inverse/state/hover-tint` | `alpha/ground/12` | = | FF | インク面アウトライン／アイコンボタンのホバー | 上の ground 10.58 |
 | `color/inverse/state/pressed-tint` | `alpha/ground/24` | = | FF | 同プレス | 7.06（**インク面のみ**。Lime のポスター面は明るい面なので `state/*`〈ink アルファ〉側を使う） |
@@ -576,7 +576,7 @@ CSS 変数名は Figma 名の `/` を `-` に置換する（例 `--color-inverse
 | Hero | 段落 | 16 / 175%、36em | Body/L（16 / 28） | `color/inverse/ink-secondary` | 行長は `measure/paragraph` |
 | Hero | ボタン ×2（44） | 15 EB | Label/M | §6.2 | 800 → 700 |
 | Marquee | ラベル PARTNERS | 11 / +16% | Overline/Latin | `color/ink-secondary` | 11 → 12、+16 → +12 |
-| Marquee | 項目 長崎大学 / パートナー募集中 | 20 / +3% | Title/3 Caps（19 / 26） | `color/ink` | 20 → 19。帯高 `size/band-marquee` 56（R6） |
+| Marquee | 項目 PARTNERS（団体はロゴ 80 角、U-30。「パートナー募集中」は撤去） | 20 / +3% | Overline/Latin 12（ロゴ未着の団体名は Title/3 Caps 19 / 26） | `color/ink-secondary` | 帯高 `size/band-marquee` 120（R6 → U-30） |
 | Marquee | ゴースト YOUR COMPANY HERE | 20、ink@40 | Title/3 Caps | `color/ink-tertiary` | 大きな文字 3:1 → 3.85 |
 | Section | ラベル ACTIVITY | 12 / +14% | Overline/Latin | `color/ink-secondary` | +12%。連番は廃止し、和文の題の**後ろ**に置く（U-4） |
 | Section | h2 | 34 / 112% / −1.5% | Title/1（32 / 40、M 26 / 32） | `color/ink` | 34 → 32、−1% |
@@ -924,9 +924,9 @@ Desktop / Mobile が同値の行は Mobile 列を「=」とする。根拠中の
 | `inset/control` | 20 | = | 20 | 44px ボタンの横 inset | 高さ 44・Label/M 行ボックス 20 のとき上下の空きは 12。横 20 で横:縦 ≈ 1.7 — 左詰めラベルの箱として安定する比（§3.4） |
 | `inset/cell` | 24 | 20 | 24 / 20 | bento セル、persona / leader card、sponsor cell、activity 行の左右 | 24 = 4×6。Mobile は 342 幅で本文幅 298 を確保するため 20 |
 | `inset/row` | 32 | = | 32 | activity 行の縦 inset | Display M 56 の見出しを含む行。hairline から見出しまで 32 で「行」として独立する |
-| `page/inset` | 24 | = | 24 | ページ左右 inset（viewport < 1248 で container に効く）、nav・Menu row・marquee 停止セルの横 inset | 帯は container ではなく紙の端に属する（§3.6）。Mobile も 24: 342 = 390 − 48 |
+| `page/inset` | 24 | = | 24 | ページ左右 inset（viewport < 1248 で container に効く）、nav・Menu row の横 inset | 帯は container ではなく紙の端に属する（§3.6）。Mobile も 24: 342 = 390 − 48 |
 | `nav/pad-y` | 12 | 8 | 12 / 8 | nav の縦 inset | 12 + 36 + 12 = 8 + 44 + 8 = 60。CTA の高さが viewport で変わっても帯高 `size/nav` 62 を保つ（**DECISION L-22**） |
-| `band/pad-y` | 12 | = | 12 | marquee の縦 inset の最小値（帯は `size/band-marquee` 56 の高さ駆動、実効 13） | `inset/sm`。帯は section ではないので 12 |
+| `band/pad-y` | 12 | = | 12 | marquee の縦 inset の最小値（帯は `size/band-marquee` 96 の高さ駆動、ロゴ 64 の上下は実効 14） | `inset/sm`。帯は section ではないので 12 |
 | `stack/2xs` | 4 | = | 4 | role → name、dots 群 → ラベル | 同一ブロック内の最小差。目で分離しない距離 |
 | `stack/xs` | 8 | = | 8 | title → body、activity の title 行 → description、description → tags、chat の message 間 | 行間（本文 1.7）より少し大きく、段落の切れ目に見える最小値 |
 | `stack/sm` | 12 | = | 12 | section 見出し → intro 段落、段落間隔 | 見出しの下端と本文の上端が「同じ塊」に読める上限 |
@@ -938,7 +938,8 @@ Desktop / Mobile が同値の行は Mobile 列を「=」とする。根拠中の
 | `inline/sm` | 12 | = | 12 | hero のボタン間、brand lockup（mark ↔ wordmark ↔ rule ↔ tagline） | 隣接コントロールを 1 群に見せる距離 |
 | `inline/md` | 16 | = | 16 | nav 項目間、section title ↔ label、CTA セルの文 ↔ ボタン、social links、Mobile layout grid の gutter | 語間の 4 倍。別要素だが同一行 |
 | `inline/lg` | 24 | = | 24 | activity title 群 ↔ badge、footer 項目間、poster ボタン ↔ socials、Desktop layout grid の gutter | 役割の異なる群を同一行に置く距離 |
-| `inline/xl` | 32 | = | 32 | marquee の項目間（asterisk を挟む） | Title 3 Caps 19 の大文字帯。24 では項目が連結して読める |
+| `inline/xl` | 32 | = | 32 | （旧 marquee の項目間。U-30 でロゴ列になり `inline/2xl` へ） | Title 3 Caps 19 の大文字帯。24 では項目が連結して読める |
+| `inline/2xl` | 48 | = | 48 | marquee の項目間（ロゴ同士、✳ ↔ PARTNERS） | 32 ではロゴ 80 が詰まって見えた。ロゴ幅の 0.6 で「一覧」の間合い |
 | `grid/gutter` | 24 | 16 | 24 / 16 | 12 col / 4 col layout grid の gutter（= `inline/lg` / `inline/md`） | §3.7 |
 | `section/pad-top` | 64 | 48 | 64 / 48 | 2px rule → section 見出し | 罫線と見出しを 1 塊に読ませる（下余白より小さい、§3.9） |
 | `section/pad-bottom` | 80 | 64 | 80 / 64 | 内容 → 次の 2px rule | 「罫線の上の余白 ≥ 下の余白」で罫線が次の section に帰属する |
@@ -963,7 +964,7 @@ Desktop / Mobile が同値の行は Mobile 列を「=」とする。根拠中の
 | Token | 高さ | 横 inset | Label role | ラベル横のアイコン | icon-only のアイコン | 用途 |
 |---|---|---|---|---|---|---|
 | `size/control/sm` | 36 | `inset/md` 16 | `Label/S` 14/20 | 16 | 20 | Desktop nav CTA、Desktop skip link、library の icon button。ポインタ専用（WCAG 2.5.8 の 24 は満たす。タッチ環境では md を使う） |
-| `size/control/md` | 44 | `inset/control` 20 | `Label/M` 15/20 | 20 | 24 | hero 主・副 CTA、poster CTA、bento CTA、Mobile nav CTA、Mobile skip link、Mobile menu button、Menu row、marquee 停止セル。Apple HIG 最小タップ 44 |
+| `size/control/md` | 44 | `inset/control` 20 | `Label/M` 15/20 | 20 | 24 | hero 主・副 CTA、poster CTA、bento CTA、Mobile nav CTA、Mobile skip link、Mobile menu button、Menu row。Apple HIG 最小タップ 44 |
 | `size/chip` | 24 | `inset/xs` 8 | `Caption` 12/18 | 16 | — | tag、reaction chip。塗り `color/chip/fill`（neutral-200）、枠なし。非操作要素（操作化する場合は sm ボタンに置換） |
 
 - ボタン: `display:inline-flex; align-items:center; justify-content:flex-start; min-height: var(--size-control-md); padding-inline: var(--inset-control)`。ラベルは左詰め、trailing arrow はラベル直後 `inline/xs` 8（右端に寄せない — **DECISION L-3** 「ラベル + 矢印」を 1 語として読ませる。`fullWidth` でも同じ）。Figma: 固定高さ × hug 幅、`counterAxisAlignItems: CENTER`。
@@ -978,10 +979,11 @@ Desktop / Mobile が同値の行は Mobile 列を「=」とする。根拠中の
 | Token | 値 D / M | 用途 | 根拠 |
 |---|---|---|---|
 | `size/control/sm` | 36 | Desktop nav CTA、skip link、library icon button | §3.4 |
-| `size/control/md` | 44 | 主要 CTA、Mobile nav CTA、menu button、Menu row、marquee 停止セル | HIG 44pt |
+| `size/control/md` | 44 | 主要 CTA、Mobile nav CTA、menu button、Menu row | HIG 44pt |
 | `size/chip` | 24 | tag、reaction chip | Caption 行送り 18 + 3 × 2 |
 | `size/nav` | 62 | nav 帯の全高（下罫 2 を含む）。hero の `min-height` と section の `scroll-margin-top` に使う | 12 + 36 + 12 + 2 = 8 + 44 + 8 + 2。概念 61 |
-| `size/band-marquee` | 56 | marquee 帯の全高（上下罫 2 を含む）。内側 52 に Title 3 Caps の行ボックス 26 を中央配置 | 2 + 52 + 2。52 = 4 × 13、停止セルの高さ。概念 55（R6） |
+| `size/band-marquee` | 120 | marquee 帯の全高（上下罫 2 を含む）。内側 116 にロゴ 80 と Overline の行ボックスを中央配置 | 2 + 116 + 2 = `size/cell-min`。116 = 4 × 29。概念 55 → 56（R6）→ 96 → 120（**U-30**: ロゴを入れるため） |
+| `size/marquee-logo` | 80 | marquee のパートナーロゴ（正方形、contain） | 20 × 4。内側 116 に上下 18 を残す。帯 56 のままの 36 では図が読めず、96 / 64 でもまだ細かったので 120 / 80（**DECISION U-30**） |
 | `size/hero-max` | 960 | hero `min-height` の上限 | 10 × `space/96`。1440 × 900 では `100svh − 62` = 838 が効き、960 は縦 1022px 以上の画面でだけ効く上限 |
 | `size/cell-min` | 120 | 罫線グリッドの行の最小高、sponsor cell の高さ | 24 × 5。**床であって目標ではない**: kicker（Overline 16）+ `stack/md` 16 + Headline 2 行（48）+ inset 48 = 128 で、kicker + 2 行見出しの 1×1 セルは行ごと 128 に伸びる（stretch）。sponsor cell と 1 行見出しのセル（104）は 120 |
 | `size/avatar` | 24 | chat avatar（矩形） | = `icon/lg`。chat indent = 24 + `inline/xs` 8 = 32 |
@@ -1002,7 +1004,7 @@ CSS: `--size-nav: 3.875rem; --size-hero-max: 60rem; --size-cell-min: 7.5rem; --s
 | ページ左右 inset | `page/inset` 24（viewport < 1248 で効く） | 24 |
 | 全幅 (full-bleed) 要素 | nav、hero、marquee、section の 2px 上罫線、poster、footer 上罫線、Menu panel | 同じ |
 | container 幅の要素 | section 内容、罫線グリッド、activity 行、footer 内容、poster 内容 | 同じ |
-| viewport inset 24 の要素（container に縛らない） | nav の内容（brand x = 24、CTA 右端 = 1416）、Menu row、marquee 停止セル | 同じ（Mobile では container と一致） |
+| viewport inset 24 の要素（container に縛らない） | nav の内容（brand x = 24、CTA 右端 = 1416）、Menu row | 同じ（Mobile では container と一致） |
 
 **DECISION L-23** nav の内容は container ではなく viewport inset 24 に置く。sticky な帯は「紙」ではなく「窓枠」に属し、container に縛ると 1440 で帯の左右に 120 の空白が生じて帯が紙の一部に見える。コンセプトの実測（nav padding 12 / 24、CTA 右端 1440 − 24）と一致する。section 見出し（x 120）と brand（x 24）の不一致は意図。
 
@@ -1073,20 +1075,10 @@ CSS: `.grid { display:grid; grid-template-columns: repeat(n, 1fr); gap: 2px; pad
 | Nav | `nav/pad-y` 12 + `size/control/sm` 36 + 12 + `stroke/rule` 2 = **62** = `size/nav`（sticky） | `nav/pad-y` 8 + `size/control/md` 44 + 8 + 2 = **62**。幅検算: 24 + mark 28 + 12 + wordmark ≈ 86 + ≥ 16 + CTA 128 + 12 + menu 44 + 24 = **374 ≤ 390** |
 | Menu panel（Mobile） | — | nav 直下、全幅、`color/ground`、下辺 `stroke/rule`。行 = `size/control/md` 44 高 × 横 `page/inset` 24、行間 `stroke/hair`。末尾に md ボタン `fullWidth`（上下 `inset/md` 16、横 `page/inset` 24）。**DECISION L-25** 行の寸法は nav CTA と同じ 44 / 24: パネルは nav の延長であり、brand と同じ x = 24 に揃う |
 | Hero | `section/pad-display` 96 / `section/pad-bottom` 80、`min-height: min(100svh − var(--size-nav), var(--size-hero-max))`、内容は垂直中央 | 64 / 64、`min-height` 同式 |
-| Marquee | `size/band-marquee` **56** = `stroke/rule` 2 + 52 + 2。項目（Title 3 Caps 19 / 26）は内側 52 の中央。右端に停止セル（下記） | 同じ |
+| Marquee | `size/band-marquee` **120** = `stroke/rule` 2 + 116 + 2。ロゴ 80 と PARTNERS（Overline 12）は内側 116 の中央。停止セルは U-31 で撤去 | 同じ |
 | Section | (rule 2) + 64 + 見出し + 32 + 内容 + 80 | (rule 2) + 48 + 見出し + 24 + 内容 + 64 |
 | Poster | 96 + 内容 + 96（罫線なし。色面の切替が境界） | 64 / 64 |
 | Footer | rule 2 + `footer/pad-y` 40 + 内容 + 40 | 2 + 32 + 内容 + 32 |
-
-**Marquee 停止セル**（WCAG 2.2.2 の停止手段。挙動は §7.4.2）:
-
-| 項目 | 値 |
-|---|---|
-| 位置 | 帯の右端、上下罫線の間（`position:absolute; inset-block:0; right:0`）。トラックはセルの下に潜る（`overflow:hidden`） |
-| 寸法 | 幅 `size/control/md` 44 × 高さ = 帯の内側全高 52（56 − 罫 2 × 2）。hit area 44 × 52 ≥ 44 |
-| 左辺 | `stroke/rule` 2、`color/divider`（帯の罫線と同じ語彙で「セル」として切り出す） |
-| 地 / アイコン | `color/ground` / `Icon/PlayerPause` ⇄ `Icon/PlayerPlay` 24、`color/ink`、中央配置（icon-only） |
-| 状態 | icon button と同じ（hover `color/state/hover-tint`、pressed `pressed-tint`、focus ring `color/focus/ring` inset offset −2） |
 
 規則:
 
@@ -1153,7 +1145,7 @@ Figma Variables は `Shape`（単一モード）。
 | `stroke/hair` | 1 | `color/divider-hairline` | activity 行の上線・末尾線、Menu row 間、縦 hairline（brand tagline の左、hero meta の区切り。高さ `size/rule-v` 12） | 構成要素「内部」の仕切り |
 | | | `color/inverse/outline` | ink 面の outline ボタンの枠（hero 副 CTA / bento CTA） | 部品境界は 3:1 が要る（14.86）。divider（2.59）は使わない |
 | | | `color/inverse/hairline` | hero の格子線 × 4（§4.3 例外） | テクスチャ、1.18 |
-| `stroke/rule` | 2 | `color/divider` | nav 下、marquee 上下と停止セル左、section 上、footer 上、Menu panel 下、罫線グリッドの枠と gap | 構成要素「間」の仕切り。hairline の 2 倍で明確に別段 |
+| `stroke/rule` | 2 | `color/divider` | nav 下、marquee 上下、section 上、footer 上、Menu panel 下、罫線グリッドの枠と gap | 構成要素「間」の仕切り。hairline の 2 倍で明確に別段 |
 | `stroke/underline` | 2 | `color/link-underline`（currentColor） | リンクの**静止時**の下線（inline 常時、他は hover 以降） | **DECISION U-2** 1 → 2。ヘアライン罫（`stroke/hair` 1）と独立した token にし、罫線を動かさずに下線だけ太くできるようにした |
 | `stroke/underline-strong` | 3 | `color/link/hover` / `color/link/current` / currentColor | hover / pressed / current の下線 | 静止 +1px。太さだけで状態を示し、文字色は動かさない。同じ幾何・別の色 = 同じ装置・別の意味（R16） |
 | `stroke/focus` | 2 | `color/focus/ring` / `color/focus/ring-inverse`（§4.5） | `:focus-visible` の outline。`prefers-contrast: more` では 3 | rule と同じ太さで「構造の線」として読ませる |
@@ -1174,7 +1166,7 @@ tag / reaction chip に枠はない（塗り `color/chip/fill` が境界、§3.4
 3. 交差は「+」で連続させる（グリッドは fill + gap で描くので自動）。線を線の上に載せない。
 4. 2px rule どうしを隣接させない（§3.9）。hairline と 2px rule の最小距離 8（`section/heading-mb-list`）。
 5. 内容と罫線の最小距離: hairline から 8、2px rule から 24（セルの inset）。帯（nav / marquee）だけ 12。
-6. 縦線は (a) 罫線グリッドの仕切り、(b) `size/rule-v` 12 の hairline（brand tagline、hero meta 区切り）、(c) marquee 停止セルの左罫のみ。例外だった hero 背景の格子線（K-12）は撤去した（U-22）。
+6. 縦線は (a) 罫線グリッドの仕切り、(b) `size/rule-v` 12 の hairline（brand tagline、hero meta 区切り）の 2 種のみ（marquee 停止セルの左罫は U-31 で撤去）。例外だった hero 背景の格子線（K-12）は撤去した（U-22）。
 7. **DECISION L-16** hero meta 行の区切りは asterisk アイコンではなく **1 × 12 の hairline**（tagline の縦線と同じ装置 `size/rule-v`）。Overline 12 の大文字 kicker（cap 高 ≈ 9px）の横に 16px 以上のアイコンは大きすぎ、asterisk は marquee の display モチーフに限定した方が強い。
 
 ### 4.4 Elevation
@@ -1201,7 +1193,7 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 | ink `#201e1d`（hero、stat / CTA セル、Mono の poster）、inverse hover-tint | `color/focus/ring-inverse` | lime-300 `#bbf451` | 12.79 / 9.11 | ✓ |
 | lime-400 `#9ae600`（Lime の poster） | `color/poster/focus/ring` | lime-900 `#35530e` | 5.72 | ✓。面が反転するため専用 token |
 
-**DECISION L-14 / C-8 改** リングは面ごとに 3 token。明るい面 `focus/ring` lime-700（4.46）、インク面 `focus/ring-inverse` lime-300（12.79）、ポスター面 `poster/focus/ring` lime-900（5.72）。ライムはポスター面の明度が反転するため、暗い面用の 1 token では賄えない（lime-300 を lime-400 面に置くと 1.18 で消える）。Mono でも focus ring はライム（アクセントが状態表示にだけ現れる規則の一部）。`outline: 2px solid; outline-offset: 2px; border-radius: 0`。full-bleed の行（activity row、Menu row、marquee 停止セル）は inset（offset −2）で隣接罫線と交差させない（DECISION K-7）。
+**DECISION L-14 / C-8 改** リングは面ごとに 3 token。明るい面 `focus/ring` lime-700（4.46）、インク面 `focus/ring-inverse` lime-300（12.79）、ポスター面 `poster/focus/ring` lime-900（5.72）。ライムはポスター面の明度が反転するため、暗い面用の 1 token では賄えない（lime-300 を lime-400 面に置くと 1.18 で消える）。Mono でも focus ring はライム（アクセントが状態表示にだけ現れる規則の一部）。`outline: 2px solid; outline-offset: 2px; border-radius: 0`。full-bleed の行（activity row、Menu row）は inset（offset −2）で隣接罫線と交差させない（DECISION K-7）。
 
 ---
 
@@ -1219,7 +1211,7 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 |---|---|---|---|
 | `icon/sm` | 16 | 12〜14px の文字（badge Overline 12、chip Caption 12、persona rec / sponsor link Footnote 13、footer の任意 brand アイコン）、36px コントロールのラベル横 | glyph の実寸は 16 × 20/24 ≈ 13px ≈ 14px 文字の cap 高 + α |
 | `icon/md` | 20 | 15〜19px の文字（marquee Title 3 Caps 19 の区切り）、44px コントロールのラベル横、icon-only 36 | glyph ≈ 17px。19px 大文字の cap 高 ≈ 15px と釣り合う |
-| `icon/lg` | 24 | icon-only 44（menu、x、player-pause / play）、placeholder の写真アイコン | Tabler のネイティブサイズ |
+| `icon/lg` | 24 | icon-only 44（menu、x）、placeholder の写真アイコン | Tabler のネイティブサイズ |
 
 判定順: コントロール内 → 高さで決める（ラベル横: 36 → 16、44 → 20。icon-only: 36 → 20、44 → 24）。文中 → 文字サイズで決める（≤ 14 → 16、15〜19 → 20）。（DECISION L-27、R7）
 
@@ -1255,17 +1247,15 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 |---|---|---|---|---|---|
 | `Icon/ArrowRight` | `arrow-right` | `IconArrowRight` | 16 / 20 | activity badge（行リンク、サイト内）、persona rec の先頭 | trailing 4（badge）/ leading 4（rec）/ trailing 8（サイト内 CTA が生じた場合） |
 | `Icon/ArrowUpRight` | `arrow-up-right` | `IconArrowUpRight` | 16 / 20 | nav CTA、hero 主 CTA、bento CTA、poster CTA（Discord）、sponsor link（mailto） | trailing 8（コントロール）/ trailing 4（文中） |
-| `Icon/Asterisk` | `asterisk` | `IconAsterisk` | 20 | marquee の区切り（4 個 / 群） | 単独。`color/pop/separator` |
+| `Icon/Asterisk` | `asterisk` | `IconAsterisk` | 20 | marquee の Label「PARTNERS」の両脇（2 個 / 群、U-32。ロゴの間には置かない） | 単独。`color/pop/separator` |
 | ~~`Icon/ThumbUp`~~ | — | — | — | reaction chip は実際の絵文字（U-25）。アイコンは使わない | — |
 | `Icon/Eye` | `eye` | `IconEye` | 16 | reaction chip「4」 | leading 4 |
 | `Icon/Menu2` | `menu-2` | `IconMenu2` | 24 | Mobile nav の開く | icon button 44 |
 | `Icon/X` | `x` | `IconX` | 24 / 20 | Mobile nav の閉じる（icon button 44 → 24）、library dialog の閉じる（36 → 20） | 中央 |
-| `Icon/PlayerPause` | `player-pause` | `IconPlayerPause` | 24 | marquee 停止セル（動作中） | 中央 |
-| `Icon/PlayerPlay` | `player-play` | `IconPlayerPlay` | 24 | marquee 停止セル（停止中） | 中央 |
 | `Icon/Photo` | `photo` | `IconPhoto` | 24 | image placeholder（§5.7.3） | 単独。`color/ink-tertiary` |
 | `Icon/BrandX` / `Icon/BrandInstagram` / `Icon/BrandGithub` | `brand-x` / `brand-instagram` / `brand-github` | `IconBrandX` … | 16 | **footer 任意**（Footnote 13 のリンク先頭）。poster の social はテキストラベルのみ | leading 4 |
 
-必須 10 種 + 任意 3 種。追加するときは「同じ意味に 2 つのアイコンを使わない」— 内部（`ArrowRight`）と外部（`ArrowUpRight`）は別の意味であり、この 2 つ以外の矢印を増やさない。
+必須 8 種 + 任意 3 種（player-pause / play は U-31 で撤去）。追加するときは「同じ意味に 2 つのアイコンを使わない」— 内部（`ArrowRight`）と外部（`ArrowUpRight`）は別の意味であり、この 2 つ以外の矢印を増やさない。
 
 ### 5.6 命名
 
@@ -1433,7 +1423,7 @@ Apple の `scale(0.97)` は「押し込める物体」の比喩で、影・奥�
 2. Nav: Brand lockup → About / Activities / Members / Partners → CTA `参加する`
 3. Mobile: Brand → CTA → Menu button →（open 時）Menu rows → Menu CTA
 4. Hero: 主 CTA → 副 CTA
-5. Marquee: トラックは `aria-hidden="true"`（複製グループ含む）。**停止/再生ボタンのみ** フォーカス可（§6.9.3）
+5. Marquee: トラックは `aria-hidden="true"`（複製グループ含む）。フォーカス可能な要素は無い（停止ボタンは U-31 で撤去）
 6. Bento: Chat cell は `<figure>` の静的内容 → CTA cell のボタン
 7. Activities: 各 row の `<a>`（名前 = title + subtitle）
 8. For You / Members: 対話なし
@@ -1470,7 +1460,6 @@ Spring は移動にだけ使う（M2）。本章の部品で移動するのは M
 | Marquee separator | `asterisk` | `icon/md` 20 | `✳` |
 | Hero meta separator | Rule 1/V（1 × 12 hairline） | — | `✳`（§4.3 規則 7） |
 | Chat reaction | 実際の絵文字 👍 / 👀（U-25） | 16 相当 | `🙌` → 👍 |
-| Marquee 停止 / 再生 | `player-pause` / `player-play` | `icon/lg` 24 | — |
 | Mobile menu 開 / 閉 | `menu-2` / `x` | Icon button md 24（sm なら 20） | — |
 | Image placeholder | `photo` | 24 | — |
 | Discord への導線（ボタン） | `brand-discord`（**先頭**）+ `arrow-up-right`（末尾） | 16 / 20 | — |
@@ -1556,7 +1545,7 @@ Focus-visible は全スタイル共通で **リング 2px offset 2**、色は地
 
 | Tone | 状態 | fill | icon | 用途 |
 |---|---|---|---|---|
-| Ground | Default | なし | `ink` | Mobile menu（`menu-2` / `x`）、Marquee control（`player-pause` / `player-play`） |
+| Ground | Default | なし | `ink` | Mobile menu（`menu-2` / `x`） |
 | | Hover / Pressed | `state/hover-tint` / `pressed-tint` | ink | |
 | Ink | Default | なし | `inverse/ink` | （ライブラリ）Ink 地の閉じるなど |
 | | Hover / Pressed | `inverse/state/hover-tint` / `pressed-tint` | ground | |
@@ -1607,7 +1596,6 @@ Focus-visible は全スタイル共通で **リング 2px offset 2**、色は地
 | Poster | On Ink / Ground / md | `Discordに参加する` | `arrow-up-right` 20 |
 | Mobile menu | Icon / Ground / md | — | `menu-2` / `x` 24 |
 | Menu panel CTA | Ground / Ink / md、`fullWidth` | `参加する` | `arrow-up-right` 20 |
-| Marquee control | Icon / Ground / md | — | `player-pause` / `player-play` 24 |
 | Skip link | Ground / Ink / sm（D）/ md（M） | `本文へスキップ` | なし |
 
 Desktop Nav に sm を使う理由: バー高 `nav/pad-y` 12 + 36 + 12 + `stroke/rule` 2 = **62**（§3.9）。Mobile は 8 + 44 + 8 + 2 = 62 で同じ帯高を保つ。
@@ -1804,9 +1792,9 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 
 | 項目 | 値 |
 |---|---|
-| 高さ | `size/band-marquee` **56**（高さ駆動。上下 Rule 2/H を含む、内側 52。項目の行ボックス 26 を中央、R6） |
+| 高さ | `size/band-marquee` **120**（高さ駆動。上下 Rule 2/H を含む、内側 116。ロゴ 80 と項目を中央、R6 → U-30） |
 | 塗り | `ground`、上下 Rule 2/H、トラックは `overflow: hidden` |
-| トラック | 同一グループ × 2（`translateX(0 → −グループ幅)`）。トラック全体 `aria-hidden="true"` |
+| トラック | 同一グループ × n（n = ⌈viewport ÷ グループ幅⌉ + 1、JS 無しは 2）。`translateX(0 → −グループ幅)` を px で送る。トラック全体 `aria-hidden="true"` |
 | 速度 | `motion/marquee/speed` 40 px/s `linear`（duration = グループ幅 ÷ 40、ResizeObserver）。hover / focus-within / pointer-down で `animation-play-state: paused`（`duration/0`） |
 | Reduced motion | 静止。先頭グループを container 内に折返し配置、クリップなし |
 | 対話 | トラックにリンクを入れない（動く要素をフォーカス対象にしない。パートナー導線は Partners セクションが担う） |
@@ -1816,26 +1804,20 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 | Kind | ロール | 色 | 例 |
 |---|---|---|---|
 | Label | `Overline/Latin` 12 UPPER | `ink-secondary`（5.83） | `PARTNERS` |
-| Word JP | `Title/3 Caps` 19（和文には uppercase 無効） | `ink` | `長崎大学`、`パートナー募集中` |
-| Ghost | `Title/3 Caps` 19 UPPER | `ink-tertiary`（大型 19px 800 → 3:1 に対し 3.85 ✓） | `YOUR COMPANY HERE` |
-| Separator | `asterisk` `icon/md` 20 | `pop/separator`（ink-tertiary / lime-700） | — |
+| Logo | Image slot 1:1 / Contain、`size/marquee-logo` **64** 角、原色（U-21）、`alt=""`（トラックが aria-hidden） | — | 各パートナーのロゴ（partners.ts の `logo`。**DECISION U-30**: 団体は名前ではなくロゴで出す。ロゴが未着の団体だけ Word JP に落ちる） |
+| Word JP | `Title/3 Caps` 19（和文には uppercase 無効） | `ink` | ロゴ未着の団体名だけ |
+| ~~Ghost~~ | — | — | 「パートナー募集中」は 2026-09-07 に撤去（募集の呼びかけは Partners の導入文が担う） |
+| Separator | `asterisk` `icon/md` 20 | `pop/separator`（ink-tertiary / lime-700） | Label「PARTNERS」の両脇だけ（**DECISION U-32**）。ロゴの間には置かない |
 
-アイテム間 gap `inline/xl` 32。順序: Label · ✳ · Word JP · ✳ · Ghost · ✳ · Word JP · ✳（✳ = `asterisk`）。
+アイテム間 gap `inline/2xl` 48。順序: ✳ · Label · ✳ · Logo · Logo · …（✳ = `asterisk`、Label の両脇だけ。U-32）。団体の並びは Partners セクション（partners.ts）と同一。
 
-#### 6.9.3 Control（停止 / 再生ボタン、§7 D3）
+#### 6.9.3 Control（撤去）
 
-| 項目 | 値 |
-|---|---|
-| 位置 | バンド右端、帯の内側高さいっぱい 52 × 幅 **44**。左に Rule 2/V `divider`、地 `ground`。トラックの上に重ねず、トラック幅を 44 + 2 だけ縮める |
-| アイコン | `player-pause`（再生中）/ `player-play`（停止中）`icon/lg` 24、`ink` |
-| 要素 | `<button type="button" aria-pressed="false">`、名前は **固定** visually-hidden `ページの動きを止める`。停止中は `aria-pressed="true"`（R8）。`aria-hidden` トラックの外に置く |
-| 状態 | Hover `state/hover-tint`、Pressed `pressed-tint`（アイコン ink 13.21 / 11.78）、Focus **inset** ring（offset −2、K-7: 帯の上下罫と交差させない）、アイコン差し替え `duration/0` |
-| 効果 | Marquee・Rotating word・Typing dots の **すべて** を停止 / 再開（§7 M8「1 つのページ内スイッチ」）。`localStorage["chotech:motion"]` に保存。reduced-motion 時の初期状態は停止（`aria-pressed="true"`、押せば再生できる） |
-| 根拠 | WCAG 2.2.2 は OS 設定ではなくページ内の手段を求める。hover は停止手段にならない。ボタンはヒーロー直下にあり最初のスクロール内で見つかる |
+停止 / 再生ボタンは **DECISION U-31（2026-09-07）で撤去**した。帯は右端まで流れ、停止セルも左罫も持たない。動きが止まるのは `prefers-reduced-motion`（静止フォールバック、§7.5）と hover、画面外 / バックグラウンドタブ（§7.5）だけ。WCAG 2.2.2 のページ内停止手段は満たさない（§8 の該当行）。
 
 #### 6.9.4 Figma
 
-`Marquee / Item` `Kind` {Label, Word, Ghost, Separator} 4。`Marquee / Control` `Playing` {True, False} × `State` {Default, Hover, Pressed} 6 + `focus` BOOL。`Marquee / Band` 1（`showGroupB` BOOL、`showControl` BOOL(true)、Control を右端に配置）。
+`Marquee / Item` `Kind` {Label, Logo, Word, Ghost, Separator} 5。`Marquee / Band` 1（`showGroupB` BOOL）。`Marquee / Control` は U-31 で撤去。
 
 ### 6.10 Section heading
 
@@ -1927,7 +1909,7 @@ K-8 の根拠: Mobile セル内幅 338 − 40 = 298。横並びでは title が 
 
 会話の「絵」。操作する UI ではないので状態も入力も持たないが、**静止画でもない** — 発言とスタンプが 1 つずつ順に現れ、最後まで出たら少し置いて先頭から繰り返す（**DECISION U-16**）。
 
-**DECISION U-16** チャットを再生する。当初は静止スレッドにしていた（旧 M-5）。理由は「5 秒超の自動更新領域には停止 UI が要る」だったが、§7 M8 のスイッチが既にページ内の全ループを止めるので、その条件は満たされている。静止スレッドは「会話のスクリーンショット」に見え、伝えたいこと — **いま誰かが喋っていて、返事が返ってくる場所である** — が伝わらない。順に現れることでしか出せない情報なので、装飾の動き（§7 M9 が禁じるもの）には当たらない。
+**DECISION U-16** チャットを再生する。当初は静止スレッドにしていた（旧 M-5）。理由は「5 秒超の自動更新領域には停止 UI が要る」だったが、§7 M8 のスイッチが既にページ内の全ループを止めるので、その条件は満たされている（→ U-31 でスイッチを撤去した後も再生は維持。クライアント判断）。静止スレッドは「会話のスクリーンショット」に見え、伝えたいこと — **いま誰かが喋っていて、返事が返ってくる場所である** — が伝わらない。順に現れることでしか出せない情報なので、装飾の動き（§7 M9 が禁じるもの）には当たらない。
 
 再生の規則:
 
@@ -2195,7 +2177,7 @@ Figma: `Media / Image Slot` `Shape` {Rect, Circle} × `Fit` {Cover, Contain} × 
 | M5 | 出入りは対称、起点は発生源 | 開閉するものは同じ経路を逆再生。展開パネルは発生源（Nav の下罫）から現れる | 「消えた方向から戻ってくる」空間的一貫性 |
 | M6 | compositor プロパティのみ | アニメーションは `transform` と `opacity` のみ（色は `background-color` / `color` / `text-decoration-color` / `text-decoration-thickness` を固定時間で）。`height` / `top` / `clip-path` / `filter` は不可 | 60 fps とジッターのなさが craft の最低条件。`clip-path` は全エンジンで compositor 処理されない |
 | M7 | 減速運動の停止は 1 % 残りで判定 | スプリングの「見かけの長さ」= 目標との差が 1 % を切る時刻 | 0.1 % まで待つと約 1.4 倍長くなり、体感と一致しない |
-| M8 | ループは有限・停止可能 | 自動で動くもの（マーキー、回転語、入力中ドット）は **1 つのページ内スイッチ** で全停止でき、`prefers-reduced-motion` で初期状態が停止 | WCAG 2.2.2（5 秒超の自動移動は停止手段が必須） |
+| M8 | ループは低減設定・画面外で停止 | 自動で動くもの（マーキー、回転語、入力中ドット、背景写真、チャット再生、写真送り）は `prefers-reduced-motion` で止まり、画面外・バックグラウンドタブでも止まる。ページ内スイッチ（停止 / 再生ボタン）は **U-31 で撤去** | WCAG 2.2.2 はページ内の停止手段を求めるため**未達**（クライアント判断で許容） |
 | M9 | 追加しない | 装飾のためだけの動きは足さない。ヒーローの浮遊バブルと矢印の nudge は **採用しない**。チャットの再生と写真の送りは装飾ではなく情報（順に現れることでしか出せない、U-16 / U-18）。**唯一の例外が Hero の背景写真の漂い**（U-20）— 情報を運ぶのは写真であって動きではないと認めたうえで採った | Apple「Purpose」: 動きはユーザーの注意を消費する予算。1 つの状態に 2 つの信号を出さない |
 
 ### 7.2 トークン
@@ -2238,7 +2220,7 @@ CSS カスタムプロパティで持つ。Figma には Variables として置�
 | 状態遷移（hover / current / 下線） | 0.2 s | 入り `duration/1` 100、離脱 `duration/2` 200、`ease/color` | 同じ（色変化は前庭刺激ではない） |
 | Pressed | — | 入り `duration/0`、戻り `duration/1` | 同じ |
 | Focus ring | 未定義 | `duration/0`、トランジションなし | 同じ |
-| Marquee | translateX 0→−50 %, 26 s linear infinite | 速度 **40 px/s** linear（duration = グループ幅 ÷ 40）。hover / focus-within / pointer-down で `duration/0` 停止。右端に **停止/再生ボタン**（§7.4.2） | **静止**: 先頭グループを container 内に折返し、クリップなし |
+| Marquee | translateX 0→−50 %, 26 s linear infinite | 速度 **40 px/s** linear（duration = グループ幅 ÷ 40）。hover / focus-within / pointer-down で `duration/0` 停止。停止ボタンは U-31 で撤去 | **静止**: 先頭グループを container 内に折返し、クリップなし |
 | Hero 回転語 | 2.6 s ごと、wordIn 0.55 s | 周期 **2.5 s**。退出 `spring/quick`（opacity→0, y→−0.15 em）、80 ms 後に入り `spring/default`（opacity→1, y +0.15 em→0）。**無限ループ**（U-15） | 静止 `学ぶ。` |
 | Button hover / press | hover のみ | hover: 塗りを 1 段（`duration/1` / `duration/2`）。press: さらに 1 段を `duration/0`。**transform なし** | 同じ |
 | Link hover（Nav / Brand / Footer / Social / Inline） | 色・下線 | `text-decoration-thickness` と `text-decoration-color` を `duration/1` / `duration/2`。Nav / Brand は 2 px アクセント下線、文字は ink（§1.3.6） | 同じ |
@@ -2259,24 +2241,14 @@ CSS カスタムプロパティで持つ。Figma には Variables として置�
 - Hero はオブザーバを使わず、`document.fonts.ready` か `duration/3` 400 ms のどちらか早い方で開始する。代替フォントで動かしてから本フォントで再描画すると二重に動いて見える。
 - インデックスはセクション内の順序。Hero 0/1/3/4、About 0/1、Activities 0、For You 0/1、Members 0/1/2、Partners 0/1/2、Poster 0/1/2/3（概念版のまま）。ベント・グリッドとカードのセル群は **親 1 つとして** reveal し、セル個別には動かさない — 2 px 罫線で結ばれた格子は 1 つの面。（DECISION M-2）
 
-#### 7.4.2 Marquee と停止/再生ボタン
+#### 7.4.2 Marquee
 
-- トラック = 同一グループ × 2、`translateX(0 → −グループ幅)`、`linear`。duration は ResizeObserver でグループ幅 ÷ 40 を `--marquee-duration` に書き込む（1,040 px なら 26 s — 概念版と一致）。
+- トラック = 同一グループ × n（n = ⌈viewport ÷ グループ幅⌉ + 1。トラックが「viewport + グループ 1 つ」より短いと、1 グループ送った瞬間に右端が空く）、`translateX(0 → −グループ幅)` を px で、`linear`。ResizeObserver がグループ幅 ÷ 40 を `--marquee-duration` に、グループ幅を `--marquee-group-width` に書き込む（JS 無しは複製 2・−50%。1,040 px なら 26 s）。
 - 停止: `:hover`、`:focus-within`、pointer-down で `animation-play-state: paused`（`duration/0`）。再開も `duration/0` — 一定速度のコンベアに緩急は付けない。
 - バックグラウンドタブでは停止（`visibilitychange`）。
-- トラックは `aria-hidden="true"`。情報（パートナー団体）はパートナー節が本文として持つ。reduced-motion の **静止フォールバック** = 先頭グループを container 1200 / 342 内に `inline/xl` 32 の gap で折返し、クリップしない。
+- トラックは `aria-hidden="true"`。情報（パートナー団体）はパートナー節が本文として持つ。reduced-motion の **静止フォールバック** = 先頭グループを container 1200 / 342 内に `inline/2xl` 48 の gap で折返し、クリップしない。
 
-**停止/再生ボタン**（DECISION M-3。部品の寸法は §6.9.3）
-
-| 項目 | 仕様 |
-|---|---|
-| 部品 | `Button / Icon`、Tone **Ground**、Size **md 44**。アイコン `player-pause` ⇄ `player-play` **24**、stroke 2、`currentColor` |
-| セル | 帯の右端、帯の内側高さ **52** × 幅 **44**（R6）。地 `color/ground`、左に `stroke/rule` 2 px（`color/divider`）。ヒット領域はセル全体（44 × 52 ≥ 44） |
-| クリップ | トラックの `overflow: hidden` 境界 = セルの左罫。文字は罫の下をくぐらない |
-| 状態 | hover `state/hover-tint`（`duration/1` / `duration/2`）、pressed `state/pressed-tint`（`duration/0`）、focus `color/focus/ring` 2 px **inset**（offset −2、帯の上下罫と交差させない） |
-| ARIA | `<button type="button" aria-pressed="false">`。アクセシブルネームは **固定**「ページの動きを止める」（visually-hidden）。停止中は `aria-pressed="true"`（トグルボタンはラベルを変えず状態で伝える — ARIA APG、R8）。アイコン `aria-hidden` |
-| 効果 | `localStorage["chotech:motion"]` に保存し、**マーキー・回転語・入力中ドットすべて** に適用（ページ内スイッチ = M8）。reduced-motion 時は初期状態 `aria-pressed="true"` で、押せば再生できる |
-| 位置の根拠 | WCAG 2.2.2 は OS 設定ではなくページ内の手段を求める。ボタンはヒーロー直下にあり最初のスクロール内で見つかる |
+**停止 / 再生ボタン**（DECISION M-3、旧 §6.9.3）は **U-31 で撤去**。停止条件は上記の hover・画面外・reduced-motion だけで、`localStorage` も `data-motion` 属性も持たない。
 
 #### 7.4.3 Hero 回転語
 
@@ -2285,7 +2257,7 @@ CSS カスタムプロパティで持つ。Figma には Variables として置�
 - 語枠は **幅 3 em 固定**、新旧 2 語を絶対配置で重ねる。3 語とも全角 3 字なのでレイアウトシフトはゼロ（§9.3）。下線は持たない（U-3）。変わるのは語そのものと、その色だけ。
 - 停止条件: Hero が非可視、タブ非表示、ページのスイッチ、reduced-motion。
 
-**DECISION U-15** 回転語は 2 周で静止せず、回り続ける。当初「2 周で止める」を選んだのは WCAG 2.2.2 を停止 UI 無しで満たすためだったが、§7 M8 のページ内モーションスイッチ（マーキー帯の停止ボタン）が回転語・マーキー・入力中ドットの 3 つすべてを止めるので、2.2.2 の「一時停止する手段」は既に存在する。止める理由が消えた以上、3 語を見せ切って静止する動きは「途中で力尽きた」ようにしか見えない。スイッチはヒーローの直下（マーキー帯）にあり、5 秒を超えて動くものと同じ画面内で見つかる。
+**DECISION U-15** 回転語は 2 周で静止せず、回り続ける。当初「2 周で止める」を選んだのは WCAG 2.2.2 を停止 UI 無しで満たすためだったが、§7 M8 のページ内モーションスイッチ（マーキー帯の停止ボタン）が回転語・マーキー・入力中ドットの 3 つすべてを止めるので、2.2.2 の「一時停止する手段」は既に存在する。止める理由が消えた以上、3 語を見せ切って静止する動きは「途中で力尽きた」ようにしか見えない。スイッチはヒーローの直下（マーキー帯）にあり、5 秒を超えて動くものと同じ画面内で見つかる。 **U-31 で停止ボタンを撤去した後も回し続ける**（クライアント判断。2.2.2 は未達）。
 - アクセシブルネーム（§8.5）: `<h1>` の可視部分は `aria-hidden`、visually-hidden の「仲間と、学ぶ。創る。話す。」が名前になる。`aria-live` は使わない。
 
 #### 7.4.4 Hover / Press
@@ -2359,7 +2331,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | 1.4.1 色の使用 | 色だけで意味を伝えない | hover は下線 / 塗り + カーソル、リンクは下線か文脈、バッジは文字、現在地は ink 下線。Mono モードで機能が損なわれないことが証明 |
 | 2.5.8 ターゲットサイズ（最低限） | 24 × 24 CSS px | HIG 推奨 **44 × 44** をすべての対話部品で満たす（§8.3）。36 の sm はポインタ専用で `::before` により 44 |
 | 2.4.7 / 2.4.11 / 2.4.13 | フォーカス可視・非隠蔽（最低限）・外観（AAA） | 2 px 外側リング + 2 px オフセット、sticky Nav 分の `scroll-margin-top`（§8.4） |
-| 2.2.2 一時停止・停止・非表示 | 5 秒超の自動移動に停止手段 | マーキーの停止ボタン = ページ内スイッチ（§7.4.2） |
+| 2.2.2 一時停止・停止・非表示 | 5 秒超の自動移動に停止手段 | **未達**（U-31 で停止ボタンを撤去。`prefers-reduced-motion` で静止、画面外で停止、マーキーは hover で一時停止するのみ） |
 | 2.3.1 / 2.3.3 | 3 回/秒の閃光なし・操作起因アニメーション（AAA） | 最速の周期は 0.8 Hz。reduced-motion で全停止 |
 | 2.4.2 ページタイトル | ページの主題を表すタイトル | `<title>` の組立規則と meta description（§9.9） |
 | 1.4.10 リフロー | 320 px 幅（container 272）で横スクロールなし | Hero h1 Mobile 56 px × 4 字 = 220 ≤ 272 ✓。Poster 見出し Mobile 40 px × 6 字 = 235 ≤ 272 ✓。h2 Title 1 26 px × 11 字 = 283 → 320 px では 2 行に折返す（許容）。Marquee は装飾でクリップ可、静止時は折返し |
@@ -2368,7 +2340,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | 1.3.1 / 2.4.1 / 2.4.6 | 構造・ブロックスキップ・見出し | ランドマーク、h1→h2→h3、スキップリンク（§8.5）。回転見出しの名前は全文で安定 |
 | 1.1.1 非テキストコンテンツ | 代替テキスト | §8.6 |
 | 3.1.1 / 3.1.2 | ページと部分の言語 | `lang="ja"`、英文に `lang="en"`（§8.7） |
-| 4.1.2 名前・役割・値 | 状態を持つ部品 | 停止ボタン `aria-pressed`、メニュー `aria-expanded`、Nav `aria-current` |
+| 4.1.2 名前・役割・値 | 状態を持つ部品 | メニュー `aria-expanded`、Nav `aria-current` |
 
 ### 8.2 コントラスト検証（ページ上の全ペア）
 
@@ -2441,7 +2413,6 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | Nav CTA（Mobile） | `size/control/md` 44 | ✓ | — |
 | ブランドリンク | mark 28 + 文字 | 44 | `::before { inset: -8px -4px }` |
 | Hero 主・副ボタン | `size/control/md` 44 | ✓ | — |
-| Marquee 停止ボタン | 44 × 52（セル） | ✓ | セル全体をヒット領域に |
 | Bento CTA | `size/control/md` 44 | ✓ | — |
 | Member の SNS アイコン | 20 | ::before inset −12 で 44 | 同じカード内で 3 個並ぶため、間隔 12–16 を確保 |
 | Partner インラインリンク | Footnote Bold 13 / 20 | 44 | 上下 −12（セル内に余白あり） |
@@ -2480,7 +2451,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | Marquee | `<div aria-hidden="true">`（トラック）+ 停止 `<button>`（aria-hidden の外） |
 | Footer | `<footer>`（contentinfo）。リンクは `<nav aria-label="フッター">` |
 
-**フォーカス順序**: Skip → Brand → Nav リンク × 4 → Nav CTA →（Mobile: メニューボタン → 開時 Menu row × 4 → Menu CTA）→ Hero 主 → Hero 副 → **Marquee 停止ボタン** → Bento CTA → Activity セル × 3 → Partner リンク → Poster CTA → Social × 3 → Footer Brand → Footer リンク × 4。
+**フォーカス順序**: Skip → Brand → Nav リンク × 4 → Nav CTA →（Mobile: メニューボタン → 開時 Menu row × 4 → Menu CTA）→ Hero 主 → Hero 副 → Bento CTA → Activity セル × 3 → Partner リンク → Poster CTA → Social × 3 → Footer Brand → Footer リンク × 4。
 
 **見出し階層**（h1 は 1 つ、階層を飛ばさない）
 
@@ -2502,7 +2473,6 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | Persona / Member / Partner | `<ul>` > `<li>`。カードに `<article>` は不要（見出し + 段落で足りる） |
 | ボタン内アイコン | `<svg aria-hidden="true" focusable="false">`。名前は可視ラベルのみ |
 | 外部リンク | Discord / X / Instagram / GitHub / mailto: `arrow-up-right` アイコン + vh「（外部）」。`target="_blank"` は使わない（DECISION M-15）— 新しいタブはユーザーが選ぶ（Agency） |
-| 停止ボタン | `<button aria-pressed>`、名前固定「ページの動きを止める」（§7.4.2） |
 | Mobile メニュー | `<button aria-expanded aria-controls>`、パネルは非モーダル。開いてもフォーカスはボタンに留め、ArrowDown で 1 行目へ（§6.7.3） |
 
 ### 8.6 画像と代替テキスト
@@ -2633,7 +2603,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 - 数字・欧文は半角。全角英数字は使わない。
 - 日本語と英数字の間に **手動スペースを入れない**（DECISION M-14、R13: Discordに参加する／Dev Dayで一緒に）。自動アキも `text-autospace: no-autospace` で無効にし、Figma と幅を一致させる（§2.6.2）。
 - 欧文内のスペースは保つ（Talk Day、Since 2025、UI/UX）。
-- 日本語の中の分かち書きスペースはキッカーと Meta のみ許可（長崎大学公認 学生団体、パートナー募集中）。本文では読点か中黒。
+- 日本語の中の分かち書きスペースはキッカーと Meta のみ許可（長崎大学公認 学生団体）。本文では読点か中黒。
 - 単位・助数詞は続けて書く（5分、50人、月1〜2回）。
 - 英語の複数形・所有格は日本語に持ち込まない（Members → メンバー 50+ の表示はキッカー扱い）。
 
@@ -2662,7 +2632,6 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | Marquee `✳` | `asterisk` **20**（`color/pop/separator`） |
 | Hero Meta `✳` | アイコンではなく **1 × 12 の縦 hairline**（L-16） |
 | Mobile メニュー | `menu-2` ⇄ `x` 24 |
-| Marquee 停止 | `player-pause` ⇄ `player-play` 24 |
 
 ### 9.7 数字
 
@@ -2720,7 +2689,6 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | Chat 見出し | `#GENERAL — いつものCHOTECH`（uppercase） | `#general — いつものChoTech`（ORIGINAL） | ブランド名を大文字化しない |
 | h1 アクセシブルネーム | なし | 仲間と、学ぶ。創る。話す。 | §8.5 |
 | 外部リンク | — | `target="_blank"` なし、vh「（外部）」 | §8.5 |
-| 停止ボタン | なし | 「ページの動きを止める」（vh）、`aria-pressed` | §7.4.2 |
 | スキップリンク | なし | 「本文へスキップ」 | §8.5 |
 
 ---
@@ -2826,7 +2794,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | 34.8 / 44 / 46 | ボタン高（nav / hero / poster） | 36 / 44 | `size/control/sm` / `md` |
 | 36 | footer pad-y | 40 / 32 | `footer/pad-y` |
 | 36 | icon button | 36 / 44 | `size/control/sm` / `md` |
-| 55 | marquee 帯 | 56 | `size/band-marquee` |
+| 55 | marquee 帯 | 120 | `size/band-marquee`（56 → 96 → 120、U-30） |
 | 61 | nav 帯 | 62 | `size/nav` |
 | 72 | section pad-top | 64 | `section/pad-top` |
 | 72 | hero pad-bottom | 80 | `section/pad-bottom` |
@@ -2873,7 +2841,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | Nav 61、Mobile 未定義 | Nav 62（両 viewport）、Mobile Menu panel（44 行、非モーダル）を新設 |
 | Hero 88vh、格子線 x 359 / 719 / 1079 / 1439 | `min(100svh − 62, 960)`、格子線は viewport の 25 / 50 / 75 / 100 % |
 | Hero meta 区切り `✳` | 1 × 12 hairline |
-| Marquee 55、停止手段なし、60 px/s | 56、右端に 44 × 52 の停止/再生セル、40 px/s |
+| Marquee 55、停止手段なし、60 px/s | 96（団体はロゴ 64）、停止セルなし（U-31）、40 px/s |
 | Section heading `note` | 廃止 |
 | Bento CTA `Discord →` | 「Discordに参加する」+ `arrow-up-right`、Mobile は縦積み |
 | Chat 再生ループ、`↑` 注記、絵文字リアクション | 静止スレッド、`<figcaption>`、アイコンチップ |
@@ -2890,7 +2858,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 |---|---|
 | reveal 0.7 s cubic-bezier、y 18 | `spring/default`、y 16、stagger 80 / 60 上限 4、1 回のみ |
 | 状態遷移 0.2 s | 入り 100 / 離脱 200、`ease-out`。押下 0 |
-| marquee 26 s infinite | 40 px/s、停止ボタン、reduced-motion で静止 |
+| marquee 26 s infinite | 40 px/s、reduced-motion で静止（停止ボタンは U-31 で撤去） |
 | 回転語 2.6 s / 0.55 s、無限 | 2.5 s、スプリング、無限（停止はページのスイッチ、U-15） |
 | chat 14 s ループ、浮遊バブル | 削除 |
 | Mobile メニュー未定義 | `translateY` + `spring/quick` |
@@ -2898,7 +2866,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 
 ### 10.8 Content
 
-§9.10 の表を参照（矢印・絵文字の置換、Bento CTA の動詞化、`↑` の削除、和欧スペースの除去、編集ヒントの削除、Chat 見出しの大文字化解除、`<title>` / description / スキップリンク / 停止ボタン / h1 アクセシブルネームの新設）。
+§9.10 の表を参照（矢印・絵文字の置換、Bento CTA の動詞化、`↑` の削除、和欧スペースの除去、編集ヒントの削除、Chat 見出しの大文字化解除、`<title>` / description / スキップリンク / h1 アクセシブルネームの新設）。
 
 ---
 ## 11. Figma build map
@@ -2958,7 +2926,6 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | `Hero / Rotating Word` | `Word` {学ぶ。, 創る。, 話す。} | 3 | — | — |
 | `Section / Hero` | `Viewport` {Desktop, Mobile} | 2 | `word` INSTANCE_SWAP、`leadStrong` `leadBody` `primaryLabel` `secondaryLabel` TEXT | Meta Strip、Rotating Word、Button |
 | `Marquee / Item` | `Kind` {Label, Word, Ghost, Separator} | 4 | `label` TEXT | Icon |
-| `Marquee / Control` | `Playing` {True, False} × `State` {Default, Hover, Pressed} | 6 | `focus` BOOL | Button / Icon |
 | `Marquee / Band` | — | 1 | `showGroupB` BOOL、`showControl` BOOL | Item、Control |
 | `Section / Heading` | `Layout` {Row, Stacked} | 2 | `index` `title` TEXT | — |
 | `Bento / Cell Text` | `Kind` {2x1, 1x1-md, 1x1-sm} × `Tone` {Ground, Ink} | 6 | `kicker` `title` `body` TEXT、`showBody` BOOL | — |
@@ -3102,7 +3069,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | L-25 | Mobile Menu row = 44 高 × 横 24 + hairline | nav の延長として brand と同じ x に揃う |
 | L-26 | sponsor ロゴはセル中央 | 図であってラベルではない |
 | L-27 | marquee 帯は高さ駆動 56、区切りアイコン 20 | 内側 52 = 4 × 13、19px 文字の横は `icon/md` |
-| L-28 | marquee 停止セル 44 × 内側高、左 2px rule、ground、icon 24 | 帯と同じ罫線語彙で「セル」として切り出す |
+| L-28 | marquee 停止セル 44 × 内側高、左 2px rule、ground、icon 24 | 帯と同じ罫線語彙で「セル」として切り出す。**U-31 で撤去** |
 | L-29 | 実装のブレークポイントは 2 つ: 構造 48rem / トークン 78rem（§3.6） | 2 フレームしかない仕様と連続なブラウザ幅の橋渡し。ナビと列数だけ先に開き、タイポは離散のまま |
 | L-30 | logo mark は図の外接矩形で切った `icons/mark.svg` を 24 / 20 で置く | favicon.svg は余白込みで、図が小さく見え wordmark からも離れて見えた |
 | L-31 | Partner セルは正方形タイル（Desktop 6 列 / tablet 3 / Mobile 2） | ロゴは正方形のアイコンが基本なので図とタイルの形を揃える。文字を運ばないタイルは L-10 の制約外。Mobile 1 列だと 342 角が 6 枚縦に積まれる |
@@ -3141,9 +3108,9 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 |---|---|---|
 | M-1 | スプリング 2 種（default 1.0/0.40、quick 1.0/0.30）+ 予約 momentum 0.8/0.40。固定時間は 0/100/200/400 ms。`linear()` 曲線は 1 本 | Apple 値をそのまま採り、色は倍数スケールで |
 | M-2 | Reveal: 16 px、once、root-margin −10 %、stagger 80/60 ms 上限 4 | 読まれる前に静定し、待ち時間 ≤ 320 ms |
-| M-3 | Marquee は速度 40 px/s で定義し、右端のセルに 44 の停止/再生ボタンをページ内モーション・スイッチとして置く | 内容量に依存しない速さ。WCAG 2.2.2 はページ内の手段を求める |
+| M-3 | Marquee は速度 40 px/s で定義し、右端のセルに 44 の停止/再生ボタンをページ内モーション・スイッチとして置く | 内容量に依存しない速さ。WCAG 2.2.2 はページ内の手段を求める。**停止 / 再生ボタンは U-31 で撤去** |
 | M-4 改 | 回転語: 周期 2.5 s、上抜け・下入りのドラム運動、**無限ループ**（U-15）、名前は全文 | CLS ゼロ、1.3.1 |
-| M-5 改 | ヒーロー浮遊バブルは削除。チャットの再生は U-16 で復活（スイッチが停止手段を持つため） | Purpose |
+| M-5 改 | ヒーロー浮遊バブルは削除。チャットの再生は U-16 で復活（当時はスイッチが停止手段を持っていた。U-31 でスイッチ撤去後も維持） | Purpose |
 | M-6 | 押下フィードバックは塗り 1 段を 0 ms、`scale()` 禁止 | 2 px 罫の格子を壊さない |
 | M-7 | Nav は縮小・自動隠しなし | 位置把握の予測可能性 |
 | M-8 | Activity セル hover は背景ティントのみ。矢印 4 px nudge は不採用 | M9: 1 状態に 2 信号を出さない |
@@ -3193,7 +3160,7 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 | U-12 | Member カードに SNS / 個人サイトのアイコンリンク（20 × 最大 3、`showSocials`） | 顔と実績が見えることが入会判断の材料になる。本文で列挙すると紹介文が読みにくいので 1 行に閉じる。同じアイコンが 5 枚並ぶので、支援技術向けの名前には**人名を含める** |
 | U-13 | メタストリップに「サポーターズ 技育プロジェクト 学生団体公式パートナー」を長崎大学公認と同じ強さで併記 | どちらも第三者が裏づけた事実。片方だけ本文に落とすと格が下がって見える |
 | U-14 | `Bento / Cell Text` の `body` プロパティを全 6 variant で `characters` に配線（バグ修正）。`body` は全 Kind で使える | 値を入れても既定文が出ていた。OFFICIAL セルに 2 つ目の裏づけを入れるために必要だった |
-| U-15 | 回転語は 2 周で静止せず**回り続ける** | §7 M8 のスイッチが停止手段を提供済みで、有限化の理由（WCAG 2.2.2）が消えた。3 語を見せて止まる動きは「力尽きた」ようにしか見えない |
+| U-15 | 回転語は 2 周で静止せず**回り続ける** | §7 M8 のスイッチが停止手段を提供済みで、有限化の理由（WCAG 2.2.2）が消えた。3 語を見せて止まる動きは「力尽きた」ようにしか見えない。U-31 でスイッチ撤去後も回し続ける（2.2.2 未達を許容） |
 | U-16 | チャットは静止画をやめ、発言・スタンプ単位で順に現れて**ループ**する | 静止スレッドは「会話のスクリーンショット」に見える。伝えたいのは「いま誰かが喋っていて返事が返ってくる場所だ」ということで、順に現れることでしか出せない |
 | U-17 | 活動セルを**リンクにしない**。hover / pressed / focus / 矢印も持たない | 4 セルとも同じ Discord に着地するので、押した対象と行き先が対応しない。参加への導線は Hero・Bento CTA・Poster が 3 度受け持っている |
 | U-18 | About の写真セルは複数枚を**スライドさせて回す** | 「いろいろやっている」は 1 枚の代表写真では出ない。ベントで唯一「時間を持つ」セルなので、隣のチャットと合わせて 2 つ以上は作らない |
@@ -3208,6 +3175,9 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 | U-27 | ~~Nav の CTA にも Discord マークを添える~~ **同日に撤回** — Nav の CTA は文言 + 矢印のまま（U-19 どおり） | 帯の CTA は文言だけで足りる。マークを足すと Mobile で矢印を落とす代償も要った |
 | U-28 | Poster の Social はマーク 20 のみ。ラベルと矢印を落とす | マークが行き先を言い切るので文字は冗長。CTA と同じ行で目立ち過ぎていた |
 | U-29 | Cell Stat の数字の下に所属を Chip（Inverse トーン）のバッジで並べる（長崎大学 情報データ科学部 / 工学部 / 大学院、長崎県立大学、長崎総合科学大学）。人数は出さない | 「50+」だけでは「どこの学生か」が分からない。複数大学からの参加が「誰でも」の裏づけになる。文の列よりタグのほうが一覧性が高い |
+| U-30 | Marquee の団体は名前ではなく**ロゴ**（80 角 `size/marquee-logo`、partners.ts から生成）で出し、帯 `size/band-marquee` を 56 → **120**、項目間を `inline/2xl` 48 に上げる（2026-09-07） | 帯は調子付けで、団体名の列より図の列のほうが一目で「支えられている」が伝わる。帯 56 のままの 36 角では図が読めず、96 / 64 でもまだ細かった。120 = `size/cell-min` で梯子の既存段、内側 116 に 80 を置いて上下 18。事実としての団体名は Partners セクションが運ぶ |
+| U-31 | Marquee の停止 / 再生ボタンと、ページ内モーションスイッチ（旧 M8: `data-motion`、`localStorage["chotech:motion"]`、`useMotionSwitch`）を**撤去**（2026-09-07、クライアント判断） | 帯を 96 に上げると停止セルが目立ち、正方形にしても帯の右端に異物として残った。自動の動きは `prefers-reduced-motion` と画面外 / バックグラウンドで止まる。**WCAG 2.2.2 のページ内停止手段は未達**として §8 に記録し、U-15 / U-16 / M-3 / M-5 改 の前提から「スイッチが停止手段を持つ」を外す |
+| U-32 | Marquee の ✳ は Label「PARTNERS」の両脇だけに置き、ロゴの間には置かない（2026-09-07） | 図の列に記号を挟むとロゴが 1 つずつ区切られて「一覧」に見えない。両脇の ✳ が「ここから団体」の開始記号になり、ロゴ同士は `inline/2xl` 48 の間だけで並ぶ |
 
 ## 付録 B. 検証
 

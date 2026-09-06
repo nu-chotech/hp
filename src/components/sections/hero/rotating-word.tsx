@@ -10,7 +10,7 @@ import {
 } from "react";
 import { heroContent } from "@/content/hero";
 import { useAwake } from "@/hooks/use-awake";
-import { useMotionPlaying } from "@/hooks/use-motion-switch";
+import { useMotionPlaying } from "@/hooks/use-motion-playing";
 import { revealElement } from "@/hooks/use-reveal";
 import { duration, heroWord, motionVar } from "@/lib/motion";
 
@@ -190,10 +190,8 @@ function wordState(
 export function RotatingWord() {
   const boxRef = useRef<HTMLSpanElement>(null);
   /**
-   * 動くかどうかは 1 つのスイッチが決める（§7.4.2 / M8）。低減設定は「既定で停止」
-   * であって「絶対に動かない」ではないので、reduced-motion を直接見ずに
-   * オプトインまで畳み込んだ playing を見る — 読者が帯の再生ボタンを押したら
-   * マーキー・ドットと一緒に回転語も戻る。
+   * 動くかどうかは reduced-motion が決める（U-31 でページ内スイッチを撤去した後は
+   * これだけ）。低減設定では回さず、静止した 1 語のまま。
    */
   const playing = useMotionPlaying();
   /** Hero が画面内 かつ タブが前面（§7.4.3 の停止条件） */

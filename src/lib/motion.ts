@@ -14,8 +14,8 @@ import type { Transition } from "motion/react";
  * layout.tsx（Server Component）で、react-server 条件の react は useEffect を
  * export しないため、フックを 1 つでも同居させるとサーバ側の import が壊れる。
  * この制約は 1 モジュールの都合ではなくディレクトリの境界なので、DOM に触る側は
- * まとめて src/hooks/ に置く（reveal は use-reveal.ts、スイッチは
- * use-motion-switch.ts）。src/lib/ はサーバからも読める語彙と純関数だけを持つ。
+ * まとめて src/hooks/ に置く（reveal は use-reveal.ts、低減設定の購読は
+ * use-motion-playing.ts）。src/lib/ はサーバからも読める語彙と純関数だけを持つ。
  */
 
 /**
@@ -62,8 +62,9 @@ export const spring = {
 /**
  * ヒーローの回転語（§7.4.3）。**回り続ける**（DECISION U-15）。
  *
- * 有限化していたのは WCAG 2.2.2 を停止 UI 無しで満たすためだったが、
- * ページ内のモーションスイッチが 3 つのループを全部止めるので条件は満たされている。
+ * 有限化していたのは WCAG 2.2.2 を停止 UI 無しで満たすためだった。その後
+ * ページ内のモーションスイッチが根拠になっていたが、U-31 でスイッチを撤去した
+ * いまは reduced-motion でだけ止まる（2.2.2 の停止手段は未達。クライアント判断）。
  */
 export const heroWord = {
   periodMs: 2500,
@@ -109,18 +110,6 @@ export const photoSlides = {
 
 /** マーキー（§7.4.2）。duration ではなく速度で持つので内容量が変わっても速さが一定 */
 export const marquee = { speedPxPerSecond: 40 } as const;
-
-/** ページ内のモーションスイッチ（M8）。マーキー・回転語・ドットが共有する */
-export const MOTION_STORAGE_KEY = "chotech:motion";
-
-/**
- * 同じスイッチの、同一ドキュメント向けの通知路。
- * storage イベントは書いた当のドキュメントには届かない（HTML 仕様）ため、
- * それだけでは押したタブで動きが止まらない。書き手（§6.9.3 の停止/再生ボタン）は
- * localStorage への setItem の直後に `window.dispatchEvent(new Event(MOTION_EVENT))`
- * を必ず呼ぶ — 読み手はこれと storage の両方を購読する。
- */
-export const MOTION_EVENT = "chotech:motionchange";
 
 /** reveal（§7.4.1） */
 export const revealMotion = {

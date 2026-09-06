@@ -13,8 +13,6 @@ import {
   IconMail,
   IconMenu2,
   IconPhoto,
-  IconPlayerPause,
-  IconPlayerPlay,
   IconX,
 } from "@tabler/icons-react";
 import type { ComponentProps } from "react";
@@ -64,8 +62,6 @@ export const Menu = decorative(IconMenu2, "Menu");
 /** メニューを閉じる */
 export const Close = decorative(IconX, "Close");
 /** マーキーの停止・再生 */
-export const Pause = decorative(IconPlayerPause, "Pause");
-export const Play = decorative(IconPlayerPlay, "Play");
 export const Heart = decorative(IconHeart, "Heart");
 export const Check = decorative(IconCheck, "Check");
 export const Mail = decorative(IconMail, "Mail");

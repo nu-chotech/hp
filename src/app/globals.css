@@ -435,7 +435,8 @@
   --inline-sm: 0.75rem; /* 12 — ヒーローのボタン間、ブランドロックアップ */
   --inline-md: 1rem; /* 16 — ナビ項目間、CTA セルの文 ↔ ボタン */
   --inline-lg: 1.5rem; /* 24 — 活動タイトル群 ↔ バッジ、フッター項目間 */
-  --inline-xl: 2rem; /* 32 — マーキー項目間（間に asterisk） */
+  --inline-xl: 2rem; /* 32 */
+  --inline-2xl: 3rem; /* 48 — マーキー項目間（ロゴ同士・✳ とラベル）。32 ではロゴが詰まって見えた */
 
   /* grid — レイアウトグリッドの溝 */
   --grid-gutter: 1rem; /* 24 / 16 — Mobile は 16（24 だと列 66 で 2 列 span が壊れる、L-24） */
@@ -458,7 +459,8 @@
   --size-control-md: 2.75rem; /* 44 — Apple HIG 最小タップ領域。52 は存在しない（L-2） */
   --size-chip: 1.5rem; /* 24 = Caption leading 18 + 3 × 2。24 アイコングリッドと同じ高さ */
   --size-nav: 3.875rem; /* 62 — 2px 下罫を含むナビ帯の総高。scroll-margin-top にも使う */
-  --size-band-marquee: 3.5rem; /* 56 = 2 + 52 + 2。52 は停止セルの高さでもある */
+  --size-band-marquee: 7.5rem; /* 120 = 2 + 116 + 2 = size/cell-min（U-30: ロゴを入れるため 56 → 96 → 120） */
+  --size-marquee-logo: 5rem; /* 80 — marquee のパートナーロゴ（正方形）。帯の内側 116 に上下 18 を残す（U-30） */
   --size-hero-max: 60rem; /* 960 = 10 × space/96。ヒーロー min-height の上限 */
   --size-cell-min: 7.5rem; /* 120 = 24 × 5。床であって目標ではない */
   --size-avatar: 1.5rem; /* 24 — チャットアバター（円）。= icon/lg */
@@ -792,6 +794,7 @@
   --spacing-inline-md: var(--inline-md);
   --spacing-inline-lg: var(--inline-lg);
   --spacing-inline-xl: var(--inline-xl);
+  --spacing-inline-2xl: var(--inline-2xl);
   --spacing-grid-gutter: var(--grid-gutter);
   --spacing-section-pad-top: var(--section-pad-top);
   --spacing-section-pad-bottom: var(--section-pad-bottom);
@@ -807,6 +810,7 @@
   --spacing-chip: var(--size-chip);
   --spacing-nav: var(--size-nav);
   --spacing-band-marquee: var(--size-band-marquee);
+  --spacing-marquee-logo: var(--size-marquee-logo);
   --spacing-hero-max: var(--size-hero-max);
   --spacing-cell-min: var(--size-cell-min);
   --spacing-avatar: var(--size-avatar);
@@ -1003,7 +1007,7 @@
    * フォーカス: 2px、offset 2、角丸ゼロ。地ごとにリング色を切り替える。
    * Mono モードでもリングはライム。リングは duration/0 = 即時 — outline は
    * 既定でトランジションしないので、outline-* を transition-property に含めないこと。
-   * full-bleed の行（activity row、Menu row、marquee 停止セル）は
+   * full-bleed の行（activity row、Menu row）は
    * --focus-offset-inset（−2）を当てて隣接罫線と交差させない（DECISION K-7）。
    */
   :focus-visible {
@@ -1091,19 +1095,17 @@
   }
 
   /*
-   * ループする動き（マーキー・入力中ドット・回転語）だけは、読者本人が明示的に
-   * オプトインしたときに戻せる（§7 M8 / §6.9.3「低減設定でも押せば再生できる」）。
-   * だからここは無条件ではなく html[data-motion="playing"] を除いて掛ける。
-   * これが無いと停止/再生ボタンは自分のアイコンを変えるだけの飾りになり、
-   * aria-pressed が事実と違うことを言い続ける。
+   * ループする動き（マーキー・入力中ドット・背景写真・回転語）は低減設定で止める。
+   * かつてはページ内スイッチ（html[data-motion="playing"]）でオプトインできたが、
+   * DECISION U-31 でスイッチごと撤去したので無条件に掛ける。
    */
-  html:not([data-motion="playing"]) .marquee__track,
-  html:not([data-motion="playing"]) .typing__dot,
-  html:not([data-motion="playing"]) .hero__backdrop {
+  .marquee__track,
+  .typing__dot,
+  .hero__backdrop {
     animation: none;
   }
 
-  html:not([data-motion="playing"]) .hero__word {
+  .hero__word {
     transition: none;
   }
 
@@ -1111,19 +1113,6 @@
     transition: opacity var(--dur-2) var(--ease-color);
     transform: none;
   }
-}
-
-/*
- * ページ内のモーションスイッチ（§7 M8）
- *
- * 3 つのループが 1 つのスイッチを共有する。属性は <html> に置き、
- * src/hooks/use-motion-switch.ts だけが書く — 同一ドキュメントの切替は storage
- * イベントを飛ばさないので、JS の購読ではなく DOM の属性を唯一の真実にする。
- */
-html[data-motion="paused"] .marquee__track,
-html[data-motion="paused"] .typing__dot,
-html[data-motion="paused"] .hero__backdrop {
-  animation-play-state: paused;
 }
 
 /*
@@ -1194,11 +1183,6 @@ html[data-motion="paused"] .hero__backdrop {
   /* 強制配色は面と文字を OS の 2 色に置き換えるが、<img> はそのまま残る。
      Hero の背景写真だけは残っても「読みにくさ」にしかならない — 置き換えられた
      文字色は写真を前提に選ばれていないので、層ごと落とす（U-20） */
-  /* biome-ignore lint/style/noDescendingSpecificity: 上の
-     html:not([data-motion="playing"]) .hero__backdrop が触るのは animation で、
-     こちらは display。同じプロパティを奪い合っていないので順序も詳細度も効かない。
-     詳細度を揃えるために html を足すと、この規則が「モーションの状態に依る」
-     ように読めてしまう — 強制配色では状態に関係なく必ず消す */
   .hero__backdrop {
     display: none;
   }

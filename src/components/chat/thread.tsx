@@ -6,7 +6,7 @@ import { ReactionRow } from "@/components/chat/reaction-row";
 import { Typing } from "@/components/chat/typing";
 import type { ChatEntry } from "@/content/about";
 import { useAwake } from "@/hooks/use-awake";
-import { useMotionPlaying } from "@/hooks/use-motion-switch";
+import { useMotionPlaying } from "@/hooks/use-motion-playing";
 import { chatThread, motionVar } from "@/lib/motion";
 
 /**

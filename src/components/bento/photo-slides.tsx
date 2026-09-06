@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ImageSlot } from "@/components/ui/image-slot";
 import { useAwake } from "@/hooks/use-awake";
-import { useMotionPlaying } from "@/hooks/use-motion-switch";
+import { useMotionPlaying } from "@/hooks/use-motion-playing";
 import { motionVar, photoSlides } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
