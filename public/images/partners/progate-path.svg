@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240" role="img" aria-label="Progate Path">
+  <!-- 仮ロゴ（正方形のワードマーク）。公式ロゴが届いたら同じファイル名で上書きする -->
+  <g transform="translate(72 28)"><path d="M48 12 L84 48 L48 84 L12 48 Z" fill="none" stroke="#2b2b2b" stroke-width="6" stroke-linejoin="round"/><circle cx="48" cy="48" r="10" fill="#2b2b2b"/></g>
+  <text x="120" y="164" text-anchor="middle" font-family="'LINE Seed JP', 'Hiragino Sans', 'Noto Sans JP', sans-serif" font-weight="700" font-size="20" fill="#2b2b2b">Progate Path</text>
+  <text x="120" y="190" text-anchor="middle" font-family="'LINE Seed JP', 'Hiragino Sans', 'Noto Sans JP', sans-serif" font-weight="700" font-size="12" letter-spacing="1" fill="#6b6b6b">PROGATE</text>
+</svg>

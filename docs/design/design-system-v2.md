@@ -9,7 +9,7 @@
 > - アクセントは **アシッドライム（Tailwind v4 lime）に確定**。本文の数値はすべて Lime モードの実測値。比較の経緯と Indigo の数値は付録 C
 > - Color コレクションは 3 モード（Mono / Indigo accent / Lime accent）・62 行、Shape 10 行、Spacing 64 行
 > - **2026-09-01 の実装レビューを反映**（付録 A.8 / U-1〜U-14）: 角丸はチャットのみ例外（Messages 風）、リンク下線 2 / 3px、ヒーロー回転語はアクセント文字（下線廃止）、セクション見出しの連番廃止・和文の題が先、活動内容はベント 4 セル（Hackathon 追加）、用語は「パートナー」に統一、Member カードに SNS リンク
-> - **2026-09-07**: Members の Staff（運営 3 名）は写真が揃うまで**写真枠ごと暫定非表示**（`showStaffPhotos` false。パスと素材は残置、§6.15 の写真つきが到達点）。Partner の Placeholder から「パートナーになる」（mailto）を撤去し、セルは `YOUR LOGO HERE` のみ（§6.16）
+> - **2026-09-07**: Members の Staff（運営 3 名）は写真が揃うまで**写真枠ごと暫定非表示**（`showStaffPhotos` false。パスと素材は残置、§6.15 の写真つきが到達点）。Partner の Placeholder から「パートナーになる」（mailto）を撤去し、セルは `YOUR LOGO HERE` のみ（§6.16）。Partner セルは**正方形タイル**に変更（Desktop 6 列 197.67 / tablet 3 列 237.33 / Mobile 2 列 168、DECISION L-31）。マーキーの語は partners.ts から生成
 - **2026-09-05 の実装レビューを反映**（U-21〜U-29 / L-30）: 写真・イラスト・ロゴは原色（B/W 撤回）、Hero の格子線撤去、Discord マークは filled、Stat の数字は白の Display/L + 所属の内訳、全発言にリアクション（実際の絵文字、数字が巻き上がる）、ペルソナとチャットのアバターは Humation（女 3・男 3）、Poster の Social はマークのみ、ロゴマークは外接矩形の mark.svg を 24 / 20（U-27 の Nav CTA マークは同日撤回）
 
 # ChoTech Design Guidelines
@@ -48,7 +48,7 @@ Familiarity（慣れ）・Agency（主体性）・Flexibility（柔軟）・Resp
 
 ### 0.3 ページの骨格（コンセプトの認識可能な部分）
 
-Nav（sticky、2px 下罫）→ Hero（インク面、背景写真、回転語をアクセントで塗る）→ Marquee 帯（2px 上下罫、asterisk 区切り、停止ボタン）→ About（ベント 4 列罫線グリッド: テキスト / 統計 / チャット / 写真 / CTA）→ Activities（ベント 4 セル: Feature 1 + Compact 3）→ For You（ペルソナカード 3 × 2）→ Members（リーダー 2 列 + スタッフ 3 列）→ Partners（ロゴセル 3 列 + プレースホルダ）→ Poster（クロージング CTA、唯一のアクセント面）→ Footer。全要素左揃え。
+Nav（sticky、2px 下罫）→ Hero（インク面、背景写真、回転語をアクセントで塗る）→ Marquee 帯（2px 上下罫、asterisk 区切り、停止ボタン）→ About（ベント 4 列罫線グリッド: テキスト / 統計 / チャット / 写真 / CTA）→ Activities（ベント 4 セル: Feature 1 + Compact 3）→ For You（ペルソナカード 3 × 2）→ Members（リーダー 2 列 + スタッフ 3 列）→ Partners（正方形ロゴタイル 6 列 + プレースホルダ）→ Poster（クロージング CTA、唯一のアクセント面）→ Footer。全要素左揃え。
 
 ### 0.4 分冊間の矛盾と解決
 
@@ -1018,7 +1018,7 @@ CSS: `.container { width: min(100% - 2 * var(--page-inset), 75rem); margin-inlin
 |---|---|---|
 | ナビを横並びに開く | 768px = 48rem | 英語 1 語のリンク 4 本 + CTA sm は 768 に余裕をもって収まる。ここでハンバーガーを維持するのは、タイプスケールの忠実さより明らかに悪い体験 |
 | 罫線グリッドを 2 列に開く | 768px = 48rem | L-10 が退けたのは列数ではなく「セル内容 128px（Body S で 9 字）」。768 の 2 列はセル内容 ≈ 320px（22 字）で閾値を満たす |
-| 罫線グリッドを設計どおりの列数（bento 4、persona / staff / partner 3）に開く | 1248px = 78rem | トークンのモードと一致させ、Figma の Desktop フレームと同一幾何にする |
+| 罫線グリッドを設計どおりの列数（bento 4、persona / staff 3、partner 6）に開く | 1248px = 78rem | トークンのモードと一致させ、Figma の Desktop フレームと同一幾何にする |
 
 タイポグラフィを中間帯で流体補間（`clamp()`）しない: §2 の行長計算は「n 文字 = n em」の離散値に依存しており、補間した中間サイズでは §9.3 の文字数上限が検証されていない。CSS では `--breakpoint-tablet` 48rem / `--breakpoint-desktop` 78rem の 2 つだけを持ち、Tailwind の既定階梯は消す。
 
@@ -1046,10 +1046,11 @@ CSS: `.grid { display:grid; grid-template-columns: repeat(n, 1fr); gap: 2px; pad
 
 | 列数 n | セル幅 Desktop（inner 1196） | 2 列 span | 用途 |
 |---|---|---|---|
+| 6 | 197.67 | — | sponsor（正方形タイル、L-31。tablet 3 列 237.33 / Mobile 2 列 168） |
 | 4 | 297.5 | 597 | bento |
-| 3 | 397.33 | — | persona、staff、sponsor |
+| 3 | 397.33 | — | persona、staff |
 | 2 | 597 | — | leader |
-| 1 (Mobile) | 338 | — | すべて |
+| 1 (Mobile) | 338 | — | sponsor 以外すべて |
 
 セル幅 = (W − 2(n+1)) / n。1200 では n = 2 以外が端数になる。**端数は許容する**: ブラウザは各セルの矩形を物理ピクセルに snap するため、gap は常に 2px で描画される。Figma は FILL に任せ、幅を手入力しない。
 
@@ -1288,7 +1289,7 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 | leader photo | 597 × 336 | 338 × 190 | 16:9 | cover、`50% 30%`（顔は上 1/3） |
 | staff photo | 397.33 × 298 | 338 × 253.5 | 4:3 | cover、`50% 30%` |
 | persona イラスト | 96 円 | 96 円 | 1:1 | cover |
-| sponsor logo | 397.33 × 120（`min-height`）のセル、内側 349.33 × 72（inset 24） | 338 × 120、内側 290 × 72 | 任意 | contain、セル中央 |
+| sponsor logo | 197.67 角のセル、内側 149.67 角（inset 24） | 168 角、内側 128 角（inset 20） | 1:1 | contain、セル中央（L-31: タイルは正方形） |
 
 **DECISION L-20** bento photo は 16:9 固定。コンセプトの「min 280」は撤廃し、Desktop では chat セルの高さ（≈ 339 ≈ 597 × 9/16 = 336）に stretch、Mobile は 16:9 で高さを決める。
 **DECISION L-26** sponsor ロゴはセル中央（左揃え原則の例外）。ロゴは「ラベル」ではなく「図」で、幅も形も揃わないものを左に寄せると右側の空きが不揃いに見える。placeholder の文言（§5.7.3）は例外ではない。
@@ -2096,10 +2097,12 @@ Figma: `Member / Card` `Size` {Leader, Staff} 2。Props: `role` `name` `skills` 
 
 | Type | 内容 |
 |---|---|
-| Logo | 高さ `size/cell-min` 120、`ground`、inset `inset/cell` 24 / 20、Image slot Rect / **Contain**（セル中央。画像の中央配置は左揃え原則の唯一の例外、DECISION L-26）、ブランド規定の色のまま（U-21）、`alt` = 団体名 |
-| Placeholder | 高さ 120、`ground`、inset 24 / 20、**左揃え・縦中央**: `YOUR LOGO HERE` `Overline/Latin` 12 UPPER `ink-secondary`（5.83）のみ。導線は持たない（相談の呼びかけは導入文が担う） |
+| Logo | **正方形タイル**（幅 = 高さ。Desktop 6 列 197.67 / tablet 3 列 237.33 / Mobile 2 列 168、DECISION L-31）、`ground`、inset `inset/cell` 24 / 20、Image slot 1:1 / **Contain**（セル中央。画像の中央配置は左揃え原則の唯一の例外、DECISION L-26）、ブランド規定の色のまま（U-21）、`alt` = 団体名 |
+| Placeholder | Logo と同じ正方形タイル、`ground`、inset 24 / 20、**左揃え・縦中央**: `YOUR LOGO HERE` `Overline/Latin` 12 UPPER `ink-secondary`（5.83）のみ。導線は持たない（相談の呼びかけは導入文が担う）。Mobile の内側 128 では 2 行に折り返す |
 
-Placeholder の左揃えは DECISION L-19（「center labels」禁止）。縦位置は中央（120 高のセルで上寄せは空きが不自然）。
+Placeholder の左揃えは DECISION L-19（「center labels」禁止）。縦位置は中央（正方形のセルで上寄せは空きが不自然）。
+
+**DECISION L-31** Partner セルは正方形タイル。パートナーのロゴは正方形のアイコンが基本なので、図の形とタイルの形を揃える。列数は Desktop 6 / tablet 3 / Mobile 2 — 文字を運ばないタイルは和文の最小行長（L-10）の制約を受けず、Mobile 1 列にすると 342 角のタイルが 6 枚縦に積まれる。§0.1「Mobile は 1 列」の唯一の例外で、DOM 順は保つ。
 
 Figma: `Partner / Cell` `Type` {Logo, Placeholder} 2。Props: `logo` INSTANCE_SWAP、`label` TEXT。
 
@@ -2153,10 +2156,10 @@ Figma: `Section / Footer` `Viewport` {Desktop, Mobile} 2。Props: `copyright` TE
 | 項目 | 値 |
 |---|---|
 | Shape | Rect / Circle（Persona のみ） |
-| Fit | Cover（写真、`object-position` は §5.7.2）/ Contain（ロゴ、内側 inset 24） |
+| Fit | Cover（写真、`object-position` は §5.7.2）/ Contain（ロゴ、内側 inset 24）。**素材が入った Contain は placeholder の地を持たない** — 箱を埋めないので地が残るとロゴを縁取る。ロゴはセルの `ground` に直接置く（§6.16） |
 | Placeholder | fill `image/placeholder`（surface）、`photo` 24 `ink-tertiary` を左上 `inset/md` 16、`stack/xs` 8 下に caption `Caption/Regular` `image/caption`（5.30）。**本番では caption を出さない**。円はアイコンのみ中央 |
 | 色 | 原色のまま。`filter` を掛けない（U-21）。ロゴマーク（Brand）も同じ |
-| 比率 | Bento 写真 16:9 / Leader 16:9 / Staff 4:3 / Persona 1:1 円 96 / Partner ロゴ: セル 120 高（§5.7.2 の 3 比率） |
+| 比率 | Bento 写真 16:9 / Leader 16:9 / Staff 4:3 / Persona 1:1 円 96 / Partner ロゴ: 正方形タイル 1:1（§5.7.2 の 3 比率） |
 | 読み込み | `loading="lazy"`（Bento 写真は `eager`）、`width` `height` 属性で CLS 防止。DPR 2 で AVIF / WebP |
 | alt | 活動写真 = 被写体 1 文 ≤ 60 字、人物 = `""`（氏名が隣に可視）、ロゴ = 団体名、イラスト = `""`。「写真」「画像」の接頭辞は付けない（§8.6） |
 | 状態 | なし。hover で色を戻す等の演出はしない（「tint imagery」禁止） |
@@ -3102,6 +3105,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | L-28 | marquee 停止セル 44 × 内側高、左 2px rule、ground、icon 24 | 帯と同じ罫線語彙で「セル」として切り出す |
 | L-29 | 実装のブレークポイントは 2 つ: 構造 48rem / トークン 78rem（§3.6） | 2 フレームしかない仕様と連続なブラウザ幅の橋渡し。ナビと列数だけ先に開き、タイポは離散のまま |
 | L-30 | logo mark は図の外接矩形で切った `icons/mark.svg` を 24 / 20 で置く | favicon.svg は余白込みで、図が小さく見え wordmark からも離れて見えた |
+| L-31 | Partner セルは正方形タイル（Desktop 6 列 / tablet 3 / Mobile 2） | ロゴは正方形のアイコンが基本なので図とタイルの形を揃える。文字を運ばないタイルは L-10 の制約外。Mobile 1 列だと 342 角が 6 枚縦に積まれる |
 
 ### A.4 Components（K）
 

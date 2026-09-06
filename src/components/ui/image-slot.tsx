@@ -16,35 +16,40 @@ import { cn } from "@/lib/utils";
  * §5.7.2 は CLS 対策に width / height 属性を求めるが、比率を枠の aspect-ratio が
  * 固定しているので属性なしでもシフトは起きない。fill と両立しないので持たせない。
  */
-const slot = cva(
-  [
-    "relative overflow-hidden",
-    // 素材が無い間の地。周囲の罫線グリッドが境界を作るので枠も角丸も持たない（§5.7.3）
-    "bg-image-placeholder",
-  ],
-  {
-    variants: {
-      /** §5.7.2 の 3 比率。fill は親（罫線グリッドのセルなど）が高さを決める場合 */
-      ratio: {
-        "16:9": "aspect-16/9",
-        "4:3": "aspect-4/3",
-        "1:1": "aspect-square",
-        fill: "size-full",
-      },
-      shape: {
-        rect: "",
-        // 円は Persona のイラストだけ。径 96 = size/illustration（DECISION L-12）。
-        // 比率は shape 側が持ちきる — ratio の既定 16:9 のままだと 96×54 の楕円になり、
-        // 呼び出し側が ratio="1:1" を知っていることに依存してしまう
-        circle: "aspect-square w-illustration shrink-0 rounded-full",
-      },
+const slot = cva(["relative overflow-hidden"], {
+  variants: {
+    /**
+     * 素材が無い間の地（§5.7.3、`color/image/placeholder` = 空の画像スロット）。
+     * 周囲の罫線グリッドが境界を作るので枠も角丸も持たない。
+     * Cover は素材が入れば地を覆い隠すので、読み込み中の下地としてそのまま残す。
+     * Contain（ロゴ）は素材が入っても箱を埋めないため、残すと灰色の板がロゴを
+     * 縁取ってしまう — §6.16 の Logo セルは `ground` の上に直接置くので、地を落とす。
+     */
+    ground: {
+      placeholder: "bg-image-placeholder",
+      none: "",
     },
-    defaultVariants: {
-      ratio: "16:9",
-      shape: "rect",
+    /** §5.7.2 の 3 比率。fill は親（罫線グリッドのセルなど）が高さを決める場合 */
+    ratio: {
+      "16:9": "aspect-16/9",
+      "4:3": "aspect-4/3",
+      "1:1": "aspect-square",
+      fill: "size-full",
+    },
+    shape: {
+      rect: "",
+      // 円は Persona のイラストだけ。径 96 = size/illustration（DECISION L-12）。
+      // 比率は shape 側が持ちきる — ratio の既定 16:9 のままだと 96×54 の楕円になり、
+      // 呼び出し側が ratio="1:1" を知っていることに依存してしまう
+      circle: "aspect-square w-illustration shrink-0 rounded-full",
     },
   },
-);
+  defaultVariants: {
+    ratio: "16:9",
+    shape: "rect",
+    ground: "placeholder",
+  },
+});
 
 // 色はそのまま（DECISION U-21）。filter も tint も掛けない
 const image = cva("absolute inset-0 size-full", {
@@ -68,7 +73,7 @@ const image = cva("absolute inset-0 size-full", {
 });
 
 type ImageSlotBaseProps = ComponentProps<"div"> &
-  VariantProps<typeof slot> &
+  Omit<VariantProps<typeof slot>, "ground"> &
   VariantProps<typeof image> & {
     /**
      * 制作環境でだけ出す説明。**本番では渡さない**（§6.19）。
@@ -104,8 +109,11 @@ export function ImageSlot({
   sizes: _sizes,
   ...props
 }: ImageSlotProps) {
+  // 地を落とすのは「素材が入った Contain」だけ。呼び出し側に判断させない（§6.16 から一意に決まる）
+  const ground = src && fit === "contain" ? "none" : "placeholder";
+
   return (
-    <div className={cn(slot({ ratio, shape }), className)} {...props}>
+    <div className={cn(slot({ ratio, shape, ground }), className)} {...props}>
       {src ? (
         // biome-ignore lint/performance/noImgElement: 素材が確定するまで next/image は入れない。ここが唯一の <img> で、差し替えは <Image fill sizes={sizes} /> の 1 行で済む
         <img

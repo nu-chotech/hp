@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240" role="img" aria-label="カラビナテクノロジー株式会社">
+  <!-- 仮ロゴ（正方形のワードマーク）。公式ロゴが届いたら同じファイル名で上書きする -->
+  <g transform="translate(72 28)"><path d="M48 14 L74 29 L74 67 L48 82 L22 67 L22 29 Z" fill="none" stroke="#2b2b2b" stroke-width="6" stroke-linejoin="round"/></g>
+  <text x="120" y="164" text-anchor="middle" font-family="'LINE Seed JP', 'Hiragino Sans', 'Noto Sans JP', sans-serif" font-weight="700" font-size="20" fill="#2b2b2b">カラビナテクノロジー</text>
+  <text x="120" y="190" text-anchor="middle" font-family="'LINE Seed JP', 'Hiragino Sans', 'Noto Sans JP', sans-serif" font-weight="700" font-size="12" letter-spacing="1" fill="#6b6b6b">株式会社</text>
+</svg>

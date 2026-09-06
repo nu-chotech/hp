@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240" role="img" aria-label="サポーターズ 技育プロジェクト">
+  <!-- 仮ロゴ（正方形のワードマーク）。公式ロゴが届いたら同じファイル名で上書きする -->
+  <g transform="translate(72 28)"><rect x="14" y="14" width="68" height="68" fill="none" stroke="#2b2b2b" stroke-width="6"/><path d="M30 36 L48 30 L66 36 L66 60 L48 66 L30 60 Z" fill="none" stroke="#2b2b2b" stroke-width="6" stroke-linejoin="round"/></g>
+  <text x="120" y="164" text-anchor="middle" font-family="'LINE Seed JP', 'Hiragino Sans', 'Noto Sans JP', sans-serif" font-weight="700" font-size="24" fill="#2b2b2b">技育プロジェクト</text>
+  <text x="120" y="190" text-anchor="middle" font-family="'LINE Seed JP', 'Hiragino Sans', 'Noto Sans JP', sans-serif" font-weight="700" font-size="12" letter-spacing="1" fill="#6b6b6b">SUPPORTERZ</text>
+</svg>

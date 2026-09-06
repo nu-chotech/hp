@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240" role="img" aria-label="長崎大学 アントレプレナーシップセンター">
+  <!-- 仮ロゴ（正方形のワードマーク）。公式ロゴが届いたら同じファイル名で上書きする -->
+  <g transform="translate(72 28)"><circle cx="48" cy="48" r="34" fill="none" stroke="#2b2b2b" stroke-width="6"/><path d="M48 28 L48 68 M28 48 L68 48" stroke="#2b2b2b" stroke-width="6" stroke-linecap="round"/></g>
+  <text x="120" y="164" text-anchor="middle" font-family="'LINE Seed JP', 'Hiragino Sans', 'Noto Sans JP', sans-serif" font-weight="700" font-size="24" fill="#2b2b2b">長崎大学</text>
+  <text x="120" y="190" text-anchor="middle" font-family="'LINE Seed JP', 'Hiragino Sans', 'Noto Sans JP', sans-serif" font-weight="700" font-size="12" letter-spacing="1" fill="#6b6b6b">アントレプレナーシップセンター</text>
+</svg>

@@ -6,7 +6,9 @@ import { type Partner, partnersContent } from "@/content/partners";
  * Partner cell（§6.16）
  *
  * 2 種類しかない: 団体ロゴの Logo と、末尾に 1 つだけ置く Placeholder。
- * 高さはどちらも罫線グリッドの行が持つ（`size/cell-min` 120）。
+ * どちらも**正方形タイル**（DECISION L-31）。パートナーのロゴは正方形のアイコンが
+ * 基本なので、セルも幅 = 高さにして図の形とタイルの形を揃える。高さは列幅から決まり、
+ * 行の床 `size/cell-min` 120 より常に大きい。
  *
  * NOTE: `Partner.href` はここでは描かない。§6.16 は Logo セルにリンク状態を定義して
  * おらず（Image slot も「状態: なし」）、押せる面を勝手に増やすと罫線グリッドの
@@ -26,7 +28,7 @@ export function PartnerLogoCell({ partner }: PartnerLogoCellProps) {
   const logoSrc = partner.logo;
 
   return (
-    <Cell asChild>
+    <Cell asChild className="aspect-square">
       <li>
         {/* DECISION L-26: ロゴの Contain 配置は、ページ全体の左揃え原則に対する
             **唯一の例外**。団体ごとに版面（縦長・横長）が違うので、左に揃えると
@@ -64,7 +66,7 @@ export function PartnerPlaceholderCell() {
   const { label } = partnersContent.placeholder;
 
   return (
-    <Cell asChild>
+    <Cell asChild className="aspect-square">
       <li className="items-start justify-center">
         <p className="text-overline text-ink-secondary">{label}</p>
       </li>

@@ -10,8 +10,9 @@ const titleId = `${sectionIds.partners}-title`;
 /**
  * パートナー（§6.16）
  *
- * 見出し → 導入文 → 3 列の罫線グリッド。見出しの下は `heading-mb-intro` 12、
- * 導入文の下は `stack/lg` 24（= セル境界と同じ強さの切れ目、§3.9）。
+ * 見出し → 導入文 → 正方形タイルの罫線グリッド（Desktop 6 列 / tablet 3 / Mobile 2、
+ * DECISION L-31）。見出しの下は `heading-mb-intro` 12、導入文の下は `stack/lg` 24
+ * （= セル境界と同じ強さの切れ目、§3.9）。
  *
  * 募集セルは常に最後に 1 つ。ロゴが増えても末尾に残るので、一覧の終わりが
  * そのまま「次はあなた」の印になる。
@@ -34,7 +35,7 @@ export function Partners() {
       >
         {intro}
       </p>
-      <RuledGrid columns={3} asChild data-reveal>
+      <RuledGrid columns={6} asChild data-reveal>
         {/* biome-ignore lint/a11y/noRedundantRoles: Tailwind の preflight が list-style を none にするので、Safari / VoiceOver は ul から list ロールを外す。§8.5 が求める <ul> > <li> の読み上げを残すには明示が要る */}
         {/* biome-ignore lint/a11y/useSemanticElements: 要素はすでに <ul>。role は上の理由で重ねている */}
         <ul role="list">
