@@ -84,9 +84,20 @@ export interface MemberCardProps {
   member: Member;
   /** Leader は先頭 2 名（membersContent.leaderCount）。差は写真比・inset・name・bio の 4 点 */
   size: "leader" | "staff";
+  /**
+   * 写真枠ごと落とすか（Figma の `showSocials` と同じ BOOL の扱い）。
+   * 既定 true。false のときは placeholder も出さず、body がセルの上端から始まる。
+   * 写真が未確定のあいだ Staff を写真なしで組むための暫定スイッチで、
+   * member.photo（パス）には触れない — content 側の値を残したまま表示だけを止める。
+   */
+  showPhoto?: boolean;
 }
 
-export function MemberCard({ member, size }: MemberCardProps) {
+export function MemberCard({
+  member,
+  size,
+  showPhoto = true,
+}: MemberCardProps) {
   return (
     // inset は body 側が持つ。写真はセルの縁に触れる（§6.15 の photo）
     <Cell asChild inset="none">
@@ -95,7 +106,7 @@ export function MemberCard({ member, size }: MemberCardProps) {
             読み上げに同じ名前を二度出さない（§8.6）。focal は顔が上 1/3 に来る前提。
             alt を content 側に持たせないのは、この判断が「人物写真である」ことから
             一意に決まるからで、5 人ぶんの空文字列を書き写す余地を残さない */}
-        {member.photo ? (
+        {!showPhoto ? null : member.photo ? (
           <ImageSlot
             ratio={PHOTO_RATIO[size]}
             focal="face"

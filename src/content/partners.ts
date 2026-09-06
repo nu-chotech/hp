@@ -1,5 +1,3 @@
-import { externalLinks } from "@/config/site";
-
 export interface Partner {
   /** ロゴの代替テキストは団体名（§8.6） */
   name: string;
@@ -25,9 +23,8 @@ export const partnersContent = {
     { name: "長崎大学" },
     { name: "サポーターズ 技育プロジェクト" },
   ] satisfies Partner[],
+  /** 募集セル（§6.16）。ラベルだけで、導線は持たない */
   placeholder: {
     label: "YOUR LOGO HERE",
-    /** 動詞句を丸ごとリンクにする（§6.3.3） */
-    action: { label: "パートナーになる", href: externalLinks.partnerContact },
   },
 } as const;

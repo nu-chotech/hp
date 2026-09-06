@@ -14,7 +14,7 @@ const titleId = `${sectionIds.partners}-title`;
  * 導入文の下は `stack/lg` 24（= セル境界と同じ強さの切れ目、§3.9）。
  *
  * 募集セルは常に最後に 1 つ。ロゴが増えても末尾に残るので、一覧の終わりが
- * そのまま「次はあなた」の導線になる。
+ * そのまま「次はあなた」の印になる。
  */
 export function Partners() {
   const { heading, intro, partners } = partnersContent;

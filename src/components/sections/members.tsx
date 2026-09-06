@@ -20,7 +20,7 @@ const titleId = `${sectionIds.members}-title`;
  * §7.4.1 が数えたとおり順に出す。
  */
 export function Members() {
-  const { heading, leaderCount, members } = membersContent;
+  const { heading, leaderCount, showStaffPhotos, members } = membersContent;
   const leaders = members.slice(0, leaderCount);
   const staff = members.slice(leaderCount);
 
@@ -48,7 +48,12 @@ export function Members() {
           {/* biome-ignore lint/a11y/useSemanticElements: 要素はすでに <ul>。role は上の理由で重ねている */}
           <ul role="list">
             {staff.map((member) => (
-              <MemberCard key={member.id} member={member} size="staff" />
+              <MemberCard
+                key={member.id}
+                member={member}
+                size="staff"
+                showPhoto={showStaffPhotos}
+              />
             ))}
           </ul>
         </RuledGrid>

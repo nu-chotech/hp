@@ -66,7 +66,7 @@ const textLink = cva(
         false: "",
       },
       /**
-       * 段落の中ではなく単独で立つ inline リンク（Partner セルの「パートナーになる」）。
+       * 段落の中ではなく単独で立つ inline リンク。
        * 行内リンクは WCAG 2.5.8 の例外だが、単独で立つ瞬間に例外から外れるので
        * Footer と同じ拡張で 44 にする（§6.1.5 の表 / §8.3）。
        */
@@ -101,7 +101,7 @@ const textLink = cva(
  * コントロール状に並ぶときの 8。
  *
  * 送りを「どの variant か」ではなく「余白を誰が持つか」で切るのは、
- * 単独 inline リンク（Partner セル）が inline-flex + gap 8 を持つため:
+ * 単独 inline リンク（standalone）が inline-flex + gap 8 を持つため:
  * そこに文中用の margin 4 を足すと 12 になり、どちらでもない値になる。
  */
 const textLinkIcon = cva("size-icon-sm", {

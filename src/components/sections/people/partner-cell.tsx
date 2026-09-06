@@ -1,6 +1,5 @@
 import { ImageSlot } from "@/components/ui/image-slot";
 import { Cell } from "@/components/ui/ruled-grid";
-import { TextLink } from "@/components/ui/text-link";
 import { type Partner, partnersContent } from "@/content/partners";
 
 /**
@@ -55,29 +54,19 @@ export function PartnerLogoCell({ partner }: PartnerLogoCellProps) {
 }
 
 /**
- * 募集セル。ロゴが並ぶ最後に 1 つだけ置く。
+ * 募集セル。ロゴが並ぶ最後に 1 つだけ置く。ラベルだけで導線は持たない —
+ * 相談の呼びかけはセクションの導入文が担う。
  *
  * 左揃え・縦中央（DECISION L-19 / §6.16）。120 高のセルで上寄せにすると下の空きが
  * 不自然になるので縦だけ中央に寄せ、横は他のラベルと同じ左端に揃える。
  */
 export function PartnerPlaceholderCell() {
-  const { label, action } = partnersContent.placeholder;
+  const { label } = partnersContent.placeholder;
 
   return (
     <Cell asChild>
-      <li className="items-start justify-center gap-stack-xs">
+      <li className="items-start justify-center">
         <p className="text-overline text-ink-secondary">{label}</p>
-        {/* 単独で立つ inline リンクなので、行内リンクの例外から外れて 44 に広げる
-            （standalone、§6.1.5）。mailto は外部遷移なので arrow-up-right が付く */}
-        <TextLink
-          variant="inline"
-          standalone
-          external
-          href={action.href}
-          className="text-footnote-bold"
-        >
-          {action.label}
-        </TextLink>
       </li>
     </Cell>
   );

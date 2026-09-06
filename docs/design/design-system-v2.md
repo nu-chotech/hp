@@ -9,7 +9,8 @@
 > - アクセントは **アシッドライム（Tailwind v4 lime）に確定**。本文の数値はすべて Lime モードの実測値。比較の経緯と Indigo の数値は付録 C
 > - Color コレクションは 3 モード（Mono / Indigo accent / Lime accent）・62 行、Shape 10 行、Spacing 64 行
 > - **2026-09-01 の実装レビューを反映**（付録 A.8 / U-1〜U-14）: 角丸はチャットのみ例外（Messages 風）、リンク下線 2 / 3px、ヒーロー回転語はアクセント文字（下線廃止）、セクション見出しの連番廃止・和文の題が先、活動内容はベント 4 セル（Hackathon 追加）、用語は「パートナー」に統一、Member カードに SNS リンク
-> - **2026-09-05 の実装レビューを反映**（U-21〜U-29 / L-30）: 写真・イラスト・ロゴは原色（B/W 撤回）、Hero の格子線撤去、Discord マークは filled、Stat の数字は白の Display/L + 所属の内訳、全発言にリアクション（実際の絵文字、数字が巻き上がる）、ペルソナとチャットのアバターは Humation（女 3・男 3）、Poster の Social はマークのみ、ロゴマークは外接矩形の mark.svg を 24 / 20（U-27 の Nav CTA マークは同日撤回）
+> - **2026-09-07**: Members の Staff（運営 3 名）は写真が揃うまで**写真枠ごと暫定非表示**（`showStaffPhotos` false。パスと素材は残置、§6.15 の写真つきが到達点）。Partner の Placeholder から「パートナーになる」（mailto）を撤去し、セルは `YOUR LOGO HERE` のみ（§6.16）
+- **2026-09-05 の実装レビューを反映**（U-21〜U-29 / L-30）: 写真・イラスト・ロゴは原色（B/W 撤回）、Hero の格子線撤去、Discord マークは filled、Stat の数字は白の Display/L + 所属の内訳、全発言にリアクション（実際の絵文字、数字が巻き上がる）、ペルソナとチャットのアバターは Humation（女 3・男 3）、Poster の Social はマークのみ、ロゴマークは外接矩形の mark.svg を 24 / 20（U-27 の Nav CTA マークは同日撤回）
 
 # ChoTech Design Guidelines
 
@@ -601,7 +602,7 @@ CSS 変数名は Figma 名の `/` を `-` に置換する（例 `--color-inverse
 | Members | リーダー名 / スタッフ名 | 22 / 17 | Title/2 / Headline | `color/ink` | — |
 | Members | 紹介（skills） | 13 / 150% · 12 | Footnote/Regular（リーダー）/ Caption/Regular（スタッフ） | `color/ink-secondary` | 行送り 20 / 18 |
 | Partners | 導入 | 14 / 170%、40em | Body/S | `color/ink-secondary` | 行長は `measure/paragraph` |
-| Partners | YOUR LOGO HERE / パートナーになる | 11 / 13 B | Overline/Latin / Footnote/Bold + `arrow-up-right` | `color/ink-secondary` / `color/ink` | 11 → 12。左揃え（§5.7.3） |
+| Partners | YOUR LOGO HERE | 11 | Overline/Latin | `color/ink-secondary` | 11 → 12。左揃え（§5.7.3） |
 | Poster | JOIN US | 12 | Overline/Latin | `color/poster/ink-secondary` | — |
 | Poster | 見出し | 96 / 105% / 52 | Display/L（96 / 106、M 40 / 44） | `color/poster/ink` | 52 → 40 |
 | Poster | 段落 | 15 / 155%、32em | Body/M（15 / 26） | `color/poster/ink-secondary` | 1.55 → 1.73。行長は `measure/paragraph`（39 全角） |
@@ -1302,7 +1303,7 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 | アイコン | `Icon/Photo` 24、`color/ink-tertiary`（surface 上 3.50 ✓ 3:1） |
 | キャプション | Caption 12、`color/image/caption`（→ ink-secondary、surface 上 5.30 ✓ AA）。**制作環境（Figma / エディタ）のみ。本番は surface のみ** |
 | 配置 | 矩形: 左上 `inset/md` 16 からアイコン、`stack/xs` 8 下にキャプション（左揃え）。円: アイコンのみ中央、キャプションなし |
-| sponsor placeholder cell | **DECISION L-19** 「Your logo here」（Overline/Latin）と「パートナーになる」+ `Icon/ArrowUpRight` 16 は左揃え・inset 24・垂直中央（コンセプトは中央揃えだが「ラベルはすべて左」の規則を優先） |
+| sponsor placeholder cell | **DECISION L-19** 「Your logo here」（Overline/Latin）は左揃え・inset 24・垂直中央（コンセプトは中央揃えだが「ラベルはすべて左」の規則を優先） |
 
 #### 5.7.4 Do / Don't
 
@@ -1435,7 +1436,7 @@ Apple の `scale(0.97)` は「押し込める物体」の比喩で、影・奥�
 6. Bento: Chat cell は `<figure>` の静的内容 → CTA cell のボタン
 7. Activities: 各 row の `<a>`（名前 = title + subtitle）
 8. For You / Members: 対話なし
-9. Partners: `パートナーになる`
+9. Partners: 対話なし
 10. Poster: CTA → X / Instagram / GitHub
 11. Footer: Brand → 4 リンク
 
@@ -2066,7 +2067,7 @@ Figma: `Persona / Card` 1。Props: `caseNo` `title` `quote` `rec` TEXT、`image`
 
 | 要素 | Leader | Staff |
 |---|---|---|
-| photo | Image slot Rect / Cover、**16:9**、原色（U-21）、`alt=""`（氏名が隣に可視、§8.6） | 4:3、同 |
+| photo | Image slot Rect / Cover、**16:9**、原色（U-21）、`alt=""`（氏名が隣に可視、§8.6） | 4:3、同。**暫定非表示**（`showPhoto` false で写真枠ごと落とし、body がセル上端から始まる。本人写真が揃ったら戻す） |
 | body inset | `inset/cell` 24 / 20 | `inset/md` 16 |
 | role | `Overline/Latin` / `Overline/JP` 12、`ink-secondary`（5.83）、下 `stack/2xs` 4 | 同 |
 | name | `Title/2` 22 `ink`、`<h3>`、姓名の間は半角スペース | `Headline` 17 |
@@ -2096,11 +2097,11 @@ Figma: `Member / Card` `Size` {Leader, Staff} 2。Props: `role` `name` `skills` 
 | Type | 内容 |
 |---|---|
 | Logo | 高さ `size/cell-min` 120、`ground`、inset `inset/cell` 24 / 20、Image slot Rect / **Contain**（セル中央。画像の中央配置は左揃え原則の唯一の例外、DECISION L-26）、ブランド規定の色のまま（U-21）、`alt` = 団体名 |
-| Placeholder | 高さ 120、`ground`、inset 24 / 20、**左揃え・縦中央**: `YOUR LOGO HERE` `Overline/Latin` 12 UPPER `ink-secondary`（5.83）→ `stack/xs` 8 → Link Inline `Footnote/Bold` `パートナーになる` + `arrow-up-right` 16（mailto） |
+| Placeholder | 高さ 120、`ground`、inset 24 / 20、**左揃え・縦中央**: `YOUR LOGO HERE` `Overline/Latin` 12 UPPER `ink-secondary`（5.83）のみ。導線は持たない（相談の呼びかけは導入文が担う） |
 
 Placeholder の左揃えは DECISION L-19（「center labels」禁止）。縦位置は中央（120 高のセルで上寄せは空きが不自然）。
 
-Figma: `Partner / Cell` `Type` {Logo, Placeholder} 2。Props: `logo` INSTANCE_SWAP、`label` `linkLabel` TEXT。
+Figma: `Partner / Cell` `Type` {Logo, Placeholder} 2。Props: `logo` INSTANCE_SWAP、`label` TEXT。
 
 ### 6.17 Poster CTA
 
@@ -2652,7 +2653,6 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | `活動を見る` | アイコンなし（ページ内スクロール） |
 | `月1〜2回 →` `随時 →` | バッジ文字 + `arrow-right` 16（行全体がサイト内リンク。行先が外部になる場合は `arrow-up-right`） |
 | `Discord →`（Bento CTA） | **「Discordに参加する」** + `arrow-up-right` 20（DECISION M-14: 名詞のみの CTA を動詞化） |
-| `パートナーになる →` | ラベル + `arrow-up-right` 16（mailto） |
 | `→ Dev Day で一緒に手を動かそう`（Persona 推奨） | `arrow-right` 16 先頭 + 「Dev Dayで一緒に手を動かそう」 |
 | `↑ こんな会話が、毎日どこかで。` | 矢印を **削除**（DECISION M-14）— 注記は `<figcaption>` で図に属し、参照先（直上のスレッド）は隣接して一意。読み終えたものを指す矢印は冗長で、SR には何も伝えない |
 | `🙌 3` `👀 4` | 👍 3／👀 4 — 実際の絵文字のまま（U-25）。🙌 だけ 👍 に置き換える |

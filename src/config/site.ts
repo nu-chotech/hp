@@ -102,6 +102,4 @@ export const socialLinks: readonly SocialLink[] = [
 
 export const externalLinks = {
   discord: "https://discord.gg/",
-  /** パートナー相談窓口 */
-  partnerContact: "mailto:contact@example.com",
 } as const;
