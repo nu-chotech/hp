@@ -23,8 +23,7 @@ export interface Partner {
  */
 export const partnersContent = {
   heading: { title: "パートナー", label: "PARTNERS" },
-  intro:
-    "学生の技術活動を支援してくださる企業・団体を募集しています。勉強会での登壇やイベント支援など、関わり方はご相談ください。",
+  intro: "ChoTechの活動を支えてくださる企業・団体の皆さまをご紹介します。",
   /** マーキー（hero 直下）の語はこの配列から生成される（marquee.ts）。並びもここが正 */
   partners: [
     {

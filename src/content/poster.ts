@@ -8,8 +8,8 @@ import { externalLinks } from "@/config/site";
 export const posterContent = {
   kicker: "JOIN US",
   /** 著者改行。text-wrap: balance は使わない */
-  display: "いっしょに、\nやろう。",
+  display: "Hack\nYour Limits.",
   paragraph:
-    "初心者も、見るだけ参加も歓迎。ほぼ毎日、Discordのどこかで動いています。「やってみたい」があれば、それで十分です。",
+    "最初は誰でも初心者。学びたい、挑戦したい、仲間を作りたい。そう思ったら最初の一歩を踏み出してみよう。ChoTechは、あなたのチャレンジする気持ちを応援します。",
   action: { label: "Discordに参加する", href: externalLinks.discord },
 } as const;

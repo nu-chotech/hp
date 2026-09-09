@@ -23,48 +23,48 @@ export interface Persona {
  * 「誰に向けたものか」を人物像で示す節。カードはリンクではない。
  */
 export const personasContent = {
-  heading: { title: "こんな人に、おすすめ。", label: "FOR YOU" },
+  heading: { title: "こんな人におすすめ！", label: "FOR YOU" },
   personas: [
     {
       caseNo: "Case 01",
       title: "これから始めたい人",
       quote: "「プログラミング、何から始めればいいか分からない…」",
-      recommendation: "Dev Dayで一緒に手を動かそう",
+      recommendation: "Dev Dayで一緒に手を動かしてみよう！",
       photo: "/images/personas/case-01.svg",
     },
     {
       caseNo: "Case 02",
       title: "開発が好きなエンジニア",
       quote: "「個人開発、一人だと続かないんだよね」",
-      recommendation: "Projectで仲間と作り切ろう",
+      recommendation: "Projectで仲間と作り切ろう！",
       photo: "/images/personas/case-02.svg",
     },
     {
       caseNo: "Case 03",
       title: "UI/UXが好きな人",
       quote: "「デザインの話ができる仲間がほしい」",
-      recommendation: "ProjectでアプリのUIを担当しよう",
+      recommendation: "ProjectでアプリのUIを担当しよう！",
       photo: "/images/personas/case-03.svg",
     },
     {
       caseNo: "Case 04",
       title: "ハッカソンに出たい人",
       quote: "「出たいけど、チームメイトが見つからない」",
-      recommendation: "Discordで一声かければ集まります",
+      recommendation: "Discordで声をかけてみよう！",
       photo: "/images/personas/case-04.svg",
     },
     {
       caseNo: "Case 05",
       title: "研究の話をしたい人",
       quote: "「自分の研究、誰かに聞いてほしい」",
-      recommendation: "Talk Dayのテーマは技術も研究もOK",
+      recommendation: "Talk Dayのテーマは技術も研究もOK！",
       photo: "/images/personas/case-05.svg",
     },
     {
       caseNo: "Case 06",
       title: "発信してみたい人",
       quote: "「LT、一回やってみたいかも」",
-      recommendation: "Talk Dayは5分・経験ゼロでOK",
+      recommendation: "Talk Dayで登壇してみよう。経験ゼロでもOK！",
       photo: "/images/personas/case-06.svg",
     },
   ] satisfies Persona[],

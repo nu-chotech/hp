@@ -36,7 +36,7 @@ export const heroContent = {
     accessibleName: "仲間と、学ぶ。創る。話す。",
   },
   lead: "長崎にテック好きのためのハブを。",
-  body: "ChoTech（チョーテック）は長崎大学公認の学生技術系コミュニティです。\n長崎大学生に関わらず、誰でも参加することができます。",
+  body: "ChoTech（チョーテック）は長崎大学公認の学生テックコミュニティです。\nものづくりに少しでも興味があれば、大学・学部・学科を問わず、誰でも参加することができます。",
   actions: {
     primary: { label: "参加する", href: externalLinks.discord, external: true },
     secondary: {
