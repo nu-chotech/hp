@@ -9,7 +9,7 @@ import { partnersContent } from "@/content/partners";
  *
  * 団体はパートナー節の配列（partners.ts）から生成する。帯と本文で団体や並びが
  * 食い違わないようにするため — 団体の追加・改名は partners.ts の 1 箇所で済む。
- * ロゴのある団体は Logo（64 角、DECISION U-30）、まだ無い団体は Word（団体名）で出す。
+ * ロゴのある団体は Logo（3:2、高さ 96、DECISION U-30 / L-32）、まだ無い団体は Word（団体名）で出す。
  */
 export type MarqueeItemKind = "label" | "word" | "logo";
 

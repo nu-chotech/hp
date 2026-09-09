@@ -1,14 +1,22 @@
 import { ImageSlot } from "@/components/ui/image-slot";
 import { Cell } from "@/components/ui/ruled-grid";
-import { type Partner, partnersContent } from "@/content/partners";
+import type { Partner } from "@/content/partners";
 
 /**
  * Partner cell（§6.16）
  *
- * 2 種類しかない: 団体ロゴの Logo と、末尾に 1 つだけ置く Placeholder。
- * どちらも**正方形タイル**（DECISION L-31）。パートナーのロゴは正方形のアイコンが
- * 基本なので、セルも幅 = 高さにして図の形とタイルの形を揃える。高さは列幅から決まり、
- * 行の床 `size/cell-min` 120 より常に大きい。
+ * 2 種類しかない: 団体ロゴの Logo と、行の端数を埋める Filler。
+ * どちらも **3:2 のタイル**（DECISION L-32）で、面は `logo-ground`（白、DECISION U-33）。
+ * 実物のロゴは 5 枚中 3 枚が横長（うち 2 枚は 4:1 を超えるワードマーク）で、正方形タイル
+ * （旧 L-31）ではワードマークが高さ 30px 前後の帯になっていた。高さは列幅から決まり、
+ * 3:2 が行の床 `size/cell-min` 120 を下回る Mobile（168 × 112）では床が効いて 168 × 120 になる。
+ *
+ * `self-stretch justify-self-stretch` は床を効かせるために要る。grid item の既定整列 `normal`
+ * は aspect-ratio を持つ箱を stretch ではなく start として扱うので、指定しないとトラック 120
+ * の中で 112 に止まり、下の 8px に罫の色（divider）が帯として出る。縦だけ stretch すると
+ * 今度は幅が比率から 180 に伸びて列をはみ出す（片軸 stretch は他軸を比率で決める）。
+ * 両軸 stretch にすると比率はトラックの算出（行の高さ = 列幅 ÷ 1.5）にだけ使われ、箱は
+ * グリッド領域を埋める。Contain の画像は 168 × 112 のまま上下 4px を白で残す（見えない）。
  *
  * NOTE: `Partner.href` はここでは描かない。§6.16 は Logo セルにリンク状態を定義して
  * おらず（Image slot も「状態: なし」）、押せる面を勝手に増やすと罫線グリッドの
@@ -21,14 +29,21 @@ export interface PartnerLogoCellProps {
 
 export function PartnerLogoCell({ partner }: PartnerLogoCellProps) {
   /**
-   * 実素材は content 側の logo が持つ（public/images/partners/）。入った瞬間 alt が
-   * 団体名になり、下の visually-hidden の控えは消える（同じ名前を二度読み上げさせない）。
-   * 差し替えは content の 1 行で済む。
+   * 実素材は content 側の logo が持つ。public/images/partners/ の画像は
+   * `pnpm generate:partner-logos` が assets/partners/ の元素材を 3:2 の白キャンバスに
+   * 正規化したもので、余白はキャンバス側が持つ。だからセルは inset 0 で画像を縁まで
+   * 敷き（§6.11.5 の画像セルと同じ）、キャンバスの白とタイルの白を同じ面にする。
+   * 素材が入った瞬間 alt が団体名になり、下の visually-hidden の控えは消える。
    */
   const logoSrc = partner.logo;
 
   return (
-    <Cell asChild className="aspect-square">
+    <Cell
+      asChild
+      surface="logo"
+      inset="none"
+      className="aspect-3/2 self-stretch justify-self-stretch"
+    >
       <li>
         {/* DECISION L-26: ロゴの Contain 配置は、ページ全体の左揃え原則に対する
             **唯一の例外**。団体ごとに版面（縦長・横長）が違うので、左に揃えると
@@ -56,20 +71,18 @@ export function PartnerLogoCell({ partner }: PartnerLogoCellProps) {
 }
 
 /**
- * 募集セル。ロゴが並ぶ最後に 1 つだけ置く。ラベルだけで導線は持たない —
- * 相談の呼びかけはセクションの導入文が担う。
- *
- * 左揃え・縦中央（DECISION L-19 / §6.16）。120 高のセルで上寄せにすると下の空きが
- * 不自然になるので縦だけ中央に寄せ、横は他のラベルと同じ左端に揃える。
+ * 埋め草セル（DECISION U-34）。行の端数を埋める無地の白タイルで、文言も導線も持たない。
+ * 旧 Placeholder「YOUR LOGO HERE」は 2026-09-10 に撤去 — 読者に何を求めているのか
+ * 分からず、募集の呼びかけは導入文が担っている。情報が無いので aria-hidden。
  */
-export function PartnerPlaceholderCell() {
-  const { label } = partnersContent.placeholder;
-
+export function PartnerFillerCell() {
   return (
-    <Cell asChild className="aspect-square">
-      <li className="items-start justify-center">
-        <p className="text-overline text-ink-secondary">{label}</p>
-      </li>
+    <Cell
+      asChild
+      surface="logo"
+      className="aspect-3/2 self-stretch justify-self-stretch"
+    >
+      <li aria-hidden="true" />
     </Cell>
   );
 }

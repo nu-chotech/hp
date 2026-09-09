@@ -108,7 +108,7 @@ docs/design/          デザインシステムの正本
 
 ## 画像を差し替えたいとき
 
-写真・運営メンバー・パートナーロゴは**プレースホルダ**です（Unsplash 由来）。ペルソナとチャットのアバターは Humation で生成した本番用のイラストです。実体はすべて `public/images/` にあり、参照は `src/content/*.ts` が持ちます。コンポーネントは触らなくてよい。
+写真・運営メンバーは**プレースホルダ**です（Unsplash 由来）。パートナーロゴは各団体の公式素材です。ペルソナとチャットのアバターは Humation で生成した本番用のイラストです。実体はすべて `public/images/` にあり、参照は `src/content/*.ts` が持ちます。コンポーネントは触らなくてよい。
 
 | 場所 | ファイル | 参照 | 比率・目安サイズ |
 |---|---|---|---|
@@ -116,6 +116,6 @@ docs/design/          デザインシステムの正本
 | About の活動写真 | `public/images/about/{talk-day,dev-day,hackathon}.jpg` | `content/about.ts` | 16:9、1200×675 |
 | 運営メンバー | `public/images/members/<id>.jpg` | `content/members.ts` | Leader 16:9 1200×675 / Staff 4:3 800×600 |
 | こんな人に・チャットのアバター | `public/images/personas/case-0N.svg` | `content/personas.ts` / `content/about.ts` | 1:1。Humation のイラスト。`scripts/generate-avatars.mjs` の部位・色を変えて `pnpm generate:avatars` |
-| パートナーロゴ | `public/images/partners/` | `content/partners.ts` の `logo` | 任意（contain、内側 349×72） |
+| パートナーロゴ | 元素材 `assets/partners/` → `pnpm generate:partner-logos` → `public/images/partners/<slug>.png` | `content/partners.ts` の `logo`、`scripts/normalize-partner-logos.mjs` の一覧 | 元素材は形式・比率・背景を問わない（jpg / png / svg）。出力は 3:2 の白キャンバス 600×400 |
 
-同じファイル名で上書きすればコードは触らずに済みます。名前や拡張子を変えるときは `src/content/` の該当 1 行を書き換えてください。書き出しはスロット幅の 2 倍（DPR 2）が目安です（仕様書 §5.7.2）。Hero 背景だけは、不透明度を写真の最も明るい画素で測って決めているので、差し替えたら測り直します（`content/hero.ts` のコメント）。
+同じファイル名で上書きすればコードは触らずに済みます。名前や拡張子を変えるときは `src/content/` の該当 1 行を書き換えてください。パートナーロゴだけは public を直接触らず、`assets/partners/` に元素材を置き、スクリプトの一覧（団体ごとの倍率もここ）に 1 行足して `pnpm generate:partner-logos` で書き出します。書き出しはスロット幅の 2 倍（DPR 2）が目安です（仕様書 §5.7.2）。Hero 背景だけは、不透明度を写真の最も明るい画素で測って決めているので、差し替えたら測り直します（`content/hero.ts` のコメント）。

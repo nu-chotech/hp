@@ -29,10 +29,11 @@ const slot = cva(["relative overflow-hidden"], {
       placeholder: "bg-image-placeholder",
       none: "",
     },
-    /** §5.7.2 の 3 比率。fill は親（罫線グリッドのセルなど）が高さを決める場合 */
+    /** §5.7.2 の 3 比率 + ロゴの 3:2（L-32）。fill は親（罫線グリッドのセルなど）が高さを決める場合 */
     ratio: {
       "16:9": "aspect-16/9",
       "4:3": "aspect-4/3",
+      "3:2": "aspect-3/2",
       "1:1": "aspect-square",
       fill: "size-full",
     },

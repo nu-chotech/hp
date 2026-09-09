@@ -10,6 +10,7 @@
 > - Color コレクションは 3 モード（Mono / Indigo accent / Lime accent）・62 行、Shape 10 行、Spacing 64 行
 > - **2026-09-01 の実装レビューを反映**（付録 A.8 / U-1〜U-14）: 角丸はチャットのみ例外（Messages 風）、リンク下線 2 / 3px、ヒーロー回転語はアクセント文字（下線廃止）、セクション見出しの連番廃止・和文の題が先、活動内容はベント 4 セル（Hackathon 追加）、用語は「パートナー」に統一、Member カードに SNS リンク
 > - **2026-09-07**: Members の Staff（運営 3 名）は写真が揃うまで**写真枠ごと暫定非表示**（`showStaffPhotos` false。パスと素材は残置、§6.15 の写真つきが到達点）。Partner の Placeholder から「パートナーになる」（mailto）を撤去し、セルは `YOUR LOGO HERE` のみ（§6.16）。Partner セルは**正方形タイル**に変更（Desktop 6 列 197.67 / tablet 3 列 237.33 / Mobile 2 列 168、DECISION L-31）。マーキーの団体は partners.ts から生成し、**団体名ではなくロゴ**（80 角 `size/marquee-logo`。帯 `size/band-marquee` は 56 → **120**、項目間 `inline/2xl` 48、DECISION U-30）で出す。「パートナー募集中」の Ghost は撤去。複製数は viewport から自動計算し継ぎ目なく回す。停止 / 再生ボタンとページ内モーションスイッチ（旧 M8）は**撤去**（DECISION U-31、クライアント判断）。自動の動きは `prefers-reduced-motion` と画面外でのみ止まり、WCAG 2.2.2 の「ページ内の停止手段」は**未達**として §8 に記録。マーキーの ✳ は Label の両脇だけ（U-32）
+> - **2026-09-10**: パートナーの公式ロゴ 5 枚を受領。素材は白背景 jpg / 透過 png / 4:1 超のワードマークが混在し、ground の上では白背景の素材が板として浮き、正方形タイルではワードマークが細い帯になった。→ タイルとマーキー帯の面を **`color/logo-ground`（neutral-0、白）** に（**DECISION U-33**）。Partner タイルは正方形 → **3:2**（Desktop 6 列 197.67 × 131.78 / tablet 3 列 / Mobile 2 列は床 120。列数は L-31 のまま、**DECISION L-32**）。マーキーのロゴ枠も 3:2 で高さ `size/marquee-logo` **96**（幅 144）。素材は `scripts/normalize-partner-logos.mjs` が 3:2 の白キャンバス（600 × 400）に正規化し、セルは inset 0 で縁まで敷く。Image slot に比率 3:2 を追加。募集セル「YOUR LOGO HERE」は撤去し、行の端数は無地の白タイル（aria-hidden）で埋める（**DECISION U-34**）
 - **2026-09-05 の実装レビューを反映**（U-21〜U-29 / L-30）: 写真・イラスト・ロゴは原色（B/W 撤回）、Hero の格子線撤去、Discord マークは filled、Stat の数字は白の Display/L + 所属の内訳、全発言にリアクション（実際の絵文字、数字が巻き上がる）、ペルソナとチャットのアバターは Humation（女 3・男 3）、Poster の Social はマークのみ、ロゴマークは外接矩形の mark.svg を 24 / 20（U-27 の Nav CTA マークは同日撤回）
 
 # ChoTech Design Guidelines
@@ -48,7 +49,7 @@ Familiarity（慣れ）・Agency（主体性）・Flexibility（柔軟）・Resp
 
 ### 0.3 ページの骨格（コンセプトの認識可能な部分）
 
-Nav（sticky、2px 下罫）→ Hero（インク面、背景写真、回転語をアクセントで塗る）→ Marquee 帯（2px 上下罫、パートナーロゴ 80 角、asterisk は PARTNERS の両脇のみ。停止ボタンは U-31 で撤去）→ About（ベント 4 列罫線グリッド: テキスト / 統計 / チャット / 写真 / CTA）→ Activities（ベント 4 セル: Feature 1 + Compact 3）→ For You（ペルソナカード 3 × 2）→ Members（リーダー 2 列 + スタッフ 3 列）→ Partners（正方形ロゴタイル 6 列 + プレースホルダ）→ Poster（クロージング CTA、唯一のアクセント面）→ Footer。全要素左揃え。
+Nav（sticky、2px 下罫）→ Hero（インク面、背景写真、回転語をアクセントで塗る）→ Marquee 帯（2px 上下罫、白の面、パートナーロゴ 3:2 高さ 96、asterisk は PARTNERS の両脇のみ。停止ボタンは U-31 で撤去）→ About（ベント 4 列罫線グリッド: テキスト / 統計 / チャット / 写真 / CTA）→ Activities（ベント 4 セル: Feature 1 + Compact 3）→ For You（ペルソナカード 3 × 2）→ Members（リーダー 2 列 + スタッフ 3 列）→ Partners（白の 3:2 ロゴタイル 6 列。募集セルは U-34 で撤去）→ Poster（クロージング CTA、唯一のアクセント面）→ Footer。全要素左揃え。
 
 ### 0.4 分冊間の矛盾と解決
 
@@ -61,7 +62,7 @@ Nav（sticky、2px 下罫）→ Hero（インク面、背景写真、回転語�
 | R3 | インク面のアウトラインボタン枠 | **`inverse/outline` = inverse/ink 100% の 1 種**（14.86） | Components の Soft（ground@72）/ Strong（100%）2 種 | 部品境界は 3:1 が要り、1 トークンで済む。主副の差は「塗り vs 枠」で十分に出る（Restraint）。variant 数も減る |
 | R4 | リンクの状態モデル | ホバーで **文字色を変えず下線で示す**: ナビ・ワードマーク 2px アクセント下線、フッター・ソーシャルは 1px currentColor 下線（フッターは同時に文字 ink-secondary → ink）、インラインは常時 1px → 2px。プレスは文字 `link/pressed`（lime-900、7.85）。現在地は 2px ink 下線 | Components §3.1 の「ホバーで文字を有彩色に変える + 1px 下線」 | Color D16 と Motion D9 が一致。Mono 原則「アクセントは一時的状態のみ、ホバーは下線」。1.4.1 の色以外の手がかり |
 | R5 | ソーシャルリンク（ポスター上）のプレス | **ホバーと同じ**（`poster/ink` + 1px 下線） | 全スタイル共通の `link/pressed` | lime-900 はポスター面（lime-400）上 1.89 で不可、lime-400 は同色 1.00。ポスター面にアクセント文字は置けない |
-| R6 | マーキー帯の高さ | **`size/band-marquee` 56**（高さ駆動、行ボックス 26 を中央、上下 2px 罫を含む）。停止セルは 44 × 52。**2026-09-07 U-30 で 120 に改定**（内側 116 にロゴ 80、停止セルは U-31 で撤去） | Typography の導出値 54、Components の 53.65 | 帯は Layout 原則 6「高さで決める」に従う。内側 52 = 4 × 13 で 4px モジュールに乗り、停止セルの高さも 4 の倍数。`band/pad-y` 12 は最小値（実効 13） |
+| R6 | マーキー帯の高さ | **`size/band-marquee` 56**（高さ駆動、行ボックス 26 を中央、上下 2px 罫を含む）。停止セルは 44 × 52。**2026-09-07 U-30 で 120 に改定**（内側 116 にロゴ 80、停止セルは U-31 で撤去。2026-09-10 L-32 でロゴ枠は 3:2 の高さ 96 × 幅 144） | Typography の導出値 54、Components の 53.65 | 帯は Layout 原則 6「高さで決める」に従う。内側 52 = 4 × 13 で 4px モジュールに乗り、停止セルの高さも 4 の倍数。`band/pad-y` 12 は最小値（実効 13） |
 | R7 | マーキー区切りアイコンの径 | **20**（`icon/md`） | Components の 16 | Layout §5.2 の判定「15–19px の文字の横は 20」。Title 3 Caps 19 の cap 高 ≈ 15 に釣り合う |
 | R8 | 停止ボタンのアクセシブルネーム | **固定「ページの動きを止める」+ `aria-pressed`** | ラベルを「止める / 再開する」で切り替える | トグルボタンは名前を変えず状態で伝える（ARIA APG）。Motion が支援技術の所有者。**2026-09-07 U-31 で停止ボタンごと撤去** |
 | R9 | ヒーロー副 CTA「活動を見る」 | **アイコンなし** | Components §2.7 の `arrow-right` | ページ内スクロールは遷移ではない（Motion §9.6、Layout §5.1）。矢印 = 別のページ／サイトへの遷移という規則を 1 つに保つ |
@@ -165,8 +166,9 @@ Tailwind v4 lime をそのまま採用。段の変更なし。**インディゴ�
 
 | ロール | Mono | Lime accent | Scopes | 使用箇所 | 根拠 |
 |---|---|---|---|---|---|
-| `color/ground` | neutral-100 | = | FF SF | ページ、ナビ、マーキー帯、明るいセル、フッター、画像スロット背後、Mobile メニューパネル | 基準面 |
+| `color/ground` | neutral-100 | = | FF SF | ページ、ナビ、明るいセル、フッター、画像スロット背後、Mobile メニューパネル | 基準面 |
 | `color/surface` | neutral-200 | = | FF SF | チャット相手側バブル、ペルソナ引用枠、画像プレースホルダ、チップの塗り（`chip/fill`） | グラウンドとの比 1.10 で罫線なしに輪郭が読める最小段 |
+| `color/logo-ground` | neutral-0（白） | = | FF | パートナーのロゴタイル（行を埋める空タイル含む）とマーキー帯**のみ** | 白背景のロゴ素材（jpg / png）と同じ面にして板として浮かせない（**U-33**）。ground との比 1.12。文字を置かない（旧 Placeholder の Overline は U-34 で撤去） |
 | `color/inverse/ground` | neutral-950 | = | FF | ヒーロー、ベント統計セル、ベント CTA セル、チャット自分側バブル | インクを塗りに転用 |
 | `color/poster/ground` | neutral-950 | **lime-400** | FF | ポスター（Join）セクションのみ | 唯一のアクセント面。Mono では暗い面、Lime では**明るい面**（上のインク文字 10.83）。極性が反転するため専用ロール群を持つ（C-28） |
 
@@ -576,7 +578,7 @@ CSS 変数名は Figma 名の `/` を `-` に置換する（例 `--color-inverse
 | Hero | 段落 | 16 / 175%、36em | Body/L（16 / 28） | `color/inverse/ink-secondary` | 行長は `measure/paragraph` |
 | Hero | ボタン ×2（44） | 15 EB | Label/M | §6.2 | 800 → 700 |
 | Marquee | ラベル PARTNERS | 11 / +16% | Overline/Latin | `color/ink-secondary` | 11 → 12、+16 → +12 |
-| Marquee | 項目 PARTNERS（団体はロゴ 80 角、U-30。「パートナー募集中」は撤去） | 20 / +3% | Overline/Latin 12（ロゴ未着の団体名は Title/3 Caps 19 / 26） | `color/ink-secondary` | 帯高 `size/band-marquee` 120（R6 → U-30） |
+| Marquee | 項目 PARTNERS（団体はロゴ 3:2 高さ 96、U-30 / L-32。「パートナー募集中」は撤去） | 20 / +3% | Overline/Latin 12（ロゴ未着の団体名は Title/3 Caps 19 / 26） | `color/ink-secondary` | 帯高 `size/band-marquee` 120（R6 → U-30） |
 | Marquee | ゴースト YOUR COMPANY HERE | 20、ink@40 | Title/3 Caps | `color/ink-tertiary` | 大きな文字 3:1 → 3.85 |
 | Section | ラベル ACTIVITY | 12 / +14% | Overline/Latin | `color/ink-secondary` | +12%。連番は廃止し、和文の題の**後ろ**に置く（U-4） |
 | Section | h2 | 34 / 112% / −1.5% | Title/1（32 / 40、M 26 / 32） | `color/ink` | 34 → 32、−1% |
@@ -926,7 +928,7 @@ Desktop / Mobile が同値の行は Mobile 列を「=」とする。根拠中の
 | `inset/row` | 32 | = | 32 | activity 行の縦 inset | Display M 56 の見出しを含む行。hairline から見出しまで 32 で「行」として独立する |
 | `page/inset` | 24 | = | 24 | ページ左右 inset（viewport < 1248 で container に効く）、nav・Menu row の横 inset | 帯は container ではなく紙の端に属する（§3.6）。Mobile も 24: 342 = 390 − 48 |
 | `nav/pad-y` | 12 | 8 | 12 / 8 | nav の縦 inset | 12 + 36 + 12 = 8 + 44 + 8 = 60。CTA の高さが viewport で変わっても帯高 `size/nav` 62 を保つ（**DECISION L-22**） |
-| `band/pad-y` | 12 | = | 12 | marquee の縦 inset の最小値（帯は `size/band-marquee` 96 の高さ駆動、ロゴ 64 の上下は実効 14） | `inset/sm`。帯は section ではないので 12 |
+| `band/pad-y` | 12 | = | 12 | marquee の縦 inset の最小値（帯は `size/band-marquee` 120 の高さ駆動、ロゴ枠 96 の上下は実効 10） | `inset/sm`。帯は section ではないので 12 |
 | `stack/2xs` | 4 | = | 4 | role → name、dots 群 → ラベル | 同一ブロック内の最小差。目で分離しない距離 |
 | `stack/xs` | 8 | = | 8 | title → body、activity の title 行 → description、description → tags、chat の message 間 | 行間（本文 1.7）より少し大きく、段落の切れ目に見える最小値 |
 | `stack/sm` | 12 | = | 12 | section 見出し → intro 段落、段落間隔 | 見出しの下端と本文の上端が「同じ塊」に読める上限 |
@@ -939,7 +941,7 @@ Desktop / Mobile が同値の行は Mobile 列を「=」とする。根拠中の
 | `inline/md` | 16 | = | 16 | nav 項目間、section title ↔ label、CTA セルの文 ↔ ボタン、social links、Mobile layout grid の gutter | 語間の 4 倍。別要素だが同一行 |
 | `inline/lg` | 24 | = | 24 | activity title 群 ↔ badge、footer 項目間、poster ボタン ↔ socials、Desktop layout grid の gutter | 役割の異なる群を同一行に置く距離 |
 | `inline/xl` | 32 | = | 32 | （旧 marquee の項目間。U-30 でロゴ列になり `inline/2xl` へ） | Title 3 Caps 19 の大文字帯。24 では項目が連結して読める |
-| `inline/2xl` | 48 | = | 48 | marquee の項目間（ロゴ同士、✳ ↔ PARTNERS） | 32 ではロゴ 80 が詰まって見えた。ロゴ幅の 0.6 で「一覧」の間合い |
+| `inline/2xl` | 48 | = | 48 | marquee の項目間（ロゴ同士、✳ ↔ PARTNERS） | 32 ではロゴ枠が詰まって見えた。ロゴ枠 144 幅の 1/3 で「一覧」の間合い |
 | `grid/gutter` | 24 | 16 | 24 / 16 | 12 col / 4 col layout grid の gutter（= `inline/lg` / `inline/md`） | §3.7 |
 | `section/pad-top` | 64 | 48 | 64 / 48 | 2px rule → section 見出し | 罫線と見出しを 1 塊に読ませる（下余白より小さい、§3.9） |
 | `section/pad-bottom` | 80 | 64 | 80 / 64 | 内容 → 次の 2px rule | 「罫線の上の余白 ≥ 下の余白」で罫線が次の section に帰属する |
@@ -982,8 +984,8 @@ Desktop / Mobile が同値の行は Mobile 列を「=」とする。根拠中の
 | `size/control/md` | 44 | 主要 CTA、Mobile nav CTA、menu button、Menu row | HIG 44pt |
 | `size/chip` | 24 | tag、reaction chip | Caption 行送り 18 + 3 × 2 |
 | `size/nav` | 62 | nav 帯の全高（下罫 2 を含む）。hero の `min-height` と section の `scroll-margin-top` に使う | 12 + 36 + 12 + 2 = 8 + 44 + 8 + 2。概念 61 |
-| `size/band-marquee` | 120 | marquee 帯の全高（上下罫 2 を含む）。内側 116 にロゴ 80 と Overline の行ボックスを中央配置 | 2 + 116 + 2 = `size/cell-min`。116 = 4 × 29。概念 55 → 56（R6）→ 96 → 120（**U-30**: ロゴを入れるため） |
-| `size/marquee-logo` | 80 | marquee のパートナーロゴ（正方形、contain） | 20 × 4。内側 116 に上下 18 を残す。帯 56 のままの 36 では図が読めず、96 / 64 でもまだ細かったので 120 / 80（**DECISION U-30**） |
+| `size/band-marquee` | 120 | marquee 帯の全高（上下罫 2 を含む）。内側 116 にロゴ枠 96 と Overline の行ボックスを中央配置 | 2 + 116 + 2 = `size/cell-min`。116 = 4 × 29。概念 55 → 56（R6）→ 96 → 120（**U-30**: ロゴを入れるため） |
+| `size/marquee-logo` | 96 | marquee のパートナーロゴ枠の**高さ**（3:2、幅 144、contain） | 24 × 4。内側 116 に上下 10 を残す。帯 56 のままの 36 では図が読めず、96 / 64 でもまだ細かったので 120 / 80（**DECISION U-30**）。素材を 3:2 の白キャンバスに正規化して余白を焼き込むため、図の実寸を保つには枠 80 では足りず 96（**L-32**） |
 | `size/hero-max` | 960 | hero `min-height` の上限 | 10 × `space/96`。1440 × 900 では `100svh − 62` = 838 が効き、960 は縦 1022px 以上の画面でだけ効く上限 |
 | `size/cell-min` | 120 | 罫線グリッドの行の最小高、sponsor cell の高さ | 24 × 5。**床であって目標ではない**: kicker（Overline 16）+ `stack/md` 16 + Headline 2 行（48）+ inset 48 = 128 で、kicker + 2 行見出しの 1×1 セルは行ごと 128 に伸びる（stretch）。sponsor cell と 1 行見出しのセル（104）は 120 |
 | `size/avatar` | 24 | chat avatar（矩形） | = `icon/lg`。chat indent = 24 + `inline/xs` 8 = 32 |
@@ -1075,7 +1077,7 @@ CSS: `.grid { display:grid; grid-template-columns: repeat(n, 1fr); gap: 2px; pad
 | Nav | `nav/pad-y` 12 + `size/control/sm` 36 + 12 + `stroke/rule` 2 = **62** = `size/nav`（sticky） | `nav/pad-y` 8 + `size/control/md` 44 + 8 + 2 = **62**。幅検算: 24 + mark 28 + 12 + wordmark ≈ 86 + ≥ 16 + CTA 128 + 12 + menu 44 + 24 = **374 ≤ 390** |
 | Menu panel（Mobile） | — | nav 直下、全幅、`color/ground`、下辺 `stroke/rule`。行 = `size/control/md` 44 高 × 横 `page/inset` 24、行間 `stroke/hair`。末尾に md ボタン `fullWidth`（上下 `inset/md` 16、横 `page/inset` 24）。**DECISION L-25** 行の寸法は nav CTA と同じ 44 / 24: パネルは nav の延長であり、brand と同じ x = 24 に揃う |
 | Hero | `section/pad-display` 96 / `section/pad-bottom` 80、`min-height: min(100svh − var(--size-nav), var(--size-hero-max))`、内容は垂直中央 | 64 / 64、`min-height` 同式 |
-| Marquee | `size/band-marquee` **120** = `stroke/rule` 2 + 116 + 2。ロゴ 80 と PARTNERS（Overline 12）は内側 116 の中央。停止セルは U-31 で撤去 | 同じ |
+| Marquee | `size/band-marquee` **120** = `stroke/rule` 2 + 116 + 2。ロゴ枠 96（3:2、幅 144）と PARTNERS（Overline 12）は内側 116 の中央。停止セルは U-31 で撤去 | 同じ |
 | Section | (rule 2) + 64 + 見出し + 32 + 内容 + 80 | (rule 2) + 48 + 見出し + 24 + 内容 + 64 |
 | Poster | 96 + 内容 + 96（罫線なし。色面の切替が境界） | 64 / 64 |
 | Footer | rule 2 + `footer/pad-y` 40 + 内容 + 40 | 2 + 32 + 内容 + 32 |
@@ -1269,7 +1271,7 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 - **DECISION U-21（2026-09-05）** B/W 処理を撤回。写真・イラスト・パートナーロゴは原色のまま置き、CSS の `filter` も Figma の Saturation −100 も掛けない。理由: 実写と Humation のイラスト（§6.14）の色は「コミュニティの実像」を運ぶ情報で、モノクロ化はそれを削っていた。以降の節に残る「B/W」の表記は失効。
 - 色を乗せない（duotone・tint 禁止）。写真の上に面や線を重ねない（Hero の格子線を撤去した理由、U-22）。
 - logo mark は図の外接矩形で切った `icons/mark.svg` を `size/mark-nav` 24 / `size/mark-footer` 20 で置く（**DECISION L-30**、§6.6）。favicon.svg は余白込みなので lockup には使わない。
-- パートナーロゴはブランド規定の色のまま ground に置く（L-20 / C-23 の「白黒」は U-21 で失効、「tint しない」は維持）。
+- パートナーロゴはブランド規定の色のまま `logo-ground`（白、U-33）に置く（L-20 / C-23 の「白黒」は U-21 で失効、「tint しない」は維持）。
 
 #### 5.7.2 スロットと比率
 
@@ -1301,7 +1303,7 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 | Do | Don't |
 |---|---|
 | アイコンは Tabler outline、stroke 2、`currentColor`、内部 / 外部で矢印を分ける | 絵文字・記号文字、他セットの混在、divider 色のアイコン、3 つ目の矢印 |
-| 写真は原色のまま、16:9 / 4:3 / 1:1 の 3 比率 | tint・duotone・grayscale（U-21）、任意比率 |
+| 写真は原色のまま、16:9 / 4:3 / 1:1 の 3 比率（ロゴだけ 3:2、L-32） | tint・duotone・grayscale（U-21）、任意比率 |
 | focus ring は `color/focus/ring`（明るい面）/ `color/focus/ring-inverse`（インク面）/ `color/poster/focus/ring`（ポスター面） | インク面やポスター面に lime-700 の ring、面をまたいで 1 つの ring token で済ませる |
 
 ---
@@ -1792,8 +1794,8 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 
 | 項目 | 値 |
 |---|---|
-| 高さ | `size/band-marquee` **120**（高さ駆動。上下 Rule 2/H を含む、内側 116。ロゴ 80 と項目を中央、R6 → U-30） |
-| 塗り | `ground`、上下 Rule 2/H、トラックは `overflow: hidden` |
+| 高さ | `size/band-marquee` **120**（高さ駆動。上下 Rule 2/H を含む、内側 116。ロゴ枠 96 と項目を中央、R6 → U-30 → L-32） |
+| 塗り | **`logo-ground`（白、U-33）**、上下 Rule 2/H、トラックは `overflow: hidden` |
 | トラック | 同一グループ × n（n = ⌈viewport ÷ グループ幅⌉ + 1、JS 無しは 2）。`translateX(0 → −グループ幅)` を px で送る。トラック全体 `aria-hidden="true"` |
 | 速度 | `motion/marquee/speed` 40 px/s `linear`（duration = グループ幅 ÷ 40、ResizeObserver）。hover / focus-within / pointer-down で `animation-play-state: paused`（`duration/0`） |
 | Reduced motion | 静止。先頭グループを container 内に折返し配置、クリップなし |
@@ -1804,7 +1806,7 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 | Kind | ロール | 色 | 例 |
 |---|---|---|---|
 | Label | `Overline/Latin` 12 UPPER | `ink-secondary`（5.83） | `PARTNERS` |
-| Logo | Image slot 1:1 / Contain、`size/marquee-logo` **64** 角、原色（U-21）、`alt=""`（トラックが aria-hidden） | — | 各パートナーのロゴ（partners.ts の `logo`。**DECISION U-30**: 団体は名前ではなくロゴで出す。ロゴが未着の団体だけ Word JP に落ちる） |
+| Logo | Image slot **3:2** / Contain、高さ `size/marquee-logo` **96** × 幅 144、原色（U-21）、`alt=""`（トラックが aria-hidden） | — | 各パートナーのロゴ（partners.ts の `logo`。正規化済みの 3:2 白キャンバスなので枠を縁まで埋める。**DECISION U-30**: 団体は名前ではなくロゴで出す。ロゴが未着の団体だけ Word JP に落ちる） |
 | Word JP | `Title/3 Caps` 19（和文には uppercase 無効） | `ink` | ロゴ未着の団体名だけ |
 | ~~Ghost~~ | — | — | 「パートナー募集中」は 2026-09-07 に撤去（募集の呼びかけは Partners の導入文が担う） |
 | Separator | `asterisk` `icon/md` 20 | `pop/separator`（ink-tertiary / lime-700） | Label「PARTNERS」の両脇だけ（**DECISION U-32**）。ロゴの間には置かない |
@@ -2079,14 +2081,18 @@ Figma: `Member / Card` `Size` {Leader, Staff} 2。Props: `role` `name` `skills` 
 
 | Type | 内容 |
 |---|---|
-| Logo | **正方形タイル**（幅 = 高さ。Desktop 6 列 197.67 / tablet 3 列 237.33 / Mobile 2 列 168、DECISION L-31）、`ground`、inset `inset/cell` 24 / 20、Image slot 1:1 / **Contain**（セル中央。画像の中央配置は左揃え原則の唯一の例外、DECISION L-26）、ブランド規定の色のまま（U-21）、`alt` = 団体名 |
-| Placeholder | Logo と同じ正方形タイル、`ground`、inset 24 / 20、**左揃え・縦中央**: `YOUR LOGO HERE` `Overline/Latin` 12 UPPER `ink-secondary`（5.83）のみ。導線は持たない（相談の呼びかけは導入文が担う）。Mobile の内側 128 では 2 行に折り返す |
+| Logo | **3:2 のタイル**（Desktop 6 列 197.67 × 131.78 / tablet 3 列 237.33 × 158.22 / Mobile 2 列 168 × 120 = 床 `size/cell-min`。DECISION L-32、列数は L-31）、**`logo-ground`（白、U-33）**、**inset 0**（余白は正規化した素材側が持つ。§6.11.5 の画像セルと同じ）、Image slot fill / **Contain**（セル中央。画像の中央配置は左揃え原則の唯一の例外、DECISION L-26）、ブランド規定の色のまま（U-21）、`alt` = 団体名 |
+| Filler | 行の端数を埋める**無地**の白タイル（Logo と同じ 3:2、`logo-ground`、`aria-hidden`）。枚数は団体数を 6 の倍数に切り上げた差（6 / 3 / 2 列はすべて 6 の約数なので、どの幅でも行が欠けない）。文言も導線も持たない — 旧 Placeholder「YOUR LOGO HERE」は 2026-09-10 に撤去（**DECISION U-34**） |
 
-Placeholder の左揃えは DECISION L-19（「center labels」禁止）。縦位置は中央（正方形のセルで上寄せは空きが不自然）。
+**DECISION U-34**（2026-09-10） 募集セル「YOUR LOGO HERE」は撤去。空きタイルの文言は読者に何を求めているのか分からず（応募先も条件も無い）、募集の呼びかけは導入文が担っている。行の端数は無地の白タイルで埋める — 罫線グリッドは frame の地が罫なので、空いたトラックをそのままにすると divider 色の板が出る。埋め草は情報を持たないので `aria-hidden`、リストの項目数は団体の数のまま。
 
 **DECISION L-31** Partner セルは正方形タイル。パートナーのロゴは正方形のアイコンが基本なので、図の形とタイルの形を揃える。列数は Desktop 6 / tablet 3 / Mobile 2 — 文字を運ばないタイルは和文の最小行長（L-10）の制約を受けず、Mobile 1 列にすると 342 角のタイルが 6 枚縦に積まれる。§0.1「Mobile は 1 列」の唯一の例外で、DOM 順は保つ。
 
-Figma: `Partner / Cell` `Type` {Logo, Placeholder} 2。Props: `logo` INSTANCE_SWAP、`label` TEXT。
+**DECISION L-32**（2026-09-10） タイルは正方形 → **3:2**。L-31 の前提「パートナーのロゴは正方形のアイコンが基本」が実物で崩れた — 受領した 5 枚のうち 3 枚が横長で、2 枚（N-BARCO、Progate Path）は 4:1 を超えるワードマーク。正方形の内側 150 角では、正方形のマークが枠いっぱいになる一方でワードマークは高さ 30px 前後の帯になり、並びの重さが揃わなかった。3:2 はワードマークに幅を与え、正方形のマークは中央に小さめに収まる。列数（6 / 3 / 2）と DOM 順は L-31 のまま。Mobile は 3:2 の 112 が床 120 を下回るので 168 × 120。マーキーのロゴ枠も同じ 3:2（高さ 96 × 幅 144）。
+
+**DECISION U-33**（2026-09-10） ロゴを置く面は **白（`color/logo-ground` = neutral-0）**。ロゴは原則として背景を持つ図で、実物も 5 枚中 3 枚が白背景の jpg / png だった。ground（neutral-100）の上に置くと白い板として浮く（比 1.12 は「輪郭が読める最小段」に当たる）。素材に手を加えない約束（U-21）を守ったまま板を消すには、面の側を素材の背景に合わせるしかない。白はパートナーのタイル（埋め草含む）とマーキー帯だけに使い、他の面には広げない。素材の縦横比・余白・背景のばらつきは表示側ではなく `scripts/normalize-partner-logos.mjs` で揃える: 余白をトリム → 3:2 の白キャンバス 600 × 400（セーフエリア inset 72 / 48）に contain → 団体ごとの倍率で見た目の重さを揃える → PNG。元素材は `assets/partners/` に置き、public には正規化後だけを出す。
+
+Figma: `Partner / Cell` `Type` {Logo, Filler} 2。Props: `logo` INSTANCE_SWAP（`label` TEXT は U-34 で不要に）。
 
 ### 6.17 Poster CTA
 
@@ -2138,10 +2144,10 @@ Figma: `Section / Footer` `Viewport` {Desktop, Mobile} 2。Props: `copyright` TE
 | 項目 | 値 |
 |---|---|
 | Shape | Rect / Circle（Persona のみ） |
-| Fit | Cover（写真、`object-position` は §5.7.2）/ Contain（ロゴ、内側 inset 24）。**素材が入った Contain は placeholder の地を持たない** — 箱を埋めないので地が残るとロゴを縁取る。ロゴはセルの `ground` に直接置く（§6.16） |
+| Fit | Cover（写真、`object-position` は §5.7.2）/ Contain（ロゴ。余白は正規化した素材側が持ち、セルは inset 0）。**素材が入った Contain は placeholder の地を持たない** — 箱を埋めないので地が残るとロゴを縁取る。ロゴはセルの `logo-ground`（白、U-33）に直接置く（§6.16） |
 | Placeholder | fill `image/placeholder`（surface）、`photo` 24 `ink-tertiary` を左上 `inset/md` 16、`stack/xs` 8 下に caption `Caption/Regular` `image/caption`（5.30）。**本番では caption を出さない**。円はアイコンのみ中央 |
 | 色 | 原色のまま。`filter` を掛けない（U-21）。ロゴマーク（Brand）も同じ |
-| 比率 | Bento 写真 16:9 / Leader 16:9 / Staff 4:3 / Persona 1:1 円 96 / Partner ロゴ: 正方形タイル 1:1（§5.7.2 の 3 比率） |
+| 比率 | Bento 写真 16:9 / Leader 16:9 / Staff 4:3 / Persona 1:1 円 96 / Partner ロゴ: **3:2**（タイルとマーキー枠、L-32。§5.7.2 の 3 比率にロゴ用の 3:2 を加えた 4 比率） |
 | 読み込み | `loading="lazy"`（Bento 写真は `eager`）、`width` `height` 属性で CLS 防止。DPR 2 で AVIF / WebP |
 | alt | 活動写真 = 被写体 1 文 ≤ 60 字、人物 = `""`（氏名が隣に可視）、ロゴ = 団体名、イラスト = `""`。「写真」「画像」の接頭辞は付けない（§8.6） |
 | 状態 | なし。hover で色を戻す等の演出はしない（「tint imagery」禁止） |
@@ -2841,7 +2847,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | Nav 61、Mobile 未定義 | Nav 62（両 viewport）、Mobile Menu panel（44 行、非モーダル）を新設 |
 | Hero 88vh、格子線 x 359 / 719 / 1079 / 1439 | `min(100svh − 62, 960)`、格子線は viewport の 25 / 50 / 75 / 100 % |
 | Hero meta 区切り `✳` | 1 × 12 hairline |
-| Marquee 55、停止手段なし、60 px/s | 96（団体はロゴ 64）、停止セルなし（U-31）、40 px/s |
+| Marquee 55、停止手段なし、60 px/s | 120（団体はロゴ 3:2 高さ 96）、停止セルなし（U-31）、40 px/s |
 | Section heading `note` | 廃止 |
 | Bento CTA `Discord →` | 「Discordに参加する」+ `arrow-up-right`、Mobile は縦積み |
 | Chat 再生ループ、`↑` 注記、絵文字リアクション | 静止スレッド、`<figcaption>`、アイコンチップ |
@@ -2941,7 +2947,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | `Activity / List` | — | 1 | nested rows | Row |
 | `Persona / Card` | — | 1 | `caseNo` `title` `quote` `rec` TEXT、`image` INSTANCE_SWAP | Image Slot、Icon |
 | `Member / Card` | `Size` {Leader, Staff} | 2 | `role` `name` `skills` TEXT、`photo` INSTANCE_SWAP | Image Slot |
-| `Partner / Cell` | `Type` {Logo, Placeholder} | 2 | `logo` INSTANCE_SWAP、`label` `linkLabel` TEXT | Image Slot、Link |
+| `Partner / Cell` | `Type` {Logo, Filler} | 2 | `logo` INSTANCE_SWAP | Image Slot |
 | `Section / Poster` | — | 1 | `kicker` `display` `paragraph` `ctaLabel` `social1–3` TEXT、`showSocial` BOOL | Button、Link |
 | `Section / Footer` | `Viewport` {Desktop, Mobile} | 2 | `copyright` TEXT、nested links | Brand、Link、Rule |
 | `Media / Image Slot` | `Shape` {Rect, Circle} × `Fit` {Cover, Contain} × `Content` {Placeholder, Image}（sparse） | 6 | `caption` TEXT | Icon |

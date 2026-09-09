@@ -18,8 +18,8 @@ import { cn } from "@/lib/utils";
  * 中間段は置いてよい。768px の 2 列はセル内容 ≈320px = 22 字で閾値を満たす。
  * 設計どおりの列数（bento 4 / persona・staff 3 / leader 2 / partner 6）は desktop から。
  *
- * 例外は partner の 6 列。正方形のロゴタイルは文字を運ばないので、和文の最小行長の
- * 制約を受けない。Mobile で 1 列にすると 342px 角のタイルが 6 枚縦に積まれるため、
+ * 例外は partner の 6 列。3:2 のロゴタイル（L-32）は文字を運ばないので、和文の最小行長の
+ * 制約を受けない。Mobile で 1 列にすると 342 × 228 のタイルが 6 枚縦に積まれるため、
  * ここだけ Mobile 2 列 / tablet 3 列に開く（DECISION L-31）。DOM 順は保たれる。
  */
 const ruledGrid = cva(
@@ -56,7 +56,7 @@ const ruledGrid = cva(
 export interface RuledGridProps
   extends ComponentProps<"div">,
     Omit<VariantProps<typeof ruledGrid>, "columns"> {
-  /** Desktop の列数。bento 4 / persona・staff 3 / leader 2 / partner 6（正方形タイル） */
+  /** Desktop の列数。bento 4 / persona・staff 3 / leader 2 / partner 6（3:2 のロゴタイル） */
   columns: 2 | 3 | 4 | 6;
   /** <ul> や <section> として組みたいときに、子要素へスタイルを委譲する */
   asChild?: boolean;
@@ -98,6 +98,9 @@ const cell = cva(
     variants: {
       surface: {
         ground: "bg-ground text-ink",
+        // ロゴの地（白）。白背景の素材（jpg / png）が ground の上で板として浮かないよう、
+        // 面を素材の背景に合わせる（DECISION U-33）。パートナーのタイルとマーキー帯だけ
+        logo: "bg-logo-ground text-ink",
         // on-ink は反転地で細いウェイトが滲むのを止める（§2.8）
         ink: "on-ink bg-inverse-ground text-inverse-ink",
       },

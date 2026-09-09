@@ -52,14 +52,16 @@ function items() {
     <Fragment key={item.text}>
       {item.kind === "label" ? <Separator /> : null}
       {item.kind === "logo" ? (
-        // 団体はロゴで出す（U-30）。64 角 = 帯の内側 92 に上下 14。トラックごと
-        // aria-hidden なので alt は空 — 団体名は Partners セクションが本文で運ぶ。
-        // 素材が入った contain は placeholder の地を持たない（ImageSlot 側で落ちる）
+        // 団体はロゴで出す（U-30）。枠は 3:2 で高さ `size/marquee-logo` 96（幅 144）=
+        // 帯の内側 116 に上下 10（L-32）。素材は 3:2 の白キャンバスに正規化済み
+        // （scripts/normalize-partner-logos.mjs）なので枠を縁まで埋め、帯の白（U-33）と
+        // 同じ面になる。トラックごと aria-hidden なので alt は空 — 団体名は Partners
+        // セクションが本文で運ぶ。
         <ImageSlot
-          ratio="1:1"
+          ratio="3:2"
           fit="contain"
-          sizes="64px"
-          className="w-marquee-logo shrink-0"
+          sizes="144px"
+          className="h-marquee-logo shrink-0"
           src={item.src}
           alt=""
         />
@@ -123,7 +125,11 @@ export function Marquee({ className }: MarqueeProps) {
   return (
     <div
       ref={bandRef}
-      className={cn("flex min-h-band-marquee flex-col bg-ground", className)}
+      // 帯の面は logo-ground（白、U-33）。白背景のロゴ素材が ground の上で板に見えないように
+      className={cn(
+        "flex min-h-band-marquee flex-col bg-logo-ground",
+        className,
+      )}
     >
       {/* 動きの既定は CSS 側に置き、詳細度 0（:where）で書く。止める側 —
           globals.css の低減設定 — に必ず負けるため。
