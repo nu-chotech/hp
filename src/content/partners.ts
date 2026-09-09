@@ -1,6 +1,7 @@
 export interface Partner {
   /** ロゴの代替テキストは団体名（§8.6） */
   name: string;
+  /** 団体の公式サイト。あればタイル全体がリンクになり、新しいタブで開く（U-35 / M-21）。無ければ画像のまま */
   href?: string;
   /**
    * ロゴ画像。public/images/partners/<slug>.png を指す。これは元素材ではなく、
@@ -28,17 +29,29 @@ export const partnersContent = {
   partners: [
     {
       name: "サポーターズ 技育プロジェクト",
+      href: "https://geek.supporterz.jp/geekpjt",
       logo: "/images/partners/geek-project.png",
     },
     {
       name: "カラビナテクノロジー株式会社",
+      href: "https://karabiner.tech/",
       logo: "/images/partners/karabiner-inc.png",
     },
-    { name: "NPO法人 N-BARCO", logo: "/images/partners/n-barco.png" },
+    {
+      name: "NPO法人 N-BARCO",
+      href: "https://www.nbarco.org/",
+      logo: "/images/partners/n-barco.png",
+    },
     {
       name: "長崎大学 アントレプレナーシップセンター",
+      // 大学の公式ページ（http のみ）ではなく、センターが運用する Notion のページへ
+      href: "https://pattern-maiasaura-de9.notion.site/3175a073d76580e5b417fb8a72725188",
       logo: "/images/partners/nfec.png",
     },
-    { name: "Progate Path", logo: "/images/partners/progate-path.png" },
+    {
+      name: "Progate Path",
+      href: "https://path.progate.com/",
+      logo: "/images/partners/progate-path.png",
+    },
   ] satisfies Partner[],
 } as const;

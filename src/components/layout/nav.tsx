@@ -3,6 +3,7 @@ import { Brand } from "@/components/layout/brand";
 import { NavBar } from "@/components/layout/nav-bar";
 import { Button } from "@/components/ui/button";
 import { externalLinks } from "@/config/site";
+import { externalLinkNote, externalLinkProps } from "@/lib/external-link";
 
 /**
  * Nav bar（§6.7）
@@ -35,13 +36,14 @@ export function Nav({
   ctaHref = externalLinks.discord,
   className,
 }: NavProps) {
-  // 外部へ出るリンクなので、矢印（ArrowUpRight）だけでなく読み上げにも言う（§8.6）。
+  // 外部へ出るリンクなので、矢印（ArrowUpRight）だけでなく読み上げにも言い、
+  // 新しいタブで開く（DECISION M-21）。
   // Discord マークは置かない（U-19。U-27 で一度足したが、帯の CTA は文言だけで足りると
   // 同日に撤回。Mobile の幅検算 §6.7.2 も矢印ありの元の式に戻る）
   const label = (
     <>
       {ctaLabel}
-      <span className="sr-only">（外部）</span>
+      <span className="sr-only">{externalLinkNote}</span>
     </>
   );
 
@@ -60,7 +62,9 @@ export function Nav({
             icon={ArrowUpRight}
             className="tablet:hidden"
           >
-            <a href={ctaHref}>{label}</a>
+            <a href={ctaHref} {...externalLinkProps}>
+              {label}
+            </a>
           </Button>
           <Button
             asChild
@@ -68,13 +72,17 @@ export function Nav({
             icon={ArrowUpRight}
             className="hidden tablet:inline-flex"
           >
-            <a href={ctaHref}>{label}</a>
+            <a href={ctaHref} {...externalLinkProps}>
+              {label}
+            </a>
           </Button>
         </>
       }
       menuCta={
         <Button asChild size="md" fullWidth icon={ArrowUpRight}>
-          <a href={ctaHref}>{label}</a>
+          <a href={ctaHref} {...externalLinkProps}>
+            {label}
+          </a>
         </Button>
       }
     />

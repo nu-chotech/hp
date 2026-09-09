@@ -6,6 +6,7 @@ import { sectionVariants } from "@/components/ui/section";
 import { TextLink } from "@/components/ui/text-link";
 import { sectionIds, socialLinks } from "@/config/site";
 import { posterContent } from "@/content/poster";
+import { externalLinkNote, externalLinkProps } from "@/lib/external-link";
 import { cn } from "@/lib/utils";
 
 /**
@@ -68,9 +69,9 @@ export function Poster() {
             brand={BrandDiscord}
             icon={ArrowUpRight}
           >
-            <a href={posterContent.action.href}>
+            <a href={posterContent.action.href} {...externalLinkProps}>
               {posterContent.action.label}
-              <span className="sr-only">（外部）</span>
+              <span className="sr-only">{externalLinkNote}</span>
             </a>
           </Button>
 
@@ -91,9 +92,13 @@ export function Poster() {
                     variant="social"
                     href={link.href}
                     className="before:-inset-x-3"
+                    {...externalLinkProps}
                   >
                     <Brand className="size-icon-md" />
-                    <span className="sr-only">{link.label}（外部）</span>
+                    <span className="sr-only">
+                      {link.label}
+                      {externalLinkNote}
+                    </span>
                   </TextLink>
                 </li>
               );

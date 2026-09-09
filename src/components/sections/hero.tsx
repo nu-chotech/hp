@@ -4,6 +4,7 @@ import { Container } from "@/components/ui/container";
 import { sectionVariants } from "@/components/ui/section";
 import { sectionIds } from "@/config/site";
 import { heroContent } from "@/content/hero";
+import { externalLinkNote, externalLinkProps } from "@/lib/external-link";
 import { cn } from "@/lib/utils";
 import { MetaStrip } from "./hero/meta-strip";
 import { HeroReveal, RotatingWord } from "./hero/rotating-word";
@@ -131,8 +132,8 @@ export function Hero() {
             data-reveal
             data-reveal-index="4"
           >
-            {/* 主 = 外部の Discord。矢印と visually-hidden の「（外部）」を添え、
-                target="_blank" は使わない（DECISION M-15） */}
+            {/* 主 = 外部の Discord。矢印と visually-hidden の注記を添え、
+                新しいタブで開く（DECISION M-21） */}
             <Button
               surface="ink"
               variant="solid"
@@ -140,9 +141,9 @@ export function Hero() {
               brand={BrandDiscord}
               icon={ArrowUpRight}
             >
-              <a href={actions.primary.href}>
+              <a href={actions.primary.href} {...externalLinkProps}>
                 {actions.primary.label}
-                <span className="sr-only">（外部）</span>
+                <span className="sr-only">{externalLinkNote}</span>
               </a>
             </Button>
             {/* 副 = ページ内スクロール。移動先が同じページなのでアイコンは付けない（§6.1.9） */}

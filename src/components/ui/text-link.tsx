@@ -2,6 +2,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import type { ComponentProps } from "react";
 import { ArrowUpRight } from "@/components/icons";
 import { linkTransition } from "@/components/ui/interaction";
+import { externalLinkNote, externalLinkProps } from "@/lib/external-link";
 import { cn } from "@/lib/utils";
 
 /**
@@ -120,9 +121,8 @@ export interface TextLinkProps
   extends ComponentProps<"a">,
     VariantProps<typeof textLink> {
   /**
-   * 外部サイトへ出るリンク。target="_blank" は付けない — 新しいタブで開くかは
-   * ユーザーが決める（§6.3.2・§8.5）。代わりに読み上げ用の「（外部）」と
-   * arrow-up-right を添える。
+   * 外部サイトへ出るリンク。新しいタブで開き（DECISION M-21、lib/external-link）、
+   * 読み上げ用の「（外部、新しいタブで開く）」と arrow-up-right を添える。
    */
   external?: boolean;
 }
@@ -141,12 +141,13 @@ export function TextLink({
       // 仕様の指定どおり "page" ではなく "true"（§6.1.1）
       aria-current={current ? "true" : undefined}
       className={cn(textLink({ variant, current, standalone }), className)}
+      {...(external ? externalLinkProps : {})}
       {...props}
     >
       {children}
       {external ? (
         <>
-          <span className="sr-only">（外部）</span>
+          <span className="sr-only">{externalLinkNote}</span>
           <ArrowUpRight
             className={textLinkIcon({
               spacing: variant === "inline" && !standalone ? "inflow" : "gap",

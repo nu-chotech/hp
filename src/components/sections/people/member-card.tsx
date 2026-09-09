@@ -3,6 +3,7 @@ import { brandIcons } from "@/components/icons";
 import { ImageSlot } from "@/components/ui/image-slot";
 import { Cell } from "@/components/ui/ruled-grid";
 import type { Member, MemberSocialKind } from "@/content/members";
+import { externalLinkNote, externalLinkProps } from "@/lib/external-link";
 import { cn } from "@/lib/utils";
 
 /**
@@ -152,8 +153,9 @@ export function MemberCard({
                   <li key={`${social.kind}:${social.href}`}>
                     <a
                       href={social.href}
-                      // target="_blank" は付けない。新しいタブで開くかは読者が決める（§6.3.2）。
-                      // arrow-up-right も足さない — ブランドアイコン自体が行き先を示す（U-12）
+                      // 外部は新しいタブで開く（DECISION M-21）。
+                      // arrow-up-right は足さない — ブランドアイコン自体が行き先を示す（U-12）
+                      {...externalLinkProps}
                       className={cn(
                         "relative inline-flex cursor-pointer text-ink no-underline",
                         // 可視 20 のまま hit area を 44 に広げる（20 + 12 × 2、§6.1.5）。
@@ -171,6 +173,7 @@ export function MemberCard({
                       <Icon className="relative size-icon-md" />
                       <span className="sr-only">
                         {member.name} の {SOCIAL_LABELS[social.kind]}
+                        {externalLinkNote}
                       </span>
                     </a>
                   </li>

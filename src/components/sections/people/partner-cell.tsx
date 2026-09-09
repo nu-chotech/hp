@@ -1,6 +1,9 @@
 import { ImageSlot } from "@/components/ui/image-slot";
+import { insetFocusRing } from "@/components/ui/interaction";
 import { Cell } from "@/components/ui/ruled-grid";
 import type { Partner } from "@/content/partners";
+import { externalLinkNote, externalLinkProps } from "@/lib/external-link";
+import { cn } from "@/lib/utils";
 
 /**
  * Partner cell（§6.16）
@@ -18,9 +21,11 @@ import type { Partner } from "@/content/partners";
  * 両軸 stretch にすると比率はトラックの算出（行の高さ = 列幅 ÷ 1.5）にだけ使われ、箱は
  * グリッド領域を埋める。Contain の画像は 168 × 112 のまま上下 4px を白で残す（見えない）。
  *
- * NOTE: `Partner.href` はここでは描かない。§6.16 は Logo セルにリンク状態を定義して
- * おらず（Image slot も「状態: なし」）、押せる面を勝手に増やすと罫線グリッドの
- * 「押せるのは中の導線だけ」という読み方が崩れるため。導線が要るなら仕様を先に足す。
+ * `Partner.href` があればタイル全体が団体サイトへのリンクになる（DECISION U-35）。
+ * リンクの名前は画像の alt（団体名）で、visually-hidden で「（外部、新しいタブで開く）」を
+ * 添える。hover / pressed の表現は持たない — 素材は白キャンバスでタイルを埋めているので
+ * 面のティントは乗らず、画像に filter を掛けない約束（U-21）もある。応答はカーソルと
+ * フォーカスリング（罫に接するので内側、K-7）だけ。href が無い団体は画像のまま置く。
  */
 
 export interface PartnerLogoCellProps {
@@ -50,18 +55,38 @@ export function PartnerLogoCell({ partner }: PartnerLogoCellProps) {
             セルごとに重心がばらけて一覧が揃って見えないため、ここだけ中央に置く。
             中央にするのは画像そのものであって、文字ラベルは決して中央にしない（L-19）。
             flex-1 でセルの残り高さを取り、Contain がその枠の中央に画像を収める */}
-        <div className="flex-1">
-          {logoSrc ? (
+        {logoSrc && partner.href ? (
+          // タイル全体がリンク。<a> は @layer base で下線を持つので no-underline を明示する
+          <a
+            href={partner.href}
+            className={cn(
+              "flex flex-1 cursor-pointer no-underline [-webkit-tap-highlight-color:transparent]",
+              insetFocusRing,
+            )}
+            {...externalLinkProps}
+          >
             <ImageSlot
               ratio="fill"
               fit="contain"
               src={logoSrc}
               alt={partner.name}
             />
-          ) : (
-            <ImageSlot ratio="fill" fit="contain" />
-          )}
-        </div>
+            <span className="sr-only">{externalLinkNote}</span>
+          </a>
+        ) : (
+          <div className="flex-1">
+            {logoSrc ? (
+              <ImageSlot
+                ratio="fill"
+                fit="contain"
+                src={logoSrc}
+                alt={partner.name}
+              />
+            ) : (
+              <ImageSlot ratio="fill" fit="contain" />
+            )}
+          </div>
+        )}
         {/* 素材が入るまでの控え。ロゴは団体名を運ぶ画像なので、
             画像が無い間も名前だけは支援技術に届ける（§8.6） */}
         {logoSrc ? null : <span className="sr-only">{partner.name}</span>}

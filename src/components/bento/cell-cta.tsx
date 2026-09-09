@@ -2,6 +2,7 @@ import type { ComponentProps } from "react";
 import { ArrowUpRight, BrandDiscord } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Cell } from "@/components/ui/ruled-grid";
+import { externalLinkNote, externalLinkProps } from "@/lib/external-link";
 import { cn } from "@/lib/utils";
 
 /**
@@ -59,10 +60,10 @@ export function CellCta({
           surface="ink"
           variant="outline"
         >
-          {/* target="_blank" は使わない。新しいタブは読者が選ぶ（DECISION M-15） */}
-          <a href={href}>
+          {/* 外部は新しいタブで開く（DECISION M-21） */}
+          <a href={href} {...externalLinkProps}>
             {label}
-            <span className="sr-only">（外部）</span>
+            <span className="sr-only">{externalLinkNote}</span>
           </a>
         </Button>
       </div>

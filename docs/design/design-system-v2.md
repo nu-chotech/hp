@@ -11,6 +11,7 @@
 > - **2026-09-01 の実装レビューを反映**（付録 A.8 / U-1〜U-14）: 角丸はチャットのみ例外（Messages 風）、リンク下線 2 / 3px、ヒーロー回転語はアクセント文字（下線廃止）、セクション見出しの連番廃止・和文の題が先、活動内容はベント 4 セル（Hackathon 追加）、用語は「パートナー」に統一、Member カードに SNS リンク
 > - **2026-09-07**: Members の Staff（運営 3 名）は写真が揃うまで**写真枠ごと暫定非表示**（`showStaffPhotos` false。パスと素材は残置、§6.15 の写真つきが到達点）。Partner の Placeholder から「パートナーになる」（mailto）を撤去し、セルは `YOUR LOGO HERE` のみ（§6.16）。Partner セルは**正方形タイル**に変更（Desktop 6 列 197.67 / tablet 3 列 237.33 / Mobile 2 列 168、DECISION L-31）。マーキーの団体は partners.ts から生成し、**団体名ではなくロゴ**（80 角 `size/marquee-logo`。帯 `size/band-marquee` は 56 → **120**、項目間 `inline/2xl` 48、DECISION U-30）で出す。「パートナー募集中」の Ghost は撤去。複製数は viewport から自動計算し継ぎ目なく回す。停止 / 再生ボタンとページ内モーションスイッチ（旧 M8）は**撤去**（DECISION U-31、クライアント判断）。自動の動きは `prefers-reduced-motion` と画面外でのみ止まり、WCAG 2.2.2 の「ページ内の停止手段」は**未達**として §8 に記録。マーキーの ✳ は Label の両脇だけ（U-32）
 > - **2026-09-10**: パートナーの公式ロゴ 5 枚を受領。素材は白背景 jpg / 透過 png / 4:1 超のワードマークが混在し、ground の上では白背景の素材が板として浮き、正方形タイルではワードマークが細い帯になった。→ タイルとマーキー帯の面を **`color/logo-ground`（neutral-0、白）** に（**DECISION U-33**）。Partner タイルは正方形 → **3:2**（Desktop 6 列 197.67 × 131.78 / tablet 3 列 / Mobile 2 列は床 120。列数は L-31 のまま、**DECISION L-32**）。マーキーのロゴ枠も 3:2 で高さ `size/marquee-logo` **96**（幅 144）。素材は `scripts/normalize-partner-logos.mjs` が 3:2 の白キャンバス（600 × 400）に正規化し、セルは inset 0 で縁まで敷く。Image slot に比率 3:2 を追加。募集セル「YOUR LOGO HERE」は撤去し、行の端数は無地の白タイル（aria-hidden）で埋める（**DECISION U-34**）
+> - **2026-09-10（2）**: 外部リンクは**すべて新しいタブ**で開く（`target="_blank" rel="noopener noreferrer"`、vh「（外部、新しいタブで開く）」、**DECISION M-21**。M-15 は撤回）。Partner の Logo タイルは `href` があれば**タイル全体が団体サイトへのリンク**（**DECISION U-35**。hover / pressed の表現なし、フォーカスリングは内側）
 - **2026-09-05 の実装レビューを反映**（U-21〜U-29 / L-30）: 写真・イラスト・ロゴは原色（B/W 撤回）、Hero の格子線撤去、Discord マークは filled、Stat の数字は白の Display/L + 所属の内訳、全発言にリアクション（実際の絵文字、数字が巻き上がる）、ペルソナとチャットのアバターは Humation（女 3・男 3）、Poster の Social はマークのみ、ロゴマークは外接矩形の mark.svg を 24 / 20（U-27 の Nav CTA マークは同日撤回）
 
 # ChoTech Design Guidelines
@@ -35,7 +36,7 @@
 | **Restraint（抑制）** | 一書体、一色相、角丸ゼロ、影ゼロ、中央揃えなし。Mono モードで成立しない設計は Lime でも不可 | アクセントの出現は Lime で 4 箇所（マーキー区切り、活動バッジ、ポスター面、ヒーロー下線）+ 状態 4 種（hover 下線 / pressed 文字 / focus / selection）だけ。写真・イラスト・ロゴは原色（U-21） |
 | **Craft（精度）** | すべての値が梯子の段であり、根拠を言える。Figma と CSS が同じ構造で同じ数を持つ | 4px モジュール、整数 px の行送り、高さ駆動のコントロール（36 / 44）、fill + gap で描く罫線グリッド、`n 文字 = n em` の和文組版、compositor プロパティだけの動き |
 
-Familiarity（慣れ）・Agency（主体性）・Flexibility（柔軟）・Responsibility（責任）は個別規則に溶かした: 矢印の意味を 2 種に固定する（§5）、`target="_blank"` を使わない（§8）、ループはページ内スイッチで止められる（§7）、Mobile は 1 列で DOM 順（§3）、200% 拡大とリフローで壊れない（§8）。
+Familiarity（慣れ）・Agency（主体性）・Flexibility（柔軟）・Responsibility（責任）は個別規則に溶かした: 矢印の意味を 2 種に固定する（§5）、外部リンクは新しいタブで開く（§8、M-21 で M-15 を撤回）、ループはページ内スイッチで止められる（§7）、Mobile は 1 列で DOM 順（§3）、200% 拡大とリフローで壊れない（§8）。
 
 ### 0.2 ハード制約（クライアント）
 
@@ -1623,7 +1624,7 @@ Desktop Nav に sm を使う理由: バー高 `nav/pad-y` 12 + 36 + 12 + `stroke
 #### 6.3.2 振る舞い
 
 - Nav link はページ内アンカー（`scroll-behavior: smooth`、Reduced motion で `auto`）。`aria-current="true"` を使う場合は IntersectionObserver 閾値 50%。
-- 外部リンク（Social・Discord・mailto）は **`target="_blank"` を使わない**（§8.5、ユーザーの制御）。visually-hidden で `（外部）` を添え、`arrow-up-right` を付ける。文字ラベルは CSS で大文字化し、ソースは `X` `Instagram` `GitHub` の正書法。
+- 外部リンク（Social・Discord・mailto・Partner ロゴ・Member SNS）は **すべて `target="_blank"` + `rel="noopener noreferrer"` で新しいタブに開く**（**DECISION M-21**、§8.5）。visually-hidden で `（外部、新しいタブで開く）` を添え（WCAG G201）、文字リンクには `arrow-up-right` を付ける。属性と文言は `lib/external-link.ts` の 1 か所で持つ。文字ラベルは CSS で大文字化し、ソースは `X` `Instagram` `GitHub` の正書法。
 - Hit area は §6.1.5。
 
 #### 6.3.3 コンテンツ規則
@@ -2070,7 +2071,7 @@ Leader と Staff の差は **写真比・inset・name・skills の 4 点**（Soc
 | gap | Leader `inline/md` 16 / Staff `inline/sm` 12 |
 | ターゲット | 見た目 20 でも hit area は `::before` inset −12 で 44 を確保（§6.1.5、§8.3） |
 | 意味 | `<ul>` > `<li>` > `<a>`。アイコンは `aria-hidden`、名前は visually-hidden で「田中 太郎 の X」のように**人名を含める**（同じ「X」が 5 枚並ぶため） |
-| 外部 | `target="_blank"` は使わない。`arrow-up-right` は付けない（アイコン自体が行き先を示す。§9.6 の矢印規則の例外） |
+| 外部 | 新しいタブで開く（M-21）。名前の末尾に vh「（外部、新しいタブで開く）」。`arrow-up-right` は付けない（アイコン自体が行き先を示す。§9.6 の矢印規則の例外） |
 | 無い場合 | `showSocials` false で行ごと落とす。空のアイコンや無効リンクは置かない |
 
 根拠: 運営メンバーは「顔と実績が見える」ことが入会検討者の判断材料になる。ただし本文でリンクを列挙すると紹介文の可読性が落ちるので、**アイコン 1 行**に閉じてカードの構造（役職 → 名前 → 紹介 → 導線）を保つ。
@@ -2081,8 +2082,10 @@ Figma: `Member / Card` `Size` {Leader, Staff} 2。Props: `role` `name` `skills` 
 
 | Type | 内容 |
 |---|---|
-| Logo | **3:2 のタイル**（Desktop 6 列 197.67 × 131.78 / tablet 3 列 237.33 × 158.22 / Mobile 2 列 168 × 120 = 床 `size/cell-min`。DECISION L-32、列数は L-31）、**`logo-ground`（白、U-33）**、**inset 0**（余白は正規化した素材側が持つ。§6.11.5 の画像セルと同じ）、Image slot fill / **Contain**（セル中央。画像の中央配置は左揃え原則の唯一の例外、DECISION L-26）、ブランド規定の色のまま（U-21）、`alt` = 団体名 |
+| Logo | **3:2 のタイル**（Desktop 6 列 197.67 × 131.78 / tablet 3 列 237.33 × 158.22 / Mobile 2 列 168 × 120 = 床 `size/cell-min`。DECISION L-32、列数は L-31）、**`logo-ground`（白、U-33）**、**inset 0**（余白は正規化した素材側が持つ。§6.11.5 の画像セルと同じ）、Image slot fill / **Contain**（セル中央。画像の中央配置は左揃え原則の唯一の例外、DECISION L-26）、ブランド規定の色のまま（U-21）、`alt` = 団体名。**`href` があればタイル全体が団体サイトへのリンク**（`<a>` が Image slot を包む。新しいタブ、名前 = alt + vh「（外部、新しいタブで開く）」。hover / pressed の表現なし、`focus/ring` は内側 K-7。**DECISION U-35**） |
 | Filler | 行の端数を埋める**無地**の白タイル（Logo と同じ 3:2、`logo-ground`、`aria-hidden`）。枚数は団体数を 6 の倍数に切り上げた差（6 / 3 / 2 列はすべて 6 の約数なので、どの幅でも行が欠けない）。文言も導線も持たない — 旧 Placeholder「YOUR LOGO HERE」は 2026-09-10 に撤去（**DECISION U-34**） |
+
+**DECISION U-35**（2026-09-10） Logo タイルはリンク。ロゴを見た読者の次の行動は「その団体を知る」で、行き先は団体ごとに一意なので U-17（Activity セルをリンクにしない — 4 セルが同じ Discord に着地する）の問題は起きない。`<a>` は Image slot の外側で、タイル全体を当たり判定にする（罫線グリッドの「押せるのは中の導線だけ」は、ここでは中身 = ロゴそのものが導線）。hover / pressed の表現は持たない — 素材は白キャンバスでタイルを埋めるため面のティントが乗らず、画像に filter を掛けない（U-21）。応答はカーソルとフォーカスリング（内側、K-7）だけ。`href` の無い団体は画像のまま。
 
 **DECISION U-34**（2026-09-10） 募集セル「YOUR LOGO HERE」は撤去。空きタイルの文言は読者に何を求めているのか分からず（応募先も条件も無い）、募集の呼びかけは導入文が担っている。行の端数は無地の白タイルで埋める — 罫線グリッドは frame の地が罫なので、空いたトラックをそのままにすると divider 色の板が出る。埋め草は情報を持たないので `aria-hidden`、リストの項目数は団体の数のまま。
 
@@ -2150,7 +2153,7 @@ Figma: `Section / Footer` `Viewport` {Desktop, Mobile} 2。Props: `copyright` TE
 | 比率 | Bento 写真 16:9 / Leader 16:9 / Staff 4:3 / Persona 1:1 円 96 / Partner ロゴ: **3:2**（タイルとマーキー枠、L-32。§5.7.2 の 3 比率にロゴ用の 3:2 を加えた 4 比率） |
 | 読み込み | `loading="lazy"`（Bento 写真は `eager`）、`width` `height` 属性で CLS 防止。DPR 2 で AVIF / WebP |
 | alt | 活動写真 = 被写体 1 文 ≤ 60 字、人物 = `""`（氏名が隣に可視）、ロゴ = 団体名、イラスト = `""`。「写真」「画像」の接頭辞は付けない（§8.6） |
-| 状態 | なし。hover で色を戻す等の演出はしない（「tint imagery」禁止） |
+| 状態 | なし。hover で色を戻す等の演出はしない（「tint imagery」禁止）。Partner のリンクは Image slot の外側の `<a>` が持つ（§6.16、U-35） |
 
 Figma: `Media / Image Slot` `Shape` {Rect, Circle} × `Fit` {Cover, Contain} × `Content` {Placeholder, Image} sparse 6。Props: `caption` TEXT。
 
@@ -2478,7 +2481,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | Chat | `<figure>` > `<p class="kicker">#general — いつものChoTech</p>` + `<ul>`（`<li>` = 頭文字 `<span aria-hidden>` + vh「参加者」+ 本文）+ `<figcaption>こんな会話が、毎日どこかで。</figcaption>`。図の名前は figcaption（DECISION M-18）。リアクションは `<span role="img" aria-label="いいね 3">`（内部の svg と数字は presentational） |
 | Persona / Member / Partner | `<ul>` > `<li>`。カードに `<article>` は不要（見出し + 段落で足りる） |
 | ボタン内アイコン | `<svg aria-hidden="true" focusable="false">`。名前は可視ラベルのみ |
-| 外部リンク | Discord / X / Instagram / GitHub / mailto: `arrow-up-right` アイコン + vh「（外部）」。`target="_blank"` は使わない（DECISION M-15）— 新しいタブはユーザーが選ぶ（Agency） |
+| 外部リンク | Discord / X / Instagram / GitHub / mailto / Partner ロゴ / Member SNS: `target="_blank" rel="noopener noreferrer"` + vh「（外部、新しいタブで開く）」（DECISION M-21、WCAG G201）。文字リンクは `arrow-up-right` アイコンも付ける |
 | Mobile メニュー | `<button aria-expanded aria-controls>`、パネルは非モーダル。開いてもフォーカスはボタンに留め、ArrowDown で 1 行目へ（§6.7.3） |
 
 ### 8.6 画像と代替テキスト
@@ -2694,7 +2697,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | Hero Meta 区切り | `✳` | 1 × 12 縦 hairline | L-16 |
 | Chat 見出し | `#GENERAL — いつものCHOTECH`（uppercase） | `#general — いつものChoTech`（ORIGINAL） | ブランド名を大文字化しない |
 | h1 アクセシブルネーム | なし | 仲間と、学ぶ。創る。話す。 | §8.5 |
-| 外部リンク | — | `target="_blank"` なし、vh「（外部）」 | §8.5 |
+| 外部リンク | — | `target="_blank"` + vh「（外部、新しいタブで開く）」（M-21） | §8.5 |
 | スキップリンク | なし | 「本文へスキップ」 | §8.5 |
 
 ---
@@ -3126,12 +3129,13 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | M-12 | Activity セル の DOM は行全体を `<a aria-labelledby>` | フォーカスリングが行に出る、DOM が 1 つ |
 | M-13 | Mobile メニューボタンは `size/control/md` 44 実寸 | 8 + 44 + 8 + 2 = 62。拡張不要 |
 | M-14 | 和欧間の手動スペースなし。Bento CTA を「Discordに参加する」に、「↑」を削除、矢印・星・手・目はすべて Tabler アイコン、Marquee `asterisk` は 20 | JIS X 4051 / T-6、動詞先行、記号禁止 |
-| M-15 | 外部リンクに `target="_blank"` を使わない | 新しいタブはユーザーの選択（Agency） |
+| ~~M-15~~ | ~~外部リンクに `target="_blank"` を使わない~~ | 2026-09-10 M-21 で撤回 |
 | M-16 | Member 写真は `alt=""` | 氏名が常に隣接し、写真は情報を追加しない |
 | M-17 | `<title>` = 固有名詞 — 説明（≤ 32 全角）、description 90–110 字、OG は B/W 写真 + ワードマーク | WCAG 2.4.2、§9.1 ボイス |
 | M-18 | Chat セルは `<figure>` + `<figcaption>`（注記が名前） | 注記に役割を与え、`aria-label` を不要にする |
 | M-19 | スキップリンクは Button Ink、Nav 直下・左寄せ | 2.4.1、HIG 44 |
 | M-20 | フォールバックは `sans-serif` のみ、preload は 3 ウェイト | ファーストビューに Bold がある |
+| M-21 | 外部リンクはすべて新しいタブ（`target="_blank" rel="noopener noreferrer"`）、vh「（外部、新しいタブで開く）」 | 1 ページのサイトで外へ出ると戻り先を失う。文脈の変化は G201 で事前に知らせる（M-15 撤回） |
 
 ### A.6 Figma（F）
 
