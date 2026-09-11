@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ArrowUpRight, BrandDiscord } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
@@ -75,18 +76,21 @@ export function Hero() {
         <style href="hero-backdrop" precedence="components">
           {BACKDROP_KEYFRAMES}
         </style>
-        {/* biome-ignore lint/performance/noImgElement: 実素材が確定するまで next/image は入れない（ImageSlot と同じ方針）。この層は素材待ちの「枠」ではなく面の一部なので ImageSlot は使わない — 未読込時に placeholder の明るい地 #eae7e7 が Hero 全面で光る */}
-        <img
-          src={backdrop.src}
+        {/* ImageSlot は使わない — この層は素材待ちの「枠」ではなく面の一部で、未読込時に
+            placeholder の明るい地 #eae7e7 が Hero 全面で光る。next/image を直接置く（U-45）。
+            priority: ファーストビューの地。遅れて入ると「後から暗くなる」ように見える。
+            sizes 100vw: 全幅の背景なので viewport 幅の候補を選ぶ */}
+        <Image
           alt=""
-          // ファーストビューの地。遅れて入ると「後から暗くなる」ように見える
-          fetchPriority="high"
-          decoding="async"
           className={cn(
-            "hero__backdrop absolute inset-0 size-full object-cover",
+            "hero__backdrop object-cover",
             // 色はそのまま（U-21）。不透明度だけで ink 面に沈める
             "opacity-(--hero-backdrop-opacity)",
           )}
+          fill
+          priority
+          sizes="100vw"
+          src={backdrop.src}
         />
       </div>
 

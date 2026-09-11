@@ -30,6 +30,7 @@ export function PartnerLogo({ partner }: PartnerLogoProps) {
       className="h-marquee-logo"
       fit="contain"
       ratio="3:2"
+      sizes="144px"
       src={partner.logo}
     />
   ) : (

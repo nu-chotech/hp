@@ -20,6 +20,7 @@
 > - **2026-09-12（7）**: Partners を外枠だけの白い面 + ロゴを団体数で等分した 1 行に（**DECISION U-43**、L-31 / L-32 のタイルと U-34 の埋め草を撤去）
 > - **2026-09-12（8）**: チャット再生を 1 手 600 ms / 一巡後 2,000 ms に速め、畳む先を 1 行目を残した状態に（**DECISION U-44**。空のスレッドを見せない）
 > - **2026-09-12（9）**: アクセントを Lime → **Green（GitHub Primer green）** に（**DECISION C-29**）。プリミティブ `green/200–900` + `alpha/green-400/24`、CSS は `--green-*`。§1 の実測値をすべて再計算（付録 C.5）。極性（面・印は 400、地の上の文字は 800 / 900、図形は 700）は不変。Figma の Color モードは未反映
+> - **2026-09-12（10）**: 画像を next/image の `fill` に移行（**DECISION U-45**。Hero 背景と先頭の活動写真は `priority`、AVIF / WebP 配信）。§5.7.2 のスロット表を U-41 / U-42 / U-43 に合わせて更新
 > - **2026-09-11**: Cell Stat の所属バッジ（U-29）を**撤回**し、セルは `50+` の数字だけに戻す（**DECISION U-36**）。Chip の Inverse トーンは Accent と同じくライブラリのみ（ページに出さない）。About の CULTURE セルは本文を落として題だけ（「仲間と、学ぶ。創る。話す。」— Hero の h1 を `Hack Your Limits.` に差し替える予定に合わせ、3 語を Culture に降ろす）
 > - **2026-09-10（2）**: 外部リンクは**すべて新しいタブ**で開く（`target="_blank" rel="noopener noreferrer"`、vh「（外部、新しいタブで開く）」、**DECISION M-21**。M-15 は撤回）。Partner の Logo タイルは `href` があれば**タイル全体が団体サイトへのリンク**（**DECISION U-35**。hover / pressed の表現なし、フォーカスリングは内側）
 - **2026-09-05 の実装レビューを反映**（U-21〜U-29 / L-30）: 写真・イラスト・ロゴは原色（B/W 撤回）、Hero の格子線撤去、Discord マークは filled、Stat の数字は白の Display/L + 所属の内訳、全発言にリアクション（実際の絵文字、数字が巻き上がる）、ペルソナとチャットのアバターは Humation（女 3・男 3）、Poster の Social はマークのみ、ロゴマークは外接矩形の mark.svg を 24 / 20（U-27 の Nav CTA マークは同日撤回）
@@ -1292,16 +1293,16 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 
 | スロット | Desktop | Mobile | 比率 | fit / 焦点 |
 |---|---|---|---|---|
-| bento photo (2×2) | 597 × 行高（≈ 336） | 338 × 190 | **16:9** | cover、`object-position: 50% 40%` |
+| activity photo（U-41。旧 bento photo は About から移動） | 597 × 336 | 338 × 190 | **16:9** | cover、center |
 | leader photo | 597 × 336 | 338 × 190 | 16:9 | cover、`50% 30%`（顔は上 1/3） |
 | staff photo | 397.33 × 298 | 338 × 253.5 | 4:3 | cover、`50% 30%` |
-| persona イラスト | 96 円 | 96 円 | 1:1 | cover |
-| sponsor logo | 197.67 角のセル、内側 149.67 角（inset 24） | 168 角、内側 128 角（inset 20） | 1:1 | contain、セル中央（L-31: タイルは正方形） |
+| persona イラスト | 80 円（U-42） | 80 円 | 1:1 | cover |
+| partner logo（U-43） | 144 × 96（3:2）、団体数で等分した列の中央 | 同（2 列） | 3:2 | contain、中央（L-26） |
 
 **DECISION L-20** bento photo は 16:9 固定。コンセプトの「min 280」は撤廃し、Desktop では chat セルの高さ（≈ 339 ≈ 597 × 9/16 = 336）に stretch、Mobile は 16:9 で高さを決める。
 **DECISION L-26** sponsor ロゴはセル中央（左揃え原則の例外）。ロゴは「ラベル」ではなく「図」で、幅も形も揃わないものを左に寄せると右側の空きが不揃いに見える。placeholder の文言（§5.7.3）は例外ではない。
 
-書き出し: スロット幅の 2 倍（DPR 2）で AVIF / WebP。`loading="lazy"`（Bento 写真は `eager`）、`width` `height` 属性で CLS 防止。alt は §8.6。
+書き出し: next/image の `fill` + `sizes`（**DECISION U-45**、2026-09-12）。スロットの実幅を `sizes` で渡し（member / activity 597、persona 80px、logo 144px、Hero 背景 100vw）、Next が DPR に応じた幅の AVIF / WebP を配信する（`images.formats`）。`priority`（Hero 背景、先頭の活動写真）以外は lazy。`width` / `height` は fill と両立しないので持たず、CLS は枠の aspect-ratio が防ぐ。素材は `public/` の原寸（3〜4MB の jpg）のまま置く — 配信サイズは Next が決める。alt は §8.6。
 
 #### 5.7.3 Placeholder
 
@@ -2171,7 +2172,7 @@ Figma: `Section / Footer` `Viewport` {Desktop, Mobile} 2。Props: `copyright` TE
 | Placeholder | fill `image/placeholder`（surface）、`photo` 24 `ink-tertiary` を左上 `inset/md` 16、`stack/xs` 8 下に caption `Caption/Regular` `image/caption`（5.30）。**本番では caption を出さない**。円はアイコンのみ中央 |
 | 色 | 原色のまま。`filter` を掛けない（U-21）。ロゴマーク（Brand）も同じ |
 | 比率 | Bento 写真 16:9 / Leader 16:9 / Staff 4:3 / Persona 1:1 円 96 / Partner ロゴ: **3:2**（タイルとマーキー枠、L-32。§5.7.2 の 3 比率にロゴ用の 3:2 を加えた 4 比率） |
-| 読み込み | `loading="lazy"`（Bento 写真は `eager`）、`width` `height` 属性で CLS 防止。DPR 2 で AVIF / WebP |
+| 読み込み | next/image `fill`（U-45）。`priority` = Hero 背景・先頭の活動写真、他は lazy。`sizes` はスロットの実幅。CLS は枠の aspect-ratio が防ぐ（width / height 属性は持たない）。AVIF / WebP は Next が配信 |
 | alt | 活動写真 = 被写体 1 文 ≤ 60 字、人物 = `""`（氏名が隣に可視）、ロゴ = 団体名、イラスト = `""`。「写真」「画像」の接頭辞は付けない（§8.6） |
 | 状態 | なし。hover で色を戻す等の演出はしない（「tint imagery」禁止）。Partner のリンクは Image slot の外側の `<a>` が持つ（§6.16、U-35） |
 
@@ -3212,6 +3213,7 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 | U-42 | Persona card を 3 行の subgrid に組み直す（2026-09-12、クライアント判断）: header（イラスト **80** + [番号 / 題]、上下中央）／ 引用は**墨の板**（inverse/ink）／ 次の一歩は **surface の板**、2 枚は隙間なし。`size/illustration` 96 → 80 | 旧解剖は番号と題の間にイラストの高さぶんの空きができ、引用の行数で矢印行の位置が揺れ、「→ 文」は面を持たず目に留まらなかった。subgrid なら同じ行のカードで 3 行の境目が必ず揃う（flex-1 では推薦 2 行のカードだけ 20px ずれた） |
 | U-43 | Partners は 6 列の 3:2 タイル（L-31 / L-32 / U-34 の埋め草）をやめ、**外枠だけ**の白い面の中にロゴ（3:2 × 96、マーキーと同じ枠）を**団体数で等分**した列に中央配置で 1 行に並べる（2026-09-12、クライアント判断）。tablet 3 列 / Mobile 2 列で折返し | 内側の罫が 1 枚ずつを区切り、団体数が 6 の倍数でないと無地の埋め草が「空席」に見えた。外枠 1 つの中に並べれば、団体数がいくつでも 1 行の「顔ぶれ」として読める。列数を content の件数から決めるので、団体が増減しても幾何が壊れない |
 | U-44 | チャット再生の 1 手を 900 → **600 ms**、一巡後の間を 2,400 → **2,000 ms**。畳む先を 0 行から **1 行目を残した状態**に（2026-09-12、クライアント判断） | 900 は待たされて見え、UX を下げていた。0 行まで畳むと次の 1 手までの step のあいだスレッドが空になり、「一瞬真っ白で何も表示されない」故障に見えた。1 行目を残せば、一巡の終わりは「返事が消えて、また付き始める」動きになる |
+| U-45 | 画像を `<img>` から **next/image の `fill`** に移行（2026-09-12）。ImageSlot は `sizes` をそのまま Image に渡し、Hero の背景も `priority` + `sizes="100vw"` の Image に。`images.formats` を AVIF / WebP に。チャットのアバター（24px の SVG）だけは `<img>` のまま | 実素材（3〜4MB の jpg）が揃い、「素材が確定するまで next/image は入れない」の前提が外れた。§5.7.2 が求める「スロット幅に応じた AVIF / WebP」は next/image がそのまま実装で、Mobile に原寸を送らないことが体感を決める。.svg は Next が自動で unoptimized にする |
 
 ## 付録 B. 検証
 
