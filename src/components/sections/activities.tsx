@@ -26,12 +26,12 @@ export function Activities() {
     <Section aria-labelledby={headingId} id={sectionIds.activities}>
       {/* reveal は §7.4.1 の「Activities 0」。見出しとベントを同じ段（0）で出す。
           罫線で結ばれた格子は 1 つの面なので、セルを個別に動かさない（DECISION M-2） */}
+      {/* 見出し → グリッドは他節と同じ heading-mb（32 / 24）。旧 U-8 の "list"（8）は
+          hairline 行リストの名残で、写真セルの上に 8 しか無いと見出しが格子に貼り付いて
+          About / For You と縦リズムが揃わなかった（U-46） */}
       <SectionHeading
         data-reveal
         label={heading.label}
-        // ベントの直前は heading-mb-list 8（§6.10）。セルの上端は写真なので、
-        // 見出しの下端から写真までが 8 — 他節の grid（見出し → 罫 8）と同じ距離
-        spacing="list"
         title={heading.title}
         titleId={headingId}
       />

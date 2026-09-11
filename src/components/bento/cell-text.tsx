@@ -18,6 +18,8 @@ import { cn } from "@/lib/utils";
  *
  * 題の大きさはセルの面積に従う（2×1 = Title/2、1×1 中 = Title/3、1×1 小 = Headline）。
  * 面積が優先順位を示す部品なので、大きいセルの題が小さいと格が逆転して読める。
+ * 2×1 の statement（CULTURE）だけ Display/M — 節の主張を 1 枚で言い切るセルで、Title/2 では
+ * 597 幅の左 1/3 に文字が寄って右が空き、隣の 50+（Display/L）と釣り合わなかった（U-46）。
  */
 
 const titleVariants = cva(
@@ -26,6 +28,7 @@ const titleVariants = cva(
   {
     variants: {
       size: {
+        "2x1-statement": "text-display-m",
         "2x1": "text-title-2",
         "1x1-md": "text-title-3",
         "1x1-sm": "text-headline",

@@ -58,7 +58,7 @@ export function About() {
           colSpan={2}
           icons={icons(culture.icons)}
           kicker={culture.kicker}
-          size="2x1"
+          size="2x1-statement"
           title={culture.title}
         />
         <CellStat
@@ -70,7 +70,7 @@ export function About() {
         <CellText
           icons={icons(founded.icons)}
           kicker={founded.kicker}
-          size="1x1-sm"
+          size="1x1-md"
           title={founded.title}
         />
 
@@ -86,13 +86,13 @@ export function About() {
         <CellText
           icons={icons(onlineOffline.icons)}
           kicker={onlineOffline.kicker}
-          size="1x1-sm"
+          size="1x1-md"
           title={onlineOffline.title}
         />
         <CellText
           icons={icons(forEveryone.icons)}
           kicker={forEveryone.kicker}
-          size="1x1-sm"
+          size="1x1-md"
           title={forEveryone.title}
         />
       </RuledGrid>

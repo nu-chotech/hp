@@ -22,6 +22,7 @@
 > - **2026-09-12（9）**: アクセントを Lime → **Green（GitHub Primer green）** に（**DECISION C-29**）。プリミティブ `green/200–900` + `alpha/green-400/24`、CSS は `--green-*`。§1 の実測値をすべて再計算（付録 C.5）。極性（面・印は 400、地の上の文字は 800 / 900、図形は 700）は不変。Figma の Color モードは未反映
 > - **2026-09-12（10）**: 画像を next/image の `fill` に移行（**DECISION U-45**。Hero 背景と先頭の活動写真は `priority`、AVIF / WebP 配信）。§5.7.2 のスロット表を U-41 / U-42 / U-43 に合わせて更新
 > - **2026-09-12（11）**: ポスター面を**インク面に戻し**、緑は見出し（`poster/display` = green-400）と**参加 CTA・チャット自分側バブルの面**（`accent-fill` = green-600 + 白）で出す（**DECISION C-30**。クライアント所見「緑の上に黒文字は見にくい」）。Hero 主 CTA も accent-fill。C-27 の上端罫は撤去、C-18 / K-5 の「accent ボタンはページに置かない」は撤回
+> - **2026-09-12（12）**: 釣り合いの調整（**DECISION U-46**）: Member の Socials をカードの底に、Activities の見出し余白を他節と同じ 32 / 24 に、About の CULTURE を Display/M・1×1 文字セルを Title/3 に
 > - **Figma v2 への反映は未実施**（2026-09-12 時点）。反映すべき変更の一覧と手順は [figma-sync-2026-09-12.md](./figma-sync-2026-09-12.md)
 > - **2026-09-11**: Cell Stat の所属バッジ（U-29）を**撤回**し、セルは `50+` の数字だけに戻す（**DECISION U-36**）。Chip の Inverse トーンは Accent と同じくライブラリのみ（ページに出さない）。About の CULTURE セルは本文を落として題だけ（「仲間と、学ぶ。創る。話す。」— Hero の h1 を `Hack Your Limits.` に差し替える予定に合わせ、3 語を Culture に降ろす）
 > - **2026-09-10（2）**: 外部リンクは**すべて新しいタブ**で開く（`target="_blank" rel="noopener noreferrer"`、vh「（外部、新しいタブで開く）」、**DECISION M-21**。M-15 は撤回）。Partner の Logo タイルは `href` があれば**タイル全体が団体サイトへのリンク**（**DECISION U-35**。hover / pressed の表現なし、フォーカスリングは内側）
@@ -1842,7 +1843,7 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 | title | `Title/1` **32 / 26**、`ink`、`<h2>`。1 行（最長 11 全角 × 26 = 286 ≤ 342）。`word-break: auto-phrase`（対応ブラウザ） |
 | label | `Overline/Latin` 12 UPPER、`ink-secondary`（5.83）。`ABOUT` / `ACTIVITY` / `FOR YOU` / `MEMBERS` / `PARTNERS`。**title の後ろ**。`<p>`（見出しにしない） |
 | 並び | Desktop: 横、**ベースライン揃え**、gap `inline/md` 16。Mobile: 縦、gap `stack/xs` 8、左揃え |
-| 下マージン | `section/heading-mb` 32 / 24。ベントの直前 `heading-mb-list` 8（Activities）。導入文の前 `heading-mb-intro` 12 |
+| 下マージン | `section/heading-mb` 32 / 24（ベントの直前も同じ。旧 Activities の `heading-mb-list` 8 は hairline 行リストの名残で、写真セルの上に 8 しか無いと見出しが格子に貼り付いて他節と縦リズムが揃わなかった、U-46）。導入文の前 `heading-mb-intro` 12。`heading-mb-list` は hairline 行リスト用にライブラリへ残す |
 | note | 持たない（**DECISION K-9**: 概念の note は編集ヒントの受け皿。本番に置かない） |
 
 - **DECISION U-4** 連番（`01 —`）を廃止し、和文の題を先・欧文ラベルを後に置く。理由は 2 つ。(1) 番号は読者に順路を約束するが、このページは目次のない 1 枚もので、飛ばし読みの入口はナビが担っている。番号は情報を足さずに視線の最初の一撃を数字に取られる。(2) 日本語話者にとって節の意味を運ぶのは和文の題であり、英字ラベルは調子付け。強い方を先に置く。
@@ -1861,7 +1862,7 @@ Figma: `Section / Heading` `Layout` {Row, Stacked} 2。Props: `title` `label` TE
 | 行の最小高 | `size/cell-min` 120 | 120 |
 | セル inset | `inset/cell` **24** | **20** |
 | 行構成 | 行 1 [CULTURE 2×1 · MEMBERS（墨）· SINCE] / 行 2–3 [CHAT 2×2 · OFFICIAL 2×1 / ONLINE & OFFLINE · FOR EVERYONE]（**DECISION U-40**） | 縦に 1 列: CULTURE → MEMBERS → SINCE → CHAT → OFFICIAL → ONLINE & OFFLINE → FOR EVERYONE |
-| 行の高さ | 行 1 は CULTURE が HUG で決め（実測 **198**）、MEMBERS / SINCE が FILL で追う。行 2–3 は CHAT（**465**）が決め、OFFICIAL **240** / 行 3 **224** が FILL で追う | 各セル HUG（実測 176 / 128 / 144 / 475 / 208 / 168 / 168） |
+| 行の高さ | 行 1 は CULTURE（Display/M）が HUG で決め（実測 **252**）、MEMBERS / SINCE が FILL で追う。行 2–3 は CHAT（**465**）が決め、OFFICIAL **238** / 行 3 **226** が FILL で追う | 各セル HUG |
 
 **DECISION U-40**（2026-09-12、クライアント判断）ベントを **3 行 7 セル**に組み直す。
 
@@ -1877,13 +1878,14 @@ Figma: `Section / Heading` `Layout` {Row, Stacked} 2。Props: `title` `label` TE
 
 | Kind | kicker | icons | title | body |
 |---|---|---|---|---|
-| 2×1 | `Overline/Latin` 12 UPPER `ink-secondary` | **32**（`icon/xl`）× 1–3、gap `inline/sm` 12、`ink` | `Title/2` 22 `ink`、≤ 2 行 | `Body/S` 14 `ink-secondary`、上 `stack/xs` 8 |
+| 2×1 statement | `Overline/Latin` 12 UPPER `ink-secondary` | **32**（`icon/xl`）× 1–3、gap `inline/sm` 12、`ink` | **`Display/M` 56 / 32** `ink`、2 行（節の主張を言い切るセル。U-46: Title/2 では 597 幅の左 1/3 に寄って右が空き、隣の 50+ と釣り合わなかった） | — |
+| 2×1 | 同 | 同 | `Title/2` 22 `ink`、≤ 2 行 | `Body/S` 14 `ink-secondary`、上 `stack/xs` 8 |
 | 1×1 md | 同 | 同 | `Title/3` 19、≤ 2 行 | 同（`showBody`） |
 | 1×1 sm | 同 | 同 | `Headline` 17、≤ 3 行 | 同（`showBody`） |
 
 - 解剖は **2 段**: kicker（天）／ [icons → `stack/md` 16 → title（→ body）]（地）。縦 flex、`justify-content: space-between`。図は題と 1 つの塊にする — 天・中・地の 3 段に散らすと、行が伸びたとき図だけが中空に浮く（U-40）。
 - 図は装飾（`aria-hidden`、icons.tsx が付ける）。意味は題が運ぶ。語と図の対応: 学ぶ `book` / 創る `hammer` / 話す `message-circle`、対面 `map-pin` / オンライン `messages`、エンジニア `code` / デザイナー `palette` / サイエンティスト `flask`、設立 `flag`。content は文字列（`AboutIcon`）で持ち、`bentoIcons` が解決する。
-- ページの 4 セル: **CULTURE**（2×1、book / hammer / message-circle、題 `仲間と、<br>学ぶ。創る。話す。`）、**SINCE**（1×1 sm、flag、`2025年4月 設立`）、**ONLINE & OFFLINE**（1×1 sm、map-pin / messages）、**FOR EVERYONE**（1×1 sm、code / palette / flask）。
+- ページの 4 セル: **CULTURE**（2×1 statement、Display/M、book / hammer / message-circle、題 `仲間と、<br>学ぶ。創る。話す。`）、**SINCE**（1×1 md、flag、`2025年4月 設立`）、**ONLINE & OFFLINE**（1×1 md、map-pin / messages）、**FOR EVERYONE**（1×1 md、code / palette / flask）。1×1 は sm ではなく md（Title/3 19）— U-46: Headline 17 では行 2–3 の右セルが軽く、空きが目立った。
 - Tone Ink（ライブラリ）: fill `inverse/ground`、kicker `inverse/ink-tertiary`、title `inverse/ink`、body `inverse/ink-secondary`。
 - kicker は英語 1–2 語。title は `<br>` で意図的に改行してよい（ポスターの語割り）。`<h3>`。
 - **DECISION U-11** `ONLINE & OFFLINE`（「first」は序列の宣言なので使わない）。title は両方を主語に。
@@ -3224,6 +3226,7 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 | U-43 | Partners は 6 列の 3:2 タイル（L-31 / L-32 / U-34 の埋め草）をやめ、**外枠だけ**の白い面の中にロゴ（3:2 × 96、マーキーと同じ枠）を**団体数で等分**した列に中央配置で 1 行に並べる（2026-09-12、クライアント判断）。tablet 3 列 / Mobile 2 列で折返し | 内側の罫が 1 枚ずつを区切り、団体数が 6 の倍数でないと無地の埋め草が「空席」に見えた。外枠 1 つの中に並べれば、団体数がいくつでも 1 行の「顔ぶれ」として読める。列数を content の件数から決めるので、団体が増減しても幾何が壊れない |
 | U-44 | チャット再生の 1 手を 900 → **600 ms**、一巡後の間を 2,400 → **2,000 ms**。畳む先を 0 行から **1 行目を残した状態**に（2026-09-12、クライアント判断） | 900 は待たされて見え、UX を下げていた。0 行まで畳むと次の 1 手までの step のあいだスレッドが空になり、「一瞬真っ白で何も表示されない」故障に見えた。1 行目を残せば、一巡の終わりは「返事が消えて、また付き始める」動きになる |
 | U-45 | 画像を `<img>` から **next/image の `fill`** に移行（2026-09-12）。ImageSlot は `sizes` をそのまま Image に渡し、Hero の背景も `priority` + `sizes="100vw"` の Image に。`images.formats` を AVIF / WebP に。チャットのアバター（24px の SVG）だけは `<img>` のまま | 実素材（3〜4MB の jpg）が揃い、「素材が確定するまで next/image は入れない」の前提が外れた。§5.7.2 が求める「スロット幅に応じた AVIF / WebP」は next/image がそのまま実装で、Mobile に原寸を送らないことが体感を決める。.svg は Next が自動で unoptimized にする |
+| U-46 | 釣り合いの調整（2026-09-12、クライアント所見「まだアンバランスな UI が多い」）: (1) Member カードの Socials 行を `margin-top: auto` でカードの底に揃える、(2) Activities の見出し → グリッドを他節と同じ `heading-mb` 32 / 24 に（旧 `heading-mb-list` 8 を撤回）、(3) About の CULTURE を **Display/M** の statement セルに、1×1 の文字セル（SINCE / ONLINE & OFFLINE / FOR EVERYONE）を Headline 17 → **Title/3 19** に | (1) 紹介文が 2 行と 3 行のカードで導線の高さが 20px ずれていた。(2) 写真セルの上に 8 しか無く、見出しが格子に貼り付いて About / For You と縦リズムが違った。(3) 597 幅の 2×1 に Title/2 では文字が左 1/3 に寄り、隣の 50+（Display/L）と釣り合わなかった。1×1 は Headline では行 2–3 の右側が軽かった |
 
 ## 付録 B. 検証
 

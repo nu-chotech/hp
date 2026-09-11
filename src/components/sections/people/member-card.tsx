@@ -63,7 +63,9 @@ const cardBio = cva("mt-stack-xs text-ink-secondary", {
  */
 const LATIN_ROLE = /^[\p{Script=Latin}\p{Nd}\p{P}\s]+$/u;
 
-const socialsRow = cva("mt-stack-xs flex flex-wrap", {
+// mt-auto: 紹介文が 2 行と 3 行で揺れても、同じ行のカードで導線の高さが揃う（罫線グリッドの行は stretch）。
+// 紹介文との最小距離 stack/xs 8 は padding で持つ（U-46）
+const socialsRow = cva("mt-auto flex flex-wrap pt-stack-xs", {
   variants: {
     size: { leader: "gap-inline-md", staff: "gap-inline-sm" },
   },
