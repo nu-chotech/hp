@@ -12,6 +12,7 @@
 > - **2026-09-07**: Members の Staff（運営 3 名）は写真が揃うまで**写真枠ごと暫定非表示**（`showStaffPhotos` false。パスと素材は残置、§6.15 の写真つきが到達点）。Partner の Placeholder から「パートナーになる」（mailto）を撤去し、セルは `YOUR LOGO HERE` のみ（§6.16）。Partner セルは**正方形タイル**に変更（Desktop 6 列 197.67 / tablet 3 列 237.33 / Mobile 2 列 168、DECISION L-31）。マーキーの団体は partners.ts から生成し、**団体名ではなくロゴ**（80 角 `size/marquee-logo`。帯 `size/band-marquee` は 56 → **120**、項目間 `inline/2xl` 48、DECISION U-30）で出す。「パートナー募集中」の Ghost は撤去。複製数は viewport から自動計算し継ぎ目なく回す。停止 / 再生ボタンとページ内モーションスイッチ（旧 M8）は**撤去**（DECISION U-31、クライアント判断）。自動の動きは `prefers-reduced-motion` と画面外でのみ止まり、WCAG 2.2.2 の「ページ内の停止手段」は**未達**として §8 に記録。マーキーの ✳ は Label の両脇だけ（U-32）
 > - **2026-09-10**: パートナーの公式ロゴ 5 枚を受領。素材は白背景 jpg / 透過 png / 4:1 超のワードマークが混在し、ground の上では白背景の素材が板として浮き、正方形タイルではワードマークが細い帯になった。→ タイルとマーキー帯の面を **`color/logo-ground`（neutral-0、白）** に（**DECISION U-33**）。Partner タイルは正方形 → **3:2**（Desktop 6 列 197.67 × 131.78 / tablet 3 列 / Mobile 2 列は床 120。列数は L-31 のまま、**DECISION L-32**）。マーキーのロゴ枠も 3:2 で高さ `size/marquee-logo` **96**（幅 144）。素材は `scripts/normalize-partner-logos.mjs` が 3:2 の白キャンバス（600 × 400）に正規化し、セルは inset 0 で縁まで敷く。Image slot に比率 3:2 を追加。募集セル「YOUR LOGO HERE」は撤去し、行の端数は無地の白タイル（aria-hidden）で埋める（**DECISION U-34**）
 > - **2026-09-12**: Hero の h1 を回転語「仲間と、学ぶ。創る。話す。」からタグライン **`Hack Your Limits.`** の 1 行に置き換える（**DECISION U-37**。3 語は About の CULTURE セルへ）。動詞 `Hack` を `color/hero/word`、目的語を `inverse/ink` で塗り、U-3 の 2 色対比を語順を入れ替えて引き継ぐ。`lang="en"`。**Display/XL の上限を 124 → 116**（129 行送り）に下げる — 124 では 1 行 ≈ 1209 で container 1200 を 9px 超え、1280 幅では入るのに 1440 幅で折れる揺れが出た。116 なら ≈ 1131 で 69px の余裕。Mobile は「Hack Your」/「Limits.」の自然折返し（`\n` なし）。回転語の仕組み（`Hero / Rotating Word`、`motion/word/*`、`--word-*`、`.hero__word`、§7.4.3）は撤去。Hero の `min-height` は **nav に加えて Marquee 帯も引く**（`min(100svh − size/nav − size/band-marquee, size/hero-max)`、**DECISION L-33**、L-7 改）— ファーストビューの下端にパートナーの帯が乗る。1440 × 900 で Hero 718 + 帯 120、Mobile 390 × 844 で Hero 662 + 帯。1280 × 720 は内容 582 が下限 538 を超えるので帯は 74px だけ見える
+> - **2026-09-12（2）**: SNS / Discord のブランドマークを Tabler の `brand-*` から**各社の公式素材**を写したインライン SVG（`brand-marks.tsx`、原本 `assets/brand/`）に置き換える（**DECISION U-38**、U-23 撤回）。Tabler の再描画は X / GitHub / Discord / Instagram の各規約（改変不可・公式素材のみ）に抵触していた。色は `currentColor` の黒 / 白、幾何は不変
 > - **2026-09-11**: Cell Stat の所属バッジ（U-29）を**撤回**し、セルは `50+` の数字だけに戻す（**DECISION U-36**）。Chip の Inverse トーンは Accent と同じくライブラリのみ（ページに出さない）。About の CULTURE セルは本文を落として題だけ（「仲間と、学ぶ。創る。話す。」— Hero の h1 を `Hack Your Limits.` に差し替える予定に合わせ、3 語を Culture に降ろす）
 > - **2026-09-10（2）**: 外部リンクは**すべて新しいタブ**で開く（`target="_blank" rel="noopener noreferrer"`、vh「（外部、新しいタブで開く）」、**DECISION M-21**。M-15 は撤回）。Partner の Logo タイルは `href` があれば**タイル全体が団体サイトへのリンク**（**DECISION U-35**。hover / pressed の表現なし、フォーカスリングは内側）
 - **2026-09-05 の実装レビューを反映**（U-21〜U-29 / L-30）: 写真・イラスト・ロゴは原色（B/W 撤回）、Hero の格子線撤去、Discord マークは filled、Stat の数字は白の Display/L + 所属の内訳、全発言にリアクション（実際の絵文字、数字が巻き上がる）、ペルソナとチャットのアバターは Humation（女 3・男 3）、Poster の Social はマークのみ、ロゴマークは外接矩形の mark.svg を 24 / 20（U-27 の Nav CTA マークは同日撤回）
@@ -1206,7 +1207,7 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 
 ### 5.1 セットと描画規則
 
-- Tabler Icons **outline** のみ。24 grid、stroke 2、round cap / round join（Tabler 既定）。filled 版・他セット（lucide、react-icons）は混ぜない。例外は Discord のブランドマークだけ `brand-discord-filled`（**DECISION U-23**: 輪郭版は顔の目が線になって崩れて見える。塗り版は 24 grid のまま stroke を持たない）。
+- Tabler Icons **outline** のみ。24 grid、stroke 2、round cap / round join（Tabler 既定）。filled 版・他セット（lucide、react-icons）は混ぜない。例外は**ブランドマーク**（X / Instagram / GitHub / Discord）で、Tabler の `brand-*` は使わず**各社の公式素材**の path を写したインライン SVG（`src/components/brand-marks.tsx`、原本は `assets/brand/*.svg`）を置く（**DECISION U-38**、2026-09-12。U-23 は撤回）。幾何は不変、色は `currentColor` の黒 / 白のみ、縦横比は素材のまま（呼び出し側の正方形の枠に `xMidYMid meet` で収まる）。各社の規約はどれも第三者の再描画を許さない — X「黒か白。形の完全性を保つ」、GitHub「色・寸法の変更を含め改変不可」、Discord「編集・変更・歪曲・再配色・再構成をしない」、Instagram「Brand Resource Center のロゴのみ」。
 - 絵文字・記号文字（✳ → ↑ 🙌 👀）をアイコン代わりに使わない。矢印は `Icon/ArrowRight`（サイト内へ進む）と `Icon/ArrowUpRight`（外部へ出る: Discord、X、Instagram、GitHub、mailto）の 2 つ。ページ内スクロール（hero「活動を見る」、Nav リンク）はアイコンなし（R9）。例外はチャットのリアクション（§6.4、**DECISION U-25**）: Discord の実際のリアクションを写す絵なので、アイコンではなく実際の絵文字を置く。
 - stroke: 16 / 20 / 24 では **2**（16 では実効 1.33px だが Retina では鮮明、Tabler の意図通り）。**32 以上は 1.5**（そのままだと 2.67px になり太る）。現ページに 32 以上の用途はない。
 
@@ -1258,7 +1259,7 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 | `Icon/Menu2` | `menu-2` | `IconMenu2` | 24 | Mobile nav の開く | icon button 44 |
 | `Icon/X` | `x` | `IconX` | 24 / 20 | Mobile nav の閉じる（icon button 44 → 24）、library dialog の閉じる（36 → 20） | 中央 |
 | `Icon/Photo` | `photo` | `IconPhoto` | 24 | image placeholder（§5.7.3） | 単独。`color/ink-tertiary` |
-| `Icon/BrandX` / `Icon/BrandInstagram` / `Icon/BrandGithub` | `brand-x` / `brand-instagram` / `brand-github` | `IconBrandX` … | 16 | **footer 任意**（Footnote 13 のリンク先頭）。poster の social はテキストラベルのみ | leading 4 |
+| `Brand/X` / `Brand/Instagram` / `Brand/GitHub` / `Brand/Discord` | —（Tabler ではなく公式素材、U-38） | `BrandX` / `BrandInstagram` / `BrandGithub` / `BrandDiscord`（`brand-marks.tsx`） | 20 | poster の social（マークのみ、U-28）、member card の socials（U-12）、Discord へ出るボタンの先頭（hero / poster、U-19） | social: 単独、hit area 44 / ボタン: leading 8 |
 
 必須 8 種 + 任意 3 種（player-pause / play は U-31 で撤去）。追加するときは「同じ意味に 2 つのアイコンを使わない」— 内部（`ArrowRight`）と外部（`ArrowUpRight`）は別の意味であり、この 2 つ以外の矢印を増やさない。
 
@@ -1468,7 +1469,7 @@ Spring は移動にだけ使う（M2）。本章の部品で移動するのは M
 | Mobile menu 開 / 閉 | `menu-2` / `x` | Icon button md 24（sm なら 20） | — |
 | Image placeholder | `photo` | 24 | — |
 | Discord への導線（ボタン） | `brand-discord`（**先頭**）+ `arrow-up-right`（末尾） | 16 / 20 | — |
-| SNS への導線（X / Instagram / GitHub） | `brand-x` / `brand-instagram` / `brand-github`（**先頭**）+ `arrow-up-right`（末尾） | 16 | — |
+| SNS への導線（X / Instagram / GitHub） | 公式ブランドマーク（§5.1、**先頭**）+ `arrow-up-right`（末尾） | 16 | — |
 
 **DECISION U-19** Discord と SNS の導線にはブランドマークを**先頭**に添える。行き先が「外部」であることは `arrow-up-right` が言うが、**どこへ**行くかは文字を読まないと分からない。ロゴは読む前に分かる唯一の記号で、ここだけは §5.1 の「アイコンは装飾、意味は隣の文字が運ぶ」の例外にあたる（マークそのものが固有名詞）。
 
@@ -2062,7 +2063,7 @@ Leader と Staff の差は **写真比・inset・name・skills の 4 点**（Soc
 | 項目 | 仕様 |
 |---|---|
 | 位置 | skills の下、`stack/xs` 8。カードの最終行 |
-| 中身 | アイコン **20**（`icon/md`）× 最大 3、`color/ink`。既定は X / GitHub / 外部リンク（個人サイト）。Instagram・mail に差し替え可 |
+| 中身 | ブランドマーク **20**（`icon/md` の枠、公式素材 §5.1 / U-38）× 最大 3、`color/ink`（`currentColor`）。既定は X / GitHub / 外部リンク（個人サイトは Tabler `external-link`）。Instagram・mail に差し替え可 |
 | gap | Leader `inline/md` 16 / Staff `inline/sm` 12 |
 | ターゲット | 見た目 20 でも hit area は `::before` inset −12 で 44 を確保（§6.1.5、§8.3） |
 | 意味 | `<ul>` > `<li>` > `<a>`。アイコンは `aria-hidden`、名前は visually-hidden で「田中 太郎 の X」のように**人名を含める**（同じ「X」が 5 枚並ぶため） |
@@ -2115,7 +2116,7 @@ section/pad-display 96 (M 64)
 | 段落 | `Body/M` 15、`poster/ink-secondary`、`max-width: measure/paragraph` 588（39 全角、R18） |
 | actions | 横 flex、`align-items: center`、ボタン ↔ Social `inline/lg` 24、Social 間 **`inline/lg` 24**（44 角の hit area が重ならない間隔）、`flex-wrap`（Mobile: ボタン 207 → 次行に Social） |
 | CTA | `poster/action/*`（Mono: Ground solid / Lime: **Ink solid**）/ md、`Discordに参加する` + `arrow-up-right` 20。Lime 地で面 10.83 / hover 7.61（UI ✓）、ラベル 14.86 |
-| Social | ブランドマーク **20 のみ** × 3（Link Social の色と状態、ラベルは visually-hidden「X（外部）」、hit area 44 角、**DECISION U-28**: ラベルと矢印を落とす。マークが行き先を言い切るので文字は冗長で、CTA と同じ行で目立ち過ぎていた） |
+| Social | ブランドマーク **20 のみ** × 3（公式素材 §5.1 / U-38。Link Social の色と状態、ラベルは visually-hidden「X（外部）」、hit area 44 角、**DECISION U-28**: ラベルと矢印を落とす。マークが行き先を言い切るので文字は冗長で、CTA と同じ行で目立ち過ぎていた） |
 | Focus / Selection | `poster/focus/ring`（Mono → focus/ring-inverse lime-300 12.79 / Lime lime-900 5.72）、`poster/selection`（Mono → inverse/selection / Lime ink@12） |
 
 Lime モードの補助文字は ink@88（8.23 ✓）。面が明るいのでグラウンド色の文字は使えない（1.53）。Poster 上に Outline ボタンを置かない（§6.2.3）。
@@ -3167,7 +3168,7 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 | U-20 | Hero の ink 面に**背景写真**を不透明度 0.2 で重ね、48 s 周期で漂わせる | 「仲間と、学ぶ／創る／話す」を字だけで言っていた。誰がどこで何をしているのかは 1 枚の写真が先に答える。動きは M9 の唯一の例外で、装飾だと認めたうえで採った — 引き換えに (1) 不透明度は好みではなく AA から逆算した測定値、(2) 速さは 0.6 px/s（マーキーの 1/60）で視線を引かない上限、(3) M8 のスイッチ 1 つで止まり、`prefers-reduced-transparency` / `forced-colors` では層ごと消える、の 3 つを課す |
 | U-21 | 写真・イラスト・ロゴは原色。B/W 処理（grayscale + contrast）を撤回 | 色は「コミュニティの実像」を運ぶ情報。モノクロ化はそれを削っていた |
 | U-22 | Hero の格子線 4 本（K-12）を撤去 | 写真の上に線が乗ると写真の一部に見え、何の線か分からない |
-| U-23 | Discord のブランドマークだけ filled | 輪郭版は顔の目が線になって崩れて見える。Tabler outline のみの唯一の例外 |
+| U-23 | ~~Discord のブランドマークだけ filled~~ **U-38 で公式素材に置換（2026-09-12）** | 輪郭版は顔の目が線になって崩れて見える。Tabler outline のみの唯一の例外 — だった。Tabler の filled 版も再描画である点は同じで、規約上の問題は解けていなかった |
 | U-24 | Cell Stat の数字は白（inverse/ink）、Display/L + Display/M。U-6 のアクセントを撤回 | 規模は色ではなく大きさで語る。lime の Display/M は kicker と釣り合わなかった |
 | U-25 | チャットのリアクションは実際の絵文字。数字は 1 から最終値へ 1 ずつ巻き上がる | Discord の実際のリアクションを写す絵。最初から「3」だと押した人がいないように見える |
 | U-26 | ペルソナとチャットのアバターは Humation のイラスト（生成スクリプトで SVG 化） | 実在しない人物像に実写の顔を当てると「誰？」が先に立つ |
@@ -3179,6 +3180,7 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 | U-32 | Marquee の ✳ は Label「PARTNERS」の両脇だけに置き、ロゴの間には置かない（2026-09-07） | 図の列に記号を挟むとロゴが 1 つずつ区切られて「一覧」に見えない。両脇の ✳ が「ここから団体」の開始記号になり、ロゴ同士は `inline/2xl` 48 の間だけで並ぶ |
 | U-37 | Hero の h1 を回転語「仲間と、学ぶ。創る。話す。」からタグライン **`Hack Your Limits.`** の静止 1 行に（2026-09-12）。動詞 `Hack` を `hero/word`、目的語を `inverse/ink`、`lang="en"`。Display/XL の上限 124 → **116**（129）。回転語の部品・トークン・§7.4.3 を撤去。3 語は About CULTURE の題へ | ページの芯をタグラインで言い切る。ヒーローが「何を一緒にやるか」を、CULTURE が「仲間と、学ぶ。創る。話す。」を持ち、役割が重ならない。124 では 1 行が 1209 で 1200 を超え、1280 幅で入るのに 1440 幅で折れる揺れが出た。116 なら 1131 で 69px の余裕、かつ 1 行なら Hero の内容が ≈ 600 に収まり L-33 の帯と同居できる |
 | U-36 | Cell Stat は `50+` の数字だけ。所属のバッジ（U-29）を撤回（2026-09-11、クライアント判断）。Chip の Inverse トーンはライブラリのみに格下げ | 規模を語るセルに所属の列が乗ると、数字の大きさが語る「規模」より先に文字が読まれた。所属の裏づけは Hero の「大学・学部・学科を問わず」が文で持つ |
+| U-38 | SNS / Discord のブランドマークは Tabler の `brand-*` をやめ、**各社の公式素材**（`assets/brand/`: X の `x-logo.zip` / `logo.svg`、GitHub の `GitHub_Logos.zip` / Invertocat、Discord の `Discord-Symbol-Black.svg`、Instagram は Brand Resource Center のグリフをクライアントが取得）の path を写したインライン SVG `brand-marks.tsx` に置き換える（2026-09-12）。幾何は不変、色は `currentColor` の黒 / 白のみ、枠は従来どおり 20（縦横比は素材のまま中央に収める）。U-23 は撤回 | 各社の規約が第三者の再描画を許さない: X「黒か白。形の完全性を保つ」、GitHub「色・寸法の変更を含め改変不可、黒 / 白 / グレー / 緑のみ」、Discord「編集・変更・歪曲・再配色・再構成をしない」、Instagram「Brand Resource Center のロゴのみ使用」。Tabler の `brand-*` は線画の再描画で、outline 版も filled 版も同じ問題を持つ |
 
 ## 付録 B. 検証
 

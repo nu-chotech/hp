@@ -3,10 +3,6 @@ import {
   IconArrowUp,
   IconArrowUpRight,
   IconAsterisk,
-  IconBrandDiscordFilled,
-  IconBrandGithub,
-  IconBrandInstagram,
-  IconBrandX,
   IconCheck,
   IconExternalLink,
   IconHeart,
@@ -16,13 +12,20 @@ import {
   IconX,
 } from "@tabler/icons-react";
 import type { ComponentProps } from "react";
+import {
+  BrandDiscordMark,
+  BrandGithubMark,
+  BrandInstagramMark,
+  BrandXMark,
+} from "@/components/brand-marks";
 
 /**
  * アイコン（§5）
  *
  * Tabler Icons の outline のみ。24 グリッド・stroke 2 で統一し、他のセットは混ぜない。
- * 例外は Discord のブランドマークだけ filled（DECISION U-23）— 輪郭版は顔の目が線になって
- * 崩れて見える。塗り版は 24 グリッドのまま stroke を持たない。
+ * 例外はブランドマーク（X / Instagram / GitHub / Discord）で、Tabler の再描画ではなく
+ * 各社の公式素材を写した brand-marks.tsx が実体（DECISION U-38、旧 U-23 は撤回）。
+ * ここから re-export するのは、呼び出し側が「アイコンの出どころ」を知らずに済むため。
  * ページ上のアイコンはすべて装飾で、意味は必ず隣接するテキストが運ぶ。だからここで
  * 一律に aria-hidden を付ける — 呼び出し側で付け忘れると読み上げにゴミが混ざる。
  */
@@ -70,11 +73,15 @@ export const Photo = decorative(IconPhoto, "Photo");
 /** 個人サイト */
 export const Website = decorative(IconExternalLink, "Website");
 
-/** 唯一の filled（U-23）。stroke は無視される */
-export const BrandDiscord = decorative(IconBrandDiscordFilled, "BrandDiscord");
-export const BrandX = decorative(IconBrandX, "BrandX");
-export const BrandInstagram = decorative(IconBrandInstagram, "BrandInstagram");
-export const BrandGithub = decorative(IconBrandGithub, "BrandGithub");
+/**
+ * ブランドマーク（§5.1 の例外、U-38）。公式素材の path を写した塗りの SVG で、
+ * Tabler の size / stroke と同じ props を受けるが stroke は使わない。
+ * 型は IconProps と互換なので Button の brand / TextLink の中にそのまま置ける。
+ */
+export const BrandDiscord = BrandDiscordMark;
+export const BrandX = BrandXMark;
+export const BrandInstagram = BrandInstagramMark;
+export const BrandGithub = BrandGithubMark;
 
 /** content 側が文字列で持つ導線を解決する */
 export const brandIcons = {
