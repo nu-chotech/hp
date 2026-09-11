@@ -7,7 +7,6 @@ import { heroContent } from "@/content/hero";
 import { externalLinkNote, externalLinkProps } from "@/lib/external-link";
 import { cn } from "@/lib/utils";
 import { HeroReveal } from "./hero/hero-reveal";
-import { MetaStrip } from "./hero/meta-strip";
 
 /**
  * Section / Hero（§6.8.1）
@@ -94,29 +93,40 @@ export function Hero() {
       <HeroReveal>
         {/* relative: 絶対配置の背景写真より前に描く */}
         <Container className="relative flex flex-col gap-stack-xl pt-section-pad-display pb-section-pad-bottom">
-          <MetaStrip />
-
           {/*
            * タグラインを Display/XL で言い切る（DECISION U-37）。名前は可視の文そのもの。
-           * アクセントの動詞 × 白の目的語で対比を作る。下線は無い（DECISION U-3）。
-           * Desktop は 1 行（116px で ≈ 1131 ≤ 1200）。Mobile は "Hack Your" / "Limits." に
-           * 自然折返し。balance は "Hack" / "Your Limits." に寄せるので解除する。
+           * 文は**墨のボックス**に載せる（DECISION U-39）: 写真が透ける面の上で、実色の
+           * inverse/ground を敷いた板だけが「印刷された」ように一段沈み、文字の輪郭が
+           * 写真の明部に食われない。
+           *
+           * ボックスは inline-block。inline のまま背景を塗ると、この書体の content area
+           * （≈ 1.6em）が行送り 1.11 を大きく超えて、板が上下に 30px ずつはみ出し lead に
+           * 触れる。inline-block なら板の高さ = 行ボックス + padding で決まる。Mobile の
+           * "Hack Your" / "Limits." は 1 枚の板の中で 2 行に折れる。
+           * 余白は字の 0.2em / 0.1em — 固定 px にしないのは、板の厚みが級数に比例して
+           * 初めて「文字の一部」に見えるため。左右の 0.2em ぶんは負のマージンで
+           * container の外へ吊るし、**文字の左端**を lead・段落・ボタンと揃える（L-19 の
+           * フラッシュレフトは板ではなく字で守る）。
+           * 色の強調は句点の「.」だけ（hero/word）。balance は解除（"Hack" / "Your Limits."
+           * に寄ってしまう）。
            */}
           <h1
             className="text-wrap text-display-xl text-inverse-ink"
             data-reveal
-            data-reveal-index="1"
+            data-reveal-index="0"
             lang="en"
           >
-            <span className="text-hero-word">{headline.verb}</span>{" "}
-            {headline.object}
+            <span className="-mx-[0.2em] inline-block bg-inverse-ground px-[0.2em] py-[0.1em]">
+              {headline.text}
+              <span className="text-hero-word">{headline.period}</span>
+            </span>
           </h1>
 
           {/* リード → 段落だけは stack/xs 8 で締める（DECISION L-6） */}
           <div
             className="flex flex-col gap-stack-xs"
             data-reveal
-            data-reveal-index="3"
+            data-reveal-index="1"
           >
             {/* Display 124 と本文 16 の間の中間階層（DECISION U-5） */}
             <p className="text-title-1 text-inverse-ink">{lead}</p>
@@ -130,7 +140,7 @@ export function Hero() {
           <div
             className="flex flex-wrap items-center gap-inline-sm"
             data-reveal
-            data-reveal-index="4"
+            data-reveal-index="2"
           >
             {/* 主 = 外部の Discord。矢印と visually-hidden の注記を添え、
                 新しいタブで開く（DECISION M-21） */}

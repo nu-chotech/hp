@@ -13,6 +13,7 @@
 > - **2026-09-10**: パートナーの公式ロゴ 5 枚を受領。素材は白背景 jpg / 透過 png / 4:1 超のワードマークが混在し、ground の上では白背景の素材が板として浮き、正方形タイルではワードマークが細い帯になった。→ タイルとマーキー帯の面を **`color/logo-ground`（neutral-0、白）** に（**DECISION U-33**）。Partner タイルは正方形 → **3:2**（Desktop 6 列 197.67 × 131.78 / tablet 3 列 / Mobile 2 列は床 120。列数は L-31 のまま、**DECISION L-32**）。マーキーのロゴ枠も 3:2 で高さ `size/marquee-logo` **96**（幅 144）。素材は `scripts/normalize-partner-logos.mjs` が 3:2 の白キャンバス（600 × 400）に正規化し、セルは inset 0 で縁まで敷く。Image slot に比率 3:2 を追加。募集セル「YOUR LOGO HERE」は撤去し、行の端数は無地の白タイル（aria-hidden）で埋める（**DECISION U-34**）
 > - **2026-09-12**: Hero の h1 を回転語「仲間と、学ぶ。創る。話す。」からタグライン **`Hack Your Limits.`** の 1 行に置き換える（**DECISION U-37**。3 語は About の CULTURE セルへ）。動詞 `Hack` を `color/hero/word`、目的語を `inverse/ink` で塗り、U-3 の 2 色対比を語順を入れ替えて引き継ぐ。`lang="en"`。**Display/XL の上限を 124 → 116**（129 行送り）に下げる — 124 では 1 行 ≈ 1209 で container 1200 を 9px 超え、1280 幅では入るのに 1440 幅で折れる揺れが出た。116 なら ≈ 1131 で 69px の余裕。Mobile は「Hack Your」/「Limits.」の自然折返し（`\n` なし）。回転語の仕組み（`Hero / Rotating Word`、`motion/word/*`、`--word-*`、`.hero__word`、§7.4.3）は撤去。Hero の `min-height` は **nav に加えて Marquee 帯も引く**（`min(100svh − size/nav − size/band-marquee, size/hero-max)`、**DECISION L-33**、L-7 改）— ファーストビューの下端にパートナーの帯が乗る。1440 × 900 で Hero 718 + 帯 120、Mobile 390 × 844 で Hero 662 + 帯。1280 × 720 は内容 582 が下限 538 を超えるので帯は 74px だけ見える
 > - **2026-09-12（2）**: SNS / Discord のブランドマークを Tabler の `brand-*` から**各社の公式素材**を写したインライン SVG（`brand-marks.tsx`、原本 `assets/brand/`）に置き換える（**DECISION U-38**、U-23 撤回）。Tabler の再描画は X / GitHub / Discord / Instagram の各規約（改変不可・公式素材のみ）に抵触していた。色は `currentColor` の黒 / 白、幾何は不変
+> - **2026-09-12（3）**: Hero の meta strip を撤去し、h1 `Hack Your Limits.` を**墨の板**に載せて句点だけアクセント（**DECISION U-39**。U-13 撤回、U-37 の「動詞だけアクセント」撤回）。設立と公認 / 公式パートナーは About のセルへ
 > - **2026-09-11**: Cell Stat の所属バッジ（U-29）を**撤回**し、セルは `50+` の数字だけに戻す（**DECISION U-36**）。Chip の Inverse トーンは Accent と同じくライブラリのみ（ページに出さない）。About の CULTURE セルは本文を落として題だけ（「仲間と、学ぶ。創る。話す。」— Hero の h1 を `Hack Your Limits.` に差し替える予定に合わせ、3 語を Culture に降ろす）
 > - **2026-09-10（2）**: 外部リンクは**すべて新しいタブ**で開く（`target="_blank" rel="noopener noreferrer"`、vh「（外部、新しいタブで開く）」、**DECISION M-21**。M-15 は撤回）。Partner の Logo タイルは `href` があれば**タイル全体が団体サイトへのリンク**（**DECISION U-35**。hover / pressed の表現なし、フォーカスリングは内側）
 - **2026-09-05 の実装レビューを反映**（U-21〜U-29 / L-30）: 写真・イラスト・ロゴは原色（B/W 撤回）、Hero の格子線撤去、Discord マークは filled、Stat の数字は白の Display/L + 所属の内訳、全発言にリアクション（実際の絵文字、数字が巻き上がる）、ペルソナとチャットのアバターは Humation（女 3・男 3）、Poster の Social はマークのみ、ロゴマークは外接矩形の mark.svg を 24 / 20（U-27 の Nav CTA マークは同日撤回）
@@ -575,9 +576,9 @@ CSS 変数名は Figma 名の `/` を `-` に置換する（例 `--color-inverse
 | Nav | CTA 参加する（36） | 14 EB | Label/S（14 / 20） | §6.2 | 800 → 700 |
 | Nav | Mobile CTA（44）、メニュー行 | — | Label/M / Label/Nav | §6.2 | 新設部品 |
 | Nav | スキップリンク | — | Label/S（D）/ Label/M（M） | §6.2 | 新設 |
-| Hero | メタ SINCE 2025 · 長崎大学公認 学生団体 · サポーターズ 技育プロジェクト 学生団体公式パートナー · MEMBERS 50+ | 12 / +14% · +6% | Overline/Latin + Overline/JP（12 / 16、range） | `color/inverse/ink-tertiary` | +14 → +12。区切りは 1×12 hairline（§4.3）。折返しあり（DECISION U-13） |
-| Hero | h1 動詞 `Hack` | 124 / 104% / −2% | Display/XL **116** / 129 | `color/hero/word`（Mono inverse/ink 14.86 / Lime lime-400 10.83） | 回転語「学ぶ。」→ タグラインの動詞（U-37）。上限 124 → 116（1 行に収めるため） |
-| Hero | h1 目的語 `Your Limits.` | 同 | Display/XL | `color/inverse/ink` | 導入句「仲間と、」→ 目的語。quaternary → ink は U-3 のまま |
+| Hero | ~~メタ SINCE 2025 · 長崎大学公認 学生団体 · サポーターズ 技育プロジェクト 学生団体公式パートナー · MEMBERS 50+~~ | — | — | — | **U-39 で撤去**。事実は About の SINCE / OFFICIAL セルへ |
+| Hero | h1 `Hack Your Limits` | 124 / 104% / −2% | Display/XL **116** / 129 | `color/inverse/ink`、墨の板（`inverse/ground`）の上 | 回転語 → タグライン（U-37）。上限 124 → 116（1 行に収めるため）。U-39 で文は白、板に載せる |
+| Hero | h1 句点 `.` | 同 | Display/XL | `color/hero/word`（Mono inverse/ink / accent 400） | U-39: 色の強調は句点 1 か所。U-3 の「白 × アクセント」の対比は語ではなく句点で引き継ぐ |
 | Hero | リード 長崎にテック好きのためのハブを。 | 18 EB | Title/1 | `color/inverse/ink` | 18 → 32（DECISION U-5） |
 | Hero | 段落 | 16 / 175%、36em | Body/L（16 / 28） | `color/inverse/ink-secondary` | 行長は `measure/paragraph` |
 | Hero | ボタン ×2（44） | 15 EB | Label/M | §6.2 | 800 → 700 |
@@ -1325,7 +1326,7 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 | 4 | Rule | Rule | 全セクション境界・行区切り・タグライン・Hero meta |
 | 5 | Brand lockup | Brand / Lockup | Nav・Footer |
 | 6 | Nav bar（Desktop / Mobile）+ Menu panel | Nav / Bar | 上部固定 |
-| 7 | Hero / Meta strip | V2 / Hero / Meta Strip | Hero |
+| 7 | ~~Hero / Meta strip~~（U-39 で撤去） | ~~V2 / Hero / Meta Strip~~ | Hero |
 | 8 | Hero / Rotating word | V2 / Hero / Rotating Word | Hero |
 | 9 | Section / Hero | V2 / Section / Hero | 先頭 |
 | 10 | Marquee band + item + control | Marquee / Band, Item | Hero 直下 |
@@ -1739,11 +1740,8 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 ```
 ┌ inverse/ground  ─ 背景写真（不透明度 0.2、原色）────────────────────────────┐
 │ section/pad-display 96 (M 64)                                                  │
-│ SINCE 2025 | 長崎大学公認 学生団体 |                     meta strip（折返し）  │
-│ サポーターズ 技育プロジェクト 学生団体公式パートナー | MEMBERS 50+              │
-│ stack/xl 32                                                                    │
-│ 仲間と、学ぶ。                                            h1 = lead-in + word   │
-│   ink    accent                                                                │
+│ ▌Hack Your Limits.▐                                       h1 = 墨の板 + 句点     │
+│   inverse/ink   hero/word                                                      │
 │ stack/xl 32                                                                    │
 │ 長崎にテック好きのためのハブを。                          lead (Title/1)       │
 │ stack/xs 8                                                                     │
@@ -1759,23 +1757,18 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 | 面 | `color/inverse/ground`。`min-height: min(100svh − var(--size-nav) − var(--size-band-marquee), var(--size-hero-max))`、内容は垂直中央（DECISION L-7 → **L-33**: 帯もファーストビューに入れる）。full-bleed、内容は container 1200 / 342 |
 | 背景写真 | ink 面の**上**に `--hero-backdrop-opacity` **0.2** で重ねる（`cover`、原色 U-21、`aria-hidden`）。動きは §7.3（U-20）。**不透明度は測って決める値**: 実レンダリングの合成結果から測った文字コントラストの最小は ink 8.94 / secondary 7.37 / **tertiary 5.55**（12px の meta strip が最も厳しい）で、AA 4.5 を下回る面積は 0 %。素材を替えたら測り直す — 明部の多い写真は同じ 0.2 で通らない |
 | 格子線 | **なし**（**DECISION U-22**: K-12 の 4 本を撤去。写真の上に線が乗ると写真の一部に見え、何の線か分からない。`color/inverse/hairline` は用途を失うが、トークンは残す） |
-| Meta strip | §6.8.2 |
-| h1 | `Display/XL` **116** / 56、`lang="en"`。**`Hack Your Limits.`**（タグラインと同文、**DECISION U-37**）。動詞 `Hack` を **`color/hero/word`**、目的語 `Your Limits.` を **`inverse/ink`**（14.86）で塗り、**アクセント → 白の 2 色**で「動詞 ＋ 目的語」を対比させる（U-3 の対比を語順を入れ替えて引き継ぐ）。Desktop 1 行（≈ 1131 ≤ 1200。124 のままだと 1209 で 1280 幅では入るのに 1440 幅で折れるため上限を 116 に）。Mobile は `Hack Your` / `Limits.` の自然折返し（`Hack Your` ≈ 322 ≤ 342）。著者改行は入れない。`text-wrap: balance` は使わない（`Hack` / `Your Limits.` に寄り、Mobile で `Your Limits.` ≈ 366 が入らない）。名前は可視の文そのもの（visually-hidden なし） |
+| Meta strip | **撤去**（§6.8.2、**DECISION U-39**）。「SINCE 2025 / 長崎大学公認 / 技育プロジェクト 学生団体公式パートナー」は About の SINCE / OFFICIAL セルへ（§6.11） |
+| h1 | `Display/XL` **116** / 56、`lang="en"`。**`Hack Your Limits.`**（タグラインと同文、**DECISION U-37**）。文を**墨の板**（`inverse/ground` 実色、inline-block、padding 左右 **0.2em** / 上下 **0.1em**、左右は `−0.2em` の負マージンで container の外へ吊るし**字の左端**を lead と揃える）に載せ、文は `inverse/ink`（14.86）、句点 **`.` だけ `color/hero/word`**（**DECISION U-39**。U-37 の「動詞 `Hack` をアクセント」は撤回 — 板が強調を担うので色の強調は 1 か所）。板を inline ではなく inline-block にするのは、この書体の content area（≈ 1.6em）が行送り 1.11 を超えて背景が上下 30px はみ出すため。Desktop 1 行（板 ≈ 1177 = 1131 + 46、124 のままだと 1209 で 1280 幅では入るのに 1440 幅で折れるため上限を 116 に）。Mobile は板の中で `Hack Your` / `Limits.` の自然折返し（`Hack Your` ≈ 322 ≤ 342）。著者改行は入れない。`text-wrap: balance` は使わない。名前は可視の文そのもの（visually-hidden なし） |
 | lead | `Title/1` **32 / 26**、`inverse/ink`（14.86）。Display 124 と本文 16 の間に中間の階層を作る（**DECISION U-5**） |
 | 段落 | `Body/L` 16、`inverse/ink-secondary`（11.78）、`max-width: measure/paragraph` 588（≈ 36.8 全角）。Mobile は container 幅 |
 | actions | 横 flex、gap `inline/sm` 12。主 = On Ink / Ground / md、副 = On Ink / Outline / md（アイコンなし）。Mobile も 1 行（255 ≤ 342） |
-| 縦リズム | meta → h1 → lead → actions は `stack/xl` 32、lead → 段落は `stack/xs` 8（DECISION L-6） |
+| 縦リズム | h1 → lead → actions は `stack/xl` 32、lead → 段落は `stack/xs` 8（DECISION L-6） |
 | 状態 | ボタン §6.2、Focus ring `focus/ring-inverse`、Selection `inverse/selection` |
-| Reveal | §7.4.1（Hero はオブザーバなし、`document.fonts.ready` か 400ms） |
+| Reveal | 段は h1 0 / lead 1 / actions 2（meta strip 撤去で 1 段詰める）。§7.4.1（Hero はオブザーバなし、`document.fonts.ready` か 400ms） |
 
-#### 6.8.2 Hero / Meta strip
+#### 6.8.2 Hero / Meta strip（撤去）
 
-| 要素 | 仕様 |
-|---|---|
-| 項目 | `Overline/Latin` 12 UPPER（`Since 2025`、`Members 50+`）/ `Overline/JP` 12（`長崎大学公認 学生団体`、`サポーターズ 技育プロジェクト 学生団体公式パートナー`）、`inverse/ink-tertiary`（8.29）。**DECISION U-13** 公認と公式パートナーは同じ強さで並べる — どちらも「第三者が裏づけた事実」で、片方だけを本文に落とすと格が下がって見える |
-| 区切り | Rule 1/V 1 × 12、**currentColor**（DECISION L-16） |
-| gap | `inline/md` 16、`flex-wrap`（Desktop 1–2 行 / Mobile 3–4 行、行間 `stack/xs` 8）。区切り罫は行頭に来ないよう項目とセットで折返す |
-| 意味 | `<p>`（見出しにしない、§8.5）。数字は半角、`Since 2025` に `lang="en"` は付けない（単語レベル） |
+**DECISION U-39**（2026-09-12、クライアント判断）で撤去。「SINCE 2025 / 長崎大学公認 / 技育プロジェクト 学生団体公式パートナー」の 3 項目は About が受け持つ — 設立は SINCE セル、公認と公式パートナーは OFFICIAL セル（§6.11）。Hero は「タグライン → リード → 段落 → 導線」の 4 段だけになり、ファーストビューで最初に読まれる文字が h1 になる。U-13（公認と公式パートナーを同じ強さで併記）の趣旨は OFFICIAL セルの 2 行が引き継ぐ。部品 `Hero / Meta Strip`、`heroContent.meta`、`meta-strip.tsx` は消す。
 
 #### 6.8.3 Hero / Rotating word（撤去）
 
@@ -1783,7 +1776,7 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 
 #### 6.8.4 Figma
 
-`Hero / Meta Strip` 1（`item1–4` TEXT）。`Section / Hero` `Viewport` {Desktop, Mobile} 2（`headline` TEXT = `Hack Your Limits.`、`leadStrong` `leadBody` `primaryLabel` `secondaryLabel` TEXT）。`Hero / Rotating Word` とそのプロトタイプ（After delay 2,500ms）は U-37 で削除。
+~~`Hero / Meta Strip` 1（`item1–4` TEXT）~~（U-39 で撤去）。`Section / Hero` `Viewport` {Desktop, Mobile} 2（`headline` TEXT = `Hack Your Limits.`、`leadStrong` `leadBody` `primaryLabel` `secondaryLabel` TEXT）。`Hero / Rotating Word` とそのプロトタイプ（After delay 2,500ms）は U-37 で削除。
 
 ### 6.9 Marquee band + item + control
 
@@ -2244,7 +2237,7 @@ CSS カスタムプロパティで持つ。Figma には Variables として置�
 - 隠し状態（opacity 0 / y 16 px）は **JS が有効かつ reduced-motion でない時だけ** 付与する（`html.js:not(.reduced) [data-reveal]`）。JS 失敗時にコンテンツが消えない。
 - 発火は IntersectionObserver（root-margin −10 %）、**一度だけ**。上へ戻った時に再び消さない — 読み終えたものが消えるのは予測可能性に反する。
 - Hero はオブザーバを使わず、`document.fonts.ready` か `duration/3` 400 ms のどちらか早い方で開始する。代替フォントで動かしてから本フォントで再描画すると二重に動いて見える。
-- インデックスはセクション内の順序。Hero 0/1/3/4、About 0/1、Activities 0、For You 0/1、Members 0/1/2、Partners 0/1/2、Poster 0/1/2/3（概念版のまま）。ベント・グリッドとカードのセル群は **親 1 つとして** reveal し、セル個別には動かさない — 2 px 罫線で結ばれた格子は 1 つの面。（DECISION M-2）
+- インデックスはセクション内の順序。Hero 0/1/2（h1 / lead / actions、U-39 で meta strip の段を詰めた）、About 0/1、Activities 0、For You 0/1、Members 0/1/2、Partners 0/1/2、Poster 0/1/2/3（概念版のまま）。ベント・グリッドとカードのセル群は **親 1 つとして** reveal し、セル個別には動かさない — 2 px 罫線で結ばれた格子は 1 つの面。（DECISION M-2）
 
 #### 7.4.2 Marquee
 
@@ -2920,7 +2913,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | `Brand / Lockup` | `Size` {Nav, Footer} × `State` {Default, Hover} | 4 | `name` `tagline` TEXT、`showTagline` BOOL、`focus` BOOL | Rule |
 | `Nav / Menu Row` | `State` {Default, Hover, Pressed, Current} | 4 | `label` TEXT、`focus` BOOL | Rule |
 | `Nav / Bar` | `Viewport` {Desktop, Mobile} × `Menu` {Closed, Open}（sparse） | 3 | nested: brand、link1–4、ctaLabel | Brand、Link、Button、Menu Row |
-| `Hero / Meta Strip` | — | 1 | `item1–4` TEXT | Rule |
+| ~~`Hero / Meta Strip`~~（U-39 撤去） | — | 1 | `item1–4` TEXT | Rule |
 | `Hero / Rotating Word` | `Word` {学ぶ。, 創る。, 話す。} | 3 | — | — |
 | `Section / Hero` | `Viewport` {Desktop, Mobile} | 2 | `word` INSTANCE_SWAP、`leadStrong` `leadBody` `primaryLabel` `secondaryLabel` TEXT | Meta Strip、Rotating Word、Button |
 | `Marquee / Item` | `Kind` {Label, Word, Ghost, Separator} | 4 | `label` TEXT | Icon |
@@ -3158,7 +3151,7 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 | U-10 | Discord の導線は「参加する」1 本。「見学」段階を作らない | 参加自体が可逆で低コストなので、手前に段階を置いても障壁は下がらず導線が割れる。ハードルは文言（見るだけ参加も歓迎です）で下げる |
 | U-11 | `ONLINE & OFFLINE` → `ONLINE & OFFLINE`、title も両方を主語に | 「first」は序列の宣言で、対面が二番手だという含みが残る。実態は両方 |
 | U-12 | Member カードに SNS / 個人サイトのアイコンリンク（20 × 最大 3、`showSocials`） | 顔と実績が見えることが入会判断の材料になる。本文で列挙すると紹介文が読みにくいので 1 行に閉じる。同じアイコンが 5 枚並ぶので、支援技術向けの名前には**人名を含める** |
-| U-13 | メタストリップに「サポーターズ 技育プロジェクト 学生団体公式パートナー」を長崎大学公認と同じ強さで併記 | どちらも第三者が裏づけた事実。片方だけ本文に落とすと格が下がって見える |
+| U-13 | ~~メタストリップに「サポーターズ 技育プロジェクト 学生団体公式パートナー」を長崎大学公認と同じ強さで併記~~ **U-39 でメタストリップごと撤去。同じ強さで並べる趣旨は About の OFFICIAL セルの 2 行が引き継ぐ** | どちらも第三者が裏づけた事実。片方だけ本文に落とすと格が下がって見える |
 | U-14 | `Bento / Cell Text` の `body` プロパティを全 6 variant で `characters` に配線（バグ修正）。`body` は全 Kind で使える | 値を入れても既定文が出ていた。OFFICIAL セルに 2 つ目の裏づけを入れるために必要だった |
 | U-15 | ~~回転語は 2 周で静止せず**回り続ける**~~ **U-37 で回転語ごと撤去** | §7 M8 のスイッチが停止手段を提供済みで、有限化の理由（WCAG 2.2.2）が消えた。3 語を見せて止まる動きは「力尽きた」ようにしか見えない。U-31 でスイッチ撤去後も回し続ける（2.2.2 未達を許容） |
 | U-16 | チャットは静止画をやめ、発言・スタンプ単位で順に現れて**ループ**する | 静止スレッドは「会話のスクリーンショット」に見える。伝えたいのは「いま誰かが喋っていて返事が返ってくる場所だ」ということで、順に現れることでしか出せない |
@@ -3181,6 +3174,7 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 | U-37 | Hero の h1 を回転語「仲間と、学ぶ。創る。話す。」からタグライン **`Hack Your Limits.`** の静止 1 行に（2026-09-12）。動詞 `Hack` を `hero/word`、目的語を `inverse/ink`、`lang="en"`。Display/XL の上限 124 → **116**（129）。回転語の部品・トークン・§7.4.3 を撤去。3 語は About CULTURE の題へ | ページの芯をタグラインで言い切る。ヒーローが「何を一緒にやるか」を、CULTURE が「仲間と、学ぶ。創る。話す。」を持ち、役割が重ならない。124 では 1 行が 1209 で 1200 を超え、1280 幅で入るのに 1440 幅で折れる揺れが出た。116 なら 1131 で 69px の余裕、かつ 1 行なら Hero の内容が ≈ 600 に収まり L-33 の帯と同居できる |
 | U-36 | Cell Stat は `50+` の数字だけ。所属のバッジ（U-29）を撤回（2026-09-11、クライアント判断）。Chip の Inverse トーンはライブラリのみに格下げ | 規模を語るセルに所属の列が乗ると、数字の大きさが語る「規模」より先に文字が読まれた。所属の裏づけは Hero の「大学・学部・学科を問わず」が文で持つ |
 | U-38 | SNS / Discord のブランドマークは Tabler の `brand-*` をやめ、**各社の公式素材**（`assets/brand/`: X の `x-logo.zip` / `logo.svg`、GitHub の `GitHub_Logos.zip` / Invertocat、Discord の `Discord-Symbol-Black.svg`、Instagram は Brand Resource Center のグリフをクライアントが取得）の path を写したインライン SVG `brand-marks.tsx` に置き換える（2026-09-12）。幾何は不変、色は `currentColor` の黒 / 白のみ、枠は従来どおり 20（縦横比は素材のまま中央に収める）。U-23 は撤回 | 各社の規約が第三者の再描画を許さない: X「黒か白。形の完全性を保つ」、GitHub「色・寸法の変更を含め改変不可、黒 / 白 / グレー / 緑のみ」、Discord「編集・変更・歪曲・再配色・再構成をしない」、Instagram「Brand Resource Center のロゴのみ使用」。Tabler の `brand-*` は線画の再描画で、outline 版も filled 版も同じ問題を持つ |
+| U-39 | Hero の meta strip（SINCE 2025 / 長崎大学公認 / 技育プロジェクト 学生団体公式パートナー）を**撤去**し、h1 を**墨の板**（`inverse/ground` 実色、inline-block、padding 0.2em / 0.1em、左右は負マージンで吊るして字の左端を揃える）に載せ、文は白、**句点 `.` だけ `hero/word`**（2026-09-12、クライアント判断）。U-37 の「動詞だけアクセント」と U-13 は撤回。事実 3 件は About の SINCE / OFFICIAL セルへ | 写真が透ける面の上では、白い字の輪郭が写真の明部に食われる瞬間がある。実色の板を敷けば h1 だけが「印刷された」ように一段沈んで読める。強調が板・動詞・句点の 3 か所に散ると視線が割れるので、色は句点 1 つに絞る — 言い切りの印はそこにある。meta strip の 3 項目は About で本文として扱うほうが、12px の帯で読ませるより格が上がる |
 
 ## 付録 B. 検証
 
