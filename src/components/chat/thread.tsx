@@ -18,7 +18,11 @@ import { chatThread, motionVar } from "@/lib/motion";
  * 順に現れることでしか出せない情報なので、§7 M9 が禁じる装飾の動きには当たらない。
  *
  * 高さは最初から全行ぶん取り、未再生の行は不透明度だけを 0 にする。1 行ずつ
- * DOM に足すとセルが伸び縮みして、隣の写真セルとページ全体まで動く。
+ * DOM に足すとセルが伸び縮みして、隣のセルとページ全体まで動く。
+ *
+ * 畳む先は **1 行目を残した状態**（DECISION U-44）。0 行まで畳むと、次の 1 手が出る
+ * までの間（step）だけ空のスレッドが見え、「一瞬真っ白で何も無い」故障に見えた。
+ * 1 行目は常に残し、一巡の終わりでは 2 行目以降だけが消える。
  *
  * SSR と JS 無しでは全行が見えている（初期値が `thread.length`）。畳むのは
  * 再生できると分かってからで、§7 グローバル 5 の「JS が落ちても内容は見える」を守る。
@@ -33,6 +37,9 @@ import { chatThread, motionVar } from "@/lib/motion";
 function entryKey(entry: ChatEntry, index: number) {
   return `${index}-${entry.kind}`;
 }
+
+/** 畳んだときに残す行数。1 行目（最初の発言）は常に見える（U-44） */
+const FLOOR = 1;
 
 export interface ChatThreadProps {
   thread: readonly ChatEntry[];
@@ -52,12 +59,12 @@ export function ChatThread({ thread }: ChatThreadProps) {
       return;
     }
 
-    // 再生できると分かった時点で畳む。画面に入る前に済ませておくので、
-    // 読み手が最初に見るのは「空のスレッドが埋まっていく」ところになる
-    setRevealed(0);
+    // 再生できると分かった時点で 1 行目だけ残して畳む。画面に入る前に済ませておくので、
+    // 読み手が最初に見るのは「最初の発言に返事が付いていく」ところになる（U-44）
+    setRevealed(FLOOR);
     if (!awake) return;
 
-    let step = 0;
+    let step = FLOOR;
     let timer: ReturnType<typeof setTimeout>;
 
     const advance = () => {
@@ -67,10 +74,10 @@ export function ChatThread({ thread }: ChatThreadProps) {
         timer = setTimeout(advance, chatThread.stepMs);
         return;
       }
-      // 一巡した。読み切る間を置いてから畳み、また 1 手目から
+      // 一巡した。読み切る間を置いてから 2 行目以降を畳み、また 2 手目から
       timer = setTimeout(() => {
-        step = 0;
-        setRevealed(0);
+        step = FLOOR;
+        setRevealed(FLOOR);
         timer = setTimeout(advance, chatThread.stepMs);
       }, chatThread.holdMs);
     };
