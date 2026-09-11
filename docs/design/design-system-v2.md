@@ -15,6 +15,7 @@
 > - **2026-09-12（2）**: SNS / Discord のブランドマークを Tabler の `brand-*` から**各社の公式素材**を写したインライン SVG（`brand-marks.tsx`、原本 `assets/brand/`）に置き換える（**DECISION U-38**、U-23 撤回）。Tabler の再描画は X / GitHub / Discord / Instagram の各規約（改変不可・公式素材のみ）に抵触していた。色は `currentColor` の黒 / 白、幾何は不変
 > - **2026-09-12（3）**: Hero の meta strip を撤去し、h1 `Hack Your Limits.` を**墨の板**に載せて句点だけアクセント（**DECISION U-39**。U-13 撤回、U-37 の「動詞だけアクセント」撤回）。設立と公認 / 公式パートナーは About のセルへ
 > - **2026-09-12（4）**: About のベントを 3 行 7 セルに組み直す（**DECISION U-40**）。Discord CTA セル撤去、写真セルは Activities へ（U-18 廃止、`motion/photo/step` 撤去）、SINCE セル新設、文字セルに Tabler 32 の図（`icon/xl` 新設）、OFFICIAL は 2×1 の 2 行
+> - **2026-09-12（5）**: 活動内容を均等な 2×2 の写真セルに（**DECISION U-41**、U-8 の Feature / Compact 撤回）。写真は `public/images/activities/`（About から移動）、Project は Hero の集合写真の複製で仮置き
 > - **2026-09-11**: Cell Stat の所属バッジ（U-29）を**撤回**し、セルは `50+` の数字だけに戻す（**DECISION U-36**）。Chip の Inverse トーンは Accent と同じくライブラリのみ（ページに出さない）。About の CULTURE セルは本文を落として題だけ（「仲間と、学ぶ。創る。話す。」— Hero の h1 を `Hack Your Limits.` に差し替える予定に合わせ、3 語を Culture に降ろす）
 > - **2026-09-10（2）**: 外部リンクは**すべて新しいタブ**で開く（`target="_blank" rel="noopener noreferrer"`、vh「（外部、新しいタブで開く）」、**DECISION M-21**。M-15 は撤回）。Partner の Logo タイルは `href` があれば**タイル全体が団体サイトへのリンク**（**DECISION U-35**。hover / pressed の表現なし、フォーカスリングは内側）
 - **2026-09-05 の実装レビューを反映**（U-21〜U-29 / L-30）: 写真・イラスト・ロゴは原色（B/W 撤回）、Hero の格子線撤去、Discord マークは filled、Stat の数字は白の Display/L + 所属の内訳、全発言にリアクション（実際の絵文字、数字が巻き上がる）、ペルソナとチャットのアバターは Humation（女 3・男 3）、Poster の Social はマークのみ、ロゴマークは外接矩形の mark.svg を 24 / 20（U-27 の Nav CTA マークは同日撤回）
@@ -1959,40 +1960,39 @@ About からは撤去。Discord への導線は Hero（主 CTA）・Nav（帯の
 #### 6.13.1 解剖（読ませるための面。リンクではない）
 
 ```
-┌ divider grid: frame fill divider, padding 2, gap 2 ────────────────────────────┐
-│ ┌ Feature 797 ─────────────────────────┐ ┌ Compact 397 ───────────────────┐   │
-│ │ inset/cell 24                         │ │ Talk 以外                      │   │
-│ │ Talk Day            [arrow-right]     │ │ Dev Day          [arrow-right] │   │
-│ │ ライトニングトーク                     │ │ 勉強会・ハンズオン              │   │
-│ │ 説明（measure/paragraph 588）          │ │ 説明（セル幅）                  │   │
-│ │ [Chip][Chip][Chip]                    │ │ [Chip][Chip][Chip]             │   │
-│ └───────────────────────────────────────┘ └────────────────────────────────┘   │
-│ ┌ Compact 597 ─────────────────────────┐ ┌ Compact 597 ───────────────────┐   │
-│ │ Project                               │ │ Hackathon                      │   │
-│ └───────────────────────────────────────┘ └────────────────────────────────┘   │
+┌ divider grid: frame fill divider, padding 2, gap 2 ──────────────────────────┐
+│ ┌ 597 ────────────────────────────┐ ┌ 597 ────────────────────────────┐        │
+│ │ 写真 16:9（597 × 336、inset 0）  │ │ 写真 16:9                        │        │
+│ │ inset/cell 24                    │ │                                  │        │
+│ │ Talk Day                         │ │ Dev Day                          │        │
+│ │ 座談会・ライトニングトーク（LT）  │ │ 勉強会・ワークショップ             │        │
+│ │ 説明（セル幅 549）               │ │ 説明                             │        │
+│ │ [Chip][Chip][Chip]  ← mt: auto   │ │ [Chip][Chip][Chip]               │        │
+│ └──────────────────────────────────┘ └──────────────────────────────────┘        │
+│ ┌ Project ─────────────────────────┐ ┌ Hackathon ───────────────────────┐        │
+│ └──────────────────────────────────┘ └──────────────────────────────────┘        │
 └────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**DECISION U-8** 活動内容を hairline の一覧からベント 4 セルにする。理由は 2 つ。(1) 4 件は「並んだ行」で読ませると同格に見えるが、実際には Talk Day が最も入口として太い。面積で差をつけると、読み手は最初に見るべきものを選ばずに済む。(2) About が既にベントなので、罫線グリッドという同じ装置を 2 回使うことでページの語彙が減る。
+**DECISION U-41**（2026-09-12、クライアント判断）4 件を**均等な 2×2 の写真セル**にする。U-8 の Feature / Compact（Talk Day 797 + 397 / 597 × 2）は撤回。理由は 2 つ。(1) Feature セルは題 Display/M の右半分が空き、Compact は文字が詰まって、4 セルの面積と中身の量が釣り合っていなかった。同じ大きさなら 4 件は「一覧」として読まれ、入口の太さは並び順（左上が最初）が示す。(2) About のスライド（U-18）から降りた写真を各セルの上端に縁まで敷くと、「何をしているか」が字より先に伝わる — 写真は活動の説明に添えてこそ情報になる。アコーディオンやタブは内容を隠し、状態を持たない面の思想（U-17）にも合わないので採らない。
 
 | 項目 | Desktop | Mobile |
 |---|---|---|
-| 構成 | 行 1 [Feature 797 + Compact 397] / 行 2 [Compact 597 × 2] | Feature → Compact × 3 の縦積み（338） |
-| 行の高さ | 背の高いセルが HUG で決め、もう一方が FILL で追う | 各セル HUG |
-| セル inset | `inset/cell` **24** | **20** |
+| 構成 | 2 列 × 2 行、均等（実測 **597 × 544**、写真 597 × 336）。tablet も 2 列 | 1 列（338、実測 406–430。写真 338 × 190）、DOM 順 |
+| 行の高さ | 同じ行の背の高いセルが HUG で決め、もう一方が FILL で追う。タグは `margin-top: auto` で底に揃う（説明が 2 行と 3 行で揺れても、行内でタグの高さが揃う） | 各セル HUG |
+| セル inset | 写真は **inset 0**（縁まで）、body は `inset/cell` **24** | 写真 inset 0、body **20** |
 
 | 要素 | 仕様 |
 |---|---|
-| title | Feature `Display/M` **56 / 32**、Compact `Title/1` **32 / 26**、`ink`、`<h3>` 内。4 件は `Talk Day` / `Dev Day` / `Project` / `Hackathon` |
-| subtitle | `Subheadline` 15 Bold、`ink-secondary`（K-1）、title の**下**（`stack/2xs` 4）。セルが縦に伸びるので横並びにしない |
-| badge | `Overline/JP` 12、`pop/badge`（ink-secondary / lime-800）。**`showBadge` は既定 false**（**DECISION U-9**: 開催頻度が確定するまで出さない。空欄や「随時」で埋めると、確定した情報と見分けがつかなくなる）。**矢印は置かない**（U-17: 行き先が無いのに遷移の印を出さない） |
-| description | `Body/S` 14、`ink-secondary`。Feature は `measure/paragraph` 588、Compact はセル幅いっぱい |
-| tags | Chip / Tag × 3、gap `inline/xs` 8、上 `stack/xs` 8。Compact では折返す |
+| photo | Image slot Rect / Cover、**16:9**、原色（U-21）、`alt=""`（写真は装飾。活動の情報は題と説明が本文で持つ、§8.6）。先頭のセルだけ eager。素材は `public/images/activities/`（Talk Day / Dev Day / Hackathon は About から移動。**Project は実写が届くまで Hero の集合写真の複製で仮置き**、2026-09-12） |
+| title | `Title/1` **32 / 26**、`ink`、`<h3>` 内。4 件とも同じ級数（U-41: 面積差を捨てたので級数差も捨てる）。`Talk Day` / `Dev Day` / `Project` / `Hackathon` |
+| subtitle | `Subheadline` 15 Bold、`ink-secondary`（K-1）、title の**下**（`stack/2xs` 4） |
+| badge | `Overline/JP` 12、`pop/badge`。**`showBadge` は既定 false**（**DECISION U-9**）。**矢印は置かない**（U-17） |
+| description | `Body/S` 14、`ink-secondary`。セル幅いっぱい（549 ≈ 39 全角、`measure/paragraph` 588 の内側なので上限は要らない） |
+| tags | Chip / Tag × 3、gap `inline/xs` 8、上 `stack/xs` 8 + `stack/2xs` 4（`margin-top: auto` で底へ） |
 | Head の折返し | title 群と badge は `flex-wrap`。セル幅が足りなければ badge が title の下に落ちる |
 
-**DECISION U-17** セルをリンクにしない。当初はセル全体を Discord への外部リンクにしていたが、4 セルとも同じ Discord に着地するので「Talk Day を押した」のに「Discord のトップ」に出る — 押した対象と行き先が対応しない。活動ごとの行き先が用意できるまでは、ここは**読ませるための面**に徹する。参加への導線は Hero・About の CTA・Poster が 3 度受け持っていて足りている。
-
-したがってこのセルは hover / pressed / focus を持たず、矢印も持たない。「押せそうに見えて押せない」より「押せるように見えない」ほうが誠実で、状態を持たないぶん罫線グリッドの静けさも保てる。
+**DECISION U-17** セルをリンクにしない。当初はセル全体を Discord への外部リンクにしていたが、4 セルとも同じ Discord に着地するので「Talk Day を押した」のに「Discord のトップ」に出る — 押した対象と行き先が対応しない。活動ごとの行き先が用意できるまでは、ここは**読ませるための面**に徹する。参加への導線は Hero・Nav・Poster が受け持っていて足りている（About の CTA は U-40 で撤去）。
 
 内容の区別（**DECISION U-8b**）:
 
@@ -2015,13 +2015,13 @@ Project と Hackathon を分ける理由: 前者は継続的な営み、後者�
 
 #### 6.13.3 アクセシビリティ
 
-- DOM（**DECISION M-12 改**）: `<li><h3><span>Talk Day</span> <span>ライトニングトーク</span></h3> …説明・タグ… </li>`。リンクではなくなった（U-17）ので `aria-labelledby` は要らず、見出しがそのまま節の名前になる。
+- DOM（**DECISION M-12 改**）: `<li><img alt=""> <h3><span>Talk Day</span> <span>ライトニングトーク</span></h3> …説明・タグ… </li>`。リンクではなくなった（U-17）ので `aria-labelledby` は要らず、見出しがそのまま節の名前になる。
 - セル内にリンク・ボタンを置かない。面全体を押させないので、テキストは普通にドラッグ選択できる（旧 M-12 のトレードオフが消えた）。
-- グリッドは `<ul>`。ベントの見た目上の並び（Feature が大きい）と DOM 順を一致させる。
+- グリッドは `<ul>`。4 セルは同じ大きさなので、視覚順 = DOM 順（左上 → 右上 → 左下 → 右下）。
 
 #### 6.13.4 Figma
 
-`Activity / Cell` `Size` {Feature, Compact} × `State` {Default, Hover, Pressed} **6** + `focus` BOOL、`showBadge` BOOL(false)。Props: `title` `subtitle` `badge` `description` TEXT、tag は exposed instance。`Activity / Bento` `Viewport` {Desktop, Mobile} 2。旧 `Activity / Row` `Activity / List` は後継ありとして残置（新規の画面では使わない）。
+`Activity / Cell` は `Size` {Feature, Compact} → **1 サイズに統合**（`photo` INSTANCE_SWAP を追加）、`State` {Default, Hover, Pressed} は U-17 で意味を失っている。`Activity / Bento` `Viewport` {Desktop, Mobile} 2 は 2×2 に組み直す。**Figma 側は未反映**（2026-09-12、別作業）。
 
 ### 6.14 Persona card
 
@@ -3154,7 +3154,7 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 | U-5 | ヒーローのリードを `Title/3` 19 → `Title/1` 32 | 19 と本文 16 では差が知覚できず、Display 124 との間に階層がなかった |
 | U-6 | About の統計値（50+）を `color/accent` に | ページ唯一の数字。ここだけアクセントを当てて規模を一撃で読ませる |
 | U-7 | 「スポンサー」「協賛」を **パートナー**に統一（部品名 `Partner / Cell`、ナビ `Partners`、CTA「パートナーになる」） | 関係は金銭支援に限らない。呼び方を 1 つにして、団体・企業のどちらにも開く |
-| U-8 | 活動内容を hairline の一覧から**ベント 4 セル**に。Talk Day（Feature）/ Dev Day / Project / Hackathon | 4 件を同格の行で並べると入口の太さの差が消える。面積で差をつければ読み手は選ばずに済む。About と同じ罫線グリッドを再利用してページの語彙を減らす |
+| U-8 | 活動内容を hairline の一覧から**ベント 4 セル**に。~~Talk Day（Feature）/ Dev Day / Project / Hackathon~~ **U-41 で均等 2×2 の写真セルに（Feature / Compact の面積差は撤回）** | 4 件を同格の行で並べると入口の太さの差が消える。面積で差をつければ読み手は選ばずに済む。About と同じ罫線グリッドを再利用してページの語彙を減らす |
 | U-8b | Project（チーム開発・コードレビュー・イベント企画）と Hackathon（参加と開催の両方）を分ける | 前者は継続の営み、後者は期間の区切られた催し。関わり方（週次の役割 vs 数日の集中）が違うので、1 セルにまとめると読み手がどちらの顔で入るか決められない |
 | U-9 | 開催頻度バッジは `showBadge` 既定 false。`arrow-right` は常時残す | 頻度が確定するまで出さない。「随時」で埋めると確定した情報と見分けがつかない。矢印はリンクの印として必要 |
 | U-10 | Discord の導線は「参加する」1 本。「見学」段階を作らない | 参加自体が可逆で低コストなので、手前に段階を置いても障壁は下がらず導線が割れる。ハードルは文言（見るだけ参加も歓迎です）で下げる |
@@ -3185,6 +3185,7 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 | U-38 | SNS / Discord のブランドマークは Tabler の `brand-*` をやめ、**各社の公式素材**（`assets/brand/`: X の `x-logo.zip` / `logo.svg`、GitHub の `GitHub_Logos.zip` / Invertocat、Discord の `Discord-Symbol-Black.svg`、Instagram は Brand Resource Center のグリフをクライアントが取得）の path を写したインライン SVG `brand-marks.tsx` に置き換える（2026-09-12）。幾何は不変、色は `currentColor` の黒 / 白のみ、枠は従来どおり 20（縦横比は素材のまま中央に収める）。U-23 は撤回 | 各社の規約が第三者の再描画を許さない: X「黒か白。形の完全性を保つ」、GitHub「色・寸法の変更を含め改変不可、黒 / 白 / グレー / 緑のみ」、Discord「編集・変更・歪曲・再配色・再構成をしない」、Instagram「Brand Resource Center のロゴのみ使用」。Tabler の `brand-*` は線画の再描画で、outline 版も filled 版も同じ問題を持つ |
 | U-39 | Hero の meta strip（SINCE 2025 / 長崎大学公認 / 技育プロジェクト 学生団体公式パートナー）を**撤去**し、h1 を**墨の板**（`inverse/ground` 実色、inline-block、padding 0.2em / 0.1em、左右は負マージンで吊るして字の左端を揃える）に載せ、文は白、**句点 `.` だけ `hero/word`**（2026-09-12、クライアント判断）。U-37 の「動詞だけアクセント」と U-13 は撤回。事実 3 件は About の SINCE / OFFICIAL セルへ | 写真が透ける面の上では、白い字の輪郭が写真の明部に食われる瞬間がある。実色の板を敷けば h1 だけが「印刷された」ように一段沈んで読める。強調が板・動詞・句点の 3 か所に散ると視線が割れるので、色は句点 1 つに絞る — 言い切りの印はそこにある。meta strip の 3 項目は About で本文として扱うほうが、12px の帯で読ませるより格が上がる |
 | U-40 | About のベントを **3 行 7 セル**に組み直す（2026-09-12、クライアント判断）: 行 1 [CULTURE 2×1 · MEMBERS · SINCE] / 行 2–3 [CHAT 2×2 · OFFICIAL 2×1 / ONLINE & OFFLINE · FOR EVERYONE]。Discord CTA セルを撤去、写真セルは Activities へ（U-18 廃止）、設立は SINCE セル（図 + Headline）、文字セルは題の語をひとつずつ **Tabler 32 の図**にする（`icon/xl`、stroke 1.5）、OFFICIAL は 2×1 で 1 件 = 1 行（図 + 題 + 補足） | 旧配置は行 1 の高さを OFFICIAL の 3 行 body が駆動して CULTURE の中段が空き、行 4 は CTA 1 本のために 2×1 を使っていた — 面積と中身の量がセルごとに釣り合わず、Apple の発表会末尾のベント（1 タイル = 1 つの主張 + 1 つの図）のように読めなかった。設立を Display/L の数字にする案は 1×1 の内側 250 に 4 桁 ≈ 260 が入らず、Display/M では 50+ と釣り合わないので図 + Headline に |
+| U-41 | 活動内容を**均等な 2×2 の写真セル**にする（2026-09-12、クライアント判断）。各セルの上端に 16:9 の写真を縁まで敷き、題は 4 件とも Title/1。U-8 の Feature / Compact は撤回。写真は About のスライド（U-18）から移動、Project は実写が届くまで Hero の集合写真の複製で仮置き | Feature セルは題の右半分が空き、Compact は文字が詰まって、面積と中身の量が釣り合っていなかった。同じ大きさなら 4 件は一覧として読まれ、優先は順序で示せる。写真は活動の説明に添えてこそ情報になる。アコーディオン / タブは内容を隠し、状態を持たない面（U-17）の思想に合わない |
 
 ## 付録 B. 検証
 
