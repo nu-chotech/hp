@@ -2,12 +2,12 @@
 > Figma: https://www.figma.com/design/CPqI3iL7yOiR8AqUG7YC1L （実装は本書から生成。値はすべて Variables / テキストスタイル経由）
 >
 > 実装との既知の差分（2026-08-31 時点）:
-> - Color は 59 行 + Lime 検討で `poster/action/fill` `poster/action/ink` `poster/focus/ring` を追加（面の明度反転に備えたポスター専用ロール）
-> - 既定モードは **Lime accent**（2026-09-01 クライアント確定）。Mono は検証モード、Indigo accent は決定過程の記録として残置（付録 C）
+> - Color は 59 行 + Green 検討で `poster/action/fill` `poster/action/ink` `poster/focus/ring` を追加（面の明度反転に備えたポスター専用ロール）
+> - 既定モードは **Green accent**（2026-09-12 クライアント確定、**DECISION C-29**。2026-09-01 の Lime accent を置換）。Mono は検証モード、Indigo / Lime accent は決定過程の記録として残置（付録 C）
 > - Icon は必須 8（U-31 で player-pause / play を撤去）+ 任意 3 + ライブラリ予備 6 の **19 セット**（Size 16 / 20 / 24 variant)
 > - `opacity/disabled` は Figma 上 **48**（Figma の opacity バインドは 0–100 解釈。CSS は 0.48）
-> - アクセントは **アシッドライム（Tailwind v4 lime）に確定**。本文の数値はすべて Lime モードの実測値。比較の経緯と Indigo の数値は付録 C
-> - Color コレクションは 3 モード（Mono / Indigo accent / Lime accent）・62 行、Shape 10 行、Spacing 64 行
+> - アクセントは **GitHub Primer green（基底 `#3fb950`）に確定**（2026-09-12、C-29。アシッドライムは「雰囲気に合わない」、Tailwind v4 green は「目にきつい」で却下）。本文の数値はすべて Green モードの実測値。比較の経緯と Indigo / Lime の数値は付録 C
+> - Color コレクションは 3 モード（Mono / Indigo accent / Lime accent → **Green accent に改名・値の差し替えは Figma 未反映**）・62 行、Shape 10 行、Spacing 64 行
 > - **2026-09-01 の実装レビューを反映**（付録 A.8 / U-1〜U-14）: 角丸はチャットのみ例外（Messages 風）、リンク下線 2 / 3px、ヒーロー回転語はアクセント文字（下線廃止）、セクション見出しの連番廃止・和文の題が先、活動内容はベント 4 セル（Hackathon 追加）、用語は「パートナー」に統一、Member カードに SNS リンク
 > - **2026-09-07**: Members の Staff（運営 3 名）は写真が揃うまで**写真枠ごと暫定非表示**（`showStaffPhotos` false。パスと素材は残置、§6.15 の写真つきが到達点）。Partner の Placeholder から「パートナーになる」（mailto）を撤去し、セルは `YOUR LOGO HERE` のみ（§6.16）。Partner セルは**正方形タイル**に変更（Desktop 6 列 197.67 / tablet 3 列 237.33 / Mobile 2 列 168、DECISION L-31）。マーキーの団体は partners.ts から生成し、**団体名ではなくロゴ**（80 角 `size/marquee-logo`。帯 `size/band-marquee` は 56 → **120**、項目間 `inline/2xl` 48、DECISION U-30）で出す。「パートナー募集中」の Ghost は撤去。複製数は viewport から自動計算し継ぎ目なく回す。停止 / 再生ボタンとページ内モーションスイッチ（旧 M8）は**撤去**（DECISION U-31、クライアント判断）。自動の動きは `prefers-reduced-motion` と画面外でのみ止まり、WCAG 2.2.2 の「ページ内の停止手段」は**未達**として §8 に記録。マーキーの ✳ は Label の両脇だけ（U-32）
 > - **2026-09-10**: パートナーの公式ロゴ 5 枚を受領。素材は白背景 jpg / 透過 png / 4:1 超のワードマークが混在し、ground の上では白背景の素材が板として浮き、正方形タイルではワードマークが細い帯になった。→ タイルとマーキー帯の面を **`color/logo-ground`（neutral-0、白）** に（**DECISION U-33**）。Partner タイルは正方形 → **3:2**（Desktop 6 列 197.67 × 131.78 / tablet 3 列 / Mobile 2 列は床 120。列数は L-31 のまま、**DECISION L-32**）。マーキーのロゴ枠も 3:2 で高さ `size/marquee-logo` **96**（幅 144）。素材は `scripts/normalize-partner-logos.mjs` が 3:2 の白キャンバス（600 × 400）に正規化し、セルは inset 0 で縁まで敷く。Image slot に比率 3:2 を追加。募集セル「YOUR LOGO HERE」は撤去し、行の端数は無地の白タイル（aria-hidden）で埋める（**DECISION U-34**）
@@ -19,13 +19,14 @@
 > - **2026-09-12（6）**: Persona card を 3 行の subgrid に（**DECISION U-42**）: イラスト 80 を題の横、引用は墨の板、次の一歩は surface の板で隙間なし。`size/illustration` 96 → 80
 > - **2026-09-12（7）**: Partners を外枠だけの白い面 + ロゴを団体数で等分した 1 行に（**DECISION U-43**、L-31 / L-32 のタイルと U-34 の埋め草を撤去）
 > - **2026-09-12（8）**: チャット再生を 1 手 600 ms / 一巡後 2,000 ms に速め、畳む先を 1 行目を残した状態に（**DECISION U-44**。空のスレッドを見せない）
+> - **2026-09-12（9）**: アクセントを Lime → **Green（GitHub Primer green）** に（**DECISION C-29**）。プリミティブ `green/200–900` + `alpha/green-400/24`、CSS は `--green-*`。§1 の実測値をすべて再計算（付録 C.5）。極性（面・印は 400、地の上の文字は 800 / 900、図形は 700）は不変。Figma の Color モードは未反映
 > - **2026-09-11**: Cell Stat の所属バッジ（U-29）を**撤回**し、セルは `50+` の数字だけに戻す（**DECISION U-36**）。Chip の Inverse トーンは Accent と同じくライブラリのみ（ページに出さない）。About の CULTURE セルは本文を落として題だけ（「仲間と、学ぶ。創る。話す。」— Hero の h1 を `Hack Your Limits.` に差し替える予定に合わせ、3 語を Culture に降ろす）
 > - **2026-09-10（2）**: 外部リンクは**すべて新しいタブ**で開く（`target="_blank" rel="noopener noreferrer"`、vh「（外部、新しいタブで開く）」、**DECISION M-21**。M-15 は撤回）。Partner の Logo タイルは `href` があれば**タイル全体が団体サイトへのリンク**（**DECISION U-35**。hover / pressed の表現なし、フォーカスリングは内側）
 - **2026-09-05 の実装レビューを反映**（U-21〜U-29 / L-30）: 写真・イラスト・ロゴは原色（B/W 撤回）、Hero の格子線撤去、Discord マークは filled、Stat の数字は白の Display/L + 所属の内訳、全発言にリアクション（実際の絵文字、数字が巻き上がる）、ペルソナとチャットのアバターは Humation（女 3・男 3）、Poster の Social はマークのみ、ロゴマークは外接矩形の mark.svg を 24 / 20（U-27 の Nav CTA マークは同日撤回）
 
 # ChoTech Design Guidelines
 
-長崎大学公認の学生技術コミュニティ ChoTech のワンページサイト刷新（コンセプト「ポスター×ベント」、Modernist 方向）のためのデザインシステム規範。Desktop 1440（container 1200）/ Mobile 390（container 342）。書体は LINE Seed JP のみ（400 / 700 / 800）、アイコンは Tabler Icons outline のみ、アクセントはアシッドライム 1 色。
+長崎大学公認の学生技術コミュニティ ChoTech のワンページサイト刷新（コンセプト「ポスター×ベント」、Modernist 方向）のためのデザインシステム規範。Desktop 1440（container 1200）/ Mobile 390（container 342）。書体は LINE Seed JP のみ（400 / 700 / 800）、アイコンは Tabler Icons outline のみ、アクセントはアシッドグリーン 1 色。
 
 本書は Color / Typography / Layout / Components / Motion・A11y・Content の 5 分冊を統合したもの。分冊間の食い違いは §0.4 で解決し、以降の本文はすべて解決後の値で書く。値の所有者: 色 → §1、文字 → §2、余白・寸法 → §3、線・角・影 → §4、アイコン・画像 → §5、部品 → §6、動き → §7、支援技術 → §8、コピー → §9。**DECISION** はコンセプトから導出できず本書で決めた項目（1 行根拠つき、一覧は付録 A）。
 
@@ -42,7 +43,7 @@
 | **Purpose（目的）** | ページの仕事は「ChoTech を知り、Discord に来てもらう」の 1 つ。要素はこの仕事に寄与するときだけ置く | 主 CTA は 1 画面 1 つ。装飾のためだけの動き・色・影を足さない（M9）。落としたもの: チャット再生ループ、浮遊バブル、編集ヒント、accent-2、絵文字 |
 | **Clarity（明快）** | 読めることが最初。インク・オン・グラウンド（14.86:1）で成立させ、色は構造を補わない | 明るい面の文字は ink / ink-secondary の 2 段、暗い面は ground のアルファ 100 / 88 / 72 / 48。全ペアを計算し AA を満たす。12px 未満の文字はない |
 | **Hierarchy（階層）** | 階層は「ウェイト × サイズ × 行送り」の組と、罫線の太さ（1 / 2 / 4px）と余白の段（4px モジュール）で作る。色で作らない | Display 800 −2%、見出し 800、声 700、本文 400。2px rule = 区画、1px hairline = 行、4px = ポスターの下線。罫線の上 80 ≥ 下 64 |
-| **Restraint（抑制）** | 一書体、一色相、角丸ゼロ、影ゼロ、中央揃えなし。Mono モードで成立しない設計は Lime でも不可 | アクセントの出現は Lime で 4 箇所（マーキー区切り、活動バッジ、ポスター面、ヒーロー下線）+ 状態 4 種（hover 下線 / pressed 文字 / focus / selection）だけ。写真・イラスト・ロゴは原色（U-21） |
+| **Restraint（抑制）** | 一書体、一色相、角丸ゼロ、影ゼロ、中央揃えなし。Mono モードで成立しない設計は Green でも不可 | アクセントの出現は Green で 4 箇所（マーキー区切り、活動バッジ、ポスター面、ヒーロー下線）+ 状態 4 種（hover 下線 / pressed 文字 / focus / selection）だけ。写真・イラスト・ロゴは原色（U-21） |
 | **Craft（精度）** | すべての値が梯子の段であり、根拠を言える。Figma と CSS が同じ構造で同じ数を持つ | 4px モジュール、整数 px の行送り、高さ駆動のコントロール（36 / 44）、fill + gap で描く罫線グリッド、`n 文字 = n em` の和文組版、compositor プロパティだけの動き |
 
 Familiarity（慣れ）・Agency（主体性）・Flexibility（柔軟）・Responsibility（責任）は個別規則に溶かした: 矢印の意味を 2 種に固定する（§5）、外部リンクは新しいタブで開く（§8、M-21 で M-15 を撤回）、ループはページ内スイッチで止められる（§7）、Mobile は 1 列で DOM 順（§3）、200% 拡大とリフローで壊れない（§8）。
@@ -52,10 +53,10 @@ Familiarity（慣れ）・Agency（主体性）・Flexibility（柔軟）・Resp
 | 制約 | 本書での扱い |
 |---|---|
 | LINE Seed JP のみ（400 / 700 / 800、Thin 不使用） | §2。`sans-serif` は読み込み中の代替のみで設計には現れない |
-| アクセント = アシッドライム、Tailwind v4 lime のランプ（基底 lime-400 `#9ae600`） | §1.2.2。段の変更なし。**極性が二つ**: 面・印は 400、明るい地の上の文字は 800、12px 以下は 900（§1.4.5） |
+| アクセント = GitHub Primer green のランプ（基底 green-400 `#3fb950`、2026-09-12 C-29。旧アシッドライムは付録 C） | §1.2.2。**極性が二つ**: 面・印は 400、明るい地の上の文字は 800、12px 以下は 900（§1.4.5） |
 | 絵文字・記号文字をアイコンにしない。Tabler outline 24 grid stroke 2 | §5。矢印は `arrow-right`（サイト内）/ `arrow-up-right`（外部）の 2 つ |
 | コンセプトは方向のみ。ピクセル値は権威ではない | §10 に概念値 → システム値の対応表 |
-| Figma Variables: Color（Mono / Lime accent、+ Indigo accent は記録用）、Spacing / Typography（Desktop / Mobile） | §11。Mono ではアクセントは状態にしか現れない |
+| Figma Variables: Color（Mono / Green accent、+ Indigo accent は記録用）、Spacing / Typography（Desktop / Mobile） | §11。Mono ではアクセントは状態にしか現れない |
 
 ### 0.3 ページの骨格（コンセプトの認識可能な部分）
 
@@ -70,8 +71,8 @@ Nav（sticky、2px 下罫）→ Hero（インク面、背景写真、回転語�
 | R1 | neutral-600 の値と `ink-tertiary` の役割 | `#7d7979`（概念値）を保持し、**大きな文字と図形専用**。12–15px の補助文字（キッカー、肩書、タグライン、©、サブタイトル、Mono バッジ）は **すべて `ink-secondary`（n700、5.83）** | Typography / Layout / Components / Motion が計算に使った再調整値 `#6b6767`（5.00） | Color の最終判断: `#6b6767` は hover-tint 上 4.44 / pressed-tint 上 3.96 で AA を割り、700 との差 1.17 は知覚できず、ランプの等比も壊す。小さな文字の階層は size / weight / case が担う（Components D-1、Motion D10 と同じ結論） |
 | R2 | タグとリアクションチップの構造 | **塗り `color/chip/fill`（= surface n200）、枠なし**、文字 `chip/ink`（= ink-secondary、n200 上 5.30） | Color D11 の「塗りなし + 1px hairline 枠」 | 1px hairline は「行・語の仕切り」の語彙であり、2.59 の線を唯一の輪郭にしない（Layout D17 最終版、Components §4）。n200 は ground 比 1.10 で罫線なしに輪郭が読める最小段（Color §3.1 の surface 定義と同じ根拠）。文字は Color 原則 3 に従い n800 ではなく ink-secondary |
 | R3 | インク面のアウトラインボタン枠 | **`inverse/outline` = inverse/ink 100% の 1 種**（14.86） | Components の Soft（ground@72）/ Strong（100%）2 種 | 部品境界は 3:1 が要り、1 トークンで済む。主副の差は「塗り vs 枠」で十分に出る（Restraint）。variant 数も減る |
-| R4 | リンクの状態モデル | ホバーで **文字色を変えず下線で示す**: ナビ・ワードマーク 2px アクセント下線、フッター・ソーシャルは 1px currentColor 下線（フッターは同時に文字 ink-secondary → ink）、インラインは常時 1px → 2px。プレスは文字 `link/pressed`（lime-900、7.85）。現在地は 2px ink 下線 | Components §3.1 の「ホバーで文字を有彩色に変える + 1px 下線」 | Color D16 と Motion D9 が一致。Mono 原則「アクセントは一時的状態のみ、ホバーは下線」。1.4.1 の色以外の手がかり |
-| R5 | ソーシャルリンク（ポスター上）のプレス | **ホバーと同じ**（`poster/ink` + 1px 下線） | 全スタイル共通の `link/pressed` | lime-900 はポスター面（lime-400）上 1.89 で不可、lime-400 は同色 1.00。ポスター面にアクセント文字は置けない |
+| R4 | リンクの状態モデル | ホバーで **文字色を変えず下線で示す**: ナビ・ワードマーク 2px アクセント下線、フッター・ソーシャルは 1px currentColor 下線（フッターは同時に文字 ink-secondary → ink）、インラインは常時 1px → 2px。プレスは文字 `link/pressed`（green-900、8.77）。現在地は 2px ink 下線 | Components §3.1 の「ホバーで文字を有彩色に変える + 1px 下線」 | Color D16 と Motion D9 が一致。Mono 原則「アクセントは一時的状態のみ、ホバーは下線」。1.4.1 の色以外の手がかり |
+| R5 | ソーシャルリンク（ポスター上）のプレス | **ホバーと同じ**（`poster/ink` + 1px 下線） | 全スタイル共通の `link/pressed` | green-900 はポスター面（green-400）上 3.86 で文字（4.5）不可、green-400 は同色 1.00。ポスター面にアクセント文字は置けない |
 | R6 | マーキー帯の高さ | **`size/band-marquee` 56**（高さ駆動、行ボックス 26 を中央、上下 2px 罫を含む）。停止セルは 44 × 52。**2026-09-07 U-30 で 120 に改定**（内側 116 にロゴ 80、停止セルは U-31 で撤去。2026-09-10 L-32 でロゴ枠は 3:2 の高さ 96 × 幅 144） | Typography の導出値 54、Components の 53.65 | 帯は Layout 原則 6「高さで決める」に従う。内側 52 = 4 × 13 で 4px モジュールに乗り、停止セルの高さも 4 の倍数。`band/pad-y` 12 は最小値（実効 13） |
 | R7 | マーキー区切りアイコンの径 | **20**（`icon/md`） | Components の 16 | Layout §5.2 の判定「15–19px の文字の横は 20」。Title 3 Caps 19 の cap 高 ≈ 15 に釣り合う |
 | R8 | 停止ボタンのアクセシブルネーム | **固定「ページの動きを止める」+ `aria-pressed`** | ラベルを「止める / 再開する」で切り替える | トグルボタンは名前を変えず状態で伝える（ARIA APG）。Motion が支援技術の所有者。**2026-09-07 U-31 で停止ボタンごと撤去** |
@@ -95,18 +96,18 @@ Nav（sticky、2px 下罫）→ Hero（インク面、背景写真、回転語�
 ---
 ## 1. Color
 
-Figma: コレクション `Primitives`（単一モード）と `Color`（モード `Mono` / `Lime accent`、記録用に `Indigo accent`）。`Color` の全行はエイリアス。Scopes 略号: **FF** FRAME_FILL / **SF** SHAPE_FILL / **TF** TEXT_FILL / **SC** STROKE_COLOR / **OP** OPACITY。サイズは §2 のロール名で引用する。
+Figma: コレクション `Primitives`（単一モード）と `Color`（モード `Mono` / `Green accent`、記録用に `Indigo accent`）。`Color` の全行はエイリアス。Scopes 略号: **FF** FRAME_FILL / **SF** SHAPE_FILL / **TF** TEXT_FILL / **SC** STROKE_COLOR / **OP** OPACITY。サイズは §2 のロール名で引用する。
 
 ### 1.1 原則
 
 | # | 原則 | 内容と根拠 |
 |---|---|---|
 | 1 | **インク・オン・グラウンドが先** | ページはウォームグラウンド `#f3f2f2` の上のインク `#201e1d`（14.86:1）で成立させる。構造は罫線と余白が担い、色は構造を補わない。色を抜いても崩れない設計だけを許可する |
-| 2 | **アクセントは一色、面は一つ** | 色相はアシッドライム 1 系統。塗り面として現れるのはポスター（クロージング CTA）だけ。それ以外は「印」（下線、バッジ文字、区切りアイコン、フォーカスリング）に限る。競合する強調がないから、一つの面が「声」になる |
+| 2 | **アクセントは一色、面は一つ** | 色相はグリーン 1 系統（GitHub Primer green）。塗り面として現れるのはポスター（クロージング CTA）だけ。それ以外は「印」（下線、バッジ文字、区切りアイコン、フォーカスリング）に限る。競合する強調がないから、一つの面が「声」になる |
 | 3 | **小さな文字の階層は色で作らない** | グラウンド（Y 0.890）で 4.5:1 を満たす文字色の上限は Y 0.159。neutral-700（Y 0.111）より明るく AA を保てる段は 700 との差が最大 1.30:1 で、階層として知覚できない。よって明るい面の文字色は **primary（ink）/ secondary（neutral-700）の 2 段** とし、tertiary（neutral-600、3.85）は大テキストと非テキスト専用にする。小さな文字の階層は size / weight / case が担う（Apple「Build hierarchy from weight + size + leading」） |
-| 4 | **反転面は同じ梯子を逆から読む** | 面のテキストは「**反対極の色 × 不透明度**」で定義する。暗い面（インク）はグラウンド × α、明るいポスター面（lime-400）はインク × α。色を固定せず不透明度にすることで、ティントが面の色を継承し、一つの梯子がどちらの極でも成立する |
+| 4 | **反転面は同じ梯子を逆から読む** | 面のテキストは「**反対極の色 × 不透明度**」で定義する。暗い面（インク）はグラウンド × α、明るいポスター面（green-400）はインク × α。色を固定せず不透明度にすることで、ティントが面の色を継承し、一つの梯子がどちらの極でも成立する |
 | 5 | **状態は反対の極の不透明度で表す** | 明るい面のホバー/プレスはインクのアルファ、暗い面はグラウンドのアルファ。どの面でも同じ規則で、色を増やさない。フォーカスは常にアクセント（面ごとに段を変える: 明るい面 700 / インク面 300 / ポスター面 900） |
-| 6 | **モードは「抑制の度合い」** | `Mono` はアクセントが状態（フォーカス／選択／ホバー下線／プレス文字）にしか現れない状態で、アクセントが情報を担っていないことの証明として機能する。`Lime accent` はそこに正確に 4 つの出現（マーキー区切り、活動バッジ、ポスター面、ヒーロー下線）を加える。Mono で成立しない設計は Lime でも不可 |
+| 6 | **モードは「抑制の度合い」** | `Mono` はアクセントが状態（フォーカス／選択／ホバー下線／プレス文字）にしか現れない状態で、アクセントが情報を担っていないことの証明として機能する。`Green accent` はそこに正確に 4 つの出現（マーキー区切り、活動バッジ、ポスター面、ヒーロー下線）を加える。Mono で成立しない設計は Green でも不可 |
 | 7 | **色だけに頼らない（WCAG 1.4.1）** | リンクは下線で示す（インライン常時 1px、ナビ・ワードマークはホバーで 2px、フッター・ソーシャルはホバーで 1px）。現在地は 2px インク下線。バッジは文字を持つ。フォーカスは 2px オフセットのリング。モード切替で情報が失われないことがその検証になる |
 | 8 | **写真とロゴは原色のまま** | 画像に処理を掛けない（grayscale・tint・duotone を使わない、**DECISION U-21**）。実写と Humation のイラストの色は「コミュニティの実像」を運ぶ情報で、モノクロ化はそれを削っていた。当初の「彩度をアクセント一色に集約する」規則は撤回。パートナーロゴもブランド規定の色のまま |
 
@@ -132,41 +133,43 @@ Figma: コレクション `Primitives`（単一モード）と `Color`（モー�
 
 **600 を再調整しない根拠**（DECISION C-1）: グラウンド上で AA を満たす最も明るい段は 700（5.83）。600 を Y 0.159 以下に暗くして AA 化しても（例 `#6b6767` 5.00）、700 との差は 1.17:1 で知覚できず、ランプの等比（×1.5）も壊れる（500→600 が ×2.27、600→700 が ×1.24）。さらにその値はホバー面 4.44 / プレス面 3.96 で活動セルの副題が AA を割る。600 は概念値のまま、役割を「大テキスト・図形専用」に限定する方が一貫する。
 
-#### 1.2.2 Lime（200–900）
+#### 1.2.2 Green（200–900）
 
-Tailwind v4 lime をそのまま採用。段の変更なし。**インディゴと極性が逆**であることがこのランプの設計を決めている: 明るい段（400）は墨地の上と大面で強く、明るい地の上では文字にも輪郭にも使えない。地の上のアクセントは 700 以降の暗い段が担う。
+GitHub Primer の green をそのまま採用（**DECISION C-29**、2026-09-12。200 と 700–900 は light スケール、300–600 は dark スケールから取り、段の並びは輝度の単調減少で組む）。ライムと同じく**インディゴと極性が逆**: 明るい段（400）は墨地の上と大面で強く、明るい地の上では文字にも輪郭にも使えない（2.27）。地の上のアクセントは 700 以降の暗い段が担う。ライムより彩度が低く、400 の輝度が 0.635 → 0.363 に下がったぶん墨地の上の比は 10.83 → 6.54 に、地の上の暗い段（800 / 900）は 6.31 / 7.85 → 6.62 / 8.77 に上がった。
 
 | Step | Hex | Y | vs ground | vs surface `#eae7e7` | vs ink | 役割 |
 |---|---|---|---|---|---|---|
-| 200 | `#d8f999` | 0.847 | 1.05 | 1.05 | 14.18 | accent-subtle（淡い塗り、ライブラリ） |
-| 300 | `#bbf451` | 0.759 | 1.16 | 1.06 | 12.79 | インク面のフォーカスリング |
-| 400 | `#9ae600` | 0.635 | 1.37 | 1.25 | **10.83** | **accent 基底**: ポスター面、インク面上の印（ヒーロー下線・選択）。**明るい地の上では文字にも面の輪郭にも使えない**（1.37、C-25） |
-| 500 | `#7ccf00` | 0.489 | 1.74 | 1.58 | 8.52 | accent ホバー（面。上のインク文字 8.52） |
-| 600 | `#5ea500` | 0.293 | 2.74 | 2.49 | 5.42 | accent プレス（面。上のインク文字 5.42） |
-| 700 | `#497d00` | 0.161 | 4.46 | 4.05 | 3.33 | 地の上の**図形**専用: フォーカスリング、マーキー区切り（3:1 ✓、4.5 ✗） |
-| 800 | `#3c6300` | 0.099 | **6.31** | 5.74 | 2.35 | 地の上の**アクセント文字**の基底: リンク文字、活動バッジ |
-| 900 | `#35530e` | 0.070 | 7.85 | 7.13 | 1.89 | 12px 以下のアクセント文字、淡い塗り上の文字（lime-200 上 7.49）、ポスター面上のリング（5.72）、高コントラスト時のアクセント文字 |
+| 200 | `#aceebb` | 0.735 | 1.20 | 1.09 | 12.41 | accent-subtle（淡い塗り、ライブラリ） |
+| 300 | `#56d364` | 0.495 | 1.72 | 1.57 | 8.62 | インク面のフォーカスリング |
+| 400 | `#3fb950` | 0.363 | 2.27 | 2.07 | **6.54** | **accent 基底**: ポスター面、インク面上の印（ヒーロー h1 の句点・選択）。**明るい地の上では文字にも面の輪郭にも使えない**（2.27、C-25） |
+| 500 | `#2ea043` | 0.261 | 3.02 | 2.74 | 4.92 | accent ホバー（面。上のインク文字 4.92） |
+| 600 | `#238636` | 0.177 | 4.14 | 3.77 | 3.59 | accent プレス（面。上のインク文字 3.59 = N 不合格。ライブラリのみ、ページに accent ボタンは無い、C-18） |
+| 700 | `#1a7f37` | 0.157 | 4.55 | 4.13 | 3.27 | 地の上の**図形**専用: フォーカスリング、マーキー区切り（3:1 ✓。4.5 は 0.05 の余裕しかなく hover-tint 上 4.04 で割るので文字には使わない） |
+| 800 | `#116329` | 0.092 | **6.62** | 6.01 | 2.25 | 地の上の**アクセント文字**の基底: リンク文字、活動バッジ |
+| 900 | `#044f1e` | 0.057 | 8.77 | 7.97 | 1.69 | 12px 以下のアクセント文字、淡い塗り上の文字（green-200 上 7.33）、ポスター面上のリング（3.86）、高コントラスト時のアクセント文字 |
 
-コンセプトの赤 `#ec3013` はグラウンド上約 3:1 で本文不可。lime-400 は墨地の上で 10.83:1 と極めて強いが、地の上では 1.37 で文字・輪郭ともに不可のため、**地の上のアクセントは 800（6.31）に切り替える**。lime-700（4.46）は AA を 0.04 下回るので文字には使わず、3:1 で足りる図形（リング・区切り）に限る。（DECISION C-25、C-26）
+コンセプトの赤 `#ec3013` はグラウンド上約 3:1 で本文不可。green-400 は墨地の上で 6.54 と十分に強いが、地の上では 2.27 で文字・輪郭ともに不可のため、**地の上のアクセントは 800（6.62）に切り替える**。green-700（4.55）は AA を数値上は通るが hover-tint 上で 4.04 に落ちるので文字には使わず、3:1 で足りる図形（リング・区切り）に限る。（DECISION C-25、C-26、C-29）
+
+ライムのランプ（200–900）は Primitives に残置しない。記録は付録 C.4 / C.5 の hex 一覧が担う（Figma の `Lime accent` モードは Green に改名して値を差し替える。未反映）。
 
 インディゴのランプ（100–900）は `Primitives` に残置する。Indigo accent モードを比較・記録用に保持しているため（付録 C）。新規のロールをインディゴに割り当てないこと。
 
 #### 1.2.3 Alpha scale
 
-不透明度は 6 段。**6 → 12 → 24 → 48 は倍々**（ティント・影・幕・無効）。**72 = 3 × 24**（tertiary 文字）。**88** は secondary 文字（インク面 11.78 / ライムのポスター面 8.23）。48 は ink 上で大テキスト 3:1 を満たす（4.45）が通常テキスト 4.5 には届かないため、ディスプレイサイズ専用。（DECISION C-5）
+不透明度は 6 段。**6 → 12 → 24 → 48 は倍々**（ティント・影・幕・無効）。**72 = 3 × 24**（tertiary 文字）。**88** は secondary 文字（インク面 11.78 / グリーンのポスター面 5.37）。48 は ink 上で大テキスト 3:1 を満たす（4.45）が通常テキスト 4.5 には届かないため、ディスプレイサイズ専用。（DECISION C-5）
 
-ライムのポスター面は**明るい面**なので、そこだけテキストは「グラウンド × α」ではなく「**インク × α**」で組む。合成後の比は 88 % → 8.23、72 % → 5.32、48 % → 2.79。72 % が N を満たすため、ポスターは原理上 3 段の階層を持てる（インディゴ面では 3.70 で不可だった）。ただし §1.5 の抑制原則により **運用は 2 段に留める**（C-14 は制約ではなく選択に変わった）。
+グリーンのポスター面は文字にとって**明るい面**（上のインク 6.54）なので、そこだけテキストは「グラウンド × α」ではなく「**インク × α**」で組む。合成後の比は 88 % → 5.37、72 % → 3.97、48 % → 2.39。72 % は N を満たさないので、ポスターの階層は **2 段**（primary / secondary）— C-14 は選択ではなく制約に戻った（ライムでは 72 % が 5.32 で通っていた）。
 
 | α | インク over 明るい面（ground / ポスター面） | グラウンド over 暗い面（インク面） | アクセント | 根拠 |
 |---|---|---|---|---|
 | 6 % | `alpha/ink/6` → `state/hover-tint`（vs ground 1.13） | — | — | 知覚できる最小のティント |
-| 12 % | `alpha/ink/12` → `state/pressed-tint`（1.26）、ポスター面の `poster/selection`（`#8bce03`、上のインク文字 8.64） | `alpha/ground/12` → `inverse/state/hover-tint`（vs ink 1.40） | — | ホバーの 2 倍 |
-| 24 % | `alpha/ink/24` → `shadow`（1.64） | `alpha/ground/24` → `inverse/state/pressed-tint`（2.10） | `alpha/lime-400/24` → `selection`（地の上 `#deefb8`）+ `inverse/selection`（インク面 `#3d4e16`） | ティントの上限。選択上のインク文字 13.55、インク面の選択上のグラウンド文字 8.17 |
+| 12 % | `alpha/ink/12` → `state/pressed-tint`（1.26）、ポスター面の `poster/selection`（`#3ba64a`、上のインク文字 5.33） | `alpha/ground/12` → `inverse/state/hover-tint`（vs ink 1.40） | — | ホバーの 2 倍 |
+| 24 % | `alpha/ink/24` → `shadow`（1.64） | `alpha/ground/24` → `inverse/state/pressed-tint`（2.10） | `alpha/green-400/24` → `selection`（地の上 `#c8e4cb`）+ `inverse/selection`（インク面 `#274329`） | ティントの上限。選択上のインク文字 12.19、インク面の選択上のグラウンド文字 9.78 |
 | 48 % | `alpha/ink/48` → `backdrop`（2.99）、`opacity/disabled` | `alpha/ground/48` → `inverse/ink-quaternary`（ink 4.45） | — | 幕として面を半分に落とす。ディスプレイ文字は L 合格 |
-| 72 % | ポスター面の tertiary（lime-400 上 5.32、`#425615`）。運用では使わない | `alpha/ground/72` → `inverse/ink-tertiary`（ink 8.29） | — | 3 × 24。インク面・ライムのポスター面ともに N |
-| 88 % | `alpha/ink/88` → ポスター面の `poster/ink-secondary`（lime-400 上 8.23、`#2f361a`） | `alpha/ground/88` → `inverse/ink-secondary`（ink 11.78） | — | どちらの面でも secondary を N で通す。低透明・高コントラスト時の backdrop |
+| 72 % | ポスター面の tertiary（green-400 上 3.97、`#29492b`）。N 不合格なので使わない | `alpha/ground/72` → `inverse/ink-tertiary`（ink 8.29） | — | 3 × 24。インク面・グリーンのポスター面ともに N |
+| 88 % | `alpha/ink/88` → ポスター面の `poster/ink-secondary`（green-400 上 5.37、`#243123`） | `alpha/ground/88` → `inverse/ink-secondary`（ink 11.78） | — | どちらの面でも secondary を N で通す。低透明・高コントラスト時の backdrop |
 
-アルファは 13 個（ink 5、ground 5、indigo 2〈Indigo モードの記録用〉、lime 1）。Figma では `Primitives` に RGBA リテラルとして置く（エイリアスはアルファを付与できない）。合成値: ground@88 / 72 / 48 over ink = `#dad9d8` / `#b8b7b6` / `#858483`。ink@6 / 12 / 24 / 48 over ground = `#e6e5e5` / `#dad9d8` / `#c0bfbf` / `#8e8c8c`。ink@88 / 72 / 48 over lime-400 = `#2f361a` / `#425615` / `#5f860e`、ink@12 / 24 over lime-400 = `#8bce03` / `#7db607`。ground@12 / 24 over ink = `#393737` / `#535150`。lime-400@24 over ground = `#deefb8`、over ink = `#3d4e16`。
+アルファは 13 個（ink 5、ground 5、indigo 2〈Indigo モードの記録用〉、green 1）。Figma では `Primitives` に RGBA リテラルとして置く（エイリアスはアルファを付与できない）。合成値: ground@88 / 72 / 48 over ink = `#dad9d8` / `#b8b7b6` / `#858483`。ink@6 / 12 / 24 / 48 over ground = `#e6e5e5` / `#dad9d8` / `#c0bfbf` / `#8e8c8c`。ink@88 / 72 / 48 over green-400 = `#243123` / `#29492b` / `#306f38`、ink@12 / 24 over green-400 = `#3ba64a` / `#389444`。ground@12 / 24 over ink = `#393737` / `#535150`。green-400@24 over ground = `#c8e4cb`、over ink = `#274329`。
 
 ### 1.3 セマンティックロール
 
@@ -174,17 +177,17 @@ Tailwind v4 lime をそのまま採用。段の変更なし。**インディゴ�
 
 #### 1.3.1 面
 
-| ロール | Mono | Lime accent | Scopes | 使用箇所 | 根拠 |
+| ロール | Mono | Green accent | Scopes | 使用箇所 | 根拠 |
 |---|---|---|---|---|---|
 | `color/ground` | neutral-100 | = | FF SF | ページ、ナビ、明るいセル、フッター、画像スロット背後、Mobile メニューパネル | 基準面 |
 | `color/surface` | neutral-200 | = | FF SF | チャット相手側バブル、ペルソナ引用枠、画像プレースホルダ、チップの塗り（`chip/fill`） | グラウンドとの比 1.10 で罫線なしに輪郭が読める最小段 |
 | `color/logo-ground` | neutral-0（白） | = | FF | パートナーのロゴタイル（行を埋める空タイル含む）とマーキー帯**のみ** | 白背景のロゴ素材（jpg / png）と同じ面にして板として浮かせない（**U-33**）。ground との比 1.12。文字を置かない（旧 Placeholder の Overline は U-34 で撤去） |
 | `color/inverse/ground` | neutral-950 | = | FF | ヒーロー、ベント統計セル、ベント CTA セル、チャット自分側バブル | インクを塗りに転用 |
-| `color/poster/ground` | neutral-950 | **lime-400** | FF | ポスター（Join）セクションのみ | 唯一のアクセント面。Mono では暗い面、Lime では**明るい面**（上のインク文字 10.83）。極性が反転するため専用ロール群を持つ（C-28） |
+| `color/poster/ground` | neutral-950 | **green-400** | FF | ポスター（Join）セクションのみ | 唯一のアクセント面。Mono では暗い面、Green では文字にとって**明るい面**（上のインク文字 6.54）。極性が反転するため専用ロール群を持つ（C-28） |
 
 #### 1.3.2 明るい面のテキスト
 
-| ロール | Mono | Lime | Scopes | 使用箇所 | 比 (ground / surface / hover-tint / pressed-tint) |
+| ロール | Mono | Green | Scopes | 使用箇所 | 比 (ground / surface / hover-tint / pressed-tint) |
 |---|---|---|---|---|---|
 | `color/ink` | neutral-950 | = | TF SF SC | h2（Title 1）、セル見出し（Title 2 / 3 / Headline）、活動タイトル（Display M）、氏名、ナビ（Label Nav）、マーキー JP 項目（Title 3 Caps）、バブル・引用（Callout）、アバター頭文字とチップ数値（Caption B）、インラインリンク、ボタンラベル（アウトライン・ゴースト） | 14.86 / 13.51 / 13.21 / 11.78 |
 | `color/ink-secondary` | neutral-700 | = | TF SF | **明るい面の小さな補助文字すべて**: 段落（Body S / M）、フッターリンク静止（Footnote）、紹介文・スキル行（Footnote / Caption）、推薦文（Footnote B）、画像キャプション（Caption）、©、入力中ラベル、タグ文字（`chip/ink`）、タグライン（Caption B）、セクション番号・キッカー・肩書・マーキーラベル（Overline）、活動サブタイトル（Subheadline）、活動バッジ（Mono、Overline JP）、チップのアイコン | 5.83 / 5.30 / 5.19 / 4.62 |
@@ -194,24 +197,24 @@ Tailwind v4 lime をそのまま採用。段の変更なし。**インディゴ�
 
 #### 1.3.3 反転面のテキスト（インク面・ポスター面）
 
-インク面は常に暗い面。ポスター面は Mono では暗い面、Lime では**明るい面**になるため、`inverse/*`（グラウンド × α）と `poster/*` を別系統に分ける。比の列はインク面の値、ポスターは Lime の lime-400 面の値。
+インク面は常に暗い面。ポスター面は Mono では暗い面、Green では**明るい面**になるため、`inverse/*`（グラウンド × α）と `poster/*` を別系統に分ける。比の列はインク面の値、ポスターは Green の green-400 面の値。
 |---|---|---|---|---|---|
 
-| ロール | Mono | Lime | Scopes | 使用箇所 | 比 |
+| ロール | Mono | Green | Scopes | 使用箇所 | 比 |
 |---|---|---|---|---|---|
-| `color/inverse/ink` | neutral-100 | = | TF SF SC | h1 目的語 `Your Limits.`（Display XL）、リード（Title 3）、統計値（Display M）、自分側バブル（Callout）、CTA 見出し（Title 3）、アウトラインボタンのラベルと枠 | ink 14.86 |
+| `color/inverse/ink` | neutral-100 | = | TF SF SC | h1 `Hack Your Limits`（Display XL、墨の板の上）、リード（Title 3）、統計値（Display M）、自分側バブル（Callout）、CTA 見出し（Title 3）、アウトラインボタンのラベルと枠 | ink 14.86 |
 | `color/inverse/ink-secondary` | `alpha/ground/88` | = | TF | ヒーロー段落（Body L）、CTA サブ（Footnote） | ink 11.78 |
 | `color/inverse/ink-tertiary` | `alpha/ground/72` | = | TF | ヒーローメタ行（Overline）、統計セルキッカー（Overline）。**インク面のみ** | ink 8.29 |
-| `color/inverse/ink-quaternary` | `alpha/ground/48` | = | TF | h1 導入句「仲間と、」（Display XL）。**インク面・ディスプレイサイズのみ** | ink 4.45（L） |
-| `color/poster/ink` | → inverse/ink | **neutral-950** | TF SF SC | ポスター見出し（Display L）、ソーシャルリンクのホバー | Mono 14.86 / Lime 10.83 |
-| `color/poster/ink-secondary` | → inverse/ink-secondary | **`alpha/ink/88`** | TF | ポスターキッカー「Join us」、段落（Body M）、ソーシャルリンク静止（Overline） | Mono 11.78 / Lime 8.23（`#2f361a`） |
+| `color/inverse/ink-quaternary` | `alpha/ground/48` | = | TF | （U-37 / U-39 で h1 導入句の用途を失った。ライブラリのディスプレイ文字のみ）**インク面・ディスプレイサイズのみ** | ink 4.45（L） |
+| `color/poster/ink` | → inverse/ink | **neutral-950** | TF SF SC | ポスター見出し（Display L）、ソーシャルリンクのホバー | Mono 14.86 / Green 6.54 |
+| `color/poster/ink-secondary` | → inverse/ink-secondary | **`alpha/ink/88`** | TF | ポスターキッカー「Join us」、段落（Body M）、ソーシャルリンク静止（Overline） | Mono 11.78 / Green 5.37（`#243123`） |
 | `color/inverse/hairline` | neutral-900 | = | SF SC | ヒーロー格子線（1px × 4） | 1.18（テクスチャ、対象外） |
 
-ポスター専用エイリアスを置くのは、モードがポスターの面だけを差し替え、ベントのインクセルに波及しないため。Lime ではさらに面の**明度が反転**するので、`poster/*` は `inverse/*` のエイリアスではなく独立した値を持つ。ポスターの階層は primary / secondary の 2 段に限定する（Lime では tertiary = ink@72 が 5.32 で N を満たすが、抑制原則により使わない。C-14 は制約から選択に変わった）。（DECISION C-4、C-14、C-28）
+ポスター専用エイリアスを置くのは、モードがポスターの面だけを差し替え、ベントのインクセルに波及しないため。Green ではさらに面の**明度が反転**するので、`poster/*` は `inverse/*` のエイリアスではなく独立した値を持つ。ポスターの階層は primary / secondary の 2 段に限定する（Green では tertiary = ink@72 が 3.97 で N を満たさない。C-14 は制約）。（DECISION C-4、C-14、C-28）
 
 #### 1.3.4 罫線と枠
 
-| ロール | Mono | Lime | Scopes | 使用箇所 | 根拠 |
+| ロール | Mono | Green | Scopes | 使用箇所 | 根拠 |
 |---|---|---|---|---|---|
 | `color/divider` | neutral-500 | = | SC SF FF | 2px: ナビ下、マーキー上下、セクション上、フッター上、格子フレームの塗り＋ gap | 一つの色、二つの太さ。強弱は太さで出す。装飾（1.4.11 対象外、2.59） |
 | `color/divider-hairline` | → divider | = | SC SF | 1px: 活動セル、締めの罫、タグライン左罫、Mobile メニュー行間（明るい面のみ）。インク面の縦罫（ヒーローメタ行）は currentColor = `inverse/ink-tertiary` | 同上。インク面に divider（n500）を置かない |
@@ -223,63 +226,63 @@ Tailwind v4 lime をそのまま採用。段の変更なし。**インディゴ�
 
 #### 1.3.5 アクセント
 
-アクセントは **2 極** で使う。**明るい地の上**では暗い段（700 / 800 / 900）が文字・線として働き、**インク面とポスター面**では lime-400 が面・印として働く。同じ段を両方に使うことはできない（lime-400 は地の上 1.37、lime-800 はインク面 2.35）。
+アクセントは **2 極** で使う。**明るい地の上**では暗い段（700 / 800 / 900）が文字・線として働き、**インク面とポスター面**では green-400 が面・印として働く。同じ段を両方に使うことはできない（green-400 は地の上 2.27、green-800 はインク面 2.25）。
 
-| ロール | Mono | Lime | Scopes | 使用箇所 | 比 |
+| ロール | Mono | Green | Scopes | 使用箇所 | 比 |
 |---|---|---|---|---|---|
-| `color/accent` | lime-400 | = | FF SF | 基底。ポスター面、インク面上の印。**明るい地の上で面として使わない**（C-25） | ink 10.83 / ground 1.37（不可） |
-| `color/on-accent` | neutral-950 | = | TF SF | アクセント塗り上の文字・アイコン | 10.83 |
-| `color/accent-hover` | lime-500 | = | FF | アクセント塗りボタンのホバー（ライブラリ） | on-accent 8.52 |
-| `color/accent-pressed` | lime-600 | = | FF | 同プレス | on-accent 5.42 |
-| `color/accent-subtle` | lime-200 | = | FF SF | 淡い強調塗り（ライブラリの強調セル・チップ） | ground との差 1.05 |
-| `color/on-accent-subtle` | lime-900 | = | TF | 淡い塗り上の文字 | 7.49 |
-| `color/accent-text` | lime-800 | = | TF | 13px 以上のアクセント文字: リンクのホバー下線・プレス文字（Label Nav / Footnote / Title 3） | 6.31（ground）/ 5.74（surface） |
-| `color/accent-text-small` | lime-900 | = | TF | 12px 以下のアクセント文字: 活動バッジ（Overline JP） | 7.85 / hover-tint 6.97 / pressed-tint 6.22 |
-| `color/accent-on-ink` | lime-400 | = | SF SC | インク面上の印（ヒーロー下線、インク面の選択基底）。**文字には使わない**（抑制。数値上は 10.83 で N 合格） | ink 10.83 |
+| `color/accent` | green-400 | = | FF SF | 基底。ポスター面、インク面上の印。**明るい地の上で面として使わない**（C-25） | ink 6.54 / ground 2.27（不可） |
+| `color/on-accent` | neutral-950 | = | TF SF | アクセント塗り上の文字・アイコン | 6.54 |
+| `color/accent-hover` | green-500 | = | FF | アクセント塗りボタンのホバー（ライブラリ） | on-accent 4.92 |
+| `color/accent-pressed` | green-600 | = | FF | 同プレス | on-accent 3.59（N 不合格。ライブラリのみ、C-18） |
+| `color/accent-subtle` | green-200 | = | FF SF | 淡い強調塗り（ライブラリの強調セル・チップ） | ground との差 1.20 |
+| `color/on-accent-subtle` | green-900 | = | TF | 淡い塗り上の文字 | 7.33 |
+| `color/accent-text` | green-800 | = | TF | 13px 以上のアクセント文字: リンクのホバー下線・プレス文字（Label Nav / Footnote / Title 3） | 6.62（ground）/ 6.01（surface） |
+| `color/accent-text-small` | green-900 | = | TF | 12px 以下のアクセント文字: 活動バッジ（Overline JP） | 8.77 / hover-tint 7.80 / pressed-tint 6.95 |
+| `color/accent-on-ink` | green-400 | = | SF SC | インク面上の印（ヒーロー h1 の句点、インク面の選択基底）。**文字には使わない**（抑制。数値上は 6.54 で N 合格） | ink 6.54 |
 
-`accent-text` に lime-700 を使わない根拠（DECISION C-26）: lime-700 はグラウンド上 **4.46** で AA（4.5）を 0.04 下回る。3:1 で足りる図形（フォーカスリング、マーキー区切り）にだけ 700 を使い、文字は 800 を床にする。`accent-text-small` の根拠: 高彩度の有彩色は同じ輝度比でも細字が痩せて見えるため、12px 以下は 1 段深い 900 を使う。この補正は有彩色固有で、無彩色（ink-secondary 5.83）には適用しない。
+`accent-text` に green-700 を使わない根拠（DECISION C-26 改、C-29）: green-700 はグラウンド上 **4.55** で AA（4.5）を 0.05 しか超えず、hover-tint 上では 4.04 に落ちる。3:1 で足りる図形（フォーカスリング、マーキー区切り）にだけ 700 を使い、文字は 800 を床にする。`accent-text-small` の根拠: 高彩度の有彩色は同じ輝度比でも細字が痩せて見えるため、12px 以下は 1 段深い 900 を使う。この補正は有彩色固有で、無彩色（ink-secondary 5.83）には適用しない。
 
-モード依存の 10 行。Mono と Lime の差は「4 つの出現」（マーキー区切り、活動バッジ、ヒーロー下線、ポスター面）と、**ポスター面の明度反転に伴う 6 行**:
+モード依存の 10 行。Mono と Green の差は「4 つの出現」（マーキー区切り、活動バッジ、ヒーロー下線、ポスター面）と、**ポスター面の明度反転に伴う 6 行**:
 
-| ロール | Mono | Lime accent | Scopes | 使用箇所 | 比 |
+| ロール | Mono | Green accent | Scopes | 使用箇所 | 比 |
 |---|---|---|---|---|---|
-| `color/pop/separator` | → ink-tertiary (neutral-600) | lime-700 | SF | マーキー区切りアイコン（Tabler `asterisk` 20） | 3.85 / 4.46 |
-| `color/pop/badge` | → ink-secondary (neutral-700) | lime-800 | TF SF | 活動バッジ（Overline JP 12 B）+ `arrow-right` 16 | 5.83 / 6.31（hover-tint 5.19 / 5.61、pressed-tint 4.62 / 5.00） |
-| `color/hero/word` | → inverse/ink | lime-400 | TF | 回転語の**文字色**。インク面上（下線は持たない、DECISION U-3） | 14.86 / 10.83 |
-| `color/poster/ground` | neutral-950 | lime-400 | FF | ポスター面 | — |
-| `color/poster/ink` | → inverse/ink | neutral-950 | TF SF SC | ポスターの primary 文字 | 14.86 / 10.83 |
-| `color/poster/ink-secondary` | → inverse/ink-secondary | `alpha/ink/88` | TF | ポスターの secondary 文字 | 11.78 / 8.23 |
-| `color/poster/selection` | → inverse/selection | `alpha/ink/12` | FF | ポスター面の `::selection` | 上の primary 10.28 / 8.64 |
-| `color/poster/action/fill` | → inverse/action/fill (neutral-100) | neutral-950 | FF | ポスター CTA の面 | 面 vs ポスター 14.86 / 10.83 |
+| `color/pop/separator` | → ink-tertiary (neutral-600) | green-700 | SF | マーキー区切りアイコン（Tabler `asterisk` 20） | 3.85 / 4.55 |
+| `color/pop/badge` | → ink-secondary (neutral-700) | green-800 | TF SF | 活動バッジ（Overline JP 12 B）+ `arrow-right` 16 | 5.83 / 6.62（hover-tint 5.19 / 5.88、pressed-tint 4.62 / 5.24） |
+| `color/hero/word` | → inverse/ink | green-400 | TF | h1 `Hack Your Limits.` の**句点**の文字色（U-39。回転語の下線 U-3 → 動詞 U-37 → 句点）。墨の板の上 | 14.86 / 6.54 |
+| `color/poster/ground` | neutral-950 | green-400 | FF | ポスター面 | — |
+| `color/poster/ink` | → inverse/ink | neutral-950 | TF SF SC | ポスターの primary 文字 | 14.86 / 6.54 |
+| `color/poster/ink-secondary` | → inverse/ink-secondary | `alpha/ink/88` | TF | ポスターの secondary 文字 | 11.78 / 5.37 |
+| `color/poster/selection` | → inverse/selection | `alpha/ink/12` | FF | ポスター面の `::selection` | 上の primary 10.28 / 5.33 |
+| `color/poster/action/fill` | → inverse/action/fill (neutral-100) | neutral-950 | FF | ポスター CTA の面 | 面 vs ポスター 14.86 / 6.54 |
 | `color/poster/action/ink` | → inverse/action/ink (neutral-950) | neutral-100 | TF SF | 同ラベル・アイコン | 14.86 / 14.86 |
-| `color/poster/focus/ring` | → focus/ring-inverse (lime-300) | lime-900 | SC | ポスター面上のリング | 12.79 / 5.72 |
+| `color/poster/focus/ring` | → focus/ring-inverse (green-300) | green-900 | SC | ポスター面上のリング | 12.79 / 3.86 |
 
-ポスター専用の `action` と `focus` を切るのは、ポスター面の明度が Mono（暗い面）と Lime（明るい面）で反転し、汎用 `inverse/action/*`・`focus/ring-inverse` では両立しないため。Lime の lime-400 面に lime-300 のリングを置くと 1.18 で消える。（DECISION C-28）
+ポスター専用の `action` と `focus` を切るのは、ポスター面の明度が Mono（暗い面）と Green（明るい面）で反転し、汎用 `inverse/action/*`・`focus/ring-inverse` では両立しないため。Green の green-400 面に green-300 のリングを置くと 1.32 で消える。（DECISION C-28）
 
 #### 1.3.6 状態
 
-| ロール | Mono | Lime | Scopes | 使用箇所 | 比・根拠 |
+| ロール | Mono | Green | Scopes | 使用箇所 | 比・根拠 |
 |---|---|---|---|---|---|
-| `color/state/hover-tint` | `alpha/ink/6` | = | FF | 活動セルホバー、Mobile メニュー行ホバー、アウトライン／ゴースト／アイコンボタンのホバー、**Lime のポスター面上の状態** | 上の ink 13.21、ink-secondary 5.19、accent-text-small 6.97 |
-| `color/state/pressed-tint` | `alpha/ink/12` | = | FF | 同プレス | 11.78 / 4.62 / 6.22 |
+| `color/state/hover-tint` | `alpha/ink/6` | = | FF | 活動セルホバー、Mobile メニュー行ホバー、アウトライン／ゴースト／アイコンボタンのホバー、**Green のポスター面上の状態** | 上の ink 13.21、ink-secondary 5.19、accent-text-small 7.80 |
+| `color/state/pressed-tint` | `alpha/ink/12` | = | FF | 同プレス | 11.78 / 4.62 / 6.95 |
 | `color/inverse/state/hover-tint` | `alpha/ground/12` | = | FF | インク面アウトライン／アイコンボタンのホバー | 上の ground 10.58 |
-| `color/inverse/state/pressed-tint` | `alpha/ground/24` | = | FF | 同プレス | 7.06（**インク面のみ**。Lime のポスター面は明るい面なので `state/*`〈ink アルファ〉側を使う） |
-| `color/focus/ring` | lime-700 | = | SC | 明るい面上の `:focus-visible` リング（2px、offset 2） | ground 4.46、surface 4.05、hover-tint 3.96、pressed-tint 3.53（すべて U 3:1 ✓） |
-| `color/focus/ring-inverse` | lime-300 | = | SC | **インク面**上の同リング（ポスター面は `poster/focus/ring`） | ink 12.79、inverse hover-tint 9.11 |
-| `color/selection` | `alpha/lime-400/24` | = | FF | 明るい面の `::selection` 塗り（`#deefb8`）。**文字は `ink` を強制** | 上の ink 13.55（ink-secondary も 5.32 で N） |
-| `color/inverse/selection` | `alpha/lime-400/24` | = | FF | インク面の `::selection` 塗り（`#3d4e16`）。文字は `inverse/ink` を強制 | 上の ground 8.17 |
-| `color/poster/selection` | → inverse/selection | `alpha/ink/12` | FF | ポスター面の `::selection` 塗り（Lime `#8bce03`）。文字は `poster/ink` を強制 | 上の primary 10.28 / 8.64 |
+| `color/inverse/state/pressed-tint` | `alpha/ground/24` | = | FF | 同プレス | 7.06（**インク面のみ**。Green のポスター面は明るい面なので `state/*`〈ink アルファ〉側を使う） |
+| `color/focus/ring` | green-700 | = | SC | 明るい面上の `:focus-visible` リング（2px、offset 2） | ground 4.55、surface 4.13、hover-tint 4.04、pressed-tint 3.60（すべて U 3:1 ✓） |
+| `color/focus/ring-inverse` | green-300 | = | SC | **インク面**上の同リング（ポスター面は `poster/focus/ring`） | ink 8.62、inverse hover-tint 6.14 |
+| `color/selection` | `alpha/green-400/24` | = | FF | 明るい面の `::selection` 塗り（`#c8e4cb`）。**文字は `ink` を強制** | 上の ink 12.19（ink-secondary は 4.79） |
+| `color/inverse/selection` | `alpha/green-400/24` | = | FF | インク面の `::selection` 塗り（`#274329`）。文字は `inverse/ink` を強制 | 上の ground 9.78 |
+| `color/poster/selection` | → inverse/selection | `alpha/ink/12` | FF | ポスター面の `::selection` 塗り（Green `#3ba64a`）。文字は `poster/ink` を強制 | 上の primary 10.28 / 5.33 |
 | `opacity/disabled` | 0.48 | = | OP | 無効ボタン（ノード全体、ライブラリのみ） | アルファ尺度の 48。1.4.3 適用除外 |
-| `color/link/hover` | → accent-text (lime-800) | = | SF SC | ナビリンク・ワードマークのホバー下線（2px） | 6.31（U）。**lime-400 は 1.37 で不可** |
-| `color/link/pressed` | → accent-text-small (lime-900) | = | TF | ナビ・フッター・インラインリンクのプレス文字 | 7.85 |
+| `color/link/hover` | → accent-text (green-800) | = | SF SC | ナビリンク・ワードマークのホバー下線（2px） | 6.62（U）。**green-400 は 2.27 で不可** |
+| `color/link/pressed` | → accent-text-small (green-900) | = | TF | ナビ・フッター・インラインリンクのプレス文字 | 8.77 |
 | `color/link/current` | → ink | = | SF | `aria-current` の 2px 下線（ナビ）、Mobile メニュー行のラベル下 2px | 持続状態にアクセントを使わない |
-| `color/inverse/link/hover` | → inverse/ink | **neutral-950**（ポスター面） | TF SF | ソーシャルリンクのホバーとプレス（secondary → primary、+ 1px 下線） | 14.86 / 10.83 |
+| `color/inverse/link/hover` | → inverse/ink | **neutral-950**（ポスター面） | TF SF | ソーシャルリンクのホバーとプレス（secondary → primary、+ 1px 下線） | 14.86 / 6.54 |
 
-リンクの状態モデル（DECISION C-16）: 文字色はホバーで変えない。ホバーは **下線** で示し、ナビ・ワードマークは `link/hover`（lime-800 の 2px）、フッター・ソーシャルは `link-underline`（currentColor 1px、フッターは同時に文字を ink-secondary → ink）、インラインは常時 1px → ホバー 2px。プレスは `link/pressed`（lime-900。ソーシャルはホバーと同じ、R5）。現在地は `link/current`。Mono でアクセントが現れるのはホバー下線・プレス文字・フォーカス・選択の 4 状態だけで、いずれも一時的。
+リンクの状態モデル（DECISION C-16）: 文字色はホバーで変えない。ホバーは **下線** で示し、ナビ・ワードマークは `link/hover`（green-800 の 2px）、フッター・ソーシャルは `link-underline`（currentColor 1px、フッターは同時に文字を ink-secondary → ink）、インラインは常時 1px → ホバー 2px。プレスは `link/pressed`（green-900。ソーシャルはホバーと同じ、R5）。現在地は `link/current`。Mono でアクセントが現れるのはホバー下線・プレス文字・フォーカス・選択の 4 状態だけで、いずれも一時的。
 
-選択範囲で文字色を強制する理由（DECISION C-9）: ライムの `selection`（lime-400@24）上では ink-secondary も 5.32 で AA を満たすため数値上の強制は不要になったが、規則は残す。選択中に階層が見えると選択の境界が読みにくく、面によって挙動が変わるのを避けるため、`::selection { background; color }` を対で書き、選択中の文字は面の primary にする（明るい面 13.55 / インク面 8.17 / ポスター面 8.64）。
+選択範囲で文字色を強制する理由（DECISION C-9）: グリーンの `selection`（green-400@24）上では ink-secondary は 4.79 で AA を満たす（数値上は強制不要）が、規則は残す。選択中に階層が見えると選択の境界が読みにくく、面によって挙動が変わるのを避けるため、`::selection { background; color }` を対で書き、選択中の文字は面の primary にする（明るい面 12.19 / インク面 9.78 / ポスター面 5.33）。
 
-リングを面ごとに 3 トークンに分けるのは（DECISION C-8 改）、ライムではポスター面の明度が反転するため。明るい面は `focus/ring` lime-700（4.46）、インク面は `focus/ring-inverse` lime-300（12.79）、ポスター面（lime-400）は `poster/focus/ring` lime-900（5.72）。lime-300 を lime-400 面に置くと 1.18 で消え、lime-700 でも 3.25 と余裕がない。
+リングを面ごとに 3 トークンに分けるのは（DECISION C-8 改）、グリーンではポスター面の明度が反転するため。明るい面は `focus/ring` green-700（4.55）、インク面は `focus/ring-inverse` green-300（8.62）、ポスター面（green-400）は `poster/focus/ring` green-900（3.86）。green-300 を green-400 面に置くと 1.32 で消え、green-700 でも 2.00 で 3:1 に届かない。
 
 #### 1.3.7 アクション（ボタン）
 
@@ -290,10 +293,10 @@ Tailwind v4 lime をそのまま採用。段の変更なし。**インディゴ�
 | `color/action/fill` / `fill-hover` / `fill-pressed` | neutral-950 / 800 / 700 | FF | ナビ CTA「参加する」、Mobile メニュー CTA、スキップリンク | ラベル 14.86 / 9.04 / 5.83 |
 | `color/action/ink` | neutral-100 | TF SF | 同ラベルとアイコン | — |
 | `color/inverse/action/fill` / `fill-hover` / `fill-pressed` | neutral-100 / 200 / 300 | FF | ヒーロー主ボタン（**インク面のみ**） | ラベル 14.86 / 13.51 / 11.19 |
-| `color/poster/action/fill` | Mono → inverse/action/fill (neutral-100) / Lime neutral-950 | FF | ポスター CTA の面 | 面 vs ポスター 14.86 / 10.83 |
-| `color/poster/action/fill-hover` | Mono → inverse/action/fill-hover (neutral-200) / Lime neutral-800 | FF | 同ホバー。汎用 `action/fill-hover` を直接引くと Mono で反転しないので専用ロールにする（C-28 の原則をホバーにも通す） | 13.51 / 7.61 |
-| `color/poster/action/fill-pressed` | Mono → inverse/action/fill-pressed (neutral-300) / Lime neutral-700 | FF | 同プレス。ホバーの次の 1 段 | 11.19 / 5.29 |
-| `color/poster/action/ink` | Mono → inverse/action/ink (neutral-950) / Lime neutral-100 | TF SF | 同ラベルとアイコン | 14.86 / 14.86 |
+| `color/poster/action/fill` | Mono → inverse/action/fill (neutral-100) / Green neutral-950 | FF | ポスター CTA の面 | 面 vs ポスター 14.86 / 6.54 |
+| `color/poster/action/fill-hover` | Mono → inverse/action/fill-hover (neutral-200) / Green neutral-800 | FF | 同ホバー。汎用 `action/fill-hover` を直接引くと Mono で反転しないので専用ロールにする（C-28 の原則をホバーにも通す） | 13.51 / 3.98 |
+| `color/poster/action/fill-pressed` | Mono → inverse/action/fill-pressed (neutral-300) / Green neutral-700 | FF | 同プレス。ホバーの次の 1 段 | 11.19 / 2.57（プレス中の面の輪郭は 3:1 未満。ラベル 5.83 は N 合格。押下は duration/0 の瞬間で、離せばホバー 3.98 に戻る — 要記録） |
+| `color/poster/action/ink` | Mono → inverse/action/ink (neutral-950) / Green neutral-100 | TF SF | 同ラベルとアイコン | 14.86 / 14.86 |
 | `color/inverse/action/ink` | neutral-950 | TF SF | 同ラベルとアイコン | — |
 
 規則（DECISION C-10）: ホバーは基底から中間調へ 1 段（950 → 800。900 は 950 との差 1.18 で区別できないため飛ばす）、プレスはさらに 1 段（700、800 との差 1.55）。Apple の「押下は即時、ホバーより強く」に従い、プレスがホバーの手前に戻ることはない。アウトライン・ゴースト・アイコンボタンはラベルを ink（インク面は inverse/ink）に固定し、状態は `state/*` のティントだけで示す。ティント上にアクセント文字を置かない（DECISION C-24: 600 は pressed-tint 上 4.59 で余裕がない）。マーキー停止／再生ボタンとスキップリンクは上記と `divider` / `focus/ring` で足り、専用ロールを置かない。
@@ -324,12 +327,12 @@ Tailwind v4 lime をそのまま採用。段の変更なし。**インディゴ�
 | ink-secondary | Body S / M 14–15 R、Footnote 13 R / B、Caption 12 R / B、Overline 12 B、Subheadline 15 B、Overline JP 12 B（Mono バッジ） | N | 5.83 | PASS | コンセプト n600 3.85 / n500 2.59 / ink@55 3.66 → FAIL。すべて 700 に統一 |
 | ink-tertiary | マーキーゴースト Title 3 Caps 19 EB | L | 3.85 | PASS | コンセプト ink@40 2.41 → 大テキストでも FAIL |
 | ink-tertiary | Mono 区切り `asterisk`、typing dot、placeholder アイコン | U | 3.85 | PASS | コンセプト n400 1.80 / n500 2.59 → FAIL |
-| accent-text | リンクプレス Label Nav 14 R、Footnote 13、Title 3 19 EB | N | 5.79 | PASS | — |
-| accent-text-small | 活動バッジ Overline JP 12 B | N | 7.85 | PASS | コンセプト赤 3.76 → FAIL。lime-900 を採用（lime-700 は 4.46 で不足） |
-| link/hover | ナビ・ワードマークのホバー下線 2px | U | 5.79 | PASS | — |
+| accent-text | リンクプレス Label Nav 14 R、Footnote 13、Title 3 19 EB | N | 6.62 | PASS | — |
+| accent-text-small | 活動バッジ Overline JP 12 B | N | 8.77 | PASS | コンセプト赤 3.76 → FAIL。green-900 を採用（green-700 は 4.55 で余裕なし） |
+| link/hover | ナビ・ワードマークのホバー下線 2px | U | 6.62 | PASS | — |
 | link/current | 現在地の下線 2px（ink） | U | 14.86 | PASS | — |
-| pop/separator (lime-700) | マーキー区切りアイコン | U | 4.46 | PASS | 図形なので 3:1。文字には使わない |
-| focus/ring | 2px リング | U | 5.79 | PASS | — |
+| pop/separator (green-700) | マーキー区切りアイコン | U | 4.55 | PASS | 図形なので 3:1。文字には使わない |
+| focus/ring | 2px リング | U | 4.55 | PASS | — |
 | divider | 2px / 1px 罫線 | — | 2.59 | n/a | 装飾。3:1 が必要になれば ink-tertiary（3.85） |
 
 #### 1.4.2 サーフェス、ティント、塗り
@@ -342,13 +345,13 @@ Tailwind v4 lime をそのまま採用。段の変更なし。**インディゴ�
 | chip/fill | ground / hover-tint / pressed-tint | チップの面 | — | 1.10 / 1.03 / 1.15 | 装飾（面の差で読む） |
 | ink | hover-tint / pressed-tint | 活動セルタイトル Display M、Mobile メニュー行 Label Nav、ボタンラベル | N | 13.21 / 11.78 | PASS |
 | ink-secondary | hover-tint / pressed-tint | 活動セルの Subheadline 15 B、Body S 14 R、Mono バッジ Overline JP 12 B | N | 5.19 / 4.62 | PASS |
-| accent-text-small | hover-tint / pressed-tint | 活動バッジ Overline JP 12 B | N | 6.97 / 6.22 | PASS |
-| ink | selection | 選択テキスト（文字色を ink に強制） | N | 10.23 | PASS（ink-secondary のままなら 4.02 で FAIL） |
+| accent-text-small | hover-tint / pressed-tint | 活動バッジ Overline JP 12 B | N | 7.80 / 6.95 | PASS |
+| ink | selection | 選択テキスト（文字色を ink に強制） | N | 12.19 | PASS（ink-secondary のままでも 4.79） |
 | ink | avatar (300) | 頭文字 Caption 12 B | N | 11.19 | PASS |
 | action/ink | action/fill / -hover / -pressed | ナビ CTA Label S 14 B | N | 14.86 / 9.04 / 5.83 | PASS |
-| on-accent-subtle | accent-subtle | ライブラリ強調セル | N | 8.06 | PASS |
-| on-accent | accent / -hover / -pressed | ライブラリ主ボタン | N | 5.79 / 7.24 / 8.89 | PASS |
-| focus/ring | surface / hover-tint / pressed-tint | リング | U | 5.26 / 5.14 / 4.59 | PASS |
+| on-accent-subtle | accent-subtle | ライブラリ強調セル | N | 7.33 | PASS |
+| on-accent | accent / -hover / -pressed | ライブラリ主ボタン | N | 6.54 / 4.92 / 3.59 | pressed **FAIL**（ライブラリのみ。ページに accent ボタンは無い、C-18） |
+| focus/ring | surface / hover-tint / pressed-tint | リング | U | 4.13 / 4.04 / 3.60 | PASS |
 
 #### 1.4.3 インク面 `#201e1d`（ヒーロー、ベントのインクセル、Mono ポスター）
 
@@ -361,31 +364,31 @@ Tailwind v4 lime をそのまま採用。段の変更なし。**インディゴ�
 | inverse/outline (100 %) | 副ボタンの 1px 枠 | U | 14.86 | PASS | コンセプト ground@55 5.41 / 100 を 1 種に統合 |
 | inverse/ink | inverse hover-tint / pressed-tint 上 | N | 10.58 / 7.06 | PASS | — |
 | inverse/action/ink | inverse/action fill / -hover / -pressed | N | 14.86 / 13.51 / 11.19 | PASS | — |
-| accent-on-ink (lime-400) | ヒーロー下線 | U | 10.83 | PASS | — |
-| focus/ring-inverse (lime-300) | リング（ink / inverse hover-tint 上） | U | 12.79 / 9.11 | PASS | — |
-| inverse/ink | inverse/selection 上（lime-400@24） | N | 8.17 | PASS | — |
+| accent-on-ink (green-400) | ヒーロー h1 の句点 | U | 6.54 | PASS | — |
+| focus/ring-inverse (green-300) | リング（ink / inverse hover-tint 上） | U | 8.62 / 6.14 | PASS | — |
+| inverse/ink | inverse/selection 上（green-400@24） | N | 9.78 | PASS | — |
 | inverse/hairline (900) | 格子線 | — | 1.18 | n/a | テクスチャ |
 
-#### 1.4.4 アクセント面 `#9ae600`（Lime のポスターのみ。**明るい面**）
+#### 1.4.4 アクセント面 `#3fb950`（Green のポスターのみ。文字にとって**明るい面**）
 
-ポスター面は Lime では明るい面になるため、テキストは `inverse/*`（グラウンド × α）ではなく **インク × α** の梯子で組む。
+ポスター面は Green では明るい面になるため、テキストは `inverse/*`（グラウンド × α）ではなく **インク × α** の梯子で組む。
 
 | ロール | 代表用途 | 区分 | 比 | 判定 | 修正 |
 |---|---|---|---|---|---|
-| poster/ink (neutral-950) | 見出し Display L 96 EB、ソーシャルホバー Overline 12 B | N | 10.83 | PASS | — |
-| poster/ink-secondary (ink@88) | キッカー Overline 12 B、段落 Body M 15 R、ソーシャル静止 Overline 12 B | N | 8.23 | PASS | 面が反転したため ground@88 → ink@88 に差し替え |
-| （参考）ink@72 | — | N | 5.32 | PASS | 数値上は使えるが抑制原則で使わない（階層は 2 段） |
-| （参考）ink@48 | — | N | 2.79 | FAIL | アクセント面で禁止 |
-| poster/action/fill (neutral-950) / hover (neutral-800) | インク色 CTA ボタンの面 | U | 10.83 / 7.61 | PASS | ラベルはグラウンド 14.86 / 10.45 |
-| poster/focus/ring (lime-900) | リング | U | 5.72 | PASS | lime-300 なら 1.18、lime-700 でも 3.25 で余裕なし |
-| poster/ink | poster/selection (ink@12) 上 | N | 8.64 | PASS | secondary も 6.57 で N |
-| ground 系のアウトラインボタン | アウトラインボタン | U | 1.53 | FAIL | アクセント面ではアウトラインボタンを使わない（塗りボタンのみ） |
+| poster/ink (neutral-950) | 見出し Display L 96 EB、ソーシャルホバー Overline 12 B | N | 6.54 | PASS | — |
+| poster/ink-secondary (ink@88) | キッカー Overline 12 B、段落 Body M 15 R、ソーシャル静止 Overline 12 B | N | 5.37 | PASS | 面が反転したため ground@88 → ink@88 に差し替え |
+| （参考）ink@72 | — | N | 3.97 | FAIL | 使わない（階層は 2 段） |
+| （参考）ink@48 | — | N | 2.39 | FAIL | アクセント面で禁止 |
+| poster/action/fill (neutral-950) / hover (neutral-800) | インク色 CTA ボタンの面 | U | 6.54 / 3.98 | PASS | ラベルはグラウンド 14.86 / 9.04。プレス（neutral-700）は面の輪郭 2.57 で 3:1 未満（押下の瞬間のみ、ラベル 5.83） |
+| poster/focus/ring (green-900) | リング | U | 3.86 | PASS | green-300 なら 1.32、green-700 でも 2.00 で不可 |
+| poster/ink | poster/selection (ink@12) 上 | N | 5.33 | PASS | secondary は 4.38（primary を強制、C-9） |
+| ground 系のアウトラインボタン | アウトラインボタン | U | 2.27 | FAIL | アクセント面ではアウトラインボタンを使わない（塗りボタンのみ） |
 
 ### 1.5 ルール
 
 #### 1.5.1 アクセントの出現場所
 
-| 出現 | Mono | Lime accent | 値 |
+| 出現 | Mono | Green accent | 値 |
 |---|---|---|---|
 | フォーカスリング | ○ | ○ | 700（明るい面）/ 300（インク面）/ 900（ポスター面） |
 | 選択範囲 | ○ | ○ | 400@24（明るい面・インク面）/ ink@12（ポスター面） |
@@ -394,22 +397,22 @@ Tailwind v4 lime をそのまま採用。段の変更なし。**インディゴ�
 | マーキー区切りアイコン | — | ○ | 700 |
 | 活動バッジ文字 | — | ○ | 800 |
 | ポスター面 | — | ○ | 400 |
-| ヒーロー回転語の下線 | — | ○ | 400（インク面上） |
+| ヒーロー h1 の句点（U-39） | — | ○ | 400（墨の板の上） |
 | 上記以外（見出し、アイコン、ボタン塗り、罫線、写真の着色、ホバー中の文字色） | × | × | — |
 
 - Mono の 4 出現はすべて一時的状態（hover / pressed / focus / selection）。持続状態（`aria-current`、静止テキスト）にアクセントを使わない。
 - **段は面で決まる**。明るい地の上では 700（図形のみ）/ 800（文字）/ 900（12px 以下の文字）。インク面とポスター面では 400（面・印）。この二極を混ぜない。
-- アクセントを文字に使うときの下限: 13px 以上は 800（6.31）、12px 以下は 900（7.85）。lime-700 は 4.46 で AA を割るため文字に使わない。ティント面にはアクセント文字を置かない（バッジのみ例外、900 で 6.22）。
-- インク面のアクセントは印（下線・選択）だけで、値は 400。数値上は 10.83 で文字も通るが、抑制原則により文字には使わない。
-- 明るい地の上で lime-400 を**面**として使わない（1.37。C-25）。地の上のアクションは `action/fill`（インク）で、ライムは大面・印・状態に限る。
+- アクセントを文字に使うときの下限: 13px 以上は 800（6.62）、12px 以下は 900（8.77）。green-700 は 4.55 で余裕がなく hover-tint 上で割るため文字に使わない。ティント面にはアクセント文字を置かない（バッジのみ例外、900 で 6.95）。
+- インク面のアクセントは印（下線・選択）だけで、値は 400。数値上は 6.54 で文字も通るが、抑制原則により文字には使わない。
+- 明るい地の上で green-400 を**面**として使わない（2.27。C-25）。地の上のアクションは `action/fill`（インク）で、グリーンは大面・印・状態に限る。
 - アクセント塗りは面積の大きい順に「ポスター > 何もない」。2 つ目のアクセント面を足したくなったら、それはアクセントではなく新しいセクション色であり、本システムの外。
-- 既定モードは **Lime accent**、Mono は検証モード（DECISION C-17、2026-09-01 クライアント確定）。
+- 既定モードは **Green accent**（DECISION C-29、2026-09-12 クライアント確定。C-17 の Lime accent を置換）、Mono は検証モード。
 
 #### 1.5.2 暗い面
 
 - テキストは `inverse/*` の梯子だけを使い、実色のニュートラルを置かない（ティントが面の色相を継がなくなる）。
 - インク面: primary / secondary / tertiary を使用可、quaternary はディスプレイサイズのみ。
-- アクセント面（Lime のポスター）: primary / secondary のみ。**明るい面**なのでテキストはインク × α、状態は `state/*`（インクのアルファ）を使う。ボタンはインク塗りのみ、アウトライン不可。リングは `poster/focus/ring`（900）。
+- アクセント面（Green のポスター）: primary / secondary のみ。**明るい面**なのでテキストはインク × α、状態は `state/*`（インクのアルファ）を使う。ボタンはインク塗りのみ、アウトライン不可。リングは `poster/focus/ring`（900）。
 - ヒーロー・ベントのインクセルはモードで変わらない。モードが差し替えるのはポスターの面とヒーロー下線だけ。
 
 #### 1.5.3 Do / Don't
@@ -422,16 +425,16 @@ Tailwind v4 lime をそのまま採用。段の変更なし。**インディゴ�
 | 暗い面ではグラウンドのアルファで階層を組む | 暗い面に n300 / n400 を実色で置く |
 | リンクは下線で示し、ホバーは下線（ナビは 2px アクセント）、プレスは文字を 600 | ホバーで文字色だけを変える。持続状態にアクセントを使う |
 | ホバー／プレスは反対の極のアルファ | ホバーにアクセント塗りを使う（フォーカスと区別がつかない） |
-| 写真・ロゴは原色のまま（U-21） | 写真をライムでデュオトーンにする、セピアにする、白黒にする |
+| 写真・ロゴは原色のまま（U-21） | 写真をグリーンでデュオトーンにする、セピアにする、白黒にする |
 | 新しい色が要るときは既存の段から選び、比を再計算する | 段の間の値を作る（ランプが「値の袋」に戻る） |
-| Mono で先に検証する | Lime でしか読めない設計 |
+| Mono で先に検証する | Green でしか読めない設計 |
 
 #### 1.5.4 日本語固有
 
 - 12px 以下の和文補助文字（Overline JP、Caption）は ink-secondary（5.83）が床。画数の多いグリフは同じ比でも細く見えるため、これらは Bold 700 で組む（§2.2.4）。
 - 和欧混植の 1 行は 1 つの色トークンで組む。英字部分だけを別色にしない。
 - 段落は ink-secondary で 14px 以上。ティント面（surface、hover-tint、pressed-tint）に日本語段落が乗る場合も同じトークンで 4.62 以上を保証済み。
-- 明るい面の文字にアルファを使わない。アルファ文字は平坦でない地（写真・ティント・モード切替）で合成結果を検証できず、Figma でエイリアスにもできない。反転面で例外的に許すのは、面が 2 色（ink / lime-400）に限定され、両方を §1.4.3 / §1.4.4 で検算済みだから。
+- 明るい面の文字にアルファを使わない。アルファ文字は平坦でない地（写真・ティント・モード切替）で合成結果を検証できず、Figma でエイリアスにもできない。反転面で例外的に許すのは、面が 2 色（ink / green-400）に限定され、両方を §1.4.3 / §1.4.4 で検算済みだから。
 - 選択範囲では文字色を面の primary に強制する（§1.3.6）。ink-secondary の和文は選択上 4.02 で AA を割る。
 
 #### 1.5.5 高コントラスト（`prefers-contrast: more`）
@@ -444,7 +447,7 @@ Tailwind v4 lime をそのまま採用。段の変更なし。**インディゴ�
 | `ink-tertiary` (600): ゴースト文字、アイコン、点 | → `ink-secondary` | 5.83 |
 | `divider` / `divider-hairline` (500) | → neutral-700 | 5.83（線が 3:1 を超える） |
 | `inverse/ink-secondary` / `-tertiary` / `-quaternary` | → `inverse/ink` 100 % | 14.86 / 5.79 |
-| `accent-text` / `accent-text-small` / `pop/badge` | → lime-900 | 7.85 |
+| `accent-text` / `accent-text-small` / `pop/badge` | → green-900 | 8.77 |
 | `state/hover-tint` 6 → 12、`state/pressed-tint` 12 → 24 | — | ink 11.78 / 9.05 |
 | `inverse/state/*` | 変更なし | ラベルは inverse/ink 100 % で 10.58 / 7.06。48 % に上げると ground ラベルが約 3.4 で N 不合格 |
 | `inverse/hairline` | 変更なし（テクスチャ） | — |
@@ -639,8 +642,8 @@ CSS 変数名は Figma 名の `/` を `-` に置換する（例 `--color-inverse
 | `color/ink-secondary`（n700） | Body S、Footnote、Caption、Overline、Subheadline、Caption/Bold タグライン、© | 5.83 | 5.30 | PASS |
 | `color/chip/ink`（→ n700）on `color/chip/fill`（n200） | Caption タグ、チップアイコン | — | 5.30 | PASS |
 | `color/ink-tertiary`（n600） | Title 3 Caps ゴースト（L） | 3.85 | — | PASS（L のみ。12–17px には使わない） |
-| `color/pop/badge`（Mono: ink-secondary / Lime: lime-800） | Overline/JP 活動バッジ | 5.83 / 6.31 | — | PASS |
-| `color/accent-text`（lime-800） | リンクホバー下線・プレス（13px 以上） | 6.31 | 5.74 | PASS |
+| `color/pop/badge`（Mono: ink-secondary / Green: green-800） | Overline/JP 活動バッジ | 5.83 / 6.62 | — | PASS |
+| `color/accent-text`（green-800） | リンクホバー下線・プレス（13px 以上） | 6.62 | 6.01 | PASS |
 | 概念 n600 `#7d7979` を小文字に | キッカー・役職・タグライン | 3.85 | — | **FAIL** → ink-secondary |
 | 概念 n500 `#9b9797` | キッカー・© | 2.59 | — | **FAIL** → ink-secondary |
 | 概念 ink@40 | マーキーゴースト | 2.41 | — | **FAIL** → ink-tertiary（L） |
@@ -653,17 +656,17 @@ CSS 変数名は Figma 名の `/` を `-` に置換する（例 `--color-inverse
 | `color/inverse/ink-secondary`（ground@88） | Body L、Footnote CTA 副文 | 11.78 | PASS |
 | `color/inverse/ink-tertiary`（ground@72） | Overline ヒーローメタ・統計キッカー | 8.29 | PASS |
 | `color/inverse/ink-quaternary`（ground@48） | Display XL 導入句のみ | 4.45 | PASS（大きな文字 3:1。12–17px には **使わない**） |
-| lime-800（明るい地の文字色をそのまま持ち込む） | — | 2.35 | FAIL → インク面のアクセントは印のみ（`color/accent-on-ink` = lime-400。抑制により文字には使わない） |
+| green-800（明るい地の文字色をそのまま持ち込む） | — | 2.25 | FAIL → インク面のアクセントは印のみ（`color/accent-on-ink` = green-400。抑制により文字には使わない） |
 
-#### 2.4.3 アクセント面（Lime モードのポスター、lime-400。**明るい面**）
+#### 2.4.3 アクセント面（Green モードのポスター、green-400。文字にとって**明るい面**）
 
 | 色トークン | 使うロール | 比 | 判定 |
 |---|---|---|---|
-| `color/poster/ink`（neutral-950） | Display L | 10.83 | PASS |
-| `color/poster/ink-secondary`（ink@88） | Overline JOIN US・ソーシャル（12 Bold）、Body M | 8.23 | PASS |
-| （参考）ink@72 | — | 5.32 | 数値上は N。抑制原則によりポスターでは使わない |
-| （参考）ink@48 | — | 2.79 | FAIL → ポスターで禁止 |
-| グラウンド系の文字（ground / ground@88） | — | 1.53 / 1.45 | **FAIL** → 明るい面にグラウンド色の文字を置かない |
+| `color/poster/ink`（neutral-950） | Display L | 6.54 | PASS |
+| `color/poster/ink-secondary`（ink@88） | Overline JOIN US・ソーシャル（12 Bold）、Body M | 5.37 | PASS |
+| （参考）ink@72 | — | 3.97 | FAIL → ポスターでは使わない |
+| （参考）ink@48 | — | 2.39 | FAIL → ポスターで禁止 |
+| グラウンド系の文字（ground / ground@88） | — | 2.27 / 2.06 | **FAIL** → 明るい面にグラウンド色の文字を置かない |
 
 ポスターの階層は primary / secondary の 2 段（Display L と Overline / Body M）。3 段目が要るコピーはポスターに置かない。
 
@@ -671,7 +674,7 @@ CSS 変数名は Figma 名の `/` を `-` に置換する（例 `--color-inverse
 
 | 組み合わせ | 比 | 判定 |
 |---|---|---|
-| `color/link/pressed`（accent-text）on ground / surface | 5.79 / 5.26 | PASS |
+| `color/link/pressed`（accent-text-small、green-900）on ground / surface | 8.77 / 7.97 | PASS |
 | `color/action/ink` on `color/action/fill-hover`（n800）/ `-pressed`（n700） | 9.04 / 5.83 | PASS |
 | `color/inverse/action/ink` on `color/inverse/action/fill-hover`（n200）/ `-pressed`（n300） | 13.51 / 11.19 | PASS |
 | `color/ink` / `color/ink-secondary` on `color/state/hover-tint`（活動セル） | 13.21 / 5.19 | PASS |
@@ -1201,11 +1204,11 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 
 | 地 | Token | 値 | 比 | 判定 |
 |---|---|---|---|---|
-| ground `#f3f2f2` / surface `#eae7e7` / hover-tint / pressed-tint（ページ、セル、chip 上も含む） | `color/focus/ring` | lime-700 `#497d00` | 4.46 / 4.05 / 3.96 / 3.53 | ✓ 3:1 |
-| ink `#201e1d`（hero、stat / CTA セル、Mono の poster）、inverse hover-tint | `color/focus/ring-inverse` | lime-300 `#bbf451` | 12.79 / 9.11 | ✓ |
-| lime-400 `#9ae600`（Lime の poster） | `color/poster/focus/ring` | lime-900 `#35530e` | 5.72 | ✓。面が反転するため専用 token |
+| ground `#f3f2f2` / surface `#eae7e7` / hover-tint / pressed-tint（ページ、セル、chip 上も含む） | `color/focus/ring` | green-700 `#1a7f37` | 4.55 / 4.13 / 4.04 / 3.60 | ✓ 3:1 |
+| ink `#201e1d`（hero、stat / CTA セル、Mono の poster）、inverse hover-tint | `color/focus/ring-inverse` | green-300 `#56d364` | 8.62 / 6.14 | ✓ |
+| green-400 `#3fb950`（Green の poster） | `color/poster/focus/ring` | green-900 `#044f1e` | 3.86 | ✓。面が反転するため専用 token |
 
-**DECISION L-14 / C-8 改** リングは面ごとに 3 token。明るい面 `focus/ring` lime-700（4.46）、インク面 `focus/ring-inverse` lime-300（12.79）、ポスター面 `poster/focus/ring` lime-900（5.72）。ライムはポスター面の明度が反転するため、暗い面用の 1 token では賄えない（lime-300 を lime-400 面に置くと 1.18 で消える）。Mono でも focus ring はライム（アクセントが状態表示にだけ現れる規則の一部）。`outline: 2px solid; outline-offset: 2px; border-radius: 0`。full-bleed の行（activity row、Menu row）は inset（offset −2）で隣接罫線と交差させない（DECISION K-7）。
+**DECISION L-14 / C-8 改** リングは面ごとに 3 token。明るい面 `focus/ring` green-700（4.55）、インク面 `focus/ring-inverse` green-300（8.62）、ポスター面 `poster/focus/ring` green-900（3.86）。グリーンはポスター面の明度が反転するため、暗い面用の 1 token では賄えない（green-300 を green-400 面に置くと 1.32 で消える）。Mono でも focus ring はグリーン（アクセントが状態表示にだけ現れる規則の一部）。`outline: 2px solid; outline-offset: 2px; border-radius: 0`。full-bleed の行（activity row、Menu row）は inset（offset −2）で隣接罫線と交差させない（DECISION K-7）。
 
 ---
 
@@ -1248,9 +1251,9 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 | `color/ink-tertiary` n600 `#7d7979` | ground / surface | 3.85 / 3.50 | ✓ 最も薄い許容値（図形専用。テキストは L のみ） |
 | `color/divider` n500 `#9b9797` | ground / surface | 2.59 / 2.35 | ✗ → **アイコンには使わない** |
 | `color/inverse/ink` / `inverse/ink-tertiary`（ground @ 72%） | ink | 14.86 / 8.29 | ✓ hero kicker 行 |
-| `color/pop/badge` lime-800（Lime）/ ink-secondary（Mono） | ground | 6.31 / 5.83 | ✓ badge の矢印 |
-| `color/pop/separator` lime-700（Lime）/ ink-tertiary（Mono） | ground | 4.46 / 3.85 | ✓（R17: アイコンは形なので 3:1 を床にする） |
-| `color/poster/action/ink` ground | poster CTA の面（Lime: neutral-950） | 14.86 | ✓ |
+| `color/pop/badge` green-800（Green）/ ink-secondary（Mono） | ground | 6.62 / 5.83 | ✓ badge の矢印 |
+| `color/pop/separator` green-700（Green）/ ink-tertiary（Mono） | ground | 4.55 / 3.85 | ✓（R17: アイコンは形なので 3:1 を床にする） |
+| `color/poster/action/ink` ground | poster CTA の面（Green: neutral-950） | 14.86 | ✓ |
 
 **DECISION L-15** typing dot と placeholder のアイコンは `color/ink-tertiary`（3.85 / 3.50）以上。コンセプトは n500 の `currentColor` だが非テキストとして不足。
 
@@ -2011,7 +2014,7 @@ Project と Hackathon を分ける理由: 前者は継続的な営み、後者�
 #### 6.13.2 状態
 
 **持たない**（U-17）。リンクでもボタンでもないので hover / pressed / focus は無く、
-地は `ground` のまま動かない。文字の比は ink 14.86 / n700 5.83 / lime-800 6.31。
+地は `ground` のまま動かない。文字の比は ink 14.86 / n700 5.83 / green-800 6.62。
 
 これは「機能を削った」のではなく、状態を出さないことが正しい表示だという判断である。
 押せない面がポインタに反応すると、読み手は一度クリックして何も起きないことを確かめる。
@@ -2912,7 +2915,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | `Shape` | 1 | **10** | `radius/none` `radius/full` `radius/bubble` `radius/bubble-tail`、`stroke/hair` `stroke/rule` `stroke/underline` `stroke/underline-strong` `stroke/focus`、`focus/offset` | CORNER_RADIUS / STROKE_FLOAT / GAP |
 | `Typography` | `Desktop` / `Mobile` | 37 | `font/family`、`font/style/*` 3、`font/size/*` 17、`font/leading/*` 16（§2.5.1） | FONT_FAMILY / FONT_STYLE / FONT_SIZE / LINE_HEIGHT |
 
-- モードの既定: `Color` = Lime accent（C-17、2026-09-01 確定）、`Spacing` / `Typography` = Desktop。Screens の Mobile フレームは 2 コレクションのモードを Mobile に切り替える。
+- モードの既定: `Color` = Lime accent（C-17、2026-09-01 確定）→ **Green accent に改名して値を差し替える（C-29、2026-09-12。Figma 未反映）**、`Spacing` / `Typography` = Desktop。Screens の Mobile フレームは 2 コレクションのモードを Mobile に切り替える。
 - `opacity/disabled` 0.48 と shadow の幾何は Variables にしていない（前者はライブラリ内の見せ方、後者は Effect Style が持つ）。§4.2・§4.4 の表が正本。
 - Motion は変数にしない（R24）。`01 Foundations / Motion` の表と、プロトタイプ設定（§7.6）で保持する。
 - CSS 変数名は Figma 名の `/` を `-` に置換（`--color-inverse-ink-secondary`、`--inset-cell`、`--size-nav`、`--stroke-rule`）。アルファは `color-mix()` で表現し、合成 hex を書かない（§1.5.5）。
@@ -3026,7 +3029,8 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | C-14 | ポスターの副次コピーは全て 88 %（ライムでは ink@88） | 8.23。ライムでは 72 % も 5.32 で N を満たすが、抑制原則により階層は 2 段に留める |
 | C-15 | hover 4 → 6 %、disabled 45 → 48 %、backdrop n900@50 → ink@48、shadow は ink@24 の 1 濃度 | C-5 の尺度に載せる。影の段差は幾何で作る |
 | C-16 | リンク: ホバーは下線、プレス文字 600、現在地 ink 下線。ホバーで文字色を変えない | 罫線が構造を担う語彙に合う。1.4.1。持続状態にアクセントを使わない |
-| C-17 | 既定モード = Lime accent、Mono は検証モード | アクセント出現が 4 箇所に限定されるため。2026-09-01 クライアント確定 |
+| C-17 | ~~既定モード = Lime accent~~ **C-29 で Green accent に置換（2026-09-12）**、Mono は検証モード | アクセント出現が 4 箇所に限定されるため。2026-09-01 クライアント確定 |
+| C-29 | アクセントを Lime（Tailwind v4 lime）→ **Green（GitHub Primer green: 200 `#aceebb` / 300 `#56d364` / 400 `#3fb950` / 500 `#2ea043` / 600 `#238636` / 700 `#1a7f37` / 800 `#116329` / 900 `#044f1e`）** に（2026-09-12、クライアント判断）。極性の規範（C-25 / C-26 / C-27 / C-28）は不変、§1 の実測値をすべて再計算（付録 C.5） | ライムは「雰囲気に合わない」（黄緑寄りの色相）。候補 A の Tailwind v4 green（`#05df72`）は「目にきつい」。B の GitHub green は彩度が低く、墨地の上で GitHub のダークモードと同じ表情になる。極性はライムと同じ（400 は地の上 2.27 で不可、地の上の文字は 800 / 900）ので、ロール構造に手を入れずに済む |
 | C-18 | ページにアクセント塗りボタンを置かない（ライブラリのみ） | ポスター面と競合させない |
 | C-19 | neutral-50 / 400 は予備でテキスト不可。インディゴのランプ全段は記録用に残置 | 隣の段より優れる用途がない。ランプの完全性のために保持 |
 | C-20 | 画像プレースホルダ = surface、キャプション = ink-secondary、アイコン = ink-tertiary | 5.30 / 3.50 |
@@ -3219,9 +3223,9 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 
 ---
 
-## 付録 C — アクセント色の決定（Indigo / Lime）
+## 付録 C — アクセント色の決定（Indigo / Lime / Green）
 
-**2026-09-01 決定: Lime accent を採用**（クライアント確定）。以下は判断の根拠。Indigo accent は Figma にモードとして残置し、決定過程の記録とする。
+**2026-09-01 決定: Lime accent を採用**（クライアント確定）→ **2026-09-12 に Green へ置換（C.5、DECISION C-29）**。C.1〜C.4 は 2026-09-01 時点の記録として残す。Indigo accent は Figma にモードとして残置し、決定過程の記録とする。
 
 2026-09-01 実施。Figma の `Accent Lab` ページ（コンポーネント `Accent / Proof` を Color モード 3 種で明示適用した 3 インスタンス）と、Figma から解決した実値に対する WCAG 2.x 実測で判定した。以下の数値はすべてエイリアスを解決した実 hex から算出しており、推定値は含まない。
 
@@ -3276,4 +3280,44 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 ### C.4 参照
 
 - 比較ラボ: Figma `Accent Lab` ページ（`Accent / Proof` コンポーネント + Mono / Indigo / Lime の 3 インスタンス）。ポスター面・地の面・墨地の 3 層とフォーカスリングを常時表示で含む。
-- Lime プリミティブ: Tailwind v4 lime（200 `#d8f999` / 300 `#bbf451` / 400 `#9ae600` / 500 `#7ccf00` / 600 `#5ea500` / 700 `#497d00` / 800 `#3c6300` / 900 `#35530e`）+ `alpha/lime-400/24`。
+- Lime プリミティブ（2026-09-12 まで）: Tailwind v4 lime（200 `#d8f999` / 300 `#bbf451` / 400 `#9ae600` / 500 `#7ccf00` / 600 `#5ea500` / 700 `#497d00` / 800 `#3c6300` / 900 `#35530e`）+ `alpha/lime-400/24`。
+
+### C.5 2026-09-12 — Lime → Green（DECISION C-29）
+
+クライアントの所見: 「ライムグリーンは雰囲気と合っていない。もっとフレッシュな、テックを感じるグリーン（GitHub のような）」。色相を 128°（黄緑）から 150° 前後へ動かす方針で、3 候補を globals.css のプリミティブ 8 行だけ差し替えたスパイクで実機比較した（ロール構造は不変）。
+
+| 候補 | 基底 400 | 400 vs ink | 800 vs ground | ポスター secondary（ink@88 vs 400） | 判定 |
+|---|---|---|---|---|---|
+| A. Tailwind v4 green | `#05df72` | 9.33 | `#016630` 6.38 | 7.42 | 却下: 「目にきつい」 |
+| **B. GitHub Primer green** | **`#3fb950`** | **6.54** | **`#116329` 6.62** | **5.37** | **採用** |
+| C. Tailwind v4 emerald | `#00d492` | 8.56 | `#006045` 6.81 | 6.88 | 未使用（B で確定） |
+
+Green の実測（本文 §1 の値と同一。すべて実 hex から算出、推定値なし）:
+
+| 判定項目 | 必要 | Lime（旧） | Green |
+|---|---|---|---|
+| ボタン: on-accent の文字 vs accent 面 | 4.5 | 10.83 | 6.54 |
+| ボタン: accent 面 vs 地（面の輪郭） | 3.0 | !1.37 | !2.27（C-25 のとおり地の上で面にしない） |
+| accent-hover / -pressed 上の on-accent | 4.5 | 8.52 / 5.42 | 4.92 / **!3.59**（ライブラリのみ、C-18） |
+| フォーカスリング（700）vs 地 / surface / hover-tint / pressed-tint | 3.0 | 4.46 / 4.05 / 3.96 / 3.53 | 4.55 / 4.13 / 4.04 / 3.60 |
+| hero/word（400）vs 墨地 | 3.0 | 10.83 | 6.54 |
+| accent-text（800）vs 地 / surface | 4.5 | 6.31 / 5.74 | 6.62 / 6.01 |
+| accent-text-small（900）vs 地 / hover-tint / pressed-tint | 4.5 | 7.85 / 6.97 / 6.22 | 8.77 / 7.80 / 6.95 |
+| pop/badge（800）vs hover-tint / pressed-tint | 4.5 | 5.61 / 5.00 | 5.88 / 5.24 |
+| on-accent-subtle（900）vs accent-subtle（200） | 4.5 | 7.49 | 7.33 |
+| focus/ring-inverse（300）vs 墨地 / inverse hover-tint | 3.0 | 12.79 / 9.11 | 8.62 / 6.14 |
+| selection（400@24 over ground `#c8e4cb`）上の ink / ink-secondary | 4.5 | 13.55 / 5.32 | 12.19 / 4.79 |
+| inverse/selection（400@24 over ink `#274329`）上の ground | 4.5 | 8.17 | 9.78 |
+| ポスター: poster/ink vs poster/ground | 4.5 | 10.83 | 6.54 |
+| ポスター: ink-secondary（ink@88 `#243123`）vs poster 面 | 4.5 | 8.23 | 5.37 |
+| ポスター: ink@72 / ink@48 | 4.5 | 5.32 / !2.79 | !3.97 / !2.39（階層は 2 段。C-14 は制約） |
+| ポスター: CTA 面（n950）/ hover（n800）/ pressed（n700）vs poster 面 | 3.0 | 10.83 / 7.61 / 5.29 | 6.54 / 3.98 / **!2.57**（押下の瞬間のみ） |
+| ポスター: focus ring（900）vs poster 面 | 3.0 | 5.72 | 3.86 |
+| ポスター: poster/selection（ink@12 `#3ba64a`）上の ink | 4.5 | 8.64 | 5.33 |
+| ポスター: 上端の 2px `poster/ink` 罫（C-27）vs poster 面 / 地 | 3.0 | 10.83 / 14.86 | 6.54 / 14.86（`divider` n500 は poster 面上 1.14） |
+| [参考] ポスター面 vs 地（節の境目） | — | 1.37 | 2.27 |
+| [参考] pop/separator（700）vs 白（マーキー帯） | 3.0 | — | 5.08 |
+
+不合格 3 件はいずれもページに現れない（accent ボタンはライブラリのみ、ink@72 / 48 は使わない、CTA プレスは duration/0 の瞬間で輪郭ではなくラベル 5.83 が識別を担う）。C-25〜C-28 の規範は Green でもそのまま成立する。
+
+Green プリミティブ: GitHub Primer green（200 `#aceebb` / 300 `#56d364` / 400 `#3fb950` / 500 `#2ea043` / 600 `#238636` / 700 `#1a7f37` / 800 `#116329` / 900 `#044f1e`）+ `alpha/green-400/24`。合成: green-400@24 over ground `#c8e4cb` / over ink `#274329`、ink@88 / 72 / 48 over green-400 `#243123` / `#29492b` / `#306f38`、ink@12 / 24 over green-400 `#3ba64a` / `#389444`。

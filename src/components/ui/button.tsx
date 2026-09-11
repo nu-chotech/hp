@@ -71,7 +71,7 @@ const buttonVariants = cva(
         surface: "ground",
         variant: "accent",
         // ライブラリ専用。DECISION K-5 によりページには置かない
-        // （lime-400 の面は地に対し 1.37 で輪郭が読めない、C-25）。
+        // （green-400 の面は地に対し 2.27 で輪郭が読めない、C-25）。
         class: [
           "bg-accent text-on-accent",
           "hover:bg-accent-hover active:bg-accent-pressed",

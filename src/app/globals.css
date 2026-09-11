@@ -5,7 +5,7 @@
  * 構成
  *   1. Tailwind
  *   2. Primitives（:root の素の custom property。@theme に入れずユーティリティを生やさない）
- *   3. Semantic roles（Lime accent = 既定モード）
+ *   3. Semantic roles（Green accent = 既定モード）
  *   4. レスポンシブなスカラー（Mobile が基底、Desktop は 1 本のメディアクエリで上書き）
  *   5. @theme inline（Tailwind の名前空間への写像）
  *   6. @layer base
@@ -43,19 +43,20 @@
   --neutral-900: #2d2b2b; /* Y 0.025 — ヒーロー格子線（inverse/hairline） */
   --neutral-950: #201e1d; /* Y 0.013 — ink、インク面、ポスター面（Mono）、backdrop / shadow の基底 */
 
-  /* lime — アクセントは二極性を持つ（DECISION C-25 / C-26）。
-     明るい地の上では暗い段（700 図形 / 800 文字 / 900 小さな文字）が働き、
-     インク面とポスター面では lime-400 が面・印として働く。同じ段を両極に使えない。 */
-  --lime-200: #d8f999; /* accent-subtle（淡い塗り、ライブラリ） */
-  --lime-300: #bbf451; /* インク面のフォーカスリング */
-  --lime-400: #9ae600; /* accent 基底。明るい地では 1.37 で文字にも輪郭にも使えない */
-  --lime-500: #7ccf00; /* accent ホバー（面） */
-  --lime-600: #5ea500; /* accent プレス（面） */
-  --lime-700: #497d00; /* 地の上の図形専用（3:1 ✓ / 4.5 ✗） */
-  --lime-800: #3c6300; /* 地の上のアクセント文字の基底 */
-  --lime-900: #35530e; /* 12px 以下のアクセント文字、淡い塗り・ポスター面の上 */
+  /* green — GitHub Primer green（DECISION C-29、2026-09-12。ライムから置換）。
+     アクセントは二極性を持つ（C-25 / C-26）: 明るい地の上では暗い段
+     （700 図形 / 800 文字 / 900 小さな文字）が働き、インク面とポスター面では
+     green-400 が面・印として働く。同じ段を両極に使えない。値は §1.2.2 の実測。 */
+  --green-200: #aceebb; /* accent-subtle（淡い塗り、ライブラリ。ground 1.20） */
+  --green-300: #56d364; /* インク面のフォーカスリング（ink 8.62） */
+  --green-400: #3fb950; /* accent 基底（ink 6.54）。明るい地では 2.27 で文字にも輪郭にも使えない */
+  --green-500: #2ea043; /* accent ホバー（面。上の ink 4.92） */
+  --green-600: #238636; /* accent プレス（面。上の ink 3.59 — N 不合格、ライブラリのみ） */
+  --green-700: #1a7f37; /* 地の上の図形専用（3:1 ✓ 4.55。文字は hover-tint 上 4.04 で割る） */
+  --green-800: #116329; /* 地の上のアクセント文字の基底（ground 6.62） */
+  --green-900: #044f1e; /* 12px 以下のアクセント文字（8.77）、淡い塗り・ポスター面の上 */
 
-  /* alpha — 11 個（ink 5 / ground 5 / lime-400 1）。
+  /* alpha — 11 個（ink 5 / ground 5 / green-400 1）。
      6 → 12 → 24 → 48 は倍々（ティント・影・幕・無効）、72 = 3 × 24（tertiary 文字）、
      88 は secondary 文字。合成 hex をハードコードせず color-mix で持つ
      （固定値が要る prefers-reduced-transparency だけ §1.2.3 の合成 hex を使う）。 */
@@ -69,11 +70,11 @@
   --alpha-ground-48: color-mix(in srgb, var(--neutral-100) 48%, transparent);
   --alpha-ground-72: color-mix(in srgb, var(--neutral-100) 72%, transparent);
   --alpha-ground-88: color-mix(in srgb, var(--neutral-100) 88%, transparent);
-  --alpha-lime-400-24: color-mix(in srgb, var(--lime-400) 24%, transparent);
+  --alpha-green-400-24: color-mix(in srgb, var(--green-400) 24%, transparent);
 }
 
 /* =============================================================================
- * 3. Semantic roles — 62 行（Figma: Color コレクション / 既定モード Lime accent）
+ * 3. Semantic roles — 62 行（Figma: Color コレクション / 既定モード Green accent）
  *
  * ページで色を触るときはここだけを参照する。primitive を直接使わない。
  * 行末のコメントは対比比（vs ground / vs ink）。理由は各グループの見出しに書く。
@@ -84,14 +85,14 @@
    * surface は ground との比 1.10 = 罫線なしに輪郭が読める最小段。
    * inverse/ground はインクを塗りに転用したもの（ヒーロー、統計セル、CTA セル）。
    * poster/ground は Join セクションだけの唯一のアクセント面で、Mono では暗い面、
-   * Lime では明るい面に反転するため専用ロール群を持つ（DECISION C-28）。
+   * Green では文字にとって明るい面に反転するため専用ロール群を持つ（DECISION C-28）。
    * ---------------------------------------------------------------------- */
   --ground: var(--neutral-100);
   --surface: var(--neutral-200); /* ground 1.10 */
   /* ロゴの地。パートナーのタイルとマーキー帯だけ。白背景のロゴ素材と同じ面にする（DECISION U-33） */
   --logo-ground: var(--neutral-0); /* ground 1.12 */
   --inverse-ground: var(--neutral-950);
-  --poster-ground: var(--lime-400); /* 上の ink 10.83 */
+  --poster-ground: var(--green-400); /* 上の ink 6.54 */
 
   /* --- 1.3.2 明るい面のテキスト --------------------------------------------
    * ink-secondary は明るい面の小さな補助文字すべて。
@@ -112,8 +113,8 @@
   --inverse-ink-secondary: var(--alpha-ground-88); /* ink 11.78 */
   --inverse-ink-tertiary: var(--alpha-ground-72); /* ink 8.29 */
   --inverse-ink-quaternary: var(--alpha-ground-48); /* ink 4.45 */
-  --poster-ink: var(--neutral-950); /* Lime 10.83 */
-  --poster-ink-secondary: var(--alpha-ink-88); /* Lime 8.23 */
+  --poster-ink: var(--neutral-950); /* Green 6.54 */
+  --poster-ink-secondary: var(--alpha-ink-88); /* Green 5.37 */
   --inverse-hairline: var(--neutral-900); /* ink 1.18 */
 
   /* --- 1.3.4 罫線と枠 ------------------------------------------------------
@@ -132,31 +133,31 @@
   --inverse-outline: var(--inverse-ink); /* ink 14.86 */
 
   /* --- 1.3.5 アクセント ----------------------------------------------------
-   * accent（lime-400）は明るい地の上では面としても文字としても使えない（1.37、C-25）。
+   * accent（green-400）は明るい地の上では面としても文字としても使えない（2.27、C-25）。
    * 地の上では暗い段が働く: 700 図形のみ / 800 文字 / 900 は 12px 以下の文字。
    * accent-hover / -pressed / -subtle はライブラリのみ（ポスター面と競合させない）。
    * pop/*・hero/word・poster/* はモードで値が変わる 10 行に含まれる。
    * ---------------------------------------------------------------------- */
-  --accent: var(--lime-400); /* ink 10.83 */
-  --on-accent: var(--neutral-950); /* accent 10.83 */
-  --accent-hover: var(--lime-500); /* ラベル 8.52 */
-  --accent-pressed: var(--lime-600); /* ラベル 5.42 */
-  --accent-subtle: var(--lime-200); /* ground 1.05 */
-  --on-accent-subtle: var(--lime-900); /* 淡い塗り 7.49 */
-  --accent-text: var(--lime-800); /* ground 6.31 */
-  --accent-text-small: var(--lime-900); /* ground 7.85 */
-  --accent-on-ink: var(--lime-400); /* ink 面の印 */
-  --pop-separator: var(--lime-700); /* ground 4.46 */
-  --pop-badge: var(--lime-800); /* ground 6.31 */
-  --hero-word: var(--lime-400); /* ink 10.83 */
-  --poster-selection: var(--alpha-ink-12); /* Lime #8bce03 */
-  --poster-action-fill: var(--neutral-950); /* Lime 10.83 */
+  --accent: var(--green-400); /* ink 6.54 */
+  --on-accent: var(--neutral-950); /* accent 6.54 */
+  --accent-hover: var(--green-500); /* ラベル 4.92 */
+  --accent-pressed: var(--green-600); /* ラベル 3.59（§1.2.2） */
+  --accent-subtle: var(--green-200); /* ground 1.20 */
+  --on-accent-subtle: var(--green-900); /* 淡い塗り 7.33 */
+  --accent-text: var(--green-800); /* ground 6.62 */
+  --accent-text-small: var(--green-900); /* ground 8.77 */
+  --accent-on-ink: var(--green-400); /* ink 面の印（6.54） */
+  --pop-separator: var(--green-700); /* ground 4.55 */
+  --pop-badge: var(--green-800); /* ground 6.62 */
+  --hero-word: var(--green-400); /* ink 6.54 */
+  --poster-selection: var(--alpha-ink-12); /* Green #3ba64a */
+  --poster-action-fill: var(--neutral-950); /* Green 6.54 */
   /* 面側の 1 段（§1.3.7）。汎用 action/fill-hover を直接引くと Mono で反転しないので、
      ポスター専用ロールとして持つ（C-28 の原則をホバー・プレスにも通す） */
-  --poster-action-fill-hover: var(--neutral-800); /* ポスター上 7.61 */
-  --poster-action-fill-pressed: var(--neutral-700); /* ポスター上 5.29 */
+  --poster-action-fill-hover: var(--neutral-800); /* ポスター上 3.98 */
+  --poster-action-fill-pressed: var(--neutral-700); /* ポスター上 2.57 */
   --poster-action-ink: var(--neutral-100); /* 上の面 14.86 */
-  --poster-focus-ring: var(--lime-900); /* lime-400 5.72 */
+  --poster-focus-ring: var(--green-900); /* green-400 3.86 */
 
   /* --- 1.3.6 状態 ----------------------------------------------------------
    * ティントの上にアクセント文字を置かない（バッジのみ例外、900 で 6.22）。
@@ -168,14 +169,14 @@
   --state-pressed-tint: var(--alpha-ink-12); /* 上の ink 11.78 */
   --inverse-state-hover-tint: var(--alpha-ground-12); /* ground 10.58 */
   --inverse-state-pressed-tint: var(--alpha-ground-24); /* ground 7.06 */
-  --focus-ring: var(--lime-700); /* 明るい面 4.46 */
-  --focus-ring-inverse: var(--lime-300); /* ink 面 12.79 */
-  --selection: var(--alpha-lime-400-24); /* 上の ink 13.55 */
-  --inverse-selection: var(--alpha-lime-400-24); /* 上の ground 8.17 */
-  --link-hover: var(--accent-text); /* 2px 下線 6.31 */
-  --link-pressed: var(--accent-text-small); /* 文字 7.85 */
+  --focus-ring: var(--green-700); /* 明るい面 4.55 */
+  --focus-ring-inverse: var(--green-300); /* ink 面 8.62 */
+  --selection: var(--alpha-green-400-24); /* 上の ink 12.19 */
+  --inverse-selection: var(--alpha-green-400-24); /* 上の ground 9.78 */
+  --link-hover: var(--accent-text); /* 2px 下線 6.62 */
+  --link-pressed: var(--accent-text-small); /* 文字 8.77 */
   --link-current: var(--ink); /* 2px 下線 14.86 */
-  /* 表記上は Mono → inverse/ink、Lime → neutral-950 だが、ソーシャルリンクは
+  /* 表記上は Mono → inverse/ink、Green → neutral-950 だが、ソーシャルリンクは
      ポスター面上にあるので実質 poster/ink に追従する行（§11 の 10 行には非該当）。
      poster/ink のエイリアスにすることで両モードで正しい値になる。 */
   --inverse-link-hover: var(--poster-ink);
@@ -217,7 +218,7 @@
 /* -----------------------------------------------------------------------------
  * Mono モード（検証用）— 値が変わるのは正確に 10 行（§11）
  * 「4 つの出現」（マーキー区切り・活動バッジ・ヒーロー下線・ポスター面）＋
- * ポスター面の明度反転に伴う 6 行。他はすべて Mono = Lime。
+ * ポスター面の明度反転に伴う 6 行。他はすべて Mono = Green。
  * 実行時の切替は設計上おこなわない（デザインモードのみ）ので既定では無効。
  * 検証したくなったら次のブロックを有効にして <html data-color-mode="mono"> を付ける。
  * （--inverse-link-hover は --poster-ink のエイリアスなので自動で追従する）
@@ -1009,7 +1010,7 @@
 
   /*
    * フォーカス: 2px、offset 2、角丸ゼロ。地ごとにリング色を切り替える。
-   * Mono モードでもリングはライム。リングは duration/0 = 即時 — outline は
+   * Mono モードでもリングはグリーン。リングは duration/0 = 即時 — outline は
    * 既定でトランジションしないので、outline-* を transition-property に含めないこと。
    * full-bleed の行（activity row、Menu row）は
    * --focus-offset-inset（−2）を当てて隣接罫線と交差させない（DECISION K-7）。
@@ -1128,9 +1129,9 @@
     --inverse-ink-secondary: var(--neutral-100); /* 88% → 100% */
     --inverse-ink-tertiary: var(--neutral-100); /* 72% → 100% */
     --inverse-ink-quaternary: var(--neutral-100); /* 48% → 100% */
-    --accent-text: var(--lime-900); /* 6.31 → 7.85 */
-    --accent-text-small: var(--lime-900);
-    --pop-badge: var(--lime-900);
+    --accent-text: var(--green-900); /* 6.62 → 8.77 */
+    --accent-text-small: var(--green-900);
+    --pop-badge: var(--green-900);
     --state-hover-tint: var(--alpha-ink-12); /* 6 → 12（上の ink 11.78） */
     --state-pressed-tint: var(--alpha-ink-24); /* 12 → 24（9.05） */
     --backdrop: var(--alpha-ink-88); /* 48 → 88 */
@@ -1156,10 +1157,10 @@
     --inverse-state-pressed-tint: #535150; /* ground@24 over ink */
     --state-hover-tint: #e6e5e5; /* ink@6 over ground */
     --state-pressed-tint: #dad9d8; /* ink@12 over ground */
-    --selection: #deefb8; /* lime-400@24 over ground */
-    --inverse-selection: #3d4e16; /* lime-400@24 over ink */
-    --poster-ink-secondary: #2f361a; /* ink@88 over lime-400 */
-    --poster-selection: #8bce03; /* ink@12 over lime-400 */
+    --selection: #c8e4cb; /* green-400@24 over ground */
+    --inverse-selection: #274329; /* green-400@24 over ink */
+    --poster-ink-secondary: #243123; /* ink@88 over green-400 */
+    --poster-selection: #3ba64a; /* ink@12 over green-400 */
     /* 幕だけは 88% に上げる（§1.5.5 の高コントラストと同値） */
     --backdrop: var(--alpha-ink-88);
     /* Hero の背景写真は合成そのもの（ink 面に α で重ねた層）なので、
