@@ -19,8 +19,8 @@ const sectionVariants = cva("", {
     surface: {
       ground: "bg-ground text-ink",
       ink: "on-ink bg-inverse-ground text-inverse-ink",
-      // ポスター面は Lime では明るい面なので on-ink（反転面のスムージング）は付けない
-      poster: "bg-poster-ground text-poster-ink",
+      // ポスター面はインク面と同じ暗い面（C-30）なので on-ink も付ける
+      poster: "on-ink bg-poster-ground text-poster-ink",
     },
   },
   defaultVariants: {

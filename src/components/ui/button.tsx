@@ -70,10 +70,10 @@ const buttonVariants = cva(
       {
         surface: "ground",
         variant: "accent",
-        // ライブラリ専用。DECISION K-5 によりページには置かない
-        // （green-400 の面は地に対し 2.27 で輪郭が読めない、C-25）。
+        // 地の上ではライブラリ専用（K-5: Nav CTA は Ink solid のまま）。面は accent-fill
+        // （green-600、地に対し 4.14）+ 白（4.62）。green-400 の面は 2.27 で輪郭が読めない（C-25）
         class: [
-          "bg-accent text-on-accent",
+          "bg-accent-fill text-on-accent",
           "hover:bg-accent-hover active:bg-accent-pressed",
         ],
       },
@@ -102,6 +102,16 @@ const buttonVariants = cva(
       },
       {
         surface: "ink",
+        variant: "accent",
+        // 参加 CTA（Hero 主）。緑の面 accent-fill（ink 上 3.59）に白のラベル（4.62、C-30）。
+        // ホバー・プレスは暗い方へ 1 段ずつ（700 / 800）— 明るい方へ動かすと白が 4.5 を割る
+        class: [
+          "bg-accent-fill text-on-accent",
+          "hover:bg-accent-hover active:bg-accent-pressed",
+        ],
+      },
+      {
+        surface: "ink",
         variant: "outline",
         // Outline はインク面専用。同じ面に主ボタンがあるときの副次（Hero 副・Bento CTA）。
         class: [
@@ -114,8 +124,8 @@ const buttonVariants = cva(
       {
         surface: "poster",
         variant: "solid",
-        // ポスター面は明度が反転しうるので、ホバー・プレスまで専用ロールを通す
-        // （DECISION C-28）。汎用 action/fill-hover を直接引くと Mono で反転しない。
+        // ポスター CTA。poster/action/* は Green で accent-fill 系のエイリアス（C-30）、
+        // Mono で inverse/action/*（C-28）。汎用 action/* を直接引くとモードで反転しない。
         class: [
           "bg-poster-action-fill text-poster-action-ink",
           "hover:bg-poster-action-fill-hover active:bg-poster-action-fill-pressed",
@@ -148,7 +158,7 @@ const buttonIconVariants = cva("shrink-0", {
  */
 type ButtonPaletteProps =
   | { surface?: "ground"; variant?: "solid" | "outline" | "ghost" | "accent" }
-  | { surface: "ink"; variant?: "solid" | "outline" }
+  | { surface: "ink"; variant?: "solid" | "outline" | "accent" }
   | { surface: "poster"; variant?: "solid" };
 
 type ButtonOwnProps = {

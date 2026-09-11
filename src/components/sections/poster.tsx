@@ -1,7 +1,6 @@
 import { ArrowUpRight, BrandDiscord, brandIcons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { Rule } from "@/components/ui/rule";
 import { sectionVariants } from "@/components/ui/section";
 import { TextLink } from "@/components/ui/text-link";
 import { sectionIds, socialLinks } from "@/config/site";
@@ -12,12 +11,13 @@ import { cn } from "@/lib/utils";
 /**
  * Section / Poster CTA（§6.17）
  *
- * ページで唯一の「色面」。Lime モードではこの面は **明るい面** に反転するので、文字は
- * inverse/*（グラウンド × α）ではなく poster/*（インク × α）で組み、CTA はインクの塗り。
- * アウトラインボタンは 1.53 で読めないので置かない（§1.4.4）。
+ * クロージング。面はインク（C-30 — green-400 の面に墨の文字を載せると読みにくい、という
+ * クライアント所見で 2026-09-12 に明るい緑面から戻した）。アクセントは見出し
+ * 「Hack Your Limits.」（poster/display = green-400、ink 上 6.54）と、参加 CTA の緑の
+ * ボタン（accent-fill = green-600 + 白、4.62）で現れる。Hero と同じ面で開幕と終幕が対になる。
  *
- * Section 部品ではなく素の <section> で組むのは、上端の 2px 罫を絶対配置にする必要があるため
- * （高さに影響させない）。面の配色と data-surface の語彙は Section と同じ sectionVariants を引く。
+ * 上端の 2px 罫（旧 C-27）は持たない — 面が地に対して 14.86 で、境界は色面の切り替えそのもの。
+ * Section 部品ではなく素の <section> で組むのは Hero と同じ理由（sectionVariants の poster を引く）。
  */
 export function Poster() {
   const headingId = `${sectionIds.join}-heading`;
@@ -29,21 +29,17 @@ export function Poster() {
       data-surface="poster"
       className={cn(sectionVariants({ surface: "poster" }), "relative")}
     >
-      {/* Lime では地との輝度差が 1.37（色相だけの境界）になるので、上端に 2px の
-          poster/ink 罫を引いて境界を作る（DECISION C-27）。
-          tone=current で面の文字色を継ぐ = Mono に反転しても poster/ink のまま */}
-      <Rule tone="current" className="absolute inset-x-0 top-0" />
-
       <Container className="py-section-pad-display">
         {/* キッカーは見出しにしない（§8.5） */}
         <p className="text-overline text-poster-ink-secondary" data-reveal>
           {posterContent.kicker}
         </p>
 
-        {/* 2 行は著者改行。balance に任せると Figma と改行位置がずれる */}
+        {/* 2 行は著者改行。balance に任せると Figma と改行位置がずれる。
+            色は poster/display（green-400）— インク面の上でアクセントを担うのはこの見出し */}
         <h2
           id={headingId}
-          className="mt-stack-md whitespace-pre-line text-wrap text-display-l"
+          className="mt-stack-md whitespace-pre-line text-wrap text-display-l text-poster-display"
           data-reveal
         >
           {posterContent.display}

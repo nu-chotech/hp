@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
  * 幅 10 × 高さ 12 のベクター。回転した正方形では吹き出しとの接続部に角が立ち、
  * 下端が面一にならない（吹き出しの底より下に頂点が出る）ので、実体のパスで描く。
  * 塗りは `currentColor` — 色は吹き出しの塗りと同じでなければならないので、
- * 呼び出し側が `text-surface` / `text-accent` を当てて 1 か所で決める。
+ * 呼び出し側が `text-surface` / `text-accent-fill` を当てて 1 か所で決める。
  *
  * 座標系: 右辺 x=10 が吹き出しの内側、下辺 y=12 が吹き出しの底。外側へ 6 はみ出し、
  * 右の 4 は吹き出しの `radius/bubble-tail` 4 の角にちょうど重なって接続を埋める。
@@ -59,9 +59,9 @@ const bubbleVariants = cva(
       side: {
         // 相手: surface の上に ink（13.51）。外側の下角 = 左下だけ 4 に締める
         incoming: "rounded-bl-bubble-tail bg-surface text-ink",
-        // 自分: accent の上に on-accent（10.83）。面と地の 1.37 は装飾で、
-        // 意味は文字色・右寄せ・avatar の有無が冗長に運ぶ（§6.12.1）
-        outgoing: "rounded-br-bubble-tail bg-accent text-on-accent",
+        // 自分: accent-fill（green-600）の上に白（4.62、C-30）。400 に墨の文字は読みにくかった。
+        // 面と地は 4.14 で輪郭も立つ。意味は文字色・右寄せ・avatar の有無が冗長に運ぶ（§6.12.1）
+        outgoing: "rounded-br-bubble-tail bg-accent-fill text-on-accent",
       },
     },
   },
@@ -96,7 +96,7 @@ export function Message({ side, avatar, message, style }: MessageProps) {
         <span className="sr-only">自分</span>
         <p className={bubbleVariants({ side })}>
           {message}
-          <Tail className="-right-1.5 -scale-x-100 text-accent" />
+          <Tail className="-right-1.5 -scale-x-100 text-accent-fill" />
         </p>
       </li>
     );
