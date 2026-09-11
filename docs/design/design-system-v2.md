@@ -21,6 +21,7 @@
 > - **2026-09-12（8）**: チャット再生を 1 手 600 ms / 一巡後 2,000 ms に速め、畳む先を 1 行目を残した状態に（**DECISION U-44**。空のスレッドを見せない）
 > - **2026-09-12（9）**: アクセントを Lime → **Green（GitHub Primer green）** に（**DECISION C-29**）。プリミティブ `green/200–900` + `alpha/green-400/24`、CSS は `--green-*`。§1 の実測値をすべて再計算（付録 C.5）。極性（面・印は 400、地の上の文字は 800 / 900、図形は 700）は不変。Figma の Color モードは未反映
 > - **2026-09-12（10）**: 画像を next/image の `fill` に移行（**DECISION U-45**。Hero 背景と先頭の活動写真は `priority`、AVIF / WebP 配信）。§5.7.2 のスロット表を U-41 / U-42 / U-43 に合わせて更新
+> - **Figma v2 への反映は未実施**（2026-09-12 時点）。反映すべき変更の一覧と手順は [figma-sync-2026-09-12.md](./figma-sync-2026-09-12.md)
 > - **2026-09-11**: Cell Stat の所属バッジ（U-29）を**撤回**し、セルは `50+` の数字だけに戻す（**DECISION U-36**）。Chip の Inverse トーンは Accent と同じくライブラリのみ（ページに出さない）。About の CULTURE セルは本文を落として題だけ（「仲間と、学ぶ。創る。話す。」— Hero の h1 を `Hack Your Limits.` に差し替える予定に合わせ、3 語を Culture に降ろす）
 > - **2026-09-10（2）**: 外部リンクは**すべて新しいタブ**で開く（`target="_blank" rel="noopener noreferrer"`、vh「（外部、新しいタブで開く）」、**DECISION M-21**。M-15 は撤回）。Partner の Logo タイルは `href` があれば**タイル全体が団体サイトへのリンク**（**DECISION U-35**。hover / pressed の表現なし、フォーカスリングは内側）
 - **2026-09-05 の実装レビューを反映**（U-21〜U-29 / L-30）: 写真・イラスト・ロゴは原色（B/W 撤回）、Hero の格子線撤去、Discord マークは filled、Stat の数字は白の Display/L + 所属の内訳、全発言にリアクション（実際の絵文字、数字が巻き上がる）、ペルソナとチャットのアバターは Humation（女 3・男 3）、Poster の Social はマークのみ、ロゴマークは外接矩形の mark.svg を 24 / 20（U-27 の Nav CTA マークは同日撤回）
