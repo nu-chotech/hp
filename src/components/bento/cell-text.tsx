@@ -1,14 +1,20 @@
 import { cva, type VariantProps } from "class-variance-authority";
-import type { ComponentProps } from "react";
+import type { ComponentProps, ComponentType } from "react";
+import type { IconProps } from "@/components/icons";
 import { Cell } from "@/components/ui/ruled-grid";
 import { cn } from "@/lib/utils";
 
 /**
  * Cell Text（§6.11.2）
  *
- * キッカーが上、題が下。間は space-between で開ける — セルの高さは同じ行で最も高い
+ * キッカーが天、題が地。間は space-between で開ける — セルの高さは同じ行で最も高い
  * セルが決めるので、内容の量に関わらず「キッカーは天、題は地」という位置関係だけが
  * 残るようにする。行が伸びてもセルの表情が変わらない。
+ *
+ * 題の上に図（Tabler 32、stroke 1.5）を並べられる（DECISION U-40）。題の語をひとつずつ
+ * 図にしたもので、意味は題が運ぶので図は装飾（aria-hidden は icons.tsx が付ける）。
+ * 図は題と 1 つの塊（stack/md 16）にして地に置く — 天・中・地の 3 段に散らすと、行が
+ * 伸びたとき図だけが中空に浮く。
  *
  * 題の大きさはセルの面積に従う（2×1 = Title/2、1×1 中 = Title/3、1×1 小 = Headline）。
  * 面積が優先順位を示す部品なので、大きいセルの題が小さいと格が逆転して読める。
@@ -53,13 +59,15 @@ const bodyVariants = cva("mt-stack-xs whitespace-pre-line text-body-s", {
 export interface CellTextProps // title は section の tooltip 属性と衝突するので、題として奪う
   extends Omit<ComponentProps<"section">, "title">,
     VariantProps<typeof titleVariants> {
-  /** 英語 1–2 語（CULTURE / OFFICIAL / ONLINE & OFFLINE / FOR EVERYONE）。大文字化は CSS */
+  /** 英語 1–2 語（CULTURE / ONLINE & OFFLINE / FOR EVERYONE）。大文字化は CSS */
   kicker: string;
   /** `\n` で意図的に改行してよい。`「` 始まりは左端を揃える（trim-start） */
   title: string;
   /** §6.11.2 の showBody。全 Kind で使える（DECISION U-14） */
   body?: string;
-  /** ライブラリの Tone。ページで使うのは ground（インク面は Stat と CTA が持つ） */
+  /** 題の上に並べる図（U-40）。順序は題の語順 */
+  icons?: readonly ComponentType<IconProps>[];
+  /** ライブラリの Tone。ページで使うのは ground（インク面は Stat が持つ） */
   tone?: VariantProps<typeof kickerVariants>["tone"];
   /** 2×1 のときだけ 2。tablet 以上で効く */
   colSpan?: 1 | 2;
@@ -69,6 +77,7 @@ export function CellText({
   kicker,
   title,
   body,
+  icons,
   size,
   tone = "ground",
   colSpan,
@@ -87,16 +96,30 @@ export function CellText({
     >
       <section {...props}>
         <p className={kickerVariants({ tone })}>{kicker}</p>
-        <div>
-          <h3
-            className={cn(
-              titleVariants({ size }),
-              title.startsWith("「") && "trim-start",
-            )}
-          >
-            {title}
-          </h3>
-          {body ? <p className={bodyVariants({ tone })}>{body}</p> : null}
+        <div className="flex flex-col gap-stack-md">
+          {icons && icons.length > 0 ? (
+            // 図の間は inline/sm 12。32 の図が 3 つで 120、1×1 セルの内側 249 に収まる
+            <div className="flex flex-wrap gap-inline-sm">
+              {icons.map((Icon) => (
+                <Icon
+                  className="size-icon-xl shrink-0"
+                  key={Icon.displayName}
+                  stroke={1.5}
+                />
+              ))}
+            </div>
+          ) : null}
+          <div>
+            <h3
+              className={cn(
+                titleVariants({ size }),
+                title.startsWith("「") && "trim-start",
+              )}
+            >
+              {title}
+            </h3>
+            {body ? <p className={bodyVariants({ tone })}>{body}</p> : null}
+          </div>
         </div>
       </section>
     </Cell>

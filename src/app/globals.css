@@ -478,6 +478,7 @@
   --icon-sm: 1rem; /* 16 — 12〜14px の文字の横、36px コントロールのラベル横 */
   --icon-md: 1.25rem; /* 20 — 15〜19px の文字の横、44px コントロールのラベル横、icon-only 36 */
   --icon-lg: 1.5rem; /* 24 — icon-only 44、placeholder の写真アイコン。Tabler のネイティブ */
+  --icon-xl: 2rem; /* 32 — ベントのビジュアル（About のセル、stroke 1.5）。§5.2 / U-40 */
 
   /* --- 3.10 measure --------------------------------------------------------
    * Desktop 588 = 12 列のうち 6 列（6×78 + 5×24）、Mobile 342 = container 幅そのもの。
@@ -826,6 +827,7 @@
   --spacing-icon-sm: var(--icon-sm);
   --spacing-icon-md: var(--icon-md);
   --spacing-icon-lg: var(--icon-lg);
+  --spacing-icon-xl: var(--icon-xl);
 
   /* --- spacing（線の太さ。罫線グリッドは gap / padding で描くので spacing 扱い）-- */
   --spacing-hair: var(--stroke-hair);

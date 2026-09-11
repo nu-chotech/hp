@@ -3,12 +3,23 @@ import {
   IconArrowUp,
   IconArrowUpRight,
   IconAsterisk,
+  IconBook,
   IconCheck,
+  IconCode,
   IconExternalLink,
+  IconFlag,
+  IconFlask,
+  IconHammer,
   IconHeart,
+  IconHeartHandshake,
   IconMail,
+  IconMapPin,
   IconMenu2,
+  IconMessageCircle,
+  IconMessages,
+  IconPalette,
   IconPhoto,
+  IconSchool,
   IconX,
 } from "@tabler/icons-react";
 import type { ComponentProps } from "react";
@@ -70,6 +81,40 @@ export const Check = decorative(IconCheck, "Check");
 export const Mail = decorative(IconMail, "Mail");
 /** 画像プレースホルダ */
 export const Photo = decorative(IconPhoto, "Photo");
+
+/**
+ * About のベントのビジュアル（§6.11.2 / DECISION U-40）。32 = icon/xl、stroke 1.5（§5.1）。
+ * 題の語をひとつずつ図にする: 学ぶ = book、創る = hammer、話す = message-circle。
+ * エンジニア = code、デザイナー = palette、サイエンティスト = flask。
+ * 対面 = map-pin、オンライン = messages。公認 = school、公式パートナー = heart-handshake。
+ * 設立 = flag。
+ */
+export const Book = decorative(IconBook, "Book");
+export const Hammer = decorative(IconHammer, "Hammer");
+export const MessageCircle = decorative(IconMessageCircle, "MessageCircle");
+export const Code = decorative(IconCode, "Code");
+export const Palette = decorative(IconPalette, "Palette");
+export const Flask = decorative(IconFlask, "Flask");
+export const MapPin = decorative(IconMapPin, "MapPin");
+export const Messages = decorative(IconMessages, "Messages");
+export const School = decorative(IconSchool, "School");
+export const HeartHandshake = decorative(IconHeartHandshake, "HeartHandshake");
+export const Flag = decorative(IconFlag, "Flag");
+
+/** content 側が文字列で持つベントの図を解決する（about.ts の AboutIcon） */
+export const bentoIcons = {
+  book: Book,
+  hammer: Hammer,
+  message: MessageCircle,
+  code: Code,
+  palette: Palette,
+  flask: Flask,
+  "map-pin": MapPin,
+  messages: Messages,
+  school: School,
+  handshake: HeartHandshake,
+  flag: Flag,
+} as const;
 /** 個人サイト */
 export const Website = decorative(IconExternalLink, "Website");
 

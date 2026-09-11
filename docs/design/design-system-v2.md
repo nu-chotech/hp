@@ -14,6 +14,7 @@
 > - **2026-09-12**: Hero の h1 を回転語「仲間と、学ぶ。創る。話す。」からタグライン **`Hack Your Limits.`** の 1 行に置き換える（**DECISION U-37**。3 語は About の CULTURE セルへ）。動詞 `Hack` を `color/hero/word`、目的語を `inverse/ink` で塗り、U-3 の 2 色対比を語順を入れ替えて引き継ぐ。`lang="en"`。**Display/XL の上限を 124 → 116**（129 行送り）に下げる — 124 では 1 行 ≈ 1209 で container 1200 を 9px 超え、1280 幅では入るのに 1440 幅で折れる揺れが出た。116 なら ≈ 1131 で 69px の余裕。Mobile は「Hack Your」/「Limits.」の自然折返し（`\n` なし）。回転語の仕組み（`Hero / Rotating Word`、`motion/word/*`、`--word-*`、`.hero__word`、§7.4.3）は撤去。Hero の `min-height` は **nav に加えて Marquee 帯も引く**（`min(100svh − size/nav − size/band-marquee, size/hero-max)`、**DECISION L-33**、L-7 改）— ファーストビューの下端にパートナーの帯が乗る。1440 × 900 で Hero 718 + 帯 120、Mobile 390 × 844 で Hero 662 + 帯。1280 × 720 は内容 582 が下限 538 を超えるので帯は 74px だけ見える
 > - **2026-09-12（2）**: SNS / Discord のブランドマークを Tabler の `brand-*` から**各社の公式素材**を写したインライン SVG（`brand-marks.tsx`、原本 `assets/brand/`）に置き換える（**DECISION U-38**、U-23 撤回）。Tabler の再描画は X / GitHub / Discord / Instagram の各規約（改変不可・公式素材のみ）に抵触していた。色は `currentColor` の黒 / 白、幾何は不変
 > - **2026-09-12（3）**: Hero の meta strip を撤去し、h1 `Hack Your Limits.` を**墨の板**に載せて句点だけアクセント（**DECISION U-39**。U-13 撤回、U-37 の「動詞だけアクセント」撤回）。設立と公認 / 公式パートナーは About のセルへ
+> - **2026-09-12（4）**: About のベントを 3 行 7 セルに組み直す（**DECISION U-40**）。Discord CTA セル撤去、写真セルは Activities へ（U-18 廃止、`motion/photo/step` 撤去）、SINCE セル新設、文字セルに Tabler 32 の図（`icon/xl` 新設）、OFFICIAL は 2×1 の 2 行
 > - **2026-09-11**: Cell Stat の所属バッジ（U-29）を**撤回**し、セルは `50+` の数字だけに戻す（**DECISION U-36**）。Chip の Inverse トーンは Accent と同じくライブラリのみ（ページに出さない）。About の CULTURE セルは本文を落として題だけ（「仲間と、学ぶ。創る。話す。」— Hero の h1 を `Hack Your Limits.` に差し替える予定に合わせ、3 語を Culture に降ろす）
 > - **2026-09-10（2）**: 外部リンクは**すべて新しいタブ**で開く（`target="_blank" rel="noopener noreferrer"`、vh「（外部、新しいタブで開く）」、**DECISION M-21**。M-15 は撤回）。Partner の Logo タイルは `href` があれば**タイル全体が団体サイトへのリンク**（**DECISION U-35**。hover / pressed の表現なし、フォーカスリングは内側）
 - **2026-09-05 の実装レビューを反映**（U-21〜U-29 / L-30）: 写真・イラスト・ロゴは原色（B/W 撤回）、Hero の格子線撤去、Discord マークは filled、Stat の数字は白の Display/L + 所属の内訳、全発言にリアクション（実際の絵文字、数字が巻き上がる）、ペルソナとチャットのアバターは Humation（女 3・男 3）、Poster の Social はマークのみ、ロゴマークは外接矩形の mark.svg を 24 / 20（U-27 の Nav CTA マークは同日撤回）
@@ -1219,6 +1220,7 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 | `icon/sm` | 16 | 12〜14px の文字（badge Overline 12、chip Caption 12、persona rec / sponsor link Footnote 13、footer の任意 brand アイコン）、36px コントロールのラベル横 | glyph の実寸は 16 × 20/24 ≈ 13px ≈ 14px 文字の cap 高 + α |
 | `icon/md` | 20 | 15〜19px の文字（marquee Title 3 Caps 19 の区切り）、44px コントロールのラベル横、icon-only 36 | glyph ≈ 17px。19px 大文字の cap 高 ≈ 15px と釣り合う |
 | `icon/lg` | 24 | icon-only 44（menu、x）、placeholder の写真アイコン | Tabler のネイティブサイズ |
+| `icon/xl` | 32 | About ベントのセルの図（kicker の下・題の上）、Cell Official の行頭（U-40） | stroke **1.5**（§5.1: 32 以上は 1.5）。24 grid × 4/3 |
 
 判定順: コントロール内 → 高さで決める（ラベル横: 36 → 16、44 → 20。icon-only: 36 → 20、44 → 24）。文中 → 文字サイズで決める（≤ 14 → 16、15〜19 → 20）。（DECISION L-27、R7）
 
@@ -1261,8 +1263,9 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 | `Icon/X` | `x` | `IconX` | 24 / 20 | Mobile nav の閉じる（icon button 44 → 24）、library dialog の閉じる（36 → 20） | 中央 |
 | `Icon/Photo` | `photo` | `IconPhoto` | 24 | image placeholder（§5.7.3） | 単独。`color/ink-tertiary` |
 | `Brand/X` / `Brand/Instagram` / `Brand/GitHub` / `Brand/Discord` | —（Tabler ではなく公式素材、U-38） | `BrandX` / `BrandInstagram` / `BrandGithub` / `BrandDiscord`（`brand-marks.tsx`） | 20 | poster の social（マークのみ、U-28）、member card の socials（U-12）、Discord へ出るボタンの先頭（hero / poster、U-19） | social: 単独、hit area 44 / ボタン: leading 8 |
+| `Icon/Book` `Icon/Hammer` `Icon/MessageCircle` `Icon/Code` `Icon/Palette` `Icon/Flask` `Icon/MapPin` `Icon/Messages` `Icon/School` `Icon/HeartHandshake` `Icon/Flag` | `book` `hammer` `message-circle` `code` `palette` `flask` `map-pin` `messages` `school` `heart-handshake` `flag` | `IconBook` … `IconFlag` | **32**（stroke 1.5） | About のベント（§6.11.2 / §6.11.4、U-40）。題の語をひとつずつ図にする | 図同士 `inline/sm` 12、図 → 題 `stack/md` 16、行頭の図 → 題 `inline/md` 16 |
 
-必須 8 種 + 任意 3 種（player-pause / play は U-31 で撤去）。追加するときは「同じ意味に 2 つのアイコンを使わない」— 内部（`ArrowRight`）と外部（`ArrowUpRight`）は別の意味であり、この 2 つ以外の矢印を増やさない。
+必須 8 種 + 任意 3 種（player-pause / play は U-31 で撤去）+ ベントの図 11 種（U-40）+ ブランドマーク 4（公式素材、U-38）。追加するときは「同じ意味に 2 つのアイコンを使わない」— 内部（`ArrowRight`）と外部（`ArrowUpRight`）は別の意味であり、この 2 つ以外の矢印を増やさない。
 
 ### 5.6 命名
 
@@ -1451,7 +1454,7 @@ Rotating word: 可視部分は `aria-hidden`、`<h1>` の名前は visually-hidd
 | Rotating word | `motion/word/period` 2.5s、退出 `spring/quick`、入り `spring/default`、**無限ループ**（DECISION U-15） | 静止 `学ぶ。` |
 | Typing dots | `motion/dots/period` 1.2s、セル可視時のみ | 静止（opacity 1） |
 | Chat 再生 | `motion/chat/step` 900ms ごとに 1 手、一巡したら `motion/chat/hold` 2.4s 置いて先頭へ（U-16） | 静止（全行を表示） |
-| Photo 送り | `motion/photo/step` 4s ごとに 1 枚、`spring/default` でスライド（U-18） | 静止（先頭の 1 枚） |
+| ~~Photo 送り~~ | ~~`motion/photo/step` 4s ごとに 1 枚、`spring/default` でスライド（U-18）~~ **U-40 で撤去**（写真は Activities の静止画へ） | — |
 | Button / Link hover | 色・下線のみ（矢印の移動など装飾の動きは足さない、M9） | 同じ |
 
 Spring は移動にだけ使う（M2）。本章の部品で移動するのは Menu panel と Rotating word のみ。
@@ -1840,62 +1843,68 @@ Figma: `Section / Heading` `Layout` {Row, Stacked} 2。Props: `title` `label` TE
 | 列 | 4 列均等（(1200 − 10) / 4 = 297.5）。2×1 = 597 | 1 列（338）、DOM 順、span 無視 |
 | 行の最小高 | `size/cell-min` 120 | 120 |
 | セル inset | `inset/cell` **24** | **20** |
-| 行構成 | 行 1 [2×1 CULTURE · 1×1 OFFICIAL · Stat] / 行 2–3 [Chat 2×2 · Image 2×2] / 行 4 [1×1 · 1×1 · CTA 2×1] | 縦に 1 列 |
-| 行の高さ | 背の高いセルが HUG で決め、同じ行の他のセルが FILL で追う（行 1 は OFFICIAL セルが駆動） | 各セルが HUG |
+| 行構成 | 行 1 [CULTURE 2×1 · MEMBERS（墨）· SINCE] / 行 2–3 [CHAT 2×2 · OFFICIAL 2×1 / ONLINE & OFFLINE · FOR EVERYONE]（**DECISION U-40**） | 縦に 1 列: CULTURE → MEMBERS → SINCE → CHAT → OFFICIAL → ONLINE & OFFLINE → FOR EVERYONE |
+| 行の高さ | 行 1 は CULTURE が HUG で決め（実測 **198**）、MEMBERS / SINCE が FILL で追う。行 2–3 は CHAT（**465**）が決め、OFFICIAL **240** / 行 3 **224** が FILL で追う | 各セル HUG（実測 176 / 128 / 144 / 475 / 208 / 168 / 168） |
+
+**DECISION U-40**（2026-09-12、クライアント判断）ベントを **3 行 7 セル**に組み直す。
+
+1. Discord CTA セル（旧 §6.11.6）を**撤去**。導線は Hero・Nav・Poster が持ち、About は「何者か」を語る面に徹する。U-10（導線は「参加する」1 本）は残る 3 か所で維持。
+2. 活動写真セル（旧 §6.11.5、U-18 のスライド）を **Activities へ移す**（§6.13）。写真は活動の説明に添えてこそ情報になる。
+3. Hero の meta strip から降りた設立を **SINCE** セルに置く（U-39）。
+4. 文字だけのセルは題の語をひとつずつ**図**（Tabler 32、stroke 1.5、`icon/xl`）にして、旧レイアウトで空いていた中段を埋める。
+5. OFFICIAL を 1×1 → **2×1** にし、2 件を 1 行ずつ並べる（§6.11.4）。
+
+根拠: 旧配置は行 1 の高さを OFFICIAL の 3 行 body が駆動して CULTURE の中段が空き、行 4 は CTA 1 本のために 2×1 を使っていた。セルごとに面積と中身の量が釣り合わず、Apple の発表会末尾のベント（1 タイル = 1 つの主張 + 1 つの図）のように読めなかった。3 行にすると、行 2–3 の高さをチャットが決め、右の 3 セルがそれに追従する構図が 1 つだけ残る。
 
 #### 6.11.2 Cell Text
 
-| Kind | kicker | title | body |
-|---|---|---|---|
-| 2×1 | `Overline/Latin` 12 UPPER `ink-secondary` | `Title/2` 22 `ink`、≤ 2 行 | `Body/S` 14 `ink-secondary`、上 `stack/xs` 8 |
-| 1×1 md | 同 | `Title/3` 19、≤ 2 行 | 同（`showBody`） |
-| 1×1 sm | 同 | `Headline` 17、≤ 3 行 | 同（`showBody`） |
+| Kind | kicker | icons | title | body |
+|---|---|---|---|---|
+| 2×1 | `Overline/Latin` 12 UPPER `ink-secondary` | **32**（`icon/xl`）× 1–3、gap `inline/sm` 12、`ink` | `Title/2` 22 `ink`、≤ 2 行 | `Body/S` 14 `ink-secondary`、上 `stack/xs` 8 |
+| 1×1 md | 同 | 同 | `Title/3` 19、≤ 2 行 | 同（`showBody`） |
+| 1×1 sm | 同 | 同 | `Headline` 17、≤ 3 行 | 同（`showBody`） |
 
-- セルは縦 flex、`justify-content: space-between`（kicker 上・title 下）、kicker → title の最小距離 `stack/md` 16。
+- 解剖は **2 段**: kicker（天）／ [icons → `stack/md` 16 → title（→ body）]（地）。縦 flex、`justify-content: space-between`。図は題と 1 つの塊にする — 天・中・地の 3 段に散らすと、行が伸びたとき図だけが中空に浮く（U-40）。
+- 図は装飾（`aria-hidden`、icons.tsx が付ける）。意味は題が運ぶ。語と図の対応: 学ぶ `book` / 創る `hammer` / 話す `message-circle`、対面 `map-pin` / オンライン `messages`、エンジニア `code` / デザイナー `palette` / サイエンティスト `flask`、設立 `flag`。content は文字列（`AboutIcon`）で持ち、`bentoIcons` が解決する。
+- ページの 4 セル: **CULTURE**（2×1、book / hammer / message-circle、題 `仲間と、<br>学ぶ。創る。話す。`）、**SINCE**（1×1 sm、flag、`2025年4月 設立`）、**ONLINE & OFFLINE**（1×1 sm、map-pin / messages）、**FOR EVERYONE**（1×1 sm、code / palette / flask）。
 - Tone Ink（ライブラリ）: fill `inverse/ground`、kicker `inverse/ink-tertiary`、title `inverse/ink`、body `inverse/ink-secondary`。
-- kicker は英語 1–2 語（`CULTURE` `OFFICIAL` `ONLINE & OFFLINE` `FOR EVERYONE`）。title は `<br>` で意図的に改行してよい（ポスターの語割り）。`<h3>`。
-- **DECISION U-11** `ONLINE & OFFLINE` を `ONLINE & OFFLINE` にする。「first」は序列の宣言なので、対面が二番手だという含みが残る。実態はどちらもあるので、並列の接続詞で言う。title も「チャットも通話もDiscordで。対面イベントも定期的に。」と両方を主語にする。
-- **DECISION U-14** `body` は全 Kind で使える（`showBody`）。OFFICIAL セルは title に長崎大学公認、body にサポーターズ 技育プロジェクト公式パートナーを置き、**公的な裏づけを 1 セルに集約**する。
+- kicker は英語 1–2 語。title は `<br>` で意図的に改行してよい（ポスターの語割り）。`<h3>`。
+- **DECISION U-11** `ONLINE & OFFLINE`（「first」は序列の宣言なので使わない）。title は両方を主語に。
+- **DECISION U-14** `body` は全 Kind で使える（`showBody`）。現ページでは未使用 — 公的な裏づけは §6.11.4 の専用セルへ移った（U-40）。
 - 状態なし。
 
 #### 6.11.3 Cell Stat（Ink）
 
-fill `inverse/ground`。kicker `Overline/Latin` `MEMBERS` `inverse/ink-tertiary`（8.29）。value `50` **`Display/L` 96 / 40** + `+` **`Display/M` 56 / 32**、ベースライン揃え、**`inverse/ink`**（14.86、**DECISION U-24**: U-6 のアクセントを撤回。規模は色ではなく大きさで語る — lime の Display/M は kicker との間に空きが目立ち、アクセントの枠を 1 つ使うわりに釣り合わなかった）。セルに載るのは数字だけで、セルの底に置く（**DECISION U-36**: 所属のバッジ U-29 を 2026-09-11 に撤回。規模を語るセルに所属の列が乗ると、数字の大きさより先に文字が読まれた。人数の内訳も出さない）。`<p><span aria-hidden="true">50+</span><span class="vh">メンバー 50人以上</span></p>`。数字は半角（書体に `tnum` はない）。
+fill `inverse/ground`。kicker `Overline/Latin` `MEMBERS` `inverse/ink-tertiary`（8.29）。value `50` **`Display/L` 96 / 40** + `+` **`Display/M` 56 / 32**、ベースライン揃え、**`inverse/ink`**（14.86、**DECISION U-24**: U-6 のアクセントを撤回。規模は色ではなく大きさで語る）。セルに載るのは数字だけで、セルの底に置く（**DECISION U-36**）。`<p><span aria-hidden="true">50+</span><span class="vh">メンバー 50人以上</span></p>`。数字は半角（書体に `tnum` はない）。
 
-#### 6.11.4 Cell Chat
+ページで数字を大きく出すのは**このセルだけ**。設立年 `2025` を Display/L で並べる案（U-40 の検討）は、1×1 の内側 250 に 4 桁 ≈ 260 が入らず 2 行に折れ、Display/M に落とすと隣の `50+` と釣り合わないので採らない。SINCE は Cell Text（図 + Headline）にする。
+
+#### 6.11.4 Cell Official（2×1、U-40）
+
+fill `ground`。kicker `Overline/Latin` `OFFICIAL` `ink-secondary` → `<ul>` 2 行（行間 `stack/md` 16）、各行 = 図 **32**（`school` / `heart-handshake`、`ink`、行頭）+ `inline/md` 16 + [題 `Headline` 17 `ink` `<h3>` → `stack/2xs` 4 → 補足 `Footnote/Regular` 13 `ink-secondary`]。解剖は Cell Text と同じ 2 段（kicker 天 ／ 行群 地）。
+
+| 行 | 図 | 題 | 補足 |
+|---|---|---|---|
+| 1 | `school` | 長崎大学公認団体 | 長崎大学の公認を受けた学生団体 |
+| 2 | `heart-handshake` | 技育プロジェクト 学生団体公式パートナー | 株式会社サポーターズが運営 |
+
+根拠: 旧 1×1（title `公認団体` + body 2 行）は 297 幅で body が「技育 / プロジェクト」で折れ、2 件が 1 段落に溶けて読めなかった。1 件 = 1 行にすると、どちらも同じ強さで並ぶ — Hero の meta strip が担っていた U-13 の趣旨をここで引き継ぐ。2 件は同格なので `<ul>`、各行の題は `<h3>`（見出しナビゲーションに 2 つの事実がそのまま並ぶ）。状態なし。
+
+#### 6.11.5 Cell Chat
 
 §6.12 の部品を積む。`<figure>`: kicker `<p>` `Overline/JP`（ORIGINAL）`#general — いつものChoTech` `ink-secondary` → `stack/md` 16 → thread `<ul>`（message 間 `stack/xs` 8）→ `<figcaption>` `Caption/Regular` `こんな会話が、毎日どこかで。` `ink-secondary`、`margin-top: auto`、上 `stack/md` 16。**矢印なし**（§9.6: 注記は位置で分かる）。図の名前は figcaption（DECISION M-18）。
 
-#### 6.11.5 Cell Image
+#### 6.11.6 Cell Image（Activities へ移動、U-40）
 
-fill `ground`、Image slot Rect / Cover を `inset: 0`。比率 **16:9**（DECISION L-20: Desktop は Chat セル高 ≈ 336 に stretch、Mobile 338 × 190）。原色（U-21）。`alt` = 被写体を 1 文 ≤ 60 字（§8.6）。
+About からは撤去。写真は Activities の各セルに**静止画**として置く（§6.13）。スライド送り（**DECISION U-18**）は廃止 — 活動ごとに 1 枚ずつ添えれば「いろいろやっている」は 4 枚が並ぶことで伝わり、時間を持つセルを About に置く理由が無くなった。`PhotoSlides`、`Cell Image`、`motion/photo/step` は消す。§7 の M8 / M9 の一覧から「写真送り」を外す。
 
-**DECISION U-18** 1 枚ではなく複数枚を横にスライドさせて回す。活動の様子は「1 枚の代表写真」では出ない — Talk Day と Hackathon と勉強会が同じ枠に並んで初めて「いろいろやっている」が伝わる。ベントの中で唯一「時間を持つ」セルになるので、隣のチャットと合わせて 2 つ以上は作らない。
+#### 6.11.7 Cell CTA（撤去、U-40）
 
-| 項目 | 値 |
-|---|---|
-| 送り | `translateX(-n × 100%)`、`spring/default`。フェードではなく**スライド**（面が入れ替わる、という物理を保つ） |
-| 間隔 | `motion/photo/step` 4,000 ms。1 枚を見終える時間 |
-| ループ | 末尾に先頭の複製を 1 枚置き、そこまで送ったらトランジション無しで 0 に戻す。逆回しの掃引を見せない |
-| 停止 | セルが非可視、タブ非表示、ページのスイッチ、reduced-motion。止まっているときは**先頭の 1 枚**を出す |
-| 支援技術 | トラックは `aria-hidden`。写真は装飾（`alt=""`）で、活動の情報は Activities 節が本文として持つ |
+About からは撤去。Discord への導線は Hero（主 CTA）・Nav（帯の CTA）・Poster の 3 か所（U-10 の「参加する」1 本は変わらない）。DECISION K-8（Mobile の縦積み）は前提を失う。部品 `cell-cta.tsx` は消す。
 
-#### 6.11.6 Cell CTA（Ink、2×1）
+#### 6.11.8 Figma
 
-| 項目 | Desktop | Mobile |
-|---|---|---|
-| 構成 | 横 flex、`align-items: center`、gap `inline/md` 16 | **縦**、gap `stack/md` 16（**DECISION K-8**） |
-| title | `Title/3` 19 `inverse/ink`（`まずはDiscordから`、1 行） | 同、折返し可 |
-| sub | `Footnote/Regular` 13 `inverse/ink-secondary`（11.78） | 同 |
-| button | On Ink / Outline / md `Discordに参加する` + `arrow-up-right` 20 | 同、`fullWidth`・左揃え |
-
-K-8 の根拠: Mobile セル内幅 338 − 40 = 298。横並びでは title が 3 字/行になる。
-
-- **DECISION U-10** Discord の導線は「参加する」1 本にする。「見学」という中間段階を作らない。理由: Discord に入ること自体が可逆で低コストな行為なので、その手前に軽い段階を用意しても心理的な障壁は下がらず、**導線が 2 つに割れて主導線が弱くなる**。ハードルは文言（`見るだけ参加も歓迎です`）で下げ、動詞は 1 つに保つ。
-
-#### 6.11.7 Figma
-
-`Bento / Cell Text` `Kind` {2x1, 1x1-md, 1x1-sm} × `Tone` {Ground, Ink} 6。`Cell Stat` 1、`Cell Chat` 1、`Cell Image` 1、`Cell CTA` `Viewport` 2、`Bento / Grid` `Viewport` 2。Props: `kicker` `title` `body` TEXT、`showBody` BOOL。**注**: `body` は当初 6 variant すべてで `characters` が未配線で、値を入れても既定文が出ていた（2026-09-01 修正）。
+`Bento / Cell Text` `Kind` {2x1, 1x1-md, 1x1-sm} × `Tone` {Ground, Ink} 6 に `icon1–3` INSTANCE_SWAP + `showIcons` BOOL を足す。`Cell Stat` 1、`Cell Chat` 1、**`Cell Official` 1（新設、`row1Title` `row1Sub` `row2Title` `row2Sub` TEXT、`icon1–2` INSTANCE_SWAP）**、`Bento / Grid` `Viewport` 2（行構成を U-40 に合わせて組み直す）。`Cell Image` / `Cell CTA` は後継ありとして残置。**Figma 側は未反映**（2026-09-12、別作業）。
 
 ### 6.12 Chat message / typing
 
@@ -2175,8 +2184,8 @@ Figma: `Media / Image Slot` `Shape` {Rect, Circle} × `Fit` {Cover, Contain} × 
 | M5 | 出入りは対称、起点は発生源 | 開閉するものは同じ経路を逆再生。展開パネルは発生源（Nav の下罫）から現れる | 「消えた方向から戻ってくる」空間的一貫性 |
 | M6 | compositor プロパティのみ | アニメーションは `transform` と `opacity` のみ（色は `background-color` / `color` / `text-decoration-color` / `text-decoration-thickness` を固定時間で）。`height` / `top` / `clip-path` / `filter` は不可 | 60 fps とジッターのなさが craft の最低条件。`clip-path` は全エンジンで compositor 処理されない |
 | M7 | 減速運動の停止は 1 % 残りで判定 | スプリングの「見かけの長さ」= 目標との差が 1 % を切る時刻 | 0.1 % まで待つと約 1.4 倍長くなり、体感と一致しない |
-| M8 | ループは低減設定・画面外で停止 | 自動で動くもの（マーキー、入力中ドット、背景写真、チャット再生、写真送り）は `prefers-reduced-motion` で止まり、画面外・バックグラウンドタブでも止まる。ページ内スイッチ（停止 / 再生ボタン）は **U-31 で撤去** | WCAG 2.2.2 はページ内の停止手段を求めるため**未達**（クライアント判断で許容） |
-| M9 | 追加しない | 装飾のためだけの動きは足さない。ヒーローの浮遊バブルと矢印の nudge は **採用しない**。チャットの再生と写真の送りは装飾ではなく情報（順に現れることでしか出せない、U-16 / U-18）。**唯一の例外が Hero の背景写真の漂い**（U-20）— 情報を運ぶのは写真であって動きではないと認めたうえで採った | Apple「Purpose」: 動きはユーザーの注意を消費する予算。1 つの状態に 2 つの信号を出さない |
+| M8 | ループは低減設定・画面外で停止 | 自動で動くもの（マーキー、入力中ドット、背景写真、チャット再生。写真送りは U-40 で撤去）は `prefers-reduced-motion` で止まり、画面外・バックグラウンドタブでも止まる。ページ内スイッチ（停止 / 再生ボタン）は **U-31 で撤去** | WCAG 2.2.2 はページ内の停止手段を求めるため**未達**（クライアント判断で許容） |
+| M9 | 追加しない | 装飾のためだけの動きは足さない。ヒーローの浮遊バブルと矢印の nudge は **採用しない**。チャットの再生は装飾ではなく情報（順に現れることでしか出せない、U-16）。写真の送り（U-18）は U-40 で撤去し静止画に。**唯一の例外が Hero の背景写真の漂い**（U-20）— 情報を運ぶのは写真であって動きではないと認めたうえで採った | Apple「Purpose」: 動きはユーザーの注意を消費する予算。1 つの状態に 2 つの信号を出さない |
 
 ### 7.2 トークン
 
@@ -2204,7 +2213,7 @@ CSS カスタムプロパティで持つ。Figma には Variables として置�
 | `motion/dots/period` | `--dots-period` | **1.2 s**（= 3 × `duration/3`）、ドット間 **200 ms** | 入力中ドット | 0.8 Hz。Apple が避けよと言う 0.2 Hz 級の緩慢な振動から離す |
 | `motion/chat/step` | — | **900 ms** | チャットの 1 手（U-16） | 短い台詞を読み終える最短。これより速いと会話ではなく点滅に見える |
 | `motion/chat/hold` | — | **2,400 ms** | 一巡後の間（U-16） | 最後の発言を読み切ってから畳む。`chat/step` の約 2.7 倍 |
-| `motion/photo/step` | — | **4,000 ms** | 写真の送り（U-18） | 1 枚を見終える時間。文字より情報が多いので `chat/step` の 4 倍以上取る |
+| ~~`motion/photo/step`~~ | — | ~~**4,000 ms**~~ | ~~写真の送り（U-18）~~ **U-40 で撤去** | — |
 | `motion/hero-backdrop/period` | `--hero-backdrop-period` | **48 s**（片道・`alternate` で往復 96 s） | Hero 背景写真の漂い（U-20） | 1440 幅で片道 ≈ 29 px = 0.6 px/s。マーキー 40 px/s の 1/60 で、視線を引かない上限 |
 | `motion/hero-backdrop/drift` | `--hero-backdrop-drift` | **2 %**（片道、縦は 1 %） | 同上の移動量 | `scale` の余白 6 % の 1/3。往復しても縁が出ない |
 | `motion/hero-backdrop/scale` | `--hero-backdrop-scale` | **1.12** | 移動の余白（**静的**でアニメーションではない） | 個別プロパティ `scale` に置き、動く `translate` と 1 つの transform を奪い合わせない |
@@ -3156,7 +3165,7 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 | U-15 | ~~回転語は 2 周で静止せず**回り続ける**~~ **U-37 で回転語ごと撤去** | §7 M8 のスイッチが停止手段を提供済みで、有限化の理由（WCAG 2.2.2）が消えた。3 語を見せて止まる動きは「力尽きた」ようにしか見えない。U-31 でスイッチ撤去後も回し続ける（2.2.2 未達を許容） |
 | U-16 | チャットは静止画をやめ、発言・スタンプ単位で順に現れて**ループ**する | 静止スレッドは「会話のスクリーンショット」に見える。伝えたいのは「いま誰かが喋っていて返事が返ってくる場所だ」ということで、順に現れることでしか出せない |
 | U-17 | 活動セルを**リンクにしない**。hover / pressed / focus / 矢印も持たない | 4 セルとも同じ Discord に着地するので、押した対象と行き先が対応しない。参加への導線は Hero・Bento CTA・Poster が 3 度受け持っている |
-| U-18 | About の写真セルは複数枚を**スライドさせて回す** | 「いろいろやっている」は 1 枚の代表写真では出ない。ベントで唯一「時間を持つ」セルなので、隣のチャットと合わせて 2 つ以上は作らない |
+| U-18 | ~~About の写真セルは複数枚を**スライドさせて回す**~~ **U-40 で撤去（写真は Activities の静止画へ）** | 「いろいろやっている」は 1 枚の代表写真では出ない。ベントで唯一「時間を持つ」セルなので、隣のチャットと合わせて 2 つ以上は作らない |
 | U-19 | Discord / SNS の導線にブランドマークを**先頭**に添える | `arrow-up-right` は「外部」を言うが「どこへ」は言わない。ロゴは読む前に分かる唯一の記号。Nav の CTA だけは Mobile の幅検算が溢れるので置かない |
 | U-20 | Hero の ink 面に**背景写真**を不透明度 0.2 で重ね、48 s 周期で漂わせる | 「仲間と、学ぶ／創る／話す」を字だけで言っていた。誰がどこで何をしているのかは 1 枚の写真が先に答える。動きは M9 の唯一の例外で、装飾だと認めたうえで採った — 引き換えに (1) 不透明度は好みではなく AA から逆算した測定値、(2) 速さは 0.6 px/s（マーキーの 1/60）で視線を引かない上限、(3) M8 のスイッチ 1 つで止まり、`prefers-reduced-transparency` / `forced-colors` では層ごと消える、の 3 つを課す |
 | U-21 | 写真・イラスト・ロゴは原色。B/W 処理（grayscale + contrast）を撤回 | 色は「コミュニティの実像」を運ぶ情報。モノクロ化はそれを削っていた |
@@ -3175,6 +3184,7 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 | U-36 | Cell Stat は `50+` の数字だけ。所属のバッジ（U-29）を撤回（2026-09-11、クライアント判断）。Chip の Inverse トーンはライブラリのみに格下げ | 規模を語るセルに所属の列が乗ると、数字の大きさが語る「規模」より先に文字が読まれた。所属の裏づけは Hero の「大学・学部・学科を問わず」が文で持つ |
 | U-38 | SNS / Discord のブランドマークは Tabler の `brand-*` をやめ、**各社の公式素材**（`assets/brand/`: X の `x-logo.zip` / `logo.svg`、GitHub の `GitHub_Logos.zip` / Invertocat、Discord の `Discord-Symbol-Black.svg`、Instagram は Brand Resource Center のグリフをクライアントが取得）の path を写したインライン SVG `brand-marks.tsx` に置き換える（2026-09-12）。幾何は不変、色は `currentColor` の黒 / 白のみ、枠は従来どおり 20（縦横比は素材のまま中央に収める）。U-23 は撤回 | 各社の規約が第三者の再描画を許さない: X「黒か白。形の完全性を保つ」、GitHub「色・寸法の変更を含め改変不可、黒 / 白 / グレー / 緑のみ」、Discord「編集・変更・歪曲・再配色・再構成をしない」、Instagram「Brand Resource Center のロゴのみ使用」。Tabler の `brand-*` は線画の再描画で、outline 版も filled 版も同じ問題を持つ |
 | U-39 | Hero の meta strip（SINCE 2025 / 長崎大学公認 / 技育プロジェクト 学生団体公式パートナー）を**撤去**し、h1 を**墨の板**（`inverse/ground` 実色、inline-block、padding 0.2em / 0.1em、左右は負マージンで吊るして字の左端を揃える）に載せ、文は白、**句点 `.` だけ `hero/word`**（2026-09-12、クライアント判断）。U-37 の「動詞だけアクセント」と U-13 は撤回。事実 3 件は About の SINCE / OFFICIAL セルへ | 写真が透ける面の上では、白い字の輪郭が写真の明部に食われる瞬間がある。実色の板を敷けば h1 だけが「印刷された」ように一段沈んで読める。強調が板・動詞・句点の 3 か所に散ると視線が割れるので、色は句点 1 つに絞る — 言い切りの印はそこにある。meta strip の 3 項目は About で本文として扱うほうが、12px の帯で読ませるより格が上がる |
+| U-40 | About のベントを **3 行 7 セル**に組み直す（2026-09-12、クライアント判断）: 行 1 [CULTURE 2×1 · MEMBERS · SINCE] / 行 2–3 [CHAT 2×2 · OFFICIAL 2×1 / ONLINE & OFFLINE · FOR EVERYONE]。Discord CTA セルを撤去、写真セルは Activities へ（U-18 廃止）、設立は SINCE セル（図 + Headline）、文字セルは題の語をひとつずつ **Tabler 32 の図**にする（`icon/xl`、stroke 1.5）、OFFICIAL は 2×1 で 1 件 = 1 行（図 + 題 + 補足） | 旧配置は行 1 の高さを OFFICIAL の 3 行 body が駆動して CULTURE の中段が空き、行 4 は CTA 1 本のために 2×1 を使っていた — 面積と中身の量がセルごとに釣り合わず、Apple の発表会末尾のベント（1 タイル = 1 つの主張 + 1 つの図）のように読めなかった。設立を Display/L の数字にする案は 1×1 の内側 250 に 4 桁 ≈ 260 が入らず、Display/M では 50+ と釣り合わないので図 + Headline に |
 
 ## 付録 B. 検証
 

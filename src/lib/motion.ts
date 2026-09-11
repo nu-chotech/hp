@@ -81,17 +81,6 @@ export const chatThread = {
   reactionStaggerMs: 130,
 } as const;
 
-/**
- * 写真の送り（§6.11.5 / DECISION U-18）
- *
- * 末尾に先頭の複製を 1 枚置き、そこまで送ったらトランジション無しで 0 に戻す。
- * 逆回しの掃引を見せないための定石。
- */
-export const photoSlides = {
-  /** 1 枚を見終える時間。文字より情報が多いのでチャットの 4 倍以上取る */
-  stepMs: 4000,
-} as const;
-
 /** マーキー（§7.4.2）。duration ではなく速度で持つので内容量が変わっても速さが一定 */
 export const marquee = { speedPxPerSecond: 40 } as const;
 
