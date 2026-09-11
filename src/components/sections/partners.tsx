@@ -1,29 +1,30 @@
-import { RuledGrid } from "@/components/ui/ruled-grid";
+import type { CSSProperties } from "react";
+import { Cell, RuledGrid } from "@/components/ui/ruled-grid";
 import { Section } from "@/components/ui/section";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { sectionIds } from "@/config/site";
 import { partnersContent } from "@/content/partners";
-import { PartnerFillerCell, PartnerLogoCell } from "./people/partner-cell";
+import { PartnerLogo } from "./people/partner-logo";
 
 const titleId = `${sectionIds.partners}-title`;
 
-/** Desktop の列数。6 / 3 / 2（desktop / tablet / Mobile）はすべて 6 の約数なので、6 の倍数に揃えればどの幅でも行が欠けない */
-const columns = 6;
-
 /**
- * パートナー（§6.16）
+ * パートナー（§6.16 / DECISION U-43）
  *
- * 見出し → 導入文 → 3:2 の白タイルの罫線グリッド（Desktop 6 列 / tablet 3 / Mobile 2、
- * DECISION L-31 / L-32 / U-33）。見出しの下は `heading-mb-intro` 12、導入文の下は
- * `stack/lg` 24（= セル境界と同じ強さの切れ目、§3.9）。
+ * 見出し → 導入文 → **外枠だけ**の白い面に、ロゴを等分の列で 1 行に並べる。
+ * 旧 6 列の 3:2 タイル（L-31 / L-32）は内側の罫が 1 枚ずつを区切り、団体数が 6 の倍数で
+ * ないと無地の埋め草（U-34）が出て「空席」に見えた。外枠 1 つの中に並べれば、団体数が
+ * いくつでも 1 行の「顔ぶれ」として読める。
  *
- * 行の端数は無地の白タイルで埋める（DECISION U-34）。罫線グリッドは frame の地が罫なので、
- * 空いたトラックをそのままにすると divider 色の板が出る。埋め草は情報を持たないので
- * aria-hidden にし、リストの項目数は団体の数のままにする。
+ * 列数は Desktop で団体数ちょうど（5 なら 5 等分）、tablet 3、Mobile 2 で折り返す。
+ * Desktop の列数は content の件数から決まるので、CSS 変数で渡す（Tailwind のクラスに
+ * 件数を焼き込まない）。見出しの下は `heading-mb-intro` 12、導入文の下は `stack/lg` 24（§3.9）。
  */
 export function Partners() {
   const { heading, intro, partners } = partnersContent;
-  const fillers = (columns - (partners.length % columns)) % columns;
+  const columns = {
+    "--partner-columns": `repeat(${partners.length}, minmax(0, 1fr))`,
+  } as CSSProperties;
 
   return (
     <Section id={sectionIds.partners} aria-labelledby={titleId}>
@@ -40,18 +41,22 @@ export function Partners() {
       >
         {intro}
       </p>
-      <RuledGrid columns={columns} asChild data-reveal>
-        {/* biome-ignore lint/a11y/noRedundantRoles: Tailwind の preflight が list-style を none にするので、Safari / VoiceOver は ul から list ロールを外す。§8.5 が求める <ul> > <li> の読み上げを残すには明示が要る */}
-        {/* biome-ignore lint/a11y/useSemanticElements: 要素はすでに <ul>。role は上の理由で重ねている */}
-        <ul role="list">
-          {partners.map((partner) => (
-            <PartnerLogoCell key={partner.name} partner={partner} />
-          ))}
-          {Array.from({ length: fillers }, (_, i) => (
-            // biome-ignore lint/suspicious/noArrayIndexKey: 埋め草は内容を持たず、並び替えも個別の状態も無い。index 以外に識別子が無い
-            <PartnerFillerCell key={`filler-${i}`} />
-          ))}
-        </ul>
+      {/* 外枠だけの罫線グリッド（columns 1）。中は白い面 1 枚（logo-ground、U-33） */}
+      <RuledGrid columns={1} data-reveal>
+        <Cell surface="logo">
+          {/* biome-ignore-start lint/a11y/noRedundantRoles: Tailwind の preflight が list-style を none にするので、Safari / VoiceOver は ul から list ロールを外す。§8.5 が求める <ul> > <li> の読み上げを残すには明示が要る */}
+          {/* biome-ignore lint/a11y/useSemanticElements: 要素はすでに <ul>。role は上の理由で重ねている */}
+          <ul
+            className="grid grid-cols-2 items-center gap-x-inline-lg gap-y-stack-lg tablet:grid-cols-3 desktop:grid-cols-(--partner-columns)"
+            role="list"
+            style={columns}
+          >
+            {partners.map((partner) => (
+              <PartnerLogo key={partner.name} partner={partner} />
+            ))}
+          </ul>
+          {/* biome-ignore-end lint/a11y/noRedundantRoles: Tailwind の preflight が list-style を none にするので、Safari / VoiceOver は ul から list ロールを外す。§8.5 が求める <ul> > <li> の読み上げを残すには明示が要る */}
+        </Cell>
       </RuledGrid>
     </Section>
   );

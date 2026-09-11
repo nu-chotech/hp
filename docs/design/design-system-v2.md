@@ -17,6 +17,7 @@
 > - **2026-09-12（4）**: About のベントを 3 行 7 セルに組み直す（**DECISION U-40**）。Discord CTA セル撤去、写真セルは Activities へ（U-18 廃止、`motion/photo/step` 撤去）、SINCE セル新設、文字セルに Tabler 32 の図（`icon/xl` 新設）、OFFICIAL は 2×1 の 2 行
 > - **2026-09-12（5）**: 活動内容を均等な 2×2 の写真セルに（**DECISION U-41**、U-8 の Feature / Compact 撤回）。写真は `public/images/activities/`（About から移動）、Project は Hero の集合写真の複製で仮置き
 > - **2026-09-12（6）**: Persona card を 3 行の subgrid に（**DECISION U-42**）: イラスト 80 を題の横、引用は墨の板、次の一歩は surface の板で隙間なし。`size/illustration` 96 → 80
+> - **2026-09-12（7）**: Partners を外枠だけの白い面 + ロゴを団体数で等分した 1 行に（**DECISION U-43**、L-31 / L-32 のタイルと U-34 の埋め草を撤去）
 > - **2026-09-11**: Cell Stat の所属バッジ（U-29）を**撤回**し、セルは `50+` の数字だけに戻す（**DECISION U-36**）。Chip の Inverse トーンは Accent と同じくライブラリのみ（ページに出さない）。About の CULTURE セルは本文を落として題だけ（「仲間と、学ぶ。創る。話す。」— Hero の h1 を `Hack Your Limits.` に差し替える予定に合わせ、3 語を Culture に降ろす）
 > - **2026-09-10（2）**: 外部リンクは**すべて新しいタブ**で開く（`target="_blank" rel="noopener noreferrer"`、vh「（外部、新しいタブで開く）」、**DECISION M-21**。M-15 は撤回）。Partner の Logo タイルは `href` があれば**タイル全体が団体サイトへのリンク**（**DECISION U-35**。hover / pressed の表現なし、フォーカスリングは内側）
 - **2026-09-05 の実装レビューを反映**（U-21〜U-29 / L-30）: 写真・イラスト・ロゴは原色（B/W 撤回）、Hero の格子線撤去、Discord マークは filled、Stat の数字は白の Display/L + 所属の内訳、全発言にリアクション（実際の絵文字、数字が巻き上がる）、ペルソナとチャットのアバターは Humation（女 3・男 3）、Poster の Social はマークのみ、ロゴマークは外接矩形の mark.svg を 24 / 20（U-27 の Nav CTA マークは同日撤回）
@@ -57,7 +58,7 @@ Familiarity（慣れ）・Agency（主体性）・Flexibility（柔軟）・Resp
 
 ### 0.3 ページの骨格（コンセプトの認識可能な部分）
 
-Nav（sticky、2px 下罫）→ Hero（インク面、背景写真、回転語をアクセントで塗る）→ Marquee 帯（2px 上下罫、白の面、パートナーロゴ 3:2 高さ 96、asterisk は PARTNERS の両脇のみ。停止ボタンは U-31 で撤去）→ About（ベント 4 列罫線グリッド: テキスト / 統計 / チャット / 写真 / CTA）→ Activities（ベント 4 セル: Feature 1 + Compact 3）→ For You（ペルソナカード 3 × 2）→ Members（リーダー 2 列 + スタッフ 3 列）→ Partners（白の 3:2 ロゴタイル 6 列。募集セルは U-34 で撤去）→ Poster（クロージング CTA、唯一のアクセント面）→ Footer。全要素左揃え。
+Nav（sticky、2px 下罫）→ Hero（インク面、背景写真、回転語をアクセントで塗る）→ Marquee 帯（2px 上下罫、白の面、パートナーロゴ 3:2 高さ 96、asterisk は PARTNERS の両脇のみ。停止ボタンは U-31 で撤去）→ About（ベント 4 列罫線グリッド: テキスト / 統計 / チャット / 写真 / CTA）→ Activities（ベント 4 セル: Feature 1 + Compact 3）→ For You（ペルソナカード 3 × 2）→ Members（リーダー 2 列 + スタッフ 3 列）→ Partners（外枠だけの白い面にロゴを等分の 1 行、U-43）→ Poster（クロージング CTA、唯一のアクセント面）→ Footer。全要素左揃え。
 
 ### 0.4 分冊間の矛盾と解決
 
@@ -1030,7 +1031,7 @@ CSS: `.container { width: min(100% - 2 * var(--page-inset), 75rem); margin-inlin
 |---|---|---|
 | ナビを横並びに開く | 768px = 48rem | 英語 1 語のリンク 4 本 + CTA sm は 768 に余裕をもって収まる。ここでハンバーガーを維持するのは、タイプスケールの忠実さより明らかに悪い体験 |
 | 罫線グリッドを 2 列に開く | 768px = 48rem | L-10 が退けたのは列数ではなく「セル内容 128px（Body S で 9 字）」。768 の 2 列はセル内容 ≈ 320px（22 字）で閾値を満たす |
-| 罫線グリッドを設計どおりの列数（bento 4、persona / staff 3、partner 6）に開く | 1248px = 78rem | トークンのモードと一致させ、Figma の Desktop フレームと同一幾何にする |
+| 罫線グリッドを設計どおりの列数（bento 4、persona / staff 3。partner は U-43 で外枠 1 セル + 団体数で等分）に開く | 1248px = 78rem | トークンのモードと一致させ、Figma の Desktop フレームと同一幾何にする |
 
 タイポグラフィを中間帯で流体補間（`clamp()`）しない: §2 の行長計算は「n 文字 = n em」の離散値に依存しており、補間した中間サイズでは §9.3 の文字数上限が検証されていない。CSS では `--breakpoint-tablet` 48rem / `--breakpoint-desktop` 78rem の 2 つだけを持ち、Tailwind の既定階梯は消す。
 
@@ -1341,7 +1342,7 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 | 14 | Activity cell | Activity / Cell, Bento | Activities |
 | 15 | Persona card | Persona / Card | For You |
 | 16 | Member card（Leader / Staff） | Member / Card | Members |
-| 17 | Partner cell | Partner / Cell | Partners |
+| 17 | Partner logo（外枠だけの 1 行、U-43） | Partner / Cell → Partner / Logo | Partners |
 | 18 | Poster CTA | Section / Poster | Join |
 | 19 | Footer | Section / Footer | 末尾 |
 | 20 | Image slot | Media / Image Slot | Bento・Persona・Member・Partner |
@@ -2077,12 +2078,28 @@ Leader と Staff の差は **写真比・inset・name・skills の 4 点**（Soc
 
 Figma: `Member / Card` `Size` {Leader, Staff} 2。Props: `role` `name` `skills` TEXT、`social1–3` INSTANCE_SWAP、`showSocials` BOOL(true)、`photo` INSTANCE_SWAP。
 
-### 6.16 Partner cell
+### 6.16 Partner logos（外枠だけの 1 行、U-43）
 
-| Type | 内容 |
-|---|---|
-| Logo | **3:2 のタイル**（Desktop 6 列 197.67 × 131.78 / tablet 3 列 237.33 × 158.22 / Mobile 2 列 168 × 120 = 床 `size/cell-min`。DECISION L-32、列数は L-31）、**`logo-ground`（白、U-33）**、**inset 0**（余白は正規化した素材側が持つ。§6.11.5 の画像セルと同じ）、Image slot fill / **Contain**（セル中央。画像の中央配置は左揃え原則の唯一の例外、DECISION L-26）、ブランド規定の色のまま（U-21）、`alt` = 団体名。**`href` があればタイル全体が団体サイトへのリンク**（`<a>` が Image slot を包む。新しいタブ、名前 = alt + vh「（外部、新しいタブで開く）」。hover / pressed の表現なし、`focus/ring` は内側 K-7。**DECISION U-35**） |
-| Filler | 行の端数を埋める**無地**の白タイル（Logo と同じ 3:2、`logo-ground`、`aria-hidden`）。枚数は団体数を 6 の倍数に切り上げた差（6 / 3 / 2 列はすべて 6 の約数なので、どの幅でも行が欠けない）。文言も導線も持たない — 旧 Placeholder「YOUR LOGO HERE」は 2026-09-10 に撤去（**DECISION U-34**） |
+```
+┌ divider frame: fill divider, padding 2 ───────────────────────────────────────┐
+│ ┌ logo-ground（白）inset/cell 24 ───────────────────────────────────────────┐ │
+│ │  [ 144×96 ]    [ 144×96 ]    [ 144×96 ]    [ 144×96 ]    [ 144×96 ]      │ │
+│ │  ← 1200 を団体数で等分（5 → 239.2）。各列の中央にロゴ →                    │ │
+│ └───────────────────────────────────────────────────────────────────────────┘ │
+└───────────────────────────────────────────────────────────────────────────────┘
+```
+
+**DECISION U-43**（2026-09-12、クライアント判断）6 列の 3:2 タイル（L-31 / L-32）をやめ、**外枠だけ**の白い面（`RuledGrid columns=1` + `Cell surface=logo`）の中に、ロゴを**等分の列**で 1 行に並べる。内側の罫は無い。旧タイルは罫が 1 枚ずつを区切り、団体数が 6 の倍数でないと無地の埋め草（U-34）が「空席」に見えた。外枠 1 つの中に並べれば、団体数がいくつでも 1 行の「顔ぶれ」として読める。
+
+| 項目 | Desktop | Mobile |
+|---|---|---|
+| 枠 | 2px の外枠（frame fill `divider`、padding 2）+ 白い面 1 枚（`logo-ground`、U-33、inset `inset/cell` 24）。行の床 `size/cell-min` 120 | 同、inset 20 |
+| 列 | CSS grid、**団体数で等分**（`repeat(N, minmax(0, 1fr))`、N は content の件数を CSS 変数で渡す。5 団体 → 239.2）。tablet 3 列 | 2 列。列間 `inline/lg` 24、行間 `stack/lg` 24 |
+| ロゴ枠 | マーキーと同じ **3:2 × 高さ `size/marquee-logo` 96（幅 144）**、Image slot Contain、原色（U-21）。各列の**中央**（L-26: 画像の中央配置は左揃え原則の唯一の例外） | 同 |
+| リンク | `href` があれば枠全体が団体サイトへのリンク（U-35）。名前 = alt（団体名）+ vh「（外部、新しいタブで開く）」。hover / pressed の表現なし、フォーカスリングは既定の外向き（枠は罫に接していないので K-7 の内側は要らない） | 同 |
+| 埋め草 | **無し**（U-34 の Filler は不要に） | 同（端数の行は左詰め） |
+
+素材は変わらない: `pnpm generate:partner-logos` が 3:2 の白キャンバス 600 × 400 に正規化した PNG（U-33）。白い面の上に白いキャンバスを置くので枠の縁は見えず、図だけが浮かぶ。
 
 **DECISION U-35**（2026-09-10） Logo タイルはリンク。ロゴを見た読者の次の行動は「その団体を知る」で、行き先は団体ごとに一意なので U-17（Activity セルをリンクにしない — 4 セルが同じ Discord に着地する）の問題は起きない。`<a>` は Image slot の外側で、タイル全体を当たり判定にする（罫線グリッドの「押せるのは中の導線だけ」は、ここでは中身 = ロゴそのものが導線）。hover / pressed の表現は持たない — 素材は白キャンバスでタイルを埋めるため面のティントが乗らず、画像に filter を掛けない（U-21）。応答はカーソルとフォーカスリング（内側、K-7）だけ。`href` の無い団体は画像のまま。
 
@@ -2094,7 +2111,7 @@ Figma: `Member / Card` `Size` {Leader, Staff} 2。Props: `role` `name` `skills` 
 
 **DECISION U-33**（2026-09-10） ロゴを置く面は **白（`color/logo-ground` = neutral-0）**。ロゴは原則として背景を持つ図で、実物も 5 枚中 3 枚が白背景の jpg / png だった。ground（neutral-100）の上に置くと白い板として浮く（比 1.12 は「輪郭が読める最小段」に当たる）。素材に手を加えない約束（U-21）を守ったまま板を消すには、面の側を素材の背景に合わせるしかない。白はパートナーのタイル（埋め草含む）とマーキー帯だけに使い、他の面には広げない。素材の縦横比・余白・背景のばらつきは表示側ではなく `scripts/normalize-partner-logos.mjs` で揃える: 余白をトリム → 3:2 の白キャンバス 600 × 400（セーフエリア inset 72 / 48）に contain → 団体ごとの倍率で見た目の重さを揃える → PNG。元素材は `assets/partners/` に置き、public には正規化後だけを出す。
 
-Figma: `Partner / Cell` `Type` {Logo, Filler} 2。Props: `logo` INSTANCE_SWAP（`label` TEXT は U-34 で不要に）。
+Figma: `Partner / Cell` `Type` {Logo, Filler} 2 は後継あり（`Partner / Logo` 1 + `Section / Partners` の外枠）として残置。**未反映**（2026-09-12、別作業）。
 
 ### 6.17 Poster CTA
 
@@ -3073,7 +3090,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | L-28 | marquee 停止セル 44 × 内側高、左 2px rule、ground、icon 24 | 帯と同じ罫線語彙で「セル」として切り出す。**U-31 で撤去** |
 | L-29 | 実装のブレークポイントは 2 つ: 構造 48rem / トークン 78rem（§3.6） | 2 フレームしかない仕様と連続なブラウザ幅の橋渡し。ナビと列数だけ先に開き、タイポは離散のまま |
 | L-30 | logo mark は図の外接矩形で切った `icons/mark.svg` を 24 / 20 で置く | favicon.svg は余白込みで、図が小さく見え wordmark からも離れて見えた |
-| L-31 | Partner セルは正方形タイル（Desktop 6 列 / tablet 3 / Mobile 2） | ロゴは正方形のアイコンが基本なので図とタイルの形を揃える。文字を運ばないタイルは L-10 の制約外。Mobile 1 列だと 342 角が 6 枚縦に積まれる |
+| L-31 | ~~Partner セルは正方形タイル（Desktop 6 列 / tablet 3 / Mobile 2）~~ **U-43 でタイルごと撤去（外枠だけの 1 行）** | ロゴは正方形のアイコンが基本なので図とタイルの形を揃える。文字を運ばないタイルは L-10 の制約外。Mobile 1 列だと 342 角が 6 枚縦に積まれる |
 | L-33 | hero `min-height: min(100svh − size/nav − size/band-marquee, size/hero-max)`（2026-09-12、L-7 改） | ファーストビューの下端にパートナーの帯を乗せる。「支えられている」が最初の画面で見える。1440 × 900 で Hero 718 + 帯 120。内容が下限を超える画面（1280 × 720）では帯は一部 |
 
 ### A.4 Components（K）
@@ -3188,6 +3205,7 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 | U-40 | About のベントを **3 行 7 セル**に組み直す（2026-09-12、クライアント判断）: 行 1 [CULTURE 2×1 · MEMBERS · SINCE] / 行 2–3 [CHAT 2×2 · OFFICIAL 2×1 / ONLINE & OFFLINE · FOR EVERYONE]。Discord CTA セルを撤去、写真セルは Activities へ（U-18 廃止）、設立は SINCE セル（図 + Headline）、文字セルは題の語をひとつずつ **Tabler 32 の図**にする（`icon/xl`、stroke 1.5）、OFFICIAL は 2×1 で 1 件 = 1 行（図 + 題 + 補足） | 旧配置は行 1 の高さを OFFICIAL の 3 行 body が駆動して CULTURE の中段が空き、行 4 は CTA 1 本のために 2×1 を使っていた — 面積と中身の量がセルごとに釣り合わず、Apple の発表会末尾のベント（1 タイル = 1 つの主張 + 1 つの図）のように読めなかった。設立を Display/L の数字にする案は 1×1 の内側 250 に 4 桁 ≈ 260 が入らず、Display/M では 50+ と釣り合わないので図 + Headline に |
 | U-41 | 活動内容を**均等な 2×2 の写真セル**にする（2026-09-12、クライアント判断）。各セルの上端に 16:9 の写真を縁まで敷き、題は 4 件とも Title/1。U-8 の Feature / Compact は撤回。写真は About のスライド（U-18）から移動、Project は実写が届くまで Hero の集合写真の複製で仮置き | Feature セルは題の右半分が空き、Compact は文字が詰まって、面積と中身の量が釣り合っていなかった。同じ大きさなら 4 件は一覧として読まれ、優先は順序で示せる。写真は活動の説明に添えてこそ情報になる。アコーディオン / タブは内容を隠し、状態を持たない面（U-17）の思想に合わない |
 | U-42 | Persona card を 3 行の subgrid に組み直す（2026-09-12、クライアント判断）: header（イラスト **80** + [番号 / 題]、上下中央）／ 引用は**墨の板**（inverse/ink）／ 次の一歩は **surface の板**、2 枚は隙間なし。`size/illustration` 96 → 80 | 旧解剖は番号と題の間にイラストの高さぶんの空きができ、引用の行数で矢印行の位置が揺れ、「→ 文」は面を持たず目に留まらなかった。subgrid なら同じ行のカードで 3 行の境目が必ず揃う（flex-1 では推薦 2 行のカードだけ 20px ずれた） |
+| U-43 | Partners は 6 列の 3:2 タイル（L-31 / L-32 / U-34 の埋め草）をやめ、**外枠だけ**の白い面の中にロゴ（3:2 × 96、マーキーと同じ枠）を**団体数で等分**した列に中央配置で 1 行に並べる（2026-09-12、クライアント判断）。tablet 3 列 / Mobile 2 列で折返し | 内側の罫が 1 枚ずつを区切り、団体数が 6 の倍数でないと無地の埋め草が「空席」に見えた。外枠 1 つの中に並べれば、団体数がいくつでも 1 行の「顔ぶれ」として読める。列数を content の件数から決めるので、団体が増減しても幾何が壊れない |
 
 ## 付録 B. 検証
 
