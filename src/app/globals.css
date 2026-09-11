@@ -967,9 +967,11 @@
        Latin の送りが変わって Figma と CSS の折返しがずれる）。 */
   }
 
-  /* 段落は 1〜2 文字の孤立行を作らない */
+  /* 段落は 1〜2 文字の孤立行を作らない。折返しは文節境界（auto-phrase、対応ブラウザのみ）:
+     pretty だけでは「最初の一 / 歩」のように語中で折れる（U-48） */
   p {
     text-wrap: pretty;
+    word-break: auto-phrase;
   }
 
   /*

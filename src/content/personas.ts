@@ -4,7 +4,11 @@ export interface Persona {
   title: string;
   /** 一人称の声。鉤括弧はコンテンツ側に持つ（§6.14） */
   quote: string;
-  /** 次の一歩。先頭に arrow-right を添える */
+  /**
+   * 次の一歩。先頭に arrow-right を添える。
+   * 「Talk Day」「Dev Day」は語中で折らない（§2.6.4）ので NBSP（U+00A0）で結ぶ（U-48）—
+   * auto-phrase は欧文のスペースを折返し点と見なし、Mobile で「Talk / Day」に割れた
+   */
   recommendation: string;
   /**
    * 円のイラスト（径 96）。無い間は placeholder のアイコンが出る（§6.19）。
@@ -29,7 +33,7 @@ export const personasContent = {
       caseNo: "Case 01",
       title: "これから始めたい人",
       quote: "「プログラミング、何から始めればいいか分からない…」",
-      recommendation: "Dev Dayで一緒に手を動かしてみよう！",
+      recommendation: "Dev Dayで一緒に手を動かしてみよう！",
       photo: "/images/personas/case-01.svg",
     },
     {
@@ -57,14 +61,14 @@ export const personasContent = {
       caseNo: "Case 05",
       title: "データサイエンスに興味がある人",
       quote: "「データ分析、独学だと限界を感じる」",
-      recommendation: "Dev Dayで手を動かして、Talk Dayで共有しよう！",
+      recommendation: "Dev Dayで手を動かして、Talk Dayで共有しよう！",
       photo: "/images/personas/case-05.svg",
     },
     {
       caseNo: "Case 06",
       title: "発信してみたい人",
       quote: "「LT、一回やってみたいかも」",
-      recommendation: "Talk Dayで登壇してみよう。経験ゼロでもOK！",
+      recommendation: "Talk Dayで登壇してみよう。経験ゼロでもOK！",
       photo: "/images/personas/case-06.svg",
     },
   ] satisfies Persona[],

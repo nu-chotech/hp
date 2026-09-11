@@ -806,7 +806,7 @@ WCAG 1.4.10（320px リフロー）: 上記のとおり横スクロールは発�
 #### 2.6.4 改行・禁則・孤立行
 
 - `line-break: strict; word-break: normal; overflow-wrap: anywhere;`（URL 以外で単語の途中で切れることはない）。Figma の折返しが同じ禁則（行頭の 、。」）ー っ ゃ 禁止）になっているか、Foundations ページで 1 例確認する。
-- 段落末が 1〜2 文字だけの行を作らない。`text-wrap: pretty` を段落に、`text-wrap: balance` を 2 行見出しに適用し、それでも残る場合はコピーを直す。
+- 段落末が 1〜2 文字だけの行を作らない。`text-wrap: pretty` を段落に、`text-wrap: balance` を 2 行見出し（Hero のリード Title/1 を含む）に適用し、それでも残る場合はコピーを直す。段落にも `word-break: auto-phrase` を補助として当てる（**U-48**、2026-09-12: pretty だけでは Poster の段落が「最初の一 / 歩」、Mobile の Hero リードが「ハ / ブを。」と語中で折れた。auto-phrase は Chrome 119+ の段階的強化で、非対応ブラウザは `normal` のまま）。
 - 見出しは文節または読点の直後でだけ改行する。基準は著者の `<br>` / `<wbr>`（Figma も同じ位置で手動改行）。`word-break: auto-phrase` は対応ブラウザでの補助として許す。「ChoTech」「Discord」「Dev Day」などの固有名詞の途中で改行しない（`white-space: nowrap` の span）。
 - 両端揃え禁止（`text-align: justify` を書かない）。中央揃えもページ上に存在しない。
 - ルビ: 対象なし。縦組み: 使わない（水平のルールドグリッドと矛盾する）。
@@ -3228,6 +3228,7 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 | U-45 | 画像を `<img>` から **next/image の `fill`** に移行（2026-09-12）。ImageSlot は `sizes` をそのまま Image に渡し、Hero の背景も `priority` + `sizes="100vw"` の Image に。`images.formats` を AVIF / WebP に。チャットのアバター（24px の SVG）だけは `<img>` のまま | 実素材（3〜4MB の jpg）が揃い、「素材が確定するまで next/image は入れない」の前提が外れた。§5.7.2 が求める「スロット幅に応じた AVIF / WebP」は next/image がそのまま実装で、Mobile に原寸を送らないことが体感を決める。.svg は Next が自動で unoptimized にする |
 | U-46 | 釣り合いの調整（2026-09-12、クライアント所見「まだアンバランスな UI が多い」）: (1) Member カードの Socials 行を `margin-top: auto` でカードの底に揃える、(2) Activities の見出し → グリッドを他節と同じ `heading-mb` 32 / 24 に（旧 `heading-mb-list` 8 を撤回）、(3) About の CULTURE を **Display/M** の statement セルに、1×1 の文字セル（SINCE / ONLINE & OFFLINE / FOR EVERYONE）を Headline 17 → **Title/3 19** に | (1) 紹介文が 2 行と 3 行のカードで導線の高さが 20px ずれていた。(2) 写真セルの上に 8 しか無く、見出しが格子に貼り付いて About / For You と縦リズムが違った。(3) 597 幅の 2×1 に Title/2 では文字が左 1/3 に寄り、隣の 50+（Display/L）と釣り合わなかった。1×1 は Headline では行 2–3 の右側が軽かった |
 | U-47 | Poster の Social とフッターのリンクの `<li>` を `display: flex` にする（2026-09-12） | 親の 15px の strut が `<li>` の行ボックスを 26 に広げ、inline-flex のマーク（20）が 3px 下がって 44 のボタンと上下中央が合わなかった（フッターは 1px）。実測で確認: Desktop / tablet / Mobile の 3 幅でボタンとマークの中心が一致 |
+| U-48 | 段落にも `word-break: auto-phrase` を当て、Hero のリード（Title/1）に `text-wrap: balance`（2026-09-12） | Mobile の Hero リードが「長崎にテック好きのためのハ / ブを。」、Poster の段落が「最初の一 / 歩」と語中で折れていた。見出しだけに auto-phrase を当てる旧規則では p のリードと段落が漏れる。対応ブラウザだけの段階的強化で、Figma との折返し一致（§2.6.2）は見出しの著者改行が正のまま |
 
 ## 付録 B. 検証
 

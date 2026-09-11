@@ -132,8 +132,10 @@ export function Hero() {
             data-reveal
             data-reveal-index="1"
           >
-            {/* Display 124 と本文 16 の間の中間階層（DECISION U-5） */}
-            <p className="text-title-1 text-inverse-ink">{lead}</p>
+            {/* Display 124 と本文 16 の間の中間階層（DECISION U-5）。
+                Mobile で 2 行に折れるので balance（見出し扱い、§2.6.4）。文節で折るのは
+                @layer base の p が持つ（U-48: balance 無しでは「ハ / ブを。」で折れた） */}
+            <p className="text-balance text-title-1 text-inverse-ink">{lead}</p>
             {/* mt-0: 縦リズムは gap が持つので @layer base の p + p 12 を打ち消す。
                 whitespace-pre-line: content 側の著者改行をそのまま行に落とす */}
             <p className="mt-0 max-w-measure whitespace-pre-line text-body-l text-inverse-ink-secondary">
