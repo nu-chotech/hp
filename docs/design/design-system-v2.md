@@ -3227,6 +3227,7 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 | U-44 | チャット再生の 1 手を 900 → **600 ms**、一巡後の間を 2,400 → **2,000 ms**。畳む先を 0 行から **1 行目を残した状態**に（2026-09-12、クライアント判断） | 900 は待たされて見え、UX を下げていた。0 行まで畳むと次の 1 手までの step のあいだスレッドが空になり、「一瞬真っ白で何も表示されない」故障に見えた。1 行目を残せば、一巡の終わりは「返事が消えて、また付き始める」動きになる |
 | U-45 | 画像を `<img>` から **next/image の `fill`** に移行（2026-09-12）。ImageSlot は `sizes` をそのまま Image に渡し、Hero の背景も `priority` + `sizes="100vw"` の Image に。`images.formats` を AVIF / WebP に。チャットのアバター（24px の SVG）だけは `<img>` のまま | 実素材（3〜4MB の jpg）が揃い、「素材が確定するまで next/image は入れない」の前提が外れた。§5.7.2 が求める「スロット幅に応じた AVIF / WebP」は next/image がそのまま実装で、Mobile に原寸を送らないことが体感を決める。.svg は Next が自動で unoptimized にする |
 | U-46 | 釣り合いの調整（2026-09-12、クライアント所見「まだアンバランスな UI が多い」）: (1) Member カードの Socials 行を `margin-top: auto` でカードの底に揃える、(2) Activities の見出し → グリッドを他節と同じ `heading-mb` 32 / 24 に（旧 `heading-mb-list` 8 を撤回）、(3) About の CULTURE を **Display/M** の statement セルに、1×1 の文字セル（SINCE / ONLINE & OFFLINE / FOR EVERYONE）を Headline 17 → **Title/3 19** に | (1) 紹介文が 2 行と 3 行のカードで導線の高さが 20px ずれていた。(2) 写真セルの上に 8 しか無く、見出しが格子に貼り付いて About / For You と縦リズムが違った。(3) 597 幅の 2×1 に Title/2 では文字が左 1/3 に寄り、隣の 50+（Display/L）と釣り合わなかった。1×1 は Headline では行 2–3 の右側が軽かった |
+| U-47 | Poster の Social とフッターのリンクの `<li>` を `display: flex` にする（2026-09-12） | 親の 15px の strut が `<li>` の行ボックスを 26 に広げ、inline-flex のマーク（20）が 3px 下がって 44 のボタンと上下中央が合わなかった（フッターは 1px）。実測で確認: Desktop / tablet / Mobile の 3 幅でボタンとマークの中心が一致 |
 
 ## 付録 B. 検証
 

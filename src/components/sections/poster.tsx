@@ -80,7 +80,9 @@ export function Poster() {
             {socialLinks.map((link) => {
               const Brand = brandIcons[link.brand];
               return (
-                <li key={link.brand}>
+                // flex: <li> の行ボックス（親の 15px の strut）がマークを 3px 下げ、
+                // 44 のボタンと上下中央が合わなかった。li 自体を flex にして strut を消す（U-47）
+                <li className="flex" key={link.brand}>
                   {/* マークだけ（DECISION U-28）。行き先はマークが言い切るので文字も矢印も
                       置かず、名前は visually-hidden に残す（§8.6）。可視 20 を ::before で
                       44 角に広げる（§6.1.5）— 間隔 inline/lg 24 なので隣の判定と重ならない */}
