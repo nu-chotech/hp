@@ -27,7 +27,9 @@ export function ForYou() {
         titleId={titleId}
         data-reveal
       />
-      <RuledGrid columns={3} asChild data-reveal>
+      {/* auto-rows-auto: カードが subgrid で 3 行を借りる（persona-card.tsx）ので、
+          罫線グリッド既定の行の床 120 を 3 行それぞれに掛けない（掛かると 1 枚 360 になる） */}
+      <RuledGrid className="auto-rows-auto" columns={3} asChild data-reveal>
         {/* biome-ignore lint/a11y/noRedundantRoles: Tailwind の preflight が list-style を none にするので、Safari / VoiceOver は ul から list ロールを外す。§8.5 が求める <ul> > <li> の読み上げを残すには明示が要る */}
         {/* biome-ignore lint/a11y/useSemanticElements: 要素はすでに <ul>。role は上の理由で重ねている */}
         <ul role="list">

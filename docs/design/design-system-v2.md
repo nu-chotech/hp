@@ -16,6 +16,7 @@
 > - **2026-09-12（3）**: Hero の meta strip を撤去し、h1 `Hack Your Limits.` を**墨の板**に載せて句点だけアクセント（**DECISION U-39**。U-13 撤回、U-37 の「動詞だけアクセント」撤回）。設立と公認 / 公式パートナーは About のセルへ
 > - **2026-09-12（4）**: About のベントを 3 行 7 セルに組み直す（**DECISION U-40**）。Discord CTA セル撤去、写真セルは Activities へ（U-18 廃止、`motion/photo/step` 撤去）、SINCE セル新設、文字セルに Tabler 32 の図（`icon/xl` 新設）、OFFICIAL は 2×1 の 2 行
 > - **2026-09-12（5）**: 活動内容を均等な 2×2 の写真セルに（**DECISION U-41**、U-8 の Feature / Compact 撤回）。写真は `public/images/activities/`（About から移動）、Project は Hero の集合写真の複製で仮置き
+> - **2026-09-12（6）**: Persona card を 3 行の subgrid に（**DECISION U-42**）: イラスト 80 を題の横、引用は墨の板、次の一歩は surface の板で隙間なし。`size/illustration` 96 → 80
 > - **2026-09-11**: Cell Stat の所属バッジ（U-29）を**撤回**し、セルは `50+` の数字だけに戻す（**DECISION U-36**）。Chip の Inverse トーンは Accent と同じくライブラリのみ（ページに出さない）。About の CULTURE セルは本文を落として題だけ（「仲間と、学ぶ。創る。話す。」— Hero の h1 を `Hack Your Limits.` に差し替える予定に合わせ、3 語を Culture に降ろす）
 > - **2026-09-10（2）**: 外部リンクは**すべて新しいタブ**で開く（`target="_blank" rel="noopener noreferrer"`、vh「（外部、新しいタブで開く）」、**DECISION M-21**。M-15 は撤回）。Partner の Logo タイルは `href` があれば**タイル全体が団体サイトへのリンク**（**DECISION U-35**。hover / pressed の表現なし、フォーカスリングは内側）
 - **2026-09-05 の実装レビューを反映**（U-21〜U-29 / L-30）: 写真・イラスト・ロゴは原色（B/W 撤回）、Hero の格子線撤去、Discord マークは filled、Stat の数字は白の Display/L + 所属の内訳、全発言にリアクション（実際の絵文字、数字が巻き上がる）、ペルソナとチャットのアバターは Humation（女 3・男 3）、Poster の Social はマークのみ、ロゴマークは外接矩形の mark.svg を 24 / 20（U-27 の Nav CTA マークは同日撤回）
@@ -997,7 +998,7 @@ Desktop / Mobile が同値の行は Mobile 列を「=」とする。根拠中の
 | `size/cell-min` | 120 | 罫線グリッドの行の最小高、sponsor cell の高さ | 24 × 5。**床であって目標ではない**: kicker（Overline 16）+ `stack/md` 16 + Headline 2 行（48）+ inset 48 = 128 で、kicker + 2 行見出しの 1×1 セルは行ごと 128 に伸びる（stretch）。sponsor cell と 1 行見出しのセル（104）は 120 |
 | `size/avatar` | 24 | chat avatar（矩形） | = `icon/lg`。chat indent = 24 + `inline/xs` 8 = 32 |
 | `size/dot` | 7 | typing dot（円） | 吹き出しの中に置くので、点そのものが見えるサイズが要る。3 点 + gap 5 = 31 幅（DECISION U-1 で 4 → 7） |
-| `size/illustration` | 96 | persona イラスト（円） | `space/96`、24 grid × 4 |
+| `size/illustration` | **80** | persona イラスト（円） | 96 → 80（U-42: 題の横に置くので、Headline 2 行 48 を中に収める最小の径）。`space/80`、24 grid × 10/3 |
 | `size/mark-nav` / `size/mark-footer` | 28 / 24 | logo mark（両 viewport 同値） | 4 の倍数。wordmark Title 3 19 / Headline 17 に対する比 1.47 / 1.41（**DECISION L-21**） |
 | `size/rule-v` | 12 | 縦 hairline の高さ（brand tagline の左、hero meta の区切り） | 隣接文字の font-size（Caption / Overline 12）と同値。行送り 18 だと行を跨いで見え、cap 高 9 だと点に見える（**DECISION L-16**） |
 | `measure/paragraph` | 588 / 342 | 段落の `max-width` | §3.10 |
@@ -2026,26 +2027,26 @@ Project と Hackathon を分ける理由: 前者は継続的な営み、後者�
 ### 6.14 Persona card
 
 ```
-┌ inset/cell 24 (M 20) ────────────────────┐
-│ CASE 01                   ( 96 )         │  header: space-between, gap inline/sm 12
-│ これから始めたい人                         │  title Headline
-│ ▌「プログラミング、何から…」              │  quote: surface, inset 8×12
-│ [arrow-right] Dev Dayで一緒に手を動かそう │  rec: margin-top auto
-└──────────────────────────────────────────┘
+┌ inset/cell 24 (M 20) ─────────────────────────┐
+│ ( 80 )  CASE 01                               │  header: イラスト + [番号 / 題]、上下中央、gap inline/sm 12
+│         これから始めたい人                      │  ↓ stack/md 16
+│ ▓▓「プログラミング、何から始めれば…」▓▓▓▓▓▓▓  │  quote: inverse/ground の板（行 2、stretch）
+│ ░░→ Dev Dayで一緒に手を動かしてみよう！░░░░░  │  rec: surface の板（行 3）、quote に隙間なく接する
+└───────────────────────────────────────────────┘
 ```
+
+**DECISION U-42**（2026-09-12、クライアント判断）解剖を「番号 / イラスト右上 / 題 / 引用 / 矢印行」の 5 段から **3 行**に組み直す。(1) イラストを **80** に縮めて題の横に置く — 旧解剖は番号と題の間にイラストの高さ（96）ぶんの空きができ、番号だけが天に浮いていた。(2) 引用は**墨の板**（`inverse/ground` 上 `inverse/ink`）、次の一歩は **`surface` の板**にし、2 枚を**隙間なし**で積む — 「悩み」と「答え」が 1 つの対であることを形で言う。旧「→ 文」の行は面を持たず、目に留まらなかった。(3) カードは親 `<ul>` の 3 行を借りる **subgrid** で、同じ行のカード同士で header・引用・次の一歩の境目が必ず揃う（引用が 1 行でも 2 行でも、推薦が 1 行でも 2 行でも）。flex-1 で残りを埋める作りでは、推薦が 2 行に折れたカードだけ板の境目が 20px ずれた。
 
 | 要素 | 仕様 |
 |---|---|
-| caseNo | `Overline/Latin` 12 UPPER、`ink-secondary`、上 `stack/2xs` 4（円との視覚バランス） |
-| illustration | Image slot Circle `size/illustration` 96、Humation のイラスト（hand-drawn kawaii avatar、MIT）、原色、`alt=""`。`scripts/generate-avatars.mjs` が部位と色から決定的に SVG を生成し `public/images/personas/` に置く（**DECISION U-26**: 実在しない人物像に実写の顔を当てると「誰？」が先に立つ。イラストなら人物像として読める） |
-| title | `Headline` 17、`ink`、`<h3>` |
-| quote | fill `surface`、inset `inset/xs` 8 × `inset/sm` 12、`Callout` 14 Bold `ink`（13.51）。鉤括弧はコンテンツ側 |
-| rec | `arrow-right` 16（先頭、`inline/icon` 4）+ `Footnote/Bold` 13 `ink-secondary`（5.83）。和欧間スペースなし（`Dev Dayで一緒に`） |
-| card | `ground`、inset `inset/cell` 24 / 20、ブロック間 `stack/md` 16、高さは行で揃う（stretch） |
+| header | 横 flex、`align-items: center`、gap `inline/sm` 12、下 `stack/md` 16。イラスト Image slot Circle **`size/illustration` 80**（96 → 80、U-42）、Humation、原色、`alt=""`（U-26）。右に縦積み: caseNo `Overline/Latin` 12 UPPER `ink-secondary` → `stack/2xs` 4 → title `Headline` 17 `ink` `<h3>`。番号 16 + 4 + 題 24 = 44 は 80 の中に収まり、題が 2 行（48）でも 68 で収まる |
+| quote | fill **`inverse/ground`**、inset `inset/sm` 12 × `inset/md` 16、`Callout` 14 Bold **`inverse/ink`**（14.86）。鉤括弧はコンテンツ側、`「` 始まりは `trim-start`。行 2 を stretch で埋める（同じ行の最長の引用が高さを決め、短い引用の板も同じ高さ） |
+| rec | fill `surface`、inset `inset/sm` 12 × `inset/md` 16、`arrow-right` 16（先頭、`inline/icon` 4、1 行目の行ボックス中央）+ `Footnote/Bold` 13 **`ink`**（13.51）。quote に**隙間なし**で接する（`p + p` の 12 を打ち消す） |
+| card | `ground`、inset `inset/cell` 24 / 20、**subgrid 3 行**（親 `<ul>` は `auto-rows: auto` — 罫線グリッド既定の行の床 120 を 3 行それぞれに掛けない）、行間 0（親の 2px gap を持ち込まない）。実測 Desktop **397 × 256 / 254**（行 1: quote 68 + rec 44、行 2: quote 46 + rec 64、板の間 0）、Mobile 338 × 226–248 |
 
-イラスト 104 → 96 は DECISION L-12。状態なし（カードはリンクではない）。Desktop 3 列（397.33）× 2 行、Mobile 1 列。`<ul>` > `<li>`。
+イラスト 104 → 96 は DECISION L-12、96 → 80 は U-42。状態なし（カードはリンクではない）。Desktop 3 列（397.33）× 2 行、Mobile 1 列。`<ul>` > `<li>`（subgrid の `<li>` は `row-span: 3`）。
 
-Figma: `Persona / Card` 1。Props: `caseNo` `title` `quote` `rec` TEXT、`image` INSTANCE_SWAP。
+Figma: `Persona / Card` 1。Props: `caseNo` `title` `quote` `rec` TEXT、`image` INSTANCE_SWAP。解剖の変更は**未反映**（2026-09-12、別作業）。
 
 ### 6.15 Member card（Leader / Staff）
 
@@ -3186,6 +3187,7 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 | U-39 | Hero の meta strip（SINCE 2025 / 長崎大学公認 / 技育プロジェクト 学生団体公式パートナー）を**撤去**し、h1 を**墨の板**（`inverse/ground` 実色、inline-block、padding 0.2em / 0.1em、左右は負マージンで吊るして字の左端を揃える）に載せ、文は白、**句点 `.` だけ `hero/word`**（2026-09-12、クライアント判断）。U-37 の「動詞だけアクセント」と U-13 は撤回。事実 3 件は About の SINCE / OFFICIAL セルへ | 写真が透ける面の上では、白い字の輪郭が写真の明部に食われる瞬間がある。実色の板を敷けば h1 だけが「印刷された」ように一段沈んで読める。強調が板・動詞・句点の 3 か所に散ると視線が割れるので、色は句点 1 つに絞る — 言い切りの印はそこにある。meta strip の 3 項目は About で本文として扱うほうが、12px の帯で読ませるより格が上がる |
 | U-40 | About のベントを **3 行 7 セル**に組み直す（2026-09-12、クライアント判断）: 行 1 [CULTURE 2×1 · MEMBERS · SINCE] / 行 2–3 [CHAT 2×2 · OFFICIAL 2×1 / ONLINE & OFFLINE · FOR EVERYONE]。Discord CTA セルを撤去、写真セルは Activities へ（U-18 廃止）、設立は SINCE セル（図 + Headline）、文字セルは題の語をひとつずつ **Tabler 32 の図**にする（`icon/xl`、stroke 1.5）、OFFICIAL は 2×1 で 1 件 = 1 行（図 + 題 + 補足） | 旧配置は行 1 の高さを OFFICIAL の 3 行 body が駆動して CULTURE の中段が空き、行 4 は CTA 1 本のために 2×1 を使っていた — 面積と中身の量がセルごとに釣り合わず、Apple の発表会末尾のベント（1 タイル = 1 つの主張 + 1 つの図）のように読めなかった。設立を Display/L の数字にする案は 1×1 の内側 250 に 4 桁 ≈ 260 が入らず、Display/M では 50+ と釣り合わないので図 + Headline に |
 | U-41 | 活動内容を**均等な 2×2 の写真セル**にする（2026-09-12、クライアント判断）。各セルの上端に 16:9 の写真を縁まで敷き、題は 4 件とも Title/1。U-8 の Feature / Compact は撤回。写真は About のスライド（U-18）から移動、Project は実写が届くまで Hero の集合写真の複製で仮置き | Feature セルは題の右半分が空き、Compact は文字が詰まって、面積と中身の量が釣り合っていなかった。同じ大きさなら 4 件は一覧として読まれ、優先は順序で示せる。写真は活動の説明に添えてこそ情報になる。アコーディオン / タブは内容を隠し、状態を持たない面（U-17）の思想に合わない |
+| U-42 | Persona card を 3 行の subgrid に組み直す（2026-09-12、クライアント判断）: header（イラスト **80** + [番号 / 題]、上下中央）／ 引用は**墨の板**（inverse/ink）／ 次の一歩は **surface の板**、2 枚は隙間なし。`size/illustration` 96 → 80 | 旧解剖は番号と題の間にイラストの高さぶんの空きができ、引用の行数で矢印行の位置が揺れ、「→ 文」は面を持たず目に留まらなかった。subgrid なら同じ行のカードで 3 行の境目が必ず揃う（flex-1 では推薦 2 行のカードだけ 20px ずれた） |
 
 ## 付録 B. 検証
 
