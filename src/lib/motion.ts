@@ -23,16 +23,15 @@ import type { Transition } from "motion/react";
  * ブレークポイントで切り替わる値（--stagger は 60 / 80ms）も JS が知らずに済む。
  */
 export const motionVar = {
-  /** 420ms var(--ease-spring)。reveal、回転語の入り、パネル展開 */
+  /** 420ms var(--ease-spring)。reveal、パネル展開 */
   springDefault: "var(--spring-default)",
-  /** 320ms var(--ease-spring)。回転語の退出、Mobile メニュー */
+  /** 320ms var(--ease-spring)。Mobile メニュー */
   springQuick: "var(--spring-quick)",
   easeSpring: "var(--ease-spring)",
   /** 色・下線だけに使う。移動には使わない（M2） */
   easeColor: "var(--ease-color)",
   stagger: "var(--stagger)",
   revealY: "var(--reveal-y)",
-  wordY: "var(--word-y)",
 } as const;
 
 /** 固定時間（ms）。§7.2 の duration/0–3 と同値 */
@@ -58,21 +57,6 @@ export const spring = {
   /** response 0.30s。小さい要素・退出側 */
   quick: { type: "spring", bounce: 0, visualDuration: 0.3 },
 } as const satisfies Record<string, Transition>;
-
-/**
- * ヒーローの回転語（§7.4.3）。**回り続ける**（DECISION U-15）。
- *
- * 有限化していたのは WCAG 2.2.2 を停止 UI 無しで満たすためだった。その後
- * ページ内のモーションスイッチが根拠になっていたが、U-31 でスイッチを撤去した
- * いまは reduced-motion でだけ止まる（2.2.2 の停止手段は未達。クライアント判断）。
- */
-export const heroWord = {
-  periodMs: 2500,
-  /** t=0 で退出、t=80ms で入りを始める。重なりが「ドラム」の連続性を作る */
-  transitionOffsetMs: 80,
-  /** h1 が静定してから回し始める（reveal の spring 1 周期ぶん待つ） */
-  startDelayMs: 2500,
-} as const;
 
 /** 入力中ドット（§7.4.5）。0.8Hz。セルが可視の間だけ動かす */
 export const typingDots = { periodMs: 1200, staggerMs: 200 } as const;

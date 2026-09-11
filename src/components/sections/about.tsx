@@ -46,7 +46,6 @@ export function About() {
       <RuledGrid columns={4} data-reveal>
         {/* 行 1: 2×1 CULTURE · 1×1 OFFICIAL · Stat。行の高さは OFFICIAL が駆動する */}
         <CellText
-          body={culture.body}
           colSpan={2}
           kicker={culture.kicker}
           size="2x1"
@@ -60,7 +59,6 @@ export function About() {
         />
         <CellStat
           accessibleName={stat.accessibleName}
-          affiliations={stat.affiliations}
           kicker={stat.kicker}
           suffix={stat.suffix}
           value={stat.value}

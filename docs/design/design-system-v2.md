@@ -11,6 +11,8 @@
 > - **2026-09-01 の実装レビューを反映**（付録 A.8 / U-1〜U-14）: 角丸はチャットのみ例外（Messages 風）、リンク下線 2 / 3px、ヒーロー回転語はアクセント文字（下線廃止）、セクション見出しの連番廃止・和文の題が先、活動内容はベント 4 セル（Hackathon 追加）、用語は「パートナー」に統一、Member カードに SNS リンク
 > - **2026-09-07**: Members の Staff（運営 3 名）は写真が揃うまで**写真枠ごと暫定非表示**（`showStaffPhotos` false。パスと素材は残置、§6.15 の写真つきが到達点）。Partner の Placeholder から「パートナーになる」（mailto）を撤去し、セルは `YOUR LOGO HERE` のみ（§6.16）。Partner セルは**正方形タイル**に変更（Desktop 6 列 197.67 / tablet 3 列 237.33 / Mobile 2 列 168、DECISION L-31）。マーキーの団体は partners.ts から生成し、**団体名ではなくロゴ**（80 角 `size/marquee-logo`。帯 `size/band-marquee` は 56 → **120**、項目間 `inline/2xl` 48、DECISION U-30）で出す。「パートナー募集中」の Ghost は撤去。複製数は viewport から自動計算し継ぎ目なく回す。停止 / 再生ボタンとページ内モーションスイッチ（旧 M8）は**撤去**（DECISION U-31、クライアント判断）。自動の動きは `prefers-reduced-motion` と画面外でのみ止まり、WCAG 2.2.2 の「ページ内の停止手段」は**未達**として §8 に記録。マーキーの ✳ は Label の両脇だけ（U-32）
 > - **2026-09-10**: パートナーの公式ロゴ 5 枚を受領。素材は白背景 jpg / 透過 png / 4:1 超のワードマークが混在し、ground の上では白背景の素材が板として浮き、正方形タイルではワードマークが細い帯になった。→ タイルとマーキー帯の面を **`color/logo-ground`（neutral-0、白）** に（**DECISION U-33**）。Partner タイルは正方形 → **3:2**（Desktop 6 列 197.67 × 131.78 / tablet 3 列 / Mobile 2 列は床 120。列数は L-31 のまま、**DECISION L-32**）。マーキーのロゴ枠も 3:2 で高さ `size/marquee-logo` **96**（幅 144）。素材は `scripts/normalize-partner-logos.mjs` が 3:2 の白キャンバス（600 × 400）に正規化し、セルは inset 0 で縁まで敷く。Image slot に比率 3:2 を追加。募集セル「YOUR LOGO HERE」は撤去し、行の端数は無地の白タイル（aria-hidden）で埋める（**DECISION U-34**）
+> - **2026-09-12**: Hero の h1 を回転語「仲間と、学ぶ。創る。話す。」からタグライン **`Hack Your Limits.`** の 1 行に置き換える（**DECISION U-37**。3 語は About の CULTURE セルへ）。動詞 `Hack` を `color/hero/word`、目的語を `inverse/ink` で塗り、U-3 の 2 色対比を語順を入れ替えて引き継ぐ。`lang="en"`。**Display/XL の上限を 124 → 116**（129 行送り）に下げる — 124 では 1 行 ≈ 1209 で container 1200 を 9px 超え、1280 幅では入るのに 1440 幅で折れる揺れが出た。116 なら ≈ 1131 で 69px の余裕。Mobile は「Hack Your」/「Limits.」の自然折返し（`\n` なし）。回転語の仕組み（`Hero / Rotating Word`、`motion/word/*`、`--word-*`、`.hero__word`、§7.4.3）は撤去。Hero の `min-height` は **nav に加えて Marquee 帯も引く**（`min(100svh − size/nav − size/band-marquee, size/hero-max)`、**DECISION L-33**、L-7 改）— ファーストビューの下端にパートナーの帯が乗る。1440 × 900 で Hero 718 + 帯 120、Mobile 390 × 844 で Hero 662 + 帯。1280 × 720 は内容 582 が下限 538 を超えるので帯は 74px だけ見える
+> - **2026-09-11**: Cell Stat の所属バッジ（U-29）を**撤回**し、セルは `50+` の数字だけに戻す（**DECISION U-36**）。Chip の Inverse トーンは Accent と同じくライブラリのみ（ページに出さない）。About の CULTURE セルは本文を落として題だけ（「仲間と、学ぶ。創る。話す。」— Hero の h1 を `Hack Your Limits.` に差し替える予定に合わせ、3 語を Culture に降ろす）
 > - **2026-09-10（2）**: 外部リンクは**すべて新しいタブ**で開く（`target="_blank" rel="noopener noreferrer"`、vh「（外部、新しいタブで開く）」、**DECISION M-21**。M-15 は撤回）。Partner の Logo タイルは `href` があれば**タイル全体が団体サイトへのリンク**（**DECISION U-35**。hover / pressed の表現なし、フォーカスリングは内側）
 - **2026-09-05 の実装レビューを反映**（U-21〜U-29 / L-30）: 写真・イラスト・ロゴは原色（B/W 撤回）、Hero の格子線撤去、Discord マークは filled、Stat の数字は白の Display/L + 所属の内訳、全発言にリアクション（実際の絵文字、数字が巻き上がる）、ペルソナとチャットのアバターは Humation（女 3・男 3）、Poster の Social はマークのみ、ロゴマークは外接矩形の mark.svg を 24 / 20（U-27 の Nav CTA マークは同日撤回）
 
@@ -190,7 +192,7 @@ Tailwind v4 lime をそのまま採用。段の変更なし。**インディゴ�
 
 | ロール | Mono | Lime | Scopes | 使用箇所 | 比 |
 |---|---|---|---|---|---|
-| `color/inverse/ink` | neutral-100 | = | TF SF SC | h1 回転語（Display XL）、リード（Title 3）、統計値（Display M）、自分側バブル（Callout）、CTA 見出し（Title 3）、アウトラインボタンのラベルと枠 | ink 14.86 |
+| `color/inverse/ink` | neutral-100 | = | TF SF SC | h1 目的語 `Your Limits.`（Display XL）、リード（Title 3）、統計値（Display M）、自分側バブル（Callout）、CTA 見出し（Title 3）、アウトラインボタンのラベルと枠 | ink 14.86 |
 | `color/inverse/ink-secondary` | `alpha/ground/88` | = | TF | ヒーロー段落（Body L）、CTA サブ（Footnote） | ink 11.78 |
 | `color/inverse/ink-tertiary` | `alpha/ground/72` | = | TF | ヒーローメタ行（Overline）、統計セルキッカー（Overline）。**インク面のみ** | ink 8.29 |
 | `color/inverse/ink-quaternary` | `alpha/ground/48` | = | TF | h1 導入句「仲間と、」（Display XL）。**インク面・ディスプレイサイズのみ** | ink 4.45（L） |
@@ -535,7 +537,7 @@ CSS 変数名は Figma 名の `/` を `-` に置換する（例 `--color-inverse
 
 | ロール | サイズ D / M | W | 行送り D / M | LS | Case | 行数・行長 | 色トークン | 用途 |
 |---|---|---|---|---|---|---|---|---|
-| **Display/XL** | 124 / 56 | 800 | 138 / 62（1.11） | −2% | — | 1 行 ≤ 9 全角（D）。M は読点で 2 行 | `color/inverse/ink`（回転語）、`color/inverse/ink-quaternary`（導入句） | ヒーロー h1「仲間と、学ぶ。」 |
+| **Display/XL** | **116** / 56（U-37。旧 124） | 800 | 129 / 62（1.11） | −2% | — | Desktop 1 行（`Hack Your Limits.` ≈ 1131 ≤ 1200）。M は `Hack Your` / `Limits.` の 2 行 | `color/hero/word`（動詞 `Hack`）、`color/inverse/ink`（`Your Limits.`） | ヒーロー h1 `Hack Your Limits.` |
 | **Display/L** | 96 / 40 | 800 | 106 / 44（1.10） | −2% | — | 2 行（著者改行）。1 行 ≤ 12 全角（D）/ ≤ 8 全角（M） | `color/poster/ink` | ポスター「いっしょに、／やろう。」 |
 | **Display/M** | 56 / 32 | 800 | 62 / 36（1.11 / 1.13） | −2% | — | 1 行、欧文 ≤ 10 字 | `color/ink`、統計は `color/inverse/ink` | 活動タイトル Talk Day / Dev Day / Project、統計「50」 |
 | **Title/1** | 32 / 26 | 800 | 40 / 32（1.25 / 1.23） | −1% | — | 1 行 ≤ 12 全角（M は 2 行可） | `color/ink`、「+」は `color/inverse/ink` | セクション h2 ×5、統計の「+」（range） |
@@ -573,8 +575,8 @@ CSS 変数名は Figma 名の `/` を `-` に置換する（例 `--color-inverse
 | Nav | Mobile CTA（44）、メニュー行 | — | Label/M / Label/Nav | §6.2 | 新設部品 |
 | Nav | スキップリンク | — | Label/S（D）/ Label/M（M） | §6.2 | 新設 |
 | Hero | メタ SINCE 2025 · 長崎大学公認 学生団体 · サポーターズ 技育プロジェクト 学生団体公式パートナー · MEMBERS 50+ | 12 / +14% · +6% | Overline/Latin + Overline/JP（12 / 16、range） | `color/inverse/ink-tertiary` | +14 → +12。区切りは 1×12 hairline（§4.3）。折返しあり（DECISION U-13） |
-| Hero | h1 導入「仲間と、」 | 124 / 104% / −2% | Display/XL | `color/inverse/ink` | 行送り 138。quaternary → ink（DECISION U-3） |
-| Hero | h1 回転語「学ぶ。」 | 同 | Display/XL | `color/hero/word`（Mono inverse/ink 14.86 / Lime lime-400 10.83） | 同 |
+| Hero | h1 動詞 `Hack` | 124 / 104% / −2% | Display/XL **116** / 129 | `color/hero/word`（Mono inverse/ink 14.86 / Lime lime-400 10.83） | 回転語「学ぶ。」→ タグラインの動詞（U-37）。上限 124 → 116（1 行に収めるため） |
+| Hero | h1 目的語 `Your Limits.` | 同 | Display/XL | `color/inverse/ink` | 導入句「仲間と、」→ 目的語。quaternary → ink は U-3 のまま |
 | Hero | リード 長崎にテック好きのためのハブを。 | 18 EB | Title/1 | `color/inverse/ink` | 18 → 32（DECISION U-5） |
 | Hero | 段落 | 16 / 175%、36em | Body/L（16 / 28） | `color/inverse/ink-secondary` | 行長は `measure/paragraph` |
 | Hero | ボタン ×2（44） | 15 EB | Label/M | §6.2 | 800 → 700 |
@@ -640,7 +642,7 @@ CSS 変数名は Figma 名の `/` を `-` に置換する（例 `--color-inverse
 
 | 色トークン | 使うロール | 比 | 判定 |
 |---|---|---|---|
-| `color/inverse/ink`（ground） | Display XL 回転語、Title 3、Display M 統計、Callout、Label（アウトラインボタン） | 14.86 | PASS |
+| `color/inverse/ink`（ground） | Display XL h1 `Your Limits.`、Title 3、Display M 統計、Callout、Label（アウトラインボタン） | 14.86 | PASS |
 | `color/inverse/ink-secondary`（ground@88） | Body L、Footnote CTA 副文 | 11.78 | PASS |
 | `color/inverse/ink-tertiary`（ground@72） | Overline ヒーローメタ・統計キッカー | 8.29 | PASS |
 | `color/inverse/ink-quaternary`（ground@48） | Display XL 導入句のみ | 4.45 | PASS（大きな文字 3:1。12–17px には **使わない**） |
@@ -794,7 +796,7 @@ WCAG 1.4.10（320px リフロー）: 上記のとおり横スクロールは発�
 #### 2.6.5 強調
 
 - 強調は **ウェイト（700）** で行う。色・下線・斜体・「」の多用で強調しない。
-- 下線はリンク専用（`stroke/underline` 2px / `stroke/underline-strong` 3px、§6.1.6 のレシピ）。見出し・ラベルに下線を引かない。ヒーロー回転語は下線ではなく**文字色**（`color/hero/word`）で示す（DECISION U-3）。
+- 下線はリンク専用（`stroke/underline` 2px / `stroke/underline-strong` 3px、§6.1.6 のレシピ）。見出し・ラベルに下線を引かない。ヒーロー h1 の動詞 `Hack` は下線ではなく**文字色**（`color/hero/word`）で示す（DECISION U-3 → U-37）。
 - 大文字化は Overline/Latin と Title 3 Caps のみ。本文・ボタン・見出しを `uppercase` にしない。ブランド名（ChoTech、Discord、GitHub）は大文字化しない（DOM は正書法、表示は CSS）。
 
 ### 2.7 Do / Don't（ページの実例）
@@ -853,8 +855,8 @@ html {
 
 /* 流動ロール: 390px で Mobile 値、1440px で Desktop 値に一致する一次補間（size・leading とも） */
 .display-xl { font-weight: 800; letter-spacing: -.02em;
-  font-size:   clamp(3.5rem,   calc(1.9214rem + 6.476vw), 7.75rem);    /* 56 → 124 */
-  line-height: clamp(3.875rem, calc(2.1107rem + 7.238vw), 8.625rem); } /* 62 → 138 */
+  font-size:   clamp(3.5rem,   calc(2.1071rem + 5.714vw), 7.25rem);    /* 56 → 116（U-37。旧 124） */
+  line-height: clamp(3.875rem, calc(2.3196rem + 6.381vw), 8.0625rem); } /* 62 → 129 */
 .display-l  { font-weight: 800; letter-spacing: -.02em;
   font-size:   clamp(2.5rem,   calc(1.2rem + 5.333vw), 6rem);          /* 40 → 96 */
   line-height: clamp(2.75rem,  calc(1.3107rem + 5.905vw), 6.625rem); } /* 44 → 106 */
@@ -987,7 +989,7 @@ Desktop / Mobile が同値の行は Mobile 列を「=」とする。根拠中の
 | `size/nav` | 62 | nav 帯の全高（下罫 2 を含む）。hero の `min-height` と section の `scroll-margin-top` に使う | 12 + 36 + 12 + 2 = 8 + 44 + 8 + 2。概念 61 |
 | `size/band-marquee` | 120 | marquee 帯の全高（上下罫 2 を含む）。内側 116 にロゴ枠 96 と Overline の行ボックスを中央配置 | 2 + 116 + 2 = `size/cell-min`。116 = 4 × 29。概念 55 → 56（R6）→ 96 → 120（**U-30**: ロゴを入れるため） |
 | `size/marquee-logo` | 96 | marquee のパートナーロゴ枠の**高さ**（3:2、幅 144、contain） | 24 × 4。内側 116 に上下 10 を残す。帯 56 のままの 36 では図が読めず、96 / 64 でもまだ細かったので 120 / 80（**DECISION U-30**）。素材を 3:2 の白キャンバスに正規化して余白を焼き込むため、図の実寸を保つには枠 80 では足りず 96（**L-32**） |
-| `size/hero-max` | 960 | hero `min-height` の上限 | 10 × `space/96`。1440 × 900 では `100svh − 62` = 838 が効き、960 は縦 1022px 以上の画面でだけ効く上限 |
+| `size/hero-max` | 960 | hero `min-height` の上限 | 10 × `space/96`。1440 × 900 では `100svh − 62 − 120` = 718 が効き（L-33）、960 は縦 1142px 以上の画面でだけ効く上限 |
 | `size/cell-min` | 120 | 罫線グリッドの行の最小高、sponsor cell の高さ | 24 × 5。**床であって目標ではない**: kicker（Overline 16）+ `stack/md` 16 + Headline 2 行（48）+ inset 48 = 128 で、kicker + 2 行見出しの 1×1 セルは行ごと 128 に伸びる（stretch）。sponsor cell と 1 行見出しのセル（104）は 120 |
 | `size/avatar` | 24 | chat avatar（矩形） | = `icon/lg`。chat indent = 24 + `inline/xs` 8 = 32 |
 | `size/dot` | 7 | typing dot（円） | 吹き出しの中に置くので、点そのものが見えるサイズが要る。3 点 + gap 5 = 31 幅（DECISION U-1 で 4 → 7） |
@@ -1077,7 +1079,7 @@ CSS: `.grid { display:grid; grid-template-columns: repeat(n, 1fr); gap: 2px; pad
 |---|---|---|
 | Nav | `nav/pad-y` 12 + `size/control/sm` 36 + 12 + `stroke/rule` 2 = **62** = `size/nav`（sticky） | `nav/pad-y` 8 + `size/control/md` 44 + 8 + 2 = **62**。幅検算: 24 + mark 28 + 12 + wordmark ≈ 86 + ≥ 16 + CTA 128 + 12 + menu 44 + 24 = **374 ≤ 390** |
 | Menu panel（Mobile） | — | nav 直下、全幅、`color/ground`、下辺 `stroke/rule`。行 = `size/control/md` 44 高 × 横 `page/inset` 24、行間 `stroke/hair`。末尾に md ボタン `fullWidth`（上下 `inset/md` 16、横 `page/inset` 24）。**DECISION L-25** 行の寸法は nav CTA と同じ 44 / 24: パネルは nav の延長であり、brand と同じ x = 24 に揃う |
-| Hero | `section/pad-display` 96 / `section/pad-bottom` 80、`min-height: min(100svh − var(--size-nav), var(--size-hero-max))`、内容は垂直中央 | 64 / 64、`min-height` 同式 |
+| Hero | `section/pad-display` 96 / `section/pad-bottom` 80、`min-height: min(100svh − var(--size-nav) − var(--size-band-marquee), var(--size-hero-max))`（L-33）、内容は垂直中央 | 64 / 64、`min-height` 同式 |
 | Marquee | `size/band-marquee` **120** = `stroke/rule` 2 + 116 + 2。ロゴ枠 96（3:2、幅 144）と PARTNERS（Overline 12）は内側 116 の中央。停止セルは U-31 で撤去 | 同じ |
 | Section | (rule 2) + 64 + 見出し + 32 + 内容 + 80 | (rule 2) + 48 + 見出し + 24 + 内容 + 64 |
 | Poster | 96 + 内容 + 96（罫線なし。色面の切替が境界） | 64 / 64 |
@@ -1087,7 +1089,7 @@ CSS: `.grid { display:grid; grid-template-columns: repeat(n, 1fr); gap: 2px; pad
 
 - **罫線と見出しは 1 塊**: 罫線の下 64 < 罫線の上 80。罫線は次の section に帰属して見える（ポスターの見出し罫の慣習）。（DECISION L-4、L-5）
 - **罫線は重ねない**: marquee の下罫線が About の上罫線を兼ねる（About は上罫線なし）。hero と marquee、poster と footer の間も同様に 1 本。
-- **hero の高さ** **DECISION L-7** `88vh` → `min(100svh − size/nav, size/hero-max)`。nav を除いた初期 viewport をちょうど満たし、縦長モニタで空白が伸びるのを 960 で止める。`svh` はモバイルのアドレスバーを考慮。
+- **hero の高さ** **DECISION L-7** `88vh` → `min(100svh − size/nav, size/hero-max)`。nav を除いた初期 viewport をちょうど満たし、縦長モニタで空白が伸びるのを 960 で止める。`svh` はモバイルのアドレスバーを考慮。**DECISION L-33**（2026-09-12、L-7 改）: Marquee 帯 `size/band-marquee` 120 も引く → `min(100svh − size/nav − size/band-marquee, size/hero-max)`。ファーストビューの下端にパートナーの帯が乗り、「支えられている」が最初の画面で見える。内容が下限より高い画面（1280 × 720: 内容 582 > 538）では帯は一部だけ見える — min-height なので内容は切らない。
 - **アンカー**: sticky nav の分 `scroll-margin-top: var(--size-nav)` を section に付ける。
 - **section 内の順序**: 見出し行 → (`heading-mb-intro` 12 → intro 段落 → `stack/lg` 24) → grid / list。
 - **activity 行の内部**: `inset/row` 32 → title 行（Display M + Subheadline を baseline 揃え、`inline/md` 16、右端 badge へ `inline/lg` 24）→ `stack/xs` 8 → description → `stack/xs` 8 → tags → `inset/row` 32。
@@ -1160,7 +1162,7 @@ tag / reaction chip に枠はない（塗り `color/chip/fill` が境界、§3.4
 下線の実装:
 
 - link: `text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.2em`（複数行でも追従）。hover の 3px 化は `text-decoration-thickness` だけを変える（レイアウト不変）。Figma は text 下に高さ 2 / 3 の RECTANGLE（幅 FILL、**絶対配置**なので状態でレイアウトが動かない）。
-- 回転語に下線は引かない（DECISION U-3）。ヒーローで語を際立たせるのは下線ではなく文字色。
+- ヒーロー h1 の動詞 `Hack` に下線は引かない（DECISION U-3、U-37）。ヒーローで語を際立たせるのは下線ではなく文字色。
 
 ### 4.3 罫線とグリッドの出会い方
 
@@ -1649,7 +1651,7 @@ Activity セル のキーワードと Chat のリアクションを **同じ 24p
 | Tag ラベル | `Caption/Regular` 12、`color/chip/ink`（→ ink-secondary、5.30） |
 | Reaction | 絵文字（👍 / 👀）16 相当 + `inline/icon` 4 + `Caption/Bold` 数字 `ink`（13.51）。絵文字は Discord の実際のリアクションを写すので実文字で置く（**DECISION U-25**、§5.1 の例外）。数字は再生中に 1 から最終値まで 1 ずつ巻き上がる — 旧値が上へ抜け、新値が下から入る `spring/quick`（間隔は §6.12） |
 | Accent（ライブラリ） | 面 `accent-subtle` lime-200、文字 `on-accent-subtle` lime-900（7.49）。ページに出さない（K-5） |
-| Inverse（ink 面） | 面 `color/inverse/chip/fill`（→ ground@12、hover tint と同じ段）、文字 `color/inverse/chip/ink`（→ inverse/ink-secondary、≈ 8.3）。Cell Stat の所属バッジ（U-29）だけに出る |
+| Inverse（ink 面） | 面 `color/inverse/chip/fill`（→ ground@12、hover tint と同じ段）、文字 `color/inverse/chip/ink`（→ inverse/ink-secondary、≈ 8.3）。ライブラリのみ。ページに出さない（Cell Stat の所属バッジ U-29 は U-36 で撤回） |
 | radius | `radius/none` |
 
 - コンセプトの Tag 塗り neutral-50 は ground 比 1.02 で輪郭が見えない。hairline 枠案は「1px 線 = 行・語の仕切り」という語彙を崩すので採らない（R2）。
@@ -1753,11 +1755,11 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 
 | 要素 | 仕様 |
 |---|---|
-| 面 | `color/inverse/ground`。`min-height: min(100svh − var(--size-nav), var(--size-hero-max))`、内容は垂直中央（DECISION L-7）。full-bleed、内容は container 1200 / 342 |
+| 面 | `color/inverse/ground`。`min-height: min(100svh − var(--size-nav) − var(--size-band-marquee), var(--size-hero-max))`、内容は垂直中央（DECISION L-7 → **L-33**: 帯もファーストビューに入れる）。full-bleed、内容は container 1200 / 342 |
 | 背景写真 | ink 面の**上**に `--hero-backdrop-opacity` **0.2** で重ねる（`cover`、原色 U-21、`aria-hidden`）。動きは §7.3（U-20）。**不透明度は測って決める値**: 実レンダリングの合成結果から測った文字コントラストの最小は ink 8.94 / secondary 7.37 / **tertiary 5.55**（12px の meta strip が最も厳しい）で、AA 4.5 を下回る面積は 0 %。素材を替えたら測り直す — 明部の多い写真は同じ 0.2 で通らない |
 | 格子線 | **なし**（**DECISION U-22**: K-12 の 4 本を撤去。写真の上に線が乗ると写真の一部に見え、何の線か分からない。`color/inverse/hairline` は用途を失うが、トークンは残す） |
 | Meta strip | §6.8.2 |
-| h1 | `Display/XL` 124 / 56。lead-in `仲間と、` **`inverse/ink`**（14.86）+ Rotating word（§6.8.3、`color/hero/word`）。**白 → アクセントの 2 色**で「仲間と ＋ 動詞」を対比させる（DECISION U-3）。Desktop 1 行（7 全角 × 124 × 0.98 ≈ 851 ≤ 1200）。Mobile は読点で 2 行（`仲間と、` / `学ぶ。`）。`text-wrap: balance` は使わず著者改行 |
+| h1 | `Display/XL` **116** / 56、`lang="en"`。**`Hack Your Limits.`**（タグラインと同文、**DECISION U-37**）。動詞 `Hack` を **`color/hero/word`**、目的語 `Your Limits.` を **`inverse/ink`**（14.86）で塗り、**アクセント → 白の 2 色**で「動詞 ＋ 目的語」を対比させる（U-3 の対比を語順を入れ替えて引き継ぐ）。Desktop 1 行（≈ 1131 ≤ 1200。124 のままだと 1209 で 1280 幅では入るのに 1440 幅で折れるため上限を 116 に）。Mobile は `Hack Your` / `Limits.` の自然折返し（`Hack Your` ≈ 322 ≤ 342）。著者改行は入れない。`text-wrap: balance` は使わない（`Hack` / `Your Limits.` に寄り、Mobile で `Your Limits.` ≈ 366 が入らない）。名前は可視の文そのもの（visually-hidden なし） |
 | lead | `Title/1` **32 / 26**、`inverse/ink`（14.86）。Display 124 と本文 16 の間に中間の階層を作る（**DECISION U-5**） |
 | 段落 | `Body/L` 16、`inverse/ink-secondary`（11.78）、`max-width: measure/paragraph` 588（≈ 36.8 全角）。Mobile は container 幅 |
 | actions | 横 flex、gap `inline/sm` 12。主 = On Ink / Ground / md、副 = On Ink / Outline / md（アイコンなし）。Mobile も 1 行（255 ≤ 342） |
@@ -1774,20 +1776,13 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 | gap | `inline/md` 16、`flex-wrap`（Desktop 1–2 行 / Mobile 3–4 行、行間 `stack/xs` 8）。区切り罫は行頭に来ないよう項目とセットで折返す |
 | 意味 | `<p>`（見出しにしない、§8.5）。数字は半角、`Since 2025` に `lang="en"` は付けない（単語レベル） |
 
-#### 6.8.3 Hero / Rotating word
+#### 6.8.3 Hero / Rotating word（撤去）
 
-| 要素 | 仕様 |
-|---|---|
-| 語 | `学ぶ。` / `創る。` / `話す。`（ちょうど全角 3 字、§9.3）。`Display/XL`、**`color/hero/word`**（Mono inverse/ink 14.86 / Lime lime-400 10.83） |
-| 枠 | **幅 3em 固定**、新旧 2 語を絶対配置で重ねる（レイアウトシフトゼロ） |
-| 下線 | **持たない**（**DECISION U-3**）。語そのものを塗る。面ではなく**文字**なので、ライムを明るい地で面に使えない制約（1.37、C-25）に触れずアクセントを 124px で出せる。墨地の上で 10.83 |
-| 周期 | `motion/word/period` 2.5s で**回り続ける**（**DECISION U-15**）。退出 `spring/quick`（上へ −0.15em）、入り `spring/default`（下から +0.15em → 0）。開始は h1 の reveal 静定 2.5s 後 |
-| 停止 | Hero 非可視・タブ非表示・Marquee control（§6.9.3）・reduced-motion（静止 `学ぶ。`） |
-| 支援技術 | 可視部分 `aria-hidden`、名前は visually-hidden の全文（§6.1.7） |
+**DECISION U-37**（2026-09-12）で撤去。h1 は `Hack Your Limits.` の静止した 1 行になり、回転語「学ぶ。／創る。／話す。」は About の CULTURE セル題「仲間と、学ぶ。創る。話す。」へ降りた。部品 `Hero / Rotating Word`、`motion/word/period`、`motion/distance/word`、`--word-*`、`.hero__word`、§7.4.3 の時計（h1 静定の Promise）はすべて消す。U-3（下線ではなく文字色）と U-15（回り続ける）は前提を失う — U-3 の 2 色対比だけは動詞 `Hack` に引き継ぐ。動くものが 1 つ減るので、WCAG 2.2.2 の未達（M8）は Marquee・入力中ドット・背景写真・チャット再生・写真送りに限られる。
 
 #### 6.8.4 Figma
 
-`Hero / Meta Strip` 1（`item1–4` TEXT）。`Hero / Rotating Word` `Word` {学ぶ。, 創る。, 話す。} 3（下線プロパティは廃止）。`Section / Hero` `Viewport` {Desktop, Mobile} 2（`word` INSTANCE_SWAP、`leadStrong` `leadBody` `primaryLabel` `secondaryLabel` TEXT）。プロトタイプ: Word 変種を After delay 2,500ms で連結、Smart animate = `spring/default`（§7.6）。
+`Hero / Meta Strip` 1（`item1–4` TEXT）。`Section / Hero` `Viewport` {Desktop, Mobile} 2（`headline` TEXT = `Hack Your Limits.`、`leadStrong` `leadBody` `primaryLabel` `secondaryLabel` TEXT）。`Hero / Rotating Word` とそのプロトタイプ（After delay 2,500ms）は U-37 で削除。
 
 ### 6.9 Marquee band + item + control
 
@@ -1871,7 +1866,7 @@ Figma: `Section / Heading` `Layout` {Row, Stacked} 2。Props: `title` `label` TE
 
 #### 6.11.3 Cell Stat（Ink）
 
-fill `inverse/ground`。kicker `Overline/Latin` `MEMBERS` `inverse/ink-tertiary`（8.29）。value `50` **`Display/L` 96 / 40** + `+` **`Display/M` 56 / 32**、ベースライン揃え、**`inverse/ink`**（14.86、**DECISION U-24**: U-6 のアクセントを撤回。規模は色ではなく大きさで語る — lime の Display/M は kicker との間に空きが目立ち、アクセントの枠を 1 つ使うわりに釣り合わなかった）。数字の下 `stack/sm` 12 に所属のバッジ `<ul aria-label="所属">` > Chip / Tag / **Inverse**（§6.4）× 5: `長崎大学 情報データ科学部` `長崎大学 工学部` `長崎大学 大学院` `長崎県立大学` `長崎総合科学大学`。`flex-wrap`、chip 間 `inline/xs` 8。人数は確定するまで出さない（**DECISION U-29**: 文の列ではなく、Activity のキーワードと同じ装置で「タグ」として読ませる — 一覧性が高く、学部ごとに 1 つずつ数えられる）。数字とバッジは 1 つの塊としてセルの底に置く。`<p><span aria-hidden="true">50+</span><span class="vh">メンバー 50人以上</span></p>`。数字は半角（書体に `tnum` はない）。
+fill `inverse/ground`。kicker `Overline/Latin` `MEMBERS` `inverse/ink-tertiary`（8.29）。value `50` **`Display/L` 96 / 40** + `+` **`Display/M` 56 / 32**、ベースライン揃え、**`inverse/ink`**（14.86、**DECISION U-24**: U-6 のアクセントを撤回。規模は色ではなく大きさで語る — lime の Display/M は kicker との間に空きが目立ち、アクセントの枠を 1 つ使うわりに釣り合わなかった）。セルに載るのは数字だけで、セルの底に置く（**DECISION U-36**: 所属のバッジ U-29 を 2026-09-11 に撤回。規模を語るセルに所属の列が乗ると、数字の大きさより先に文字が読まれた。人数の内訳も出さない）。`<p><span aria-hidden="true">50+</span><span class="vh">メンバー 50人以上</span></p>`。数字は半角（書体に `tnum` はない）。
 
 #### 6.11.4 Cell Chat
 
@@ -2173,20 +2168,20 @@ Figma: `Media / Image Slot` `Shape` {Rect, Circle} × `Fit` {Cover, Contain} × 
 ---
 ## 7. Motion
 
-本章がモーションのオーナー。§6 の部品はここで定義するトークン名で動きを参照し、値を再記述しない。原則の出典: Apple *Designing Fluid Interfaces* / HIG、WCAG 2.2。本ページにジェスチャ駆動 UI（ドラッグ、シート、スワイプ）はなく、動くものは reveal・回転語・マーキー・入力中ドット・Mobile メニュー・Hero の背景写真の 6 つだけ。
+本章がモーションのオーナー。§6 の部品はここで定義するトークン名で動きを参照し、値を再記述しない。原則の出典: Apple *Designing Fluid Interfaces* / HIG、WCAG 2.2。本ページにジェスチャ駆動 UI（ドラッグ、シート、スワイプ）はなく、動くものは reveal・マーキー・入力中ドット・Mobile メニュー・Hero の背景写真の 5 つだけ（回転語は U-37 で撤去）。
 
 ### 7.1 原則
 
 | # | 原則 | 規定 | 根拠 |
 |---|---|---|---|
 | M1 | 応答は pointer-down | 押下フィードバックは pointer-down で 0 ms。hover の入りは `duration/1` 100 ms、離脱は `duration/2` 200 ms | 遅延が 1 フレームでも直接操作の感覚は崩れる（Apple「Response」） |
-| M2 | 動きはスプリング、色は固定時間 | 位置・不透明度の「移動」（reveal、回転語、メニュー展開）は臨界減衰スプリング。色・下線・背景色は固定時間トランジション | スプリングは現在値から再ターゲットでき中断可能。色には物理がない |
+| M2 | 動きはスプリング、色は固定時間 | 位置・不透明度の「移動」（reveal、メニュー展開）は臨界減衰スプリング。色・下線・背景色は固定時間トランジション | スプリングは現在値から再ターゲットでき中断可能。色には物理がない |
 | M3 | 既定は減衰比 1.0 | `spring/default` = damping 1.0 / response 0.40 s。damping 0.8 は **ユーザーの投げ・フリックが先行した時のみ**。本ページに該当操作はない | 勝手に現れたものが跳ねると不自然。運動量を継いだものだけが跳ねる |
 | M4 | 中断可能・現在値から | すべてのトランジションは途中で逆転できる。hover 離脱、メニューの再タップ、語の切替中の停止のいずれも、表示中の値から次の目標へ | 「思考とジェスチャは並行する」。入力をロックする時間を作らない |
 | M5 | 出入りは対称、起点は発生源 | 開閉するものは同じ経路を逆再生。展開パネルは発生源（Nav の下罫）から現れる | 「消えた方向から戻ってくる」空間的一貫性 |
 | M6 | compositor プロパティのみ | アニメーションは `transform` と `opacity` のみ（色は `background-color` / `color` / `text-decoration-color` / `text-decoration-thickness` を固定時間で）。`height` / `top` / `clip-path` / `filter` は不可 | 60 fps とジッターのなさが craft の最低条件。`clip-path` は全エンジンで compositor 処理されない |
 | M7 | 減速運動の停止は 1 % 残りで判定 | スプリングの「見かけの長さ」= 目標との差が 1 % を切る時刻 | 0.1 % まで待つと約 1.4 倍長くなり、体感と一致しない |
-| M8 | ループは低減設定・画面外で停止 | 自動で動くもの（マーキー、回転語、入力中ドット、背景写真、チャット再生、写真送り）は `prefers-reduced-motion` で止まり、画面外・バックグラウンドタブでも止まる。ページ内スイッチ（停止 / 再生ボタン）は **U-31 で撤去** | WCAG 2.2.2 はページ内の停止手段を求めるため**未達**（クライアント判断で許容） |
+| M8 | ループは低減設定・画面外で停止 | 自動で動くもの（マーキー、入力中ドット、背景写真、チャット再生、写真送り）は `prefers-reduced-motion` で止まり、画面外・バックグラウンドタブでも止まる。ページ内スイッチ（停止 / 再生ボタン）は **U-31 で撤去** | WCAG 2.2.2 はページ内の停止手段を求めるため**未達**（クライアント判断で許容） |
 | M9 | 追加しない | 装飾のためだけの動きは足さない。ヒーローの浮遊バブルと矢印の nudge は **採用しない**。チャットの再生と写真の送りは装飾ではなく情報（順に現れることでしか出せない、U-16 / U-18）。**唯一の例外が Hero の背景写真の漂い**（U-20）— 情報を運ぶのは写真であって動きではないと認めたうえで採った | Apple「Purpose」: 動きはユーザーの注意を消費する予算。1 つの状態に 2 つの信号を出さない |
 
 ### 7.2 トークン
@@ -2195,8 +2190,8 @@ CSS カスタムプロパティで持つ。Figma には Variables として置�
 
 | トークン | CSS | 値 | 用途 | 根拠 |
 |---|---|---|---|---|
-| `motion/spring/default` | `--spring-default` | damping **1.0** / response **0.40 s**（90 % 到達 0.25 s、見かけ 0.42 s） | reveal、回転語の入り、パネル展開 | Apple の「移動・再配置」既定値 |
-| `motion/spring/quick` | `--spring-quick` | damping **1.0** / response **0.30 s**（90 % 0.19 s、見かけ 0.32 s） | 回転語の退出、Mobile メニュー | Apple の「シート・ドロワー」値から跳ねを除いたもの。小さい要素ほど短く |
+| `motion/spring/default` | `--spring-default` | damping **1.0** / response **0.40 s**（90 % 到達 0.25 s、見かけ 0.42 s） | reveal、パネル展開 | Apple の「移動・再配置」既定値 |
+| `motion/spring/quick` | `--spring-quick` | damping **1.0** / response **0.30 s**（90 % 0.19 s、見かけ 0.32 s） | Mobile メニュー | Apple の「シート・ドロワー」値から跳ねを除いたもの。小さい要素ほど短く |
 | `motion/spring/momentum` | — | damping **0.8** / response **0.40 s** | **予約**。フリック後のカルーセル等、運動量を継ぐ時のみ | Apple「回転・ドロワー」値。本ページでは未使用 |
 | `motion/duration/0` | `--dur-0` | **0 ms** | 押下、フォーカスリング、アイコン差し替え、マーキーの一時停止 | M1 |
 | `motion/duration/1` | `--dur-1` | **100 ms** | hover の入り、押下解除、`aria-current` の切替 | 知覚できる最短の「追従」 |
@@ -2208,10 +2203,10 @@ CSS カスタムプロパティで持つ。Figma には Variables として置�
 | `motion/stagger/mobile` | `--stagger` | **60 ms** | 同、Mobile | 画面内要素が縦に密で総待ち時間を抑える |
 | `motion/stagger/max-steps` | — | **4** | 5 番目以降は 4 番目と同時 | 最大待ち 320 / 240 ms。それ以上は「遅い」 |
 | `motion/distance/reveal` | `--reveal-y` | **16 px** | reveal の translateY | `space/16`。読み始めに気づく最小距離で、視差には見えない |
-| `motion/distance/word` | `--word-y` | **0.15 em** | 回転語の translateY（Display XL 124 px → 19 px、56 px → 8 px） | 距離は字面サイズに比例させる |
+| ~~`motion/distance/word`~~ | ~~`--word-y`~~ | ~~0.15 em~~ | 回転語の translateY。**U-37 で廃止** | — |
 | `motion/reveal/root-margin` | — | `0 0 -10% 0` | 要素上端がビューポート下 10 % を越えたら発火 | 900 px で 90 px。視界に入ってから、読まれる前 |
 | `motion/marquee/speed` | `--marquee-speed` | **40 px/s** | マーキー速度（duration ではなく速度で指定） | 19 px 級の大文字を約 2 字/秒で追える。内容量が変わっても速さが変わらない |
-| `motion/word/period` | `--word-period` | **2.5 s** | 回転語 1 語の周期（切替 ≈ 0.5 s、静止 ≈ 2.0 s） | 3 文字の読取 0.5 s + 余裕。概念版 2.6 s を丸めた（DECISION M-4） |
+| ~~`motion/word/period`~~ | ~~`--word-period`~~ | ~~2.5 s~~ | 回転語 1 語の周期。**U-37 で廃止**（`--word-transition-offset` 80 ms も） | — |
 | `motion/dots/period` | `--dots-period` | **1.2 s**（= 3 × `duration/3`）、ドット間 **200 ms** | 入力中ドット | 0.8 Hz。Apple が避けよと言う 0.2 Hz 級の緩慢な振動から離す |
 | `motion/chat/step` | — | **900 ms** | チャットの 1 手（U-16） | 短い台詞を読み終える最短。これより速いと会話ではなく点滅に見える |
 | `motion/chat/hold` | — | **2,400 ms** | 一巡後の間（U-16） | 最後の発言を読み切ってから畳む。`chat/step` の約 2.7 倍 |
@@ -2230,7 +2225,7 @@ CSS カスタムプロパティで持つ。Figma には Variables として置�
 | Pressed | — | 入り `duration/0`、戻り `duration/1` | 同じ |
 | Focus ring | 未定義 | `duration/0`、トランジションなし | 同じ |
 | Marquee | translateX 0→−50 %, 26 s linear infinite | 速度 **40 px/s** linear（duration = グループ幅 ÷ 40）。hover / focus-within / pointer-down で `duration/0` 停止。停止ボタンは U-31 で撤去 | **静止**: 先頭グループを container 内に折返し、クリップなし |
-| Hero 回転語 | 2.6 s ごと、wordIn 0.55 s | 周期 **2.5 s**。退出 `spring/quick`（opacity→0, y→−0.15 em）、80 ms 後に入り `spring/default`（opacity→1, y +0.15 em→0）。**無限ループ**（U-15） | 静止 `学ぶ。` |
+| Hero 回転語 | 2.6 s ごと、wordIn 0.55 s | **撤去**（U-37）。h1 は静止した `Hack Your Limits.` で、動きは reveal だけ | — |
 | Button hover / press | hover のみ | hover: 塗りを 1 段（`duration/1` / `duration/2`）。press: さらに 1 段を `duration/0`。**transform なし** | 同じ |
 | Link hover（Nav / Brand / Footer / Social / Inline） | 色・下線 | `text-decoration-thickness` と `text-decoration-color` を `duration/1` / `duration/2`。Nav / Brand は 2 px アクセント下線、文字は ink（§1.3.6） | 同じ |
 | Chat 再生ループ（14 s） | 未定義 | **削除**。スレッドは静止（DECISION M-5） | — |
@@ -2259,15 +2254,9 @@ CSS カスタムプロパティで持つ。Figma には Variables として置�
 
 **停止 / 再生ボタン**（DECISION M-3、旧 §6.9.3）は **U-31 で撤去**。停止条件は上記の hover・画面外・reduced-motion だけで、`localStorage` も `data-motion` 属性も持たない。
 
-#### 7.4.3 Hero 回転語
+#### 7.4.3 Hero 回転語（撤去）
 
-- 1 周期 2.5 s: t=0 退出開始（`spring/quick`: opacity 1→0, y 0→−0.15 em）、t=80 ms 入り開始（`spring/default`: opacity 0→1, y +0.15 em→0）、t≈0.5 s から静止。上へ抜け下から入る「ドラム」の一方向運動（DECISION M-4）— 循環する語列には開閉の対称則ではなく連続方向が一貫性を作る。
-- 語列 `学ぶ。→創る。→話す。` を 2 周し `学ぶ。` で静止（遷移 6 回、≈ 17.5 s）。開始は Hero reveal の h1 が静定した 2.5 s 後。
-- 語枠は **幅 3 em 固定**、新旧 2 語を絶対配置で重ねる。3 語とも全角 3 字なのでレイアウトシフトはゼロ（§9.3）。下線は持たない（U-3）。変わるのは語そのものと、その色だけ。
-- 停止条件: Hero が非可視、タブ非表示、ページのスイッチ、reduced-motion。
-
-**DECISION U-15** 回転語は 2 周で静止せず、回り続ける。当初「2 周で止める」を選んだのは WCAG 2.2.2 を停止 UI 無しで満たすためだったが、§7 M8 のページ内モーションスイッチ（マーキー帯の停止ボタン）が回転語・マーキー・入力中ドットの 3 つすべてを止めるので、2.2.2 の「一時停止する手段」は既に存在する。止める理由が消えた以上、3 語を見せ切って静止する動きは「途中で力尽きた」ようにしか見えない。スイッチはヒーローの直下（マーキー帯）にあり、5 秒を超えて動くものと同じ画面内で見つかる。 **U-31 で停止ボタンを撤去した後も回し続ける**（クライアント判断。2.2.2 は未達）。
-- アクセシブルネーム（§8.5）: `<h1>` の可視部分は `aria-hidden`、visually-hidden の「仲間と、学ぶ。創る。話す。」が名前になる。`aria-live` は使わない。
+**U-37**（2026-09-12）で撤去。h1 は `Hack Your Limits.` の 1 行で、Hero の動きは §7.4.1 の reveal だけになった。`HeroReveal` が持っていた「h1 静定」の Promise（回転語の start-delay の時計）も消え、残るのは `document.fonts.ready` か 400 ms の開始時計だけ。M-4 / U-15 は前提を失う。
 
 #### 7.4.4 Hover / Press
 
@@ -2319,7 +2308,7 @@ CSS カスタムプロパティで持つ。Figma には Variables として置�
 | `spring/default` | `{ type: 'spring', bounce: 0, duration: 0.4 }` または `transition: transform 420ms var(--ease-spring)` | Smart animate / Spring（custom）mass 1・stiffness **247**・damping **31.4** |
 | `spring/quick` | `{ type: 'spring', bounce: 0, duration: 0.3 }` / `320ms var(--ease-spring)` | Spring mass 1・stiffness **439**・damping **41.9** |
 | Reveal | 上記 + `transition-delay: calc(min(var(--i), 4) * var(--stagger))` | セクションごとに After delay 0/80/160/240/320 ms |
-| 回転語 | JS タイマー 2,500 ms、2 語を重ねて同時アニメーション | Word 変種を After delay **2,500 ms** で連結、Smart animate `spring/default` |
+| ~~回転語~~ | ~~JS タイマー 2,500 ms~~ | **U-37 で撤去** |
 | Marquee | CSS keyframes、duration = 幅 ÷ 40 | 表示のみ（26 s linear、ループ）。速度 40 px/s を説明に明記 |
 | Hover / press | `:hover` `duration/1` / `duration/2` `ease-out`、`:active` `duration/0` | While hovering → Change to（100 ms ease-out）、While pressing → Instant |
 | Mobile メニュー | `translateY` + `spring/quick`、ラッパー `overflow: hidden` | Move in（上から）Spring `spring/quick`、閉じは Move out（同経路） |
@@ -2382,14 +2371,14 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 
 | トークン | 前景 → 背景 | 比 | 使用 | 区分 | 判定 |
 |---|---|---|---|---|---|
-| `inverse/ink` / `inverse/ground` | #f3f2f2 → #201e1d | **14.86** | h1 回転語 124 EB、Stat 56 EB、CTA 題 19 EB、自分側バブル 14 B、Outline ボタン 15 B | N | ✓ |
+| `inverse/ink` / `inverse/ground` | #f3f2f2 → #201e1d | **14.86** | h1 `Your Limits.` 116 EB、Stat 56 EB、CTA 題 19 EB、自分側バブル 14 B、Outline ボタン 15 B | N | ✓ |
 | `inverse/ink-secondary` / ink | #dad9d8 → #201e1d | 11.78 | Hero 段落 16 R、CTA 副 13 R | N | ✓ |
 | `inverse/ink-tertiary` / ink | #b8b7b6 → #201e1d | 8.29 | Hero メタ 12 B、Stat キッカー 12 B | N | ✓ |
 | `inverse/ink-quaternary` / ink | #858483 → #201e1d | 4.45 | 「仲間と、」124 EB のみ | L | ✓（N には使わない） |
 | `inverse/outline` / ink | #f3f2f2 → #201e1d | 14.86 | Hero 副・Bento CTA の 1 px 枠 | U | ✓ |
 | `inverse/ink` / `inverse/state/hover-tint`・`pressed-tint` | #f3f2f2 → #393737 / #535150 | 10.58 / 7.06 | Outline ボタン hover / press | N | ✓ |
 | `inverse/action/ink` / `inverse/action/fill`・`-hover`・`-pressed` | #201e1d → #f3f2f2 / #eae7e7 / #d7d3d3 | 14.86 / 13.51 / 11.19 | Hero 主・Poster CTA 15 B | N | ✓ |
-| `hero/word`（Lime）/ ink | #9ae600 → #201e1d | 10.83 | 回転語 124 EB | L | ✓。Mono は `inverse/ink` 14.86 |
+| `hero/word`（Lime）/ ink | #9ae600 → #201e1d | 10.83 | h1 動詞 `Hack` 116 EB | L | ✓。Mono は `inverse/ink` 14.86 |
 | `on-accent` / `accent`（チャット自分側） | #201e1d → #9ae600 | 10.83 | 吹き出しの文 14 B | N | ✓ |
 | `accent` / `ground`（チャット自分側の面） | #9ae600 → #f3f2f2 | 1.37 | 吹き出しの境界 | [参考] | 装飾。意味は文字 10.83・右寄せ・avatar の有無が冗長に運ぶ |
 | `focus/ring-inverse` / ink・inverse hover-tint | #c6d2ff → #201e1d / #393737 | 11.12 / 7.92 | 2 px リング | U | ✓ |
@@ -2464,7 +2453,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 
 **見出し階層**（h1 は 1 つ、階層を飛ばさない）
 
-- h1: 仲間と、学ぶ。創る。話す。（可視はアニメーション、名前は全文）
+- h1: Hack Your Limits.（`lang="en"`、名前は可視の文そのもの。U-37）
 - h2: コミュニティの、今。／活動内容／こんな人に、おすすめ。／運営メンバー／パートナー／いっしょに、やろう。
 - h3: ベントのセル題（「やってみたい」に、…／長崎大学公認の…／まずはDiscordから）、Activity 題（Talk Day / Dev Day / Project / Hackathon）、Persona 題、Member 名
 - 見出しにしないもの: セクションの欧文ラベル（ABOUT / ACTIVITY …）、キッカー（Culture / Members）、統計「50+」、チャットのチャンネル名。これらは `<p>` で見出しの直前後に置く
@@ -2500,7 +2489,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 
 | 項目 | 規定 |
 |---|---|
-| 文書言語 | `<html lang="ja">`。英文（`Hack Your Limits.`）に `lang="en"`。単語レベルの英語キッカー（ABOUT, Talk Day）は付けない |
+| 文書言語 | `<html lang="ja">`。英文（h1 と タグラインの `Hack Your Limits.`）に `lang="en"`。単語レベルの英語キッカー（ABOUT, Talk Day）は付けない |
 | フォント | デザインは **LINE Seed JP** のみ（400 / 700 / 800）。`font-synthesis: none`（擬似ボールド禁止。500 / 600 は指定しない） |
 | フォールバック | `font-family: "LINE Seed JP", sans-serif`（§2.8 と同一）。`sans-serif` は読込中の代替のみで、**デザインに system font は現れない**（DECISION M-20） |
 | 配信 | セルフホスト WOFF2、日本語サブセット（JIS 第 1・2 水準 + 使用記号）、`font-display: swap`。`preload` は **Regular / Bold / ExtraBold の 3 本**（ファーストビューの Hero メタ・タグラインが Bold） |
@@ -2550,8 +2539,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 
 | 部品 | ロール（D / M px） | 幅 D / M | 1 行の字数 D / M | 上限 | 行数 D / M |
 |---|---|---|---|---|---|
-| Hero 導入「仲間と、」 | Display XL 124 / 56 | 1200 / 342 | 導入 4 + ワード 3 = 7 × 124 × 0.98 = 851 ≤ 1200 | **4** | 1 / 2（読点で改行、`<br>`） |
-| Hero 回転語 | Display XL | 幅 3 em 固定 | — | **ちょうど 3**（末尾「。」） | 1 |
+| Hero h1 `Hack Your Limits.` | Display XL **116** / 56 | 1200 / 342 | 実測 1131 ≤ 1200（124 では 1209 で超える） / `Hack Your` 322 ≤ 342 | 欧文 **17**（タグラインと同文。これ以上は伸ばさない） | 1 / 2（自然折返し、`<br>` なし） |
 | Hero リード | Title 3 19 | 588 / 342 | 30 / 18 | 16 | 1 / 1（16 × 19 = 304 ≤ 342） |
 | Hero 段落 | Body L 16 | 588 / 342 | 36 / 21 | 72 | 2 / 4（`<br>` なし、§2.6.3） |
 | Hero メタ | Overline 12 | — | — | 12 × 3 項目 | Mobile は折返し |
@@ -2572,9 +2560,9 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | Activity バッジ | Overline JP 12 | — | — | 6 | 1 |
 | Activity 説明 | Body S 14 | 588 / 342 | 42 / 24 | **60**（概念版最長 57） | 2 / 3 |
 | Activity タグ | Caption 12 | — | — | 8 × 3 | 1 |
-| Persona 題 | Headline 17 | 349 / 298 | 20 / 17 | 12 | 1 |
+| Persona 題 | Headline 17 | 349 / 298 | 20 / 17 | 17（「データサイエンティストを目指したい人」= 17 = Mobile の容量。これ以上は伸ばさない） | 1 |
 | Persona 引用 | Callout 14 | 325 / 274 | 23 / 19 | 44（「」込み。概念版最長 26） | 2 / 3 |
-| Persona 推奨 | Footnote Bold 13（先頭に arrow-right 16 + 4） | 329 / 278 | 25 / 21 | 20 | 1 / 1 |
+| Persona 推奨 | Footnote Bold 13（先頭に arrow-right 16 + 4） | 329 / 278 | 25 / 21 | 30（混植。Case 05「Dev Dayで手を動かして、Talk Dayで共有しよう！」≈ 23 em） | 1 / 1–2（矢印は 1 行目に留まる） |
 | Member 役職 | Overline 12 | — | — | 6（英 10） | 1 |
 | Member 氏名 | Title 2 22 · Headline 17 | 549 · 365 | 24 · 21 | 8（姓 + 半角空白 + 名） | 1 |
 | Member 紹介 | Footnote 13 · Caption 12 | 549 · 365 / 298 | 42 · 30 / 22 · 24 | 40 | 1 · 2 / 2 |
@@ -2689,7 +2677,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | Chat リアクション | `🙌 3` `👀 4` | アイコン + 数、`role="img" aria-label` | 絵文字禁止 |
 | Persona 推奨 ×6 | `→ Dev Day で…` | アイコン + 「Dev Dayで…」 | 記号禁止、和欧スペースなし |
 | Poster CTA | `Discord に参加する →` | Discordに参加する + アイコン | 和欧スペースなし |
-| Persona 05 | `Talk Day のテーマは技術も研究もOK` | Talk Dayのテーマは技術も研究もOK | 同上 |
+| Persona 05 | `Talk Day のテーマは技術も研究もOK` | Talk Dayのテーマは技術も研究もOK（2026-09-12 に「Dev Dayで手を動かして、Talk Dayで共有しよう！」へ差し替え。題は「データサイエンティストを目指したい人」） | 同上 |
 | Persona 01 | `…分からない…」` | 三点リーダ 1 つを確認（U+2026） | §9.4 |
 | Members 注記 | `写真はドロップで差し替え可` | 本番から削除 | 制作用ヒント |
 | Section heading の note | 編集ヒント | 削除 | K-9 |
@@ -2808,7 +2796,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | 72 | section pad-top | 64 | `section/pad-top` |
 | 72 | hero pad-bottom | 80 | `section/pad-bottom` |
 | 80 | section pad-bottom | 80 | `section/pad-bottom` |
-| 88vh | hero 高 | `min(100svh − 62, 960)` | `size/nav` / `size/hero-max` |
+| 88vh | hero 高 | `min(100svh − 62 − 120, 960)`（L-33） | `size/nav` / `size/band-marquee` / `size/hero-max` |
 | 104 | persona イラスト径 | 96 | `size/illustration` |
 | 110 | hero pad-top、poster pad-y | 96 | `section/pad-display` |
 | 120 | bento 行、sponsor cell | 120 | `size/cell-min` |
@@ -3057,7 +3045,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | L-4 | section 64 / 80、display 96、Mobile 48 / 64 / 64 | 罫線の上 ≥ 下で罫線を次の section に帰属させる |
 | L-5 | hero 72 → 80（下）、section 72 → 64（上） | 同じ 72 でも役割が異なる |
 | L-6 | hero の縦リズムを 32 で統一、heading-mb 32 / 24 | 28・30・34 は同じ「塊の分離」役 |
-| L-7 | hero `min-height: min(100svh − size/nav, size/hero-max 960)` | nav を除いた初期画面を満たし、縦長で止める |
+| L-7 | hero `min-height: min(100svh − size/nav, size/hero-max 960)`（**L-33 で帯も引く**） | nav を除いた初期画面を満たし、縦長で止める |
 | L-8 | measure を 588（6 col）に一本化 | 16 / 15 / 14px で 37 / 39 / 42 字 |
 | L-9 | 罫線グリッドの枠と gap は 1 色 1 レイヤー、端数幅は許容 | Figma と CSS の構造一致 |
 | L-10 | Mobile の罫線グリッドは 1 列 | 2 列では本文 128px ≈ 9 字 |
@@ -3082,6 +3070,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | L-29 | 実装のブレークポイントは 2 つ: 構造 48rem / トークン 78rem（§3.6） | 2 フレームしかない仕様と連続なブラウザ幅の橋渡し。ナビと列数だけ先に開き、タイポは離散のまま |
 | L-30 | logo mark は図の外接矩形で切った `icons/mark.svg` を 24 / 20 で置く | favicon.svg は余白込みで、図が小さく見え wordmark からも離れて見えた |
 | L-31 | Partner セルは正方形タイル（Desktop 6 列 / tablet 3 / Mobile 2） | ロゴは正方形のアイコンが基本なので図とタイルの形を揃える。文字を運ばないタイルは L-10 の制約外。Mobile 1 列だと 342 角が 6 枚縦に積まれる |
+| L-33 | hero `min-height: min(100svh − size/nav − size/band-marquee, size/hero-max)`（2026-09-12、L-7 改） | ファーストビューの下端にパートナーの帯を乗せる。「支えられている」が最初の画面で見える。1440 × 900 で Hero 718 + 帯 120。内容が下限を超える画面（1280 × 720）では帯は一部 |
 
 ### A.4 Components（K）
 
@@ -3118,7 +3107,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | M-1 | スプリング 2 種（default 1.0/0.40、quick 1.0/0.30）+ 予約 momentum 0.8/0.40。固定時間は 0/100/200/400 ms。`linear()` 曲線は 1 本 | Apple 値をそのまま採り、色は倍数スケールで |
 | M-2 | Reveal: 16 px、once、root-margin −10 %、stagger 80/60 ms 上限 4 | 読まれる前に静定し、待ち時間 ≤ 320 ms |
 | M-3 | Marquee は速度 40 px/s で定義し、右端のセルに 44 の停止/再生ボタンをページ内モーション・スイッチとして置く | 内容量に依存しない速さ。WCAG 2.2.2 はページ内の手段を求める。**停止 / 再生ボタンは U-31 で撤去** |
-| M-4 改 | 回転語: 周期 2.5 s、上抜け・下入りのドラム運動、**無限ループ**（U-15）、名前は全文 | CLS ゼロ、1.3.1 |
+| M-4 改 | ~~回転語: 周期 2.5 s、上抜け・下入りのドラム運動、**無限ループ**（U-15）、名前は全文~~ **U-37 で撤去** | CLS ゼロ、1.3.1 |
 | M-5 改 | ヒーロー浮遊バブルは削除。チャットの再生は U-16 で復活（当時はスイッチが停止手段を持っていた。U-31 でスイッチ撤去後も維持） | Purpose |
 | M-6 | 押下フィードバックは塗り 1 段を 0 ms、`scale()` 禁止 | 2 px 罫の格子を壊さない |
 | M-7 | Nav は縮小・自動隠しなし | 位置把握の予測可能性 |
@@ -3170,7 +3159,7 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 | U-12 | Member カードに SNS / 個人サイトのアイコンリンク（20 × 最大 3、`showSocials`） | 顔と実績が見えることが入会判断の材料になる。本文で列挙すると紹介文が読みにくいので 1 行に閉じる。同じアイコンが 5 枚並ぶので、支援技術向けの名前には**人名を含める** |
 | U-13 | メタストリップに「サポーターズ 技育プロジェクト 学生団体公式パートナー」を長崎大学公認と同じ強さで併記 | どちらも第三者が裏づけた事実。片方だけ本文に落とすと格が下がって見える |
 | U-14 | `Bento / Cell Text` の `body` プロパティを全 6 variant で `characters` に配線（バグ修正）。`body` は全 Kind で使える | 値を入れても既定文が出ていた。OFFICIAL セルに 2 つ目の裏づけを入れるために必要だった |
-| U-15 | 回転語は 2 周で静止せず**回り続ける** | §7 M8 のスイッチが停止手段を提供済みで、有限化の理由（WCAG 2.2.2）が消えた。3 語を見せて止まる動きは「力尽きた」ようにしか見えない。U-31 でスイッチ撤去後も回し続ける（2.2.2 未達を許容） |
+| U-15 | ~~回転語は 2 周で静止せず**回り続ける**~~ **U-37 で回転語ごと撤去** | §7 M8 のスイッチが停止手段を提供済みで、有限化の理由（WCAG 2.2.2）が消えた。3 語を見せて止まる動きは「力尽きた」ようにしか見えない。U-31 でスイッチ撤去後も回し続ける（2.2.2 未達を許容） |
 | U-16 | チャットは静止画をやめ、発言・スタンプ単位で順に現れて**ループ**する | 静止スレッドは「会話のスクリーンショット」に見える。伝えたいのは「いま誰かが喋っていて返事が返ってくる場所だ」ということで、順に現れることでしか出せない |
 | U-17 | 活動セルを**リンクにしない**。hover / pressed / focus / 矢印も持たない | 4 セルとも同じ Discord に着地するので、押した対象と行き先が対応しない。参加への導線は Hero・Bento CTA・Poster が 3 度受け持っている |
 | U-18 | About の写真セルは複数枚を**スライドさせて回す** | 「いろいろやっている」は 1 枚の代表写真では出ない。ベントで唯一「時間を持つ」セルなので、隣のチャットと合わせて 2 つ以上は作らない |
@@ -3184,10 +3173,12 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 | U-26 | ペルソナとチャットのアバターは Humation のイラスト（生成スクリプトで SVG 化） | 実在しない人物像に実写の顔を当てると「誰？」が先に立つ |
 | U-27 | ~~Nav の CTA にも Discord マークを添える~~ **同日に撤回** — Nav の CTA は文言 + 矢印のまま（U-19 どおり） | 帯の CTA は文言だけで足りる。マークを足すと Mobile で矢印を落とす代償も要った |
 | U-28 | Poster の Social はマーク 20 のみ。ラベルと矢印を落とす | マークが行き先を言い切るので文字は冗長。CTA と同じ行で目立ち過ぎていた |
-| U-29 | Cell Stat の数字の下に所属を Chip（Inverse トーン）のバッジで並べる（長崎大学 情報データ科学部 / 工学部 / 大学院、長崎県立大学、長崎総合科学大学）。人数は出さない | 「50+」だけでは「どこの学生か」が分からない。複数大学からの参加が「誰でも」の裏づけになる。文の列よりタグのほうが一覧性が高い |
+| U-29 | ~~Cell Stat の数字の下に所属を Chip（Inverse トーン）のバッジで並べる（長崎大学 情報データ科学部 / 工学部 / 大学院、長崎県立大学、長崎総合科学大学）。人数は出さない~~ **2026-09-11 に U-36 で撤回** | 「50+」だけでは「どこの学生か」が分からない。複数大学からの参加が「誰でも」の裏づけになる。文の列よりタグのほうが一覧性が高い |
 | U-30 | Marquee の団体は名前ではなく**ロゴ**（80 角 `size/marquee-logo`、partners.ts から生成）で出し、帯 `size/band-marquee` を 56 → **120**、項目間を `inline/2xl` 48 に上げる（2026-09-07） | 帯は調子付けで、団体名の列より図の列のほうが一目で「支えられている」が伝わる。帯 56 のままの 36 角では図が読めず、96 / 64 でもまだ細かった。120 = `size/cell-min` で梯子の既存段、内側 116 に 80 を置いて上下 18。事実としての団体名は Partners セクションが運ぶ |
 | U-31 | Marquee の停止 / 再生ボタンと、ページ内モーションスイッチ（旧 M8: `data-motion`、`localStorage["chotech:motion"]`、`useMotionSwitch`）を**撤去**（2026-09-07、クライアント判断） | 帯を 96 に上げると停止セルが目立ち、正方形にしても帯の右端に異物として残った。自動の動きは `prefers-reduced-motion` と画面外 / バックグラウンドで止まる。**WCAG 2.2.2 のページ内停止手段は未達**として §8 に記録し、U-15 / U-16 / M-3 / M-5 改 の前提から「スイッチが停止手段を持つ」を外す |
 | U-32 | Marquee の ✳ は Label「PARTNERS」の両脇だけに置き、ロゴの間には置かない（2026-09-07） | 図の列に記号を挟むとロゴが 1 つずつ区切られて「一覧」に見えない。両脇の ✳ が「ここから団体」の開始記号になり、ロゴ同士は `inline/2xl` 48 の間だけで並ぶ |
+| U-37 | Hero の h1 を回転語「仲間と、学ぶ。創る。話す。」からタグライン **`Hack Your Limits.`** の静止 1 行に（2026-09-12）。動詞 `Hack` を `hero/word`、目的語を `inverse/ink`、`lang="en"`。Display/XL の上限 124 → **116**（129）。回転語の部品・トークン・§7.4.3 を撤去。3 語は About CULTURE の題へ | ページの芯をタグラインで言い切る。ヒーローが「何を一緒にやるか」を、CULTURE が「仲間と、学ぶ。創る。話す。」を持ち、役割が重ならない。124 では 1 行が 1209 で 1200 を超え、1280 幅で入るのに 1440 幅で折れる揺れが出た。116 なら 1131 で 69px の余裕、かつ 1 行なら Hero の内容が ≈ 600 に収まり L-33 の帯と同居できる |
+| U-36 | Cell Stat は `50+` の数字だけ。所属のバッジ（U-29）を撤回（2026-09-11、クライアント判断）。Chip の Inverse トーンはライブラリのみに格下げ | 規模を語るセルに所属の列が乗ると、数字の大きさが語る「規模」より先に文字が読まれた。所属の裏づけは Hero の「大学・学部・学科を問わず」が文で持つ |
 
 ## 付録 B. 検証
 

@@ -49,9 +49,9 @@ export const activitiesContent = {
     },
     {
       title: "Hackathon",
-      subtitle: "参加だけじゃなく主催も",
+      subtitle: "参加だけじゃなく開催も",
       description:
-        "外部のハッカソンにチームを組んで出るだけでなく、ChoTechでもハッカソンを主催しています。",
+        "外部のハッカソンにチームを組んで出るだけでなく、ChoTechでもハッカソンを毎年開催しています。",
       tags: ["運営", "ハッカソン", "チーム開発"],
       frequency: "随時",
     },

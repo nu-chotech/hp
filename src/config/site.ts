@@ -91,15 +91,15 @@ export interface SocialLink {
 }
 
 export const socialLinks: readonly SocialLink[] = [
-  { brand: "x", href: "https://x.com/", label: "X" },
+  { brand: "x", href: "https://x.com/chotech_ngs", label: "X" },
   {
     brand: "instagram",
-    href: "https://www.instagram.com/",
+    href: "https://www.instagram.com/nu_chotech",
     label: "Instagram",
   },
   { brand: "github", href: "https://github.com/nu-chotech", label: "GitHub" },
 ] as const;
 
 export const externalLinks = {
-  discord: "https://discord.gg/",
+  discord: "https://discord.gg/dvv8Xy6sMu",
 } as const;

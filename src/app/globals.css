@@ -264,9 +264,10 @@
    * spec が明記する補間比の床 1.10 を通らないため）。残り 18 ロールは単一値。
    * -------------------------------------------------------------------------- */
 
-  /* Display/XL — ヒーロー h1。124/138 ⇔ 56/62、EB。1 行 ≤ 9 全角（D） */
-  --display-xl-size: clamp(3.5rem, calc(1.9214rem + 6.476vw), 7.75rem);
-  --display-xl-leading: clamp(3.875rem, calc(2.1107rem + 7.238vw), 8.625rem);
+  /* Display/XL — ヒーロー h1。116/129 ⇔ 56/62、EB。Desktop 1 行 "Hack Your Limits." ≈ 1131 ≤ 1200
+     （U-37: 124 では 1209 で container を 9px 超え、1280 幅で入るのに 1440 幅で折れる揺れが出た） */
+  --display-xl-size: clamp(3.5rem, calc(2.1071rem + 5.714vw), 7.25rem);
+  --display-xl-leading: clamp(3.875rem, calc(2.3196rem + 6.381vw), 8.0625rem);
   --display-xl-tracking: -0.02em;
   --display-xl-weight: 800;
 
@@ -464,7 +465,7 @@
   --size-nav: 3.875rem; /* 62 — 2px 下罫を含むナビ帯の総高。scroll-margin-top にも使う */
   --size-band-marquee: 7.5rem; /* 120 = 2 + 116 + 2 = size/cell-min（U-30: ロゴを入れるため 56 → 96 → 120） */
   --size-marquee-logo: 6rem; /* 96 — marquee のパートナーロゴ枠の高さ（3:2 なので幅 144）。帯の内側 116 に上下 10 を残す（U-30 → L-32） */
-  --size-hero-max: 60rem; /* 960 = 10 × space/96。ヒーロー min-height の上限 */
+  --size-hero-max: 60rem; /* 960 = 10 × space/96。ヒーロー min-height の上限（L-33 で帯を引いた後は縦 1142px 以上でだけ効く） */
   --size-cell-min: 7.5rem; /* 120 = 24 × 5。床であって目標ではない */
   --size-avatar: 1.5rem; /* 24 — チャットアバター（円）。= icon/lg */
   --size-dot: 0.4375rem; /* 7 — 入力中ドット（円）。3 点 + gap 5 = 31 幅（U-1 で 4 → 7） */
@@ -517,9 +518,6 @@
   --stagger: 60ms; /* 80 / 60 — reveal の兄弟間ディレイ。Mobile は縦に密なので短く */
   --stagger-max: 4; /* 5 番目以降は 4 番目と同時（最大待ち 320ms / 240ms） */
   --reveal-y: 1rem; /* 16 = space/16。気づく最小距離で、視差には見えない */
-  --word-y: 0.15em; /* 回転語の translateY。距離は字面サイズに比例 */
-  --word-period: 2500ms; /* 回転語 1 語の周期（切替 ≈ 0.5s、静止 ≈ 2.0s） */
-  --word-transition-offset: 80ms; /* t=0 退出開始、t=80ms 入り開始 */
   --dots-period: 1.2s; /* 入力中ドットの周期（= 3 × dur-3）。0.8 Hz */
   --dots-stagger: 200ms; /* ドット間ディレイ */
   --marquee-speed: 40; /* px/s。duration = グループ幅 ÷ 40 を ResizeObserver で書き込む */
@@ -1099,7 +1097,7 @@
   }
 
   /*
-   * ループする動き（マーキー・入力中ドット・背景写真・回転語）は低減設定で止める。
+   * ループする動き（マーキー・入力中ドット・背景写真）は低減設定で止める。
    * かつてはページ内スイッチ（html[data-motion="playing"]）でオプトインできたが、
    * DECISION U-31 でスイッチごと撤去したので無条件に掛ける。
    */
@@ -1107,10 +1105,6 @@
   .typing__dot,
   .hero__backdrop {
     animation: none;
-  }
-
-  .hero__word {
-    transition: none;
   }
 
   .menu__panel {

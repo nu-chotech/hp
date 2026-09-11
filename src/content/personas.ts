@@ -55,9 +55,9 @@ export const personasContent = {
     },
     {
       caseNo: "Case 05",
-      title: "研究の話をしたい人",
-      quote: "「自分の研究、誰かに聞いてほしい」",
-      recommendation: "Talk Dayのテーマは技術も研究もOK！",
+      title: "データサイエンスに興味がある人",
+      quote: "「データ分析、独学だと限界を感じる」",
+      recommendation: "Dev Dayで手を動かして、Talk Dayで共有しよう！",
       photo: "/images/personas/case-05.svg",
     },
     {

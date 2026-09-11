@@ -3,8 +3,8 @@ import { externalLinks, sectionHref, sectionIds } from "@/config/site";
 /**
  * Hero（§6.8）
  *
- * meta は「第三者が裏づけた事実」だけを並べる。回転語はちょうど全角 3 字で揃え、
- * 枠幅を固定してレイアウトシフトをゼロにする（§6.8.3）。
+ * meta は「第三者が裏づけた事実」だけを並べる。h1 はタグラインそのもの
+ * （DECISION U-37: 回転語「仲間と、学ぶ。創る。話す。」は About の CULTURE セルに降ろした）。
  */
 export const heroContent = {
   /**
@@ -28,12 +28,18 @@ export const heroContent = {
     { text: "長崎大学公認" },
     { text: "技育プロジェクト 学生団体公式パートナー" },
   ],
+  /**
+   * 英文なので h1 に lang="en" を付ける（§8.7）。全文はタグライン（siteConfig.tagline）と同じ。
+   * 動詞の「Hack」だけをアクセントで塗り、残りは白 — 「白の導入句 × アクセントの動詞」
+   * という U-3 の対比を語順を入れ替えて引き継ぐ。
+   *
+   * 改行は入れない。Desktop は 1 行（Display/XL の上限を 116 に下げて ≈ 1131 ≤ 1200）、
+   * Mobile は「Hack Your」/「Limits.」に自然に折れる。Poster（Display/L、2 行の著者改行）
+   * と形を変えることで、同じ文が開幕と終幕で別の顔になる。
+   */
   headline: {
-    leadIn: "仲間と、",
-    /** 2.5s 周期で切り替わる。全角 3 字固定 */
-    words: ["学ぶ。", "創る。", "話す。"],
-    /** 支援技術に読ませる h1 の全文（§6.1.7） */
-    accessibleName: "仲間と、学ぶ。創る。話す。",
+    verb: "Hack",
+    object: "Your Limits.",
   },
   lead: "長崎にテック好きのためのハブを。",
   body: "ChoTech（チョーテック）は長崎大学公認の学生テックコミュニティです。\nものづくりに少しでも興味があれば、大学・学部・学科を問わず、誰でも参加することができます。",

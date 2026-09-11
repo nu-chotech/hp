@@ -32,12 +32,11 @@ export type ChatEntry =
  * セルは面積で優先順位を示す。文言は Figma の合成画面（Screens / Desktop 1440）が正本。
  */
 export const aboutContent = {
-  heading: { title: "コミュニティの、今。", label: "ABOUT" },
+  heading: { title: "ChoTechについて", label: "ABOUT" },
 
   culture: {
     kicker: "CULTURE",
-    title: "「まだできない」を、\nみんなでハックする。",
-    body: "最初は誰もが初心者。できないことは、まだできていないだけ。興味を持ち寄って仲間と刺激し合えば、ひとりでは越えられなかった壁も越えられるはず。",
+    title: "仲間と、\n学ぶ。創る。話す。",
   },
 
   /** 公認と公式パートナーを 1 セルに集約する（DECISION U-14） */
@@ -53,22 +52,11 @@ export const aboutContent = {
     suffix: "+",
     /** 数字は装飾。読み上げは文で渡す（§6.11.3） */
     accessibleName: "メンバー 50人以上",
-    /**
-     * 所属の内訳（DECISION U-29）。人数は確定していないので出さず、所属だけをバッジで並べる。
-     * 長崎大学は学部・研究科ごとに 1 つ（学内の複数の学部から来ていることが情報）。
-     */
-    affiliations: [
-      { university: "長崎大学", unit: "情報データ科学部" },
-      { university: "長崎大学", unit: "工学部" },
-      { university: "長崎大学", unit: "大学院" },
-      { university: "長崎県立大学" },
-      { university: "長崎総合科学大学" },
-    ],
   },
 
   chat: {
-    kicker: "#general — いつものChoTech",
-    note: "こんな会話が、毎日どこかで。",
+    kicker: "ChoTechでのチャットの雰囲気",
+    note: "気軽にあなたの「やりたい」「気になる」を、みんなで共有しよう。",
     /**
      * 発言のたびにスタンプが付く（U-25 改）。「反応が返ってくる場所」を見せるのが
      * この図の仕事なので、反応の無い発言を残さない。絵文字は発言ごとに変える —
@@ -150,12 +138,12 @@ export const aboutContent = {
 
   onlineOffline: {
     kicker: "ONLINE & OFFLINE",
-    title: "チャットも通話もDiscordで。対面イベントも定期的に。",
+    title: "対面活動も、Discordでのオンライン交流も活発。",
   },
 
   forEveryone: {
     kicker: "FOR EVERYONE",
-    title: "エンジニアも、デザイナーも、研究好きも。",
+    title: "エンジニアもデザイナーもサイエンティストも。",
   },
 
   cta: {

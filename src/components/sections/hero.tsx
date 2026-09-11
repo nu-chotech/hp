@@ -6,8 +6,8 @@ import { sectionIds } from "@/config/site";
 import { heroContent } from "@/content/hero";
 import { externalLinkNote, externalLinkProps } from "@/lib/external-link";
 import { cn } from "@/lib/utils";
+import { HeroReveal } from "./hero/hero-reveal";
 import { MetaStrip } from "./hero/meta-strip";
-import { HeroReveal, RotatingWord } from "./hero/rotating-word";
 
 /**
  * Section / Hero（§6.8.1）
@@ -54,9 +54,10 @@ export function Hero() {
       className={cn(
         sectionVariants({ surface: "ink" }),
         "relative flex flex-col justify-center",
-        // nav を除いた初期 viewport をちょうど満たし、縦長モニタでは 960 で止める（DECISION L-7）。
+        // nav と Marquee 帯を除いた初期 viewport をちょうど満たす — ファーストビューの
+        // 下端にパートナーの帯が乗る（DECISION L-33、L-7 改）。縦長モニタでは 960 で止める。
         // min() の合成に対応するユーティリティは無いのでトークンを直接参照する
-        "min-h-[min(100svh_-_var(--size-nav),var(--size-hero-max))]",
+        "min-h-[min(100svh_-_var(--size-nav)_-_var(--size-band-marquee),var(--size-hero-max))]",
       )}
     >
       {/*
@@ -96,20 +97,19 @@ export function Hero() {
           <MetaStrip />
 
           {/*
-           * 可視部分は装飾で、名前は visually-hidden の全文が持つ（§6.1.7）。aria-live は使わない。
-           * 白の導入句 × アクセントの動詞で対比を作る。回転語に下線は無い（DECISION U-3）。
-           * 折返しは著者の意図（Mobile は読点で 2 行）に任せるので balance は解除する。
+           * タグラインを Display/XL で言い切る（DECISION U-37）。名前は可視の文そのもの。
+           * アクセントの動詞 × 白の目的語で対比を作る。下線は無い（DECISION U-3）。
+           * Desktop は 1 行（116px で ≈ 1131 ≤ 1200）。Mobile は "Hack Your" / "Limits." に
+           * 自然折返し。balance は "Hack" / "Your Limits." に寄せるので解除する。
            */}
           <h1
-            className="text-wrap text-display-xl"
+            className="text-wrap text-display-xl text-inverse-ink"
             data-reveal
             data-reveal-index="1"
+            lang="en"
           >
-            <span className="sr-only">{headline.accessibleName}</span>
-            <span aria-hidden="true">
-              {headline.leadIn}
-              <RotatingWord />
-            </span>
+            <span className="text-hero-word">{headline.verb}</span>{" "}
+            {headline.object}
           </h1>
 
           {/* リード → 段落だけは stack/xs 8 で締める（DECISION L-6） */}
