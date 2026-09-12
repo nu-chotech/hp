@@ -13,8 +13,8 @@ import { cn } from "@/lib/utils";
  *
  * クロージング。面はインク（C-30 — green-400 の面に墨の文字を載せると読みにくい、という
  * クライアント所見で 2026-09-12 に明るい緑面から戻した）。アクセントは見出し
- * 「Hack Your Limits.」（poster/display = green-400、ink 上 6.54）と、参加 CTA の緑の
- * ボタン（accent-fill = green-600 + 白、4.62）で現れる。Hero と同じ面で開幕と終幕が対になる。
+ * 「Hack Your Limits.」（poster/display = green-400、ink 上 6.54）で現れ、参加 CTA は
+ * Discord の Blurple（discord-fill + 白、C-31）。Hero と同じ面で開幕と終幕が対になる。
  *
  * 上端の 2px 罫（旧 C-27）は持たない — 面が地に対して 14.86 で、境界は色面の切り替えそのもの。
  * Section 部品ではなく素の <section> で組むのは Hero と同じ理由（sectionVariants の poster を引く）。
@@ -60,7 +60,7 @@ export function Poster() {
           {/* 行き先が Discord であることは矢印ではなくマークが言う（U-19） */}
           <Button
             surface="poster"
-            variant="solid"
+            variant="discord"
             asChild
             brand={BrandDiscord}
             icon={ArrowUpRight}

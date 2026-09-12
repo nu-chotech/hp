@@ -148,11 +148,11 @@ export function Hero() {
             data-reveal
             data-reveal-index="2"
           >
-            {/* 主 = 外部の Discord。緑の面（accent-fill）+ 白のラベル — 参加の動線だけが
-                緑を面で持つ（C-30）。矢印と visually-hidden の注記を添え、新しいタブで開く（M-21） */}
+            {/* 主 = 外部の Discord。面は Discord の Blurple（discord-fill）+ 白 — マークと同じ
+                持ち主の色で行き先を言う（C-31）。矢印と visually-hidden の注記を添え、新しいタブで開く（M-21） */}
             <Button
               surface="ink"
-              variant="accent"
+              variant="discord"
               asChild
               brand={BrandDiscord}
               icon={ArrowUpRight}

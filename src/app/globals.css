@@ -56,6 +56,14 @@
   --green-800: #116329; /* 地の上のアクセント文字の基底（ground 6.62） */
   --green-900: #044f1e; /* 12px 以下のアクセント文字（8.77）、淡い塗り・ポスター面の上 */
 
+  /* blurple — Discord のブランド色 Blurple（DECISION C-31、2026-09-12）。本システムの色相
+     ではなく第三者の識別色で、Discord へ出るボタンの面にだけ置く（ロゴと同じ「引用」、U-21）。
+     500 は discord.com/branding の公開値、530 / 560 は Discord のアプリの brand スケールと同値
+     （同色相で暗い方へ 1 段ずつ。明るい方 brand-400 #7983f5 は白が 3.29 で割る）。 */
+  --blurple-500: #5865f2; /* Y 0.178 — discord-fill。白 4.61、ground 上 4.12 / ink 上 3.60 */
+  --blurple-530: #505cdc; /* Y 0.145 — ホバー。白 5.38、ground 上 4.81 / ink 上 3.09 */
+  --blurple-560: #4752c4; /* Y 0.114 — プレス。白 6.42、ink 上 2.59 は押下の瞬間 */
+
   /* alpha — 11 個（ink 5 / ground 5 / green-400 1）。
      6 → 12 → 24 → 48 は倍々（ティント・影・幕・無効）、72 = 3 × 24（tertiary 文字）、
      88 は secondary 文字。合成 hex をハードコードせず color-mix で持つ
@@ -74,7 +82,7 @@
 }
 
 /* =============================================================================
- * 3. Semantic roles — 62 行（Figma: Color コレクション / 既定モード Green accent）
+ * 3. Semantic roles — 66 行（Figma: Color コレクション / 既定モード Green accent）
  *
  * ページで色を触るときはここだけを参照する。primitive を直接使わない。
  * 行末のコメントは対比比（vs ground / vs ink）。理由は各グループの見出しに書く。
@@ -85,8 +93,8 @@
    * surface は ground との比 1.10 = 罫線なしに輪郭が読める最小段。
    * inverse/ground はインクを塗りに転用したもの（ヒーロー、統計セル、CTA セル）。
    * poster/ground は Join セクションの面。C-30（2026-09-12）でインク面に戻した — green-400 の
-   * 面に墨の文字を載せると読みにくい。アクセントは面ではなく見出し（poster/display）と
-   * CTA（accent-fill）で現れる。poster/* のエイリアスは C-28 の名残で、値は inverse/* と同じ。
+   * 面に墨の文字を載せると読みにくい。アクセントは面ではなく見出し（poster/display）で現れ、
+   * CTA は Discord の Blurple（C-31、1.3.9）。poster/* のエイリアスは C-28 の名残で、値は inverse/* と同じ。
    * ---------------------------------------------------------------------- */
   --ground: var(--neutral-100);
   --surface: var(--neutral-200); /* ground 1.10 */
@@ -137,24 +145,20 @@
 
   /* --- 1.3.5 アクセント ----------------------------------------------------
    * accent（green-400）は明るい地の上では面としても文字としても使えない（2.27、C-25）。
-   * 文字を載せる面は accent-fill（green-600）+ 白（on-accent）: 参加 CTA と自分側バブル（C-30）。
+   * 文字を載せる面は accent-fill（green-600）+ 白（on-accent）: 自分側バブルだけ（C-30。
+   * 参加 CTA は C-31 で Discord の Blurple = 1.3.9 へ）。
    * 地の上では暗い段が働く: 700 図形のみ / 800 文字 / 900 は 12px 以下の文字。
    * accent-hover / -pressed / -subtle はライブラリのみ（ポスター面と競合させない）。
    * pop/*・hero/word・poster/* はモードで値が変わる 10 行に含まれる。
    * ---------------------------------------------------------------------- */
   --accent: var(--green-400); /* 印の基底（ink 6.54）。面には使わない（C-30） */
-  --accent-fill: var(
-    --green-600
-  ); /* 文字を載せる緑の面: 参加 CTA（Hero / Poster）、チャット自分側バブル。ink 上 3.59 / ground 上 4.14 */
-  --on-accent: var(
-    --neutral-0
-  ); /* accent-fill 上 4.62。ground（#f3f2f2）では 4.14 で N を割るので白 */
-  --accent-hover: var(
-    --green-700
-  ); /* accent-fill のホバー（暗い方へ 1 段。白ラベル 5.07、ink 上 3.27） */
-  --accent-pressed: var(
-    --green-800
-  ); /* 同プレス（白ラベル 7.40、ink 上 2.25 は押下の瞬間） */
+  /* 文字を載せる緑の面。ページではチャット自分側バブルだけ（ground 上 4.14）。
+     参加 CTA は C-31 で Discord の Blurple（--discord-fill）に移り、緑の面ではなくなった */
+  --accent-fill: var(--green-600);
+  --on-accent: var(--neutral-0); /* accent-fill 上 4.62（ground だと 4.14） */
+  /* ホバー・プレスは暗い方へ 1 段ずつ（白 5.07 / 7.40）。Accent ボタンはライブラリのみ（K-5） */
+  --accent-hover: var(--green-700);
+  --accent-pressed: var(--green-800);
   --accent-subtle: var(--green-200); /* ground 1.20 */
   --on-accent-subtle: var(--green-900); /* 淡い塗り 7.33 */
   --accent-text: var(--green-800); /* ground 6.62 */
@@ -167,16 +171,12 @@
     --green-400
   ); /* ポスター見出し（Display L）。ink 面上 6.54 */
   --poster-selection: var(--inverse-selection); /* 上の ground 9.78 */
-  --poster-action-fill: var(
-    --accent-fill
-  ); /* 緑のボタン（C-30）。ink 上 3.59 */
-  /* 面側の 1 段（§1.3.7）。汎用 action/fill-hover を直接引くと Mono で反転しないので、
-     ポスター専用ロールとして持つ（C-28 の原則をホバー・プレスにも通す） */
-  --poster-action-fill-hover: var(--accent-hover); /* ink 上 3.27 */
-  --poster-action-fill-pressed: var(
-    --accent-pressed
-  ); /* ink 上 2.25（押下の瞬間） */
-  --poster-action-ink: var(--on-accent); /* 白。accent-fill 上 4.62 */
+  /* ポスター CTA の面と文字 — ライブラリ（Mono 検証用: ground の塗り / Green: accent-fill 系）。
+     Poster の参加 CTA は C-31 で Discord の Blurple（--discord-fill、モード非依存）に移った */
+  --poster-action-fill: var(--accent-fill);
+  --poster-action-fill-hover: var(--accent-hover);
+  --poster-action-fill-pressed: var(--accent-pressed);
+  --poster-action-ink: var(--on-accent);
   --poster-focus-ring: var(--focus-ring-inverse); /* ink 面 8.62 */
 
   /* --- 1.3.6 状態 ----------------------------------------------------------
@@ -228,6 +228,17 @@
   --image-caption: var(--ink-secondary); /* surface 5.30 */
   --shadow: var(--alpha-ink-24); /* shadow/sm md lg */
   --backdrop: var(--alpha-ink-48); /* 幕 */
+
+  /* --- 1.3.9 ブランド色（第三者、C-31） ---------------------------------------
+   * Discord の Blurple。本システムのアクセントではなく、ロゴと同じ「引用」（U-21 の延長）。
+   * 現れるのは Discord へ出るボタン（Hero 主・Poster）の面だけで、文字・罫・印には使わない。
+   * 極性を持たない（ground 上 4.12 / ink 上 3.60）。状態は暗い方へ 1 段ずつ —
+   * 明るい方は白が 3.29 で割る。リングは面の規則どおり緑（C-8）。
+   * ---------------------------------------------------------------------- */
+  --discord-fill: var(--blurple-500); /* 白 4.61。ground 4.12 / ink 3.60 */
+  --on-discord: var(--neutral-0); /* ラベル・Discord マーク・矢印 */
+  --discord-hover: var(--blurple-530); /* 白 5.38。ground 4.81 / ink 3.09 */
+  --discord-pressed: var(--blurple-560); /* 白 6.42。ink 上 2.59 は押下の瞬間 */
 
   /* 専用ロールを置かないもの:
      typing dot / placeholder アイコン → --ink-tertiary に直接 bind（3.85 / 3.50）
@@ -648,6 +659,11 @@
   --color-poster-action-fill-pressed: var(--poster-action-fill-pressed);
   --color-poster-action-ink: var(--poster-action-ink);
   --color-poster-focus-ring: var(--poster-focus-ring);
+  /* ブランド色（C-31） */
+  --color-discord-fill: var(--discord-fill);
+  --color-on-discord: var(--on-discord);
+  --color-discord-hover: var(--discord-hover);
+  --color-discord-pressed: var(--discord-pressed);
   /* 状態 */
   --color-state-hover-tint: var(--state-hover-tint);
   --color-state-pressed-tint: var(--state-pressed-tint);

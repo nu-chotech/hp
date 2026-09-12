@@ -23,6 +23,7 @@
 > - **2026-09-12（10）**: 画像を next/image の `fill` に移行（**DECISION U-45**。Hero 背景と先頭の活動写真は `priority`、AVIF / WebP 配信）。§5.7.2 のスロット表を U-41 / U-42 / U-43 に合わせて更新
 > - **2026-09-12（11）**: ポスター面を**インク面に戻し**、緑は見出し（`poster/display` = green-400）と**参加 CTA・チャット自分側バブルの面**（`accent-fill` = green-600 + 白）で出す（**DECISION C-30**。クライアント所見「緑の上に黒文字は見にくい」）。Hero 主 CTA も accent-fill。C-27 の上端罫は撤去、C-18 / K-5 の「accent ボタンはページに置かない」は撤回
 > - **2026-09-12（12）**: 釣り合いの調整（**DECISION U-46**）: Member の Socials をカードの底に、Activities の見出し余白を他節と同じ 32 / 24 に、About の CULTURE を Display/M・1×1 文字セルを Title/3 に
+> - **2026-09-12（13）**: Discord マークを持つ参加ボタン（Hero 主・Poster）の面を緑の `accent-fill` から **Discord のブランド色 Blurple**（`discord/fill` = `#5865f2` + 白 `on-discord`、hover `#505cdc` / pressed `#4752c4`、**DECISION C-31**）に。プリミティブ `blurple/500 / 530 / 560`、ロール `discord/*` 4 行（§1.2.4 / §1.3.9 / §1.4.5）。緑の面はチャット自分側バブルだけになり、Accent ボタンはどの地でもライブラリ、`poster/action/*` もライブラリ
 > - **Figma v2 への反映は未実施**（2026-09-12 時点）。反映すべき変更の一覧と手順は [figma-sync-2026-09-12.md](./figma-sync-2026-09-12.md)
 > - **2026-09-11**: Cell Stat の所属バッジ（U-29）を**撤回**し、セルは `50+` の数字だけに戻す（**DECISION U-36**）。Chip の Inverse トーンは Accent と同じくライブラリのみ（ページに出さない）。About の CULTURE セルは本文を落として題だけ（「仲間と、学ぶ。創る。話す。」— Hero の h1 を `Hack Your Limits.` に差し替える予定に合わせ、3 語を Culture に降ろす）
 > - **2026-09-10（2）**: 外部リンクは**すべて新しいタブ**で開く（`target="_blank" rel="noopener noreferrer"`、vh「（外部、新しいタブで開く）」、**DECISION M-21**。M-15 は撤回）。Partner の Logo タイルは `href` があれば**タイル全体が団体サイトへのリンク**（**DECISION U-35**。hover / pressed の表現なし、フォーカスリングは内側）
@@ -47,7 +48,7 @@
 | **Purpose（目的）** | ページの仕事は「ChoTech を知り、Discord に来てもらう」の 1 つ。要素はこの仕事に寄与するときだけ置く | 主 CTA は 1 画面 1 つ。装飾のためだけの動き・色・影を足さない（M9）。落としたもの: チャット再生ループ、浮遊バブル、編集ヒント、accent-2、絵文字 |
 | **Clarity（明快）** | 読めることが最初。インク・オン・グラウンド（14.86:1）で成立させ、色は構造を補わない | 明るい面の文字は ink / ink-secondary の 2 段、暗い面は ground のアルファ 100 / 88 / 72 / 48。全ペアを計算し AA を満たす。12px 未満の文字はない |
 | **Hierarchy（階層）** | 階層は「ウェイト × サイズ × 行送り」の組と、罫線の太さ（1 / 2 / 4px）と余白の段（4px モジュール）で作る。色で作らない | Display 800 −2%、見出し 800、声 700、本文 400。2px rule = 区画、1px hairline = 行、4px = ポスターの下線。罫線の上 80 ≥ 下 64 |
-| **Restraint（抑制）** | 一書体、一色相、角丸ゼロ、影ゼロ、中央揃えなし。Mono モードで成立しない設計は Green でも不可 | アクセントの出現は Green で 6 種（マーキー区切り、活動バッジ、ヒーロー句点、ポスター見出し、参加 CTA ×2 とチャット自分側バブルの accent-fill）+ 状態 4 種（hover 下線 / pressed 文字 / focus / selection）だけ。写真・イラスト・ロゴは原色（U-21） |
+| **Restraint（抑制）** | 一書体、一色相、角丸ゼロ、影ゼロ、中央揃えなし。Mono モードで成立しない設計は Green でも不可。第三者の識別色（パートナーロゴの原色、Discord ボタンの Blurple）は「引用」で、色相には数えない（U-21 / C-31） | アクセントの出現は Green で 5 種（マーキー区切り、活動バッジ、ヒーロー句点、ポスター見出し、チャット自分側バブルの accent-fill）+ 状態 4 種（hover 下線 / pressed 文字 / focus / selection）だけ。参加ボタンは Discord の Blurple（C-31）。写真・イラスト・ロゴは原色（U-21） |
 | **Craft（精度）** | すべての値が梯子の段であり、根拠を言える。Figma と CSS が同じ構造で同じ数を持つ | 4px モジュール、整数 px の行送り、高さ駆動のコントロール（36 / 44）、fill + gap で描く罫線グリッド、`n 文字 = n em` の和文組版、compositor プロパティだけの動き |
 
 Familiarity（慣れ）・Agency（主体性）・Flexibility（柔軟）・Responsibility（責任）は個別規則に溶かした: 矢印の意味を 2 種に固定する（§5）、外部リンクは新しいタブで開く（§8、M-21 で M-15 を撤回）、ループはページ内スイッチで止められる（§7）、Mobile は 1 列で DOM 順（§3）、200% 拡大とリフローで壊れない（§8）。
@@ -64,7 +65,7 @@ Familiarity（慣れ）・Agency（主体性）・Flexibility（柔軟）・Resp
 
 ### 0.3 ページの骨格（コンセプトの認識可能な部分）
 
-Nav（sticky、2px 下罫）→ Hero（インク面、背景写真、墨の板の h1 と緑の参加ボタン）→ Marquee 帯（2px 上下罫、白の面、パートナーロゴ 3:2 高さ 96、asterisk は PARTNERS の両脇のみ。停止ボタンは U-31 で撤去）→ About（ベント 3 行 7 セル: 文化 / 統計 / 設立 / チャット / 公認 / 場 / 対象、U-40）→ Activities（均等 2×2 の写真セル、U-41）→ For You（ペルソナカード 3 × 2）→ Members（リーダー 2 列 + スタッフ 3 列）→ Partners（外枠だけの白い面にロゴを等分の 1 行、U-43）→ Poster（クロージング CTA。インク面に緑の見出しと緑の参加ボタン、C-30）→ Footer。全要素左揃え。
+Nav（sticky、2px 下罫）→ Hero（インク面、背景写真、墨の板の h1 と Discord 色の参加ボタン）→ Marquee 帯（2px 上下罫、白の面、パートナーロゴ 3:2 高さ 96、asterisk は PARTNERS の両脇のみ。停止ボタンは U-31 で撤去）→ About（ベント 3 行 7 セル: 文化 / 統計 / 設立 / チャット / 公認 / 場 / 対象、U-40）→ Activities（均等 2×2 の写真セル、U-41）→ For You（ペルソナカード 3 × 2）→ Members（リーダー 2 列 + スタッフ 3 列）→ Partners（外枠だけの白い面にロゴを等分の 1 行、U-43）→ Poster（クロージング CTA。インク面に緑の見出しと Discord 色の参加ボタン、C-30 / C-31）→ Footer。全要素左揃え。
 
 ### 0.4 分冊間の矛盾と解決
 
@@ -107,11 +108,11 @@ Figma: コレクション `Primitives`（単一モード）と `Color`（モー�
 | # | 原則 | 内容と根拠 |
 |---|---|---|
 | 1 | **インク・オン・グラウンドが先** | ページはウォームグラウンド `#f3f2f2` の上のインク `#201e1d`（14.86:1）で成立させる。構造は罫線と余白が担い、色は構造を補わない。色を抜いても崩れない設計だけを許可する |
-| 2 | **アクセントは一色、面は一つ** | 色相はグリーン 1 系統（GitHub Primer green）。塗り面として現れるのは**文字を載せる小さな面**（参加 CTA ×2、チャット自分側バブル = `accent-fill`）だけで、大面は持たない（C-30）。それ以外は「印」（ヒーロー句点、ポスター見出し、バッジ文字、区切りアイコン、フォーカスリング）に限る。競合する強調がないから、参加の動線が「声」になる |
+| 2 | **アクセントは一色、面は一つ** | 色相はグリーン 1 系統（GitHub Primer green）。塗り面として現れるのは**文字を載せる小さな面**（チャット自分側バブル = `accent-fill`）だけで、大面は持たない（C-30）。参加 CTA の面は Discord の Blurple — 本システムの色相ではなく、パートナーロゴと同じ第三者の識別色の引用（C-31 / U-21）。それ以外は「印」（ヒーロー句点、ポスター見出し、バッジ文字、区切りアイコン、フォーカスリング）に限る。競合する強調がないから、参加の動線が「声」になる |
 | 3 | **小さな文字の階層は色で作らない** | グラウンド（Y 0.890）で 4.5:1 を満たす文字色の上限は Y 0.159。neutral-700（Y 0.111）より明るく AA を保てる段は 700 との差が最大 1.30:1 で、階層として知覚できない。よって明るい面の文字色は **primary（ink）/ secondary（neutral-700）の 2 段** とし、tertiary（neutral-600、3.85）は大テキストと非テキスト専用にする。小さな文字の階層は size / weight / case が担う（Apple「Build hierarchy from weight + size + leading」） |
 | 4 | **反転面は同じ梯子を逆から読む** | 面のテキストは「**反対極の色 × 不透明度**」で定義する。暗い面（インク、ポスター）はグラウンド × α（ポスターが明るい緑面だった時期の「インク × α」は C-30 で不要に）。色を固定せず不透明度にすることで、ティントが面の色を継承し、一つの梯子がどちらの極でも成立する |
 | 5 | **状態は反対の極の不透明度で表す** | 明るい面のホバー/プレスはインクのアルファ、暗い面はグラウンドのアルファ。どの面でも同じ規則で、色を増やさない。フォーカスは常にアクセント（面ごとに段を変える: 明るい面 700 / インク面 300 / ポスター面 900） |
-| 6 | **モードは「抑制の度合い」** | `Mono` はアクセントが状態（フォーカス／選択／ホバー下線／プレス文字）にしか現れない状態で、アクセントが情報を担っていないことの証明として機能する。`Green accent` はそこに正確に 6 種の出現（マーキー区切り、活動バッジ、ヒーロー句点、ポスター見出し、参加 CTA とチャット自分側バブルの accent-fill）を加える。Mono で成立しない設計は Green でも不可 |
+| 6 | **モードは「抑制の度合い」** | `Mono` はアクセントが状態（フォーカス／選択／ホバー下線／プレス文字）にしか現れない状態で、アクセントが情報を担っていないことの証明として機能する。`Green accent` はそこに正確に 5 種の出現（マーキー区切り、活動バッジ、ヒーロー句点、ポスター見出し、チャット自分側バブルの accent-fill）を加える。Discord ボタンの Blurple は両モードで同じ（アクセントではない、C-31）。Mono で成立しない設計は Green でも不可 |
 | 7 | **色だけに頼らない（WCAG 1.4.1）** | リンクは下線で示す（インライン常時 1px、ナビ・ワードマークはホバーで 2px、フッター・ソーシャルはホバーで 1px）。現在地は 2px インク下線。バッジは文字を持つ。フォーカスは 2px オフセットのリング。モード切替で情報が失われないことがその検証になる |
 | 8 | **写真とロゴは原色のまま** | 画像に処理を掛けない（grayscale・tint・duotone を使わない、**DECISION U-21**）。実写と Humation のイラストの色は「コミュニティの実像」を運ぶ情報で、モノクロ化はそれを削っていた。当初の「彩度をアクセント一色に集約する」規則は撤回。パートナーロゴもブランド規定の色のまま |
 
@@ -147,9 +148,9 @@ GitHub Primer の green をそのまま採用（**DECISION C-29**、2026-09-12�
 | 300 | `#56d364` | 0.495 | 1.72 | 1.57 | 8.62 | インク面のフォーカスリング |
 | 400 | `#3fb950` | 0.363 | 2.27 | 2.07 | **6.54** | **accent 基底（印）**: インク面上の印（ヒーロー h1 の句点、ポスター見出し、選択）。**面には使わない**（C-30: 上に墨の文字を載せると読みにくい。明るい地の上では 2.27 で輪郭も読めない、C-25） |
 | 500 | `#2ea043` | 0.261 | 3.02 | 2.74 | 4.92 | ライブラリ予備（accent-fill のホバーは 700） |
-| 600 | `#238636` | 0.177 | 4.14 | 3.77 | 3.59 | **accent-fill**: 文字を載せる緑の面（参加 CTA ×2、チャット自分側バブル、C-30）。白 `neutral-0` の文字 4.63、面は ink 上 3.59 / ground 上 4.14 |
-| 700 | `#1a7f37` | 0.157 | 4.55 | 4.13 | 3.27 | 地の上の**図形**専用: フォーカスリング、マーキー区切り（3:1 ✓。4.5 は 0.05 の余裕しかなく hover-tint 上 4.04 で割るので文字には使わない）。accent-fill のホバー（白 5.08、ink 上 3.27） |
-| 800 | `#116329` | 0.092 | **6.62** | 6.01 | 2.25 | 地の上の**アクセント文字**の基底: リンク文字、活動バッジ。accent-fill のプレス（白 7.39） |
+| 600 | `#238636` | 0.177 | 4.14 | 3.77 | 3.59 | **accent-fill**: 文字を載せる緑の面（チャット自分側バブル、C-30。参加 CTA は C-31 で Blurple へ）。白 `neutral-0` の文字 4.63、面は ground 上 4.14（ink 上 3.59 はライブラリ） |
+| 700 | `#1a7f37` | 0.157 | 4.55 | 4.13 | 3.27 | 地の上の**図形**専用: フォーカスリング、マーキー区切り（3:1 ✓。4.5 は 0.05 の余裕しかなく hover-tint 上 4.04 で割るので文字には使わない）。accent-fill のホバー（ライブラリ。白 5.08、ink 上 3.27） |
+| 800 | `#116329` | 0.092 | **6.62** | 6.01 | 2.25 | 地の上の**アクセント文字**の基底: リンク文字、活動バッジ。accent-fill のプレス（ライブラリ。白 7.39） |
 | 900 | `#044f1e` | 0.057 | 8.77 | 7.97 | 1.69 | 12px 以下のアクセント文字、淡い塗り上の文字（green-200 上 7.33）、ポスター面上のリング（3.86）、高コントラスト時のアクセント文字 |
 
 コンセプトの赤 `#ec3013` はグラウンド上約 3:1 で本文不可。green-400 は墨地の上で 6.54 と十分に強いが、地の上では 2.27 で文字・輪郭ともに不可のため、**地の上のアクセントは 800（6.62）に切り替える**。green-700（4.55）は AA を数値上は通るが hover-tint 上で 4.04 に落ちるので文字には使わず、3:1 で足りる図形（リング・区切り）に限る。（DECISION C-25、C-26、C-29）
@@ -175,6 +176,18 @@ GitHub Primer の green をそのまま採用（**DECISION C-29**、2026-09-12�
 
 アルファは 13 個（ink 5、ground 5、indigo 2〈Indigo モードの記録用〉、green 1）。Figma では `Primitives` に RGBA リテラルとして置く（エイリアスはアルファを付与できない）。合成値: ground@88 / 72 / 48 over ink = `#dad9d8` / `#b8b7b6` / `#858483`。ink@6 / 12 / 24 / 48 over ground = `#e6e5e5` / `#dad9d8` / `#c0bfbf` / `#8e8c8c`。ink@88 / 72 / 48 over green-400 = `#243123` / `#29492b` / `#306f38`、ink@12 / 24 over green-400 = `#3ba64a` / `#389444`。ground@12 / 24 over ink = `#393737` / `#535150`。green-400@24 over ground = `#c8e4cb`、over ink = `#274329`。
 
+#### 1.2.4 Blurple（Discord ブランド色、500 / 530 / 560）
+
+Discord の公開ブランドカラー **Blurple `#5865F2`**（discord.com/branding）を、Discord へ出るボタンの面にだけ置く（**DECISION C-31**、2026-09-12、クライアント判断）。本システムの色相（Green）ではなく、パートナーロゴを原色で置くのと同じ**第三者の識別色の引用**（U-21）。Discord のガイドラインはロゴの「編集・変更・歪曲・再配色・再構成」を禁じ、Blurple の面に白いロゴを標準の組み合わせとして配布している — 緑の面に白ロゴを置いた C-30 の形は規約上は可でも、クライアントの所見どおり「Discord らしくない」。ホバー・プレスは同色相の暗い段（Discord のアプリの brand-530 / brand-560 と同値）。明るい方（brand-400 `#7983f5`）は白が 3.29 で割るので使わない。
+
+| Step | Hex | Y | vs ground | vs surface | vs ink | 白（on-discord） | 役割 |
+|---|---|---|---|---|---|---|---|
+| 500 | `#5865f2` | 0.178 | 4.12 | 3.75 | 3.60 | **4.61** | **discord/fill**: Discord へ出るボタンの面（Hero 主・Poster）。輪郭は ground / ink のどちらでも 3:1 ✓（極性を持たない） |
+| 530 | `#505cdc` | 0.145 | 4.81 | 4.37 | 3.09 | 5.38 | discord/hover。ink 上でも輪郭 3:1 を保つ唯一の暗い段 |
+| 560 | `#4752c4` | 0.114 | 5.74 | 5.22 | 2.59 | 6.42 | discord/pressed。ink 上 2.59 は押下の瞬間（duration/0）で、ラベル 6.42 が識別を担う |
+
+Blurple を文字・罫・印・大面に使わない。Discord 以外のサービス（X / Instagram / GitHub）のボタンは存在せず、マークは `currentColor` の黒 / 白のまま（U-38）。
+
 ### 1.3 セマンティックロール
 
 「=」は Mono と同値。
@@ -187,7 +200,7 @@ GitHub Primer の green をそのまま採用（**DECISION C-29**、2026-09-12�
 | `color/surface` | neutral-200 | = | FF SF | チャット相手側バブル、ペルソナ引用枠、画像プレースホルダ、チップの塗り（`chip/fill`） | グラウンドとの比 1.10 で罫線なしに輪郭が読める最小段 |
 | `color/logo-ground` | neutral-0（白） | = | FF | パートナーのロゴタイル（行を埋める空タイル含む）とマーキー帯**のみ** | 白背景のロゴ素材（jpg / png）と同じ面にして板として浮かせない（**U-33**）。ground との比 1.12。文字を置かない（旧 Placeholder の Overline は U-34 で撤去） |
 | `color/inverse/ground` | neutral-950 | = | FF | ヒーロー、ベント統計セル、ベント CTA セル、チャット自分側バブル | インクを塗りに転用 |
-| `color/poster/ground` | neutral-950 | **= neutral-950**（C-30） | FF | ポスター（Join）セクションのみ | Mono と同じ暗い面。2026-09-12 の一時期 green-400 の明るい面にしたが、上の墨の文字が読みにくく撤回。アクセントは面ではなく見出し（`poster/display`）と CTA（`accent-fill`）で現れる。専用ロール群は C-28 の名残として残す |
+| `color/poster/ground` | neutral-950 | **= neutral-950**（C-30） | FF | ポスター（Join）セクションのみ | Mono と同じ暗い面。2026-09-12 の一時期 green-400 の明るい面にしたが、上の墨の文字が読みにくく撤回。アクセントは面ではなく見出し（`poster/display`）で現れ、CTA は Discord の Blurple（C-31、§1.3.9）。専用ロール群は C-28 の名残として残す |
 
 #### 1.3.2 明るい面のテキスト
 
@@ -231,15 +244,15 @@ GitHub Primer の green をそのまま採用（**DECISION C-29**、2026-09-12�
 
 #### 1.3.5 アクセント
 
-アクセントは **2 極** で使う。**明るい地の上**では暗い段（700 / 800 / 900）が文字・線として働き、**インク面とポスター面**では green-400 が面・印として働く。同じ段を両方に使うことはできない（green-400 は地の上 2.27、green-800 はインク面 2.25）。**文字を載せる面**は 600（`accent-fill`）+ 白（`on-accent` = neutral-0、4.63）で、400 の面に墨の文字は載せない（C-30）。
+アクセントは **2 極** で使う。**明るい地の上**では暗い段（700 / 800 / 900）が文字・線として働き、**インク面とポスター面**では green-400 が面・印として働く。同じ段を両方に使うことはできない（green-400 は地の上 2.27、green-800 はインク面 2.25）。**文字を載せる面**は 600（`accent-fill`）+ 白（`on-accent` = neutral-0、4.63）で、400 の面に墨の文字は載せない（C-30）。参加 CTA の面は C-31 で Discord の Blurple（§1.2.4 / §1.3.9）に移り、緑の面はチャット自分側バブルだけ。
 
 | ロール | Mono | Green | Scopes | 使用箇所 | 比 |
 |---|---|---|---|---|---|
 | `color/accent` | green-400 | = | FF SF | 基底。ポスター面、インク面上の印。**明るい地の上で面として使わない**（C-25） | ink 6.54 / ground 2.27（不可） |
-| `color/accent-fill` | green-600 | = | FF | **文字を載せる緑の面**: 参加 CTA（Hero 主・Poster）、チャット自分側バブル（C-30） | 面 vs ink 3.59 / vs ground 4.14 |
+| `color/accent-fill` | green-600 | = | FF | **文字を載せる緑の面**: チャット自分側バブル（C-30。参加 CTA は C-31 で `discord/fill` へ） | 面 vs ground 4.14（vs ink 3.59 はライブラリ） |
 | `color/on-accent` | neutral-0 | = | TF SF | accent-fill 上の文字・アイコン（白。ground `#f3f2f2` だと 4.14 で N を割る） | 4.63 |
-| `color/accent-hover` | green-700 | = | FF | accent-fill のホバー（暗い方へ 1 段。明るい方へ動かすと白が 4.5 を割る） | on-accent 5.08、面 vs ink 3.27 |
-| `color/accent-pressed` | green-800 | = | FF | 同プレス | on-accent 7.39、面 vs ink 2.25（押下の瞬間） |
+| `color/accent-hover` | green-700 | = | FF | accent-fill のホバー（ライブラリの Accent ボタン。暗い方へ 1 段 — 明るい方へ動かすと白が 4.5 を割る） | on-accent 5.08、面 vs ink 3.27 |
+| `color/accent-pressed` | green-800 | = | FF | 同プレス（ライブラリ） | on-accent 7.39、面 vs ink 2.25（押下の瞬間） |
 | `color/accent-subtle` | green-200 | = | FF SF | 淡い強調塗り（ライブラリの強調セル・チップ） | ground との差 1.20 |
 | `color/on-accent-subtle` | green-900 | = | TF | 淡い塗り上の文字 | 7.33 |
 | `color/accent-text` | green-800 | = | TF | 13px 以上のアクセント文字: リンクのホバー下線・プレス文字（Label Nav / Footnote / Title 3） | 6.62（ground）/ 6.01（surface） |
@@ -248,7 +261,7 @@ GitHub Primer の green をそのまま採用（**DECISION C-29**、2026-09-12�
 
 `accent-text` に green-700 を使わない根拠（DECISION C-26 改、C-29）: green-700 はグラウンド上 **4.55** で AA（4.5）を 0.05 しか超えず、hover-tint 上では 4.04 に落ちる。3:1 で足りる図形（フォーカスリング、マーキー区切り）にだけ 700 を使い、文字は 800 を床にする。`accent-text-small` の根拠: 高彩度の有彩色は同じ輝度比でも細字が痩せて見えるため、12px 以下は 1 段深い 900 を使う。この補正は有彩色固有で、無彩色（ink-secondary 5.83）には適用しない。
 
-モード依存は 6 行（C-30 後）。Mono と Green の差は「4 つの出現」（マーキー区切り、活動バッジ、ヒーロー句点、ポスター見出し）と、ポスター CTA の面・文字の 2 行。ポスター面の明度反転（C-28 の 6 行）は C-30 で無くなり、`poster/ground` `poster/ink` `poster/ink-secondary` `poster/selection` `poster/focus/ring` は両モードで同値:
+モード依存は 4 行（C-31 後）。Mono と Green の差は「4 つの出現」（マーキー区切り、活動バッジ、ヒーロー句点、ポスター見出し）だけ — ポスター CTA の面・文字の 2 行（`poster/action/*`）は C-31 で Discord の Blurple（モード非依存）に置き換わり、ライブラリに残る。ポスター面の明度反転（C-28 の 6 行）は C-30 で無くなり、`poster/ground` `poster/ink` `poster/ink-secondary` `poster/selection` `poster/focus/ring` は両モードで同値:
 
 | ロール | Mono | Green accent | Scopes | 使用箇所 | 比 |
 |---|---|---|---|---|---|
@@ -260,11 +273,11 @@ GitHub Primer の green をそのまま採用（**DECISION C-29**、2026-09-12�
 | `color/poster/ink` | → inverse/ink | = | TF SF SC | ポスターの primary 文字 | 14.86 |
 | `color/poster/ink-secondary` | → inverse/ink-secondary | = | TF | ポスターの secondary 文字 | 11.78 |
 | `color/poster/selection` | → inverse/selection | = | FF | ポスター面の `::selection` | 上の primary 9.78 |
-| `color/poster/action/fill` | → inverse/action/fill (neutral-100) | **→ accent-fill (green-600)** | FF | ポスター CTA の面（緑のボタン、C-30） | 面 vs ポスター 14.86 / 3.59 |
-| `color/poster/action/ink` | → inverse/action/ink (neutral-950) | **→ on-accent (neutral-0)** | TF SF | 同ラベル・アイコン | 14.86 / 4.63 |
+| `color/poster/action/fill` | → inverse/action/fill (neutral-100) | **→ accent-fill (green-600)** | FF | ライブラリ（C-30 のポスター CTA の面。C-31 で `discord/fill` に置換） | 面 vs ポスター 14.86 / 3.59 |
+| `color/poster/action/ink` | → inverse/action/ink (neutral-950) | **→ on-accent (neutral-0)** | TF SF | 同ラベル・アイコン（ライブラリ） | 14.86 / 4.63 |
 | `color/poster/focus/ring` | → focus/ring-inverse (green-300) | = | SC | ポスター面上のリング | 8.62 |
 
-ポスター専用の `action` と `focus` を切ったのは、ポスター面の明度が Mono と Green で反転する設計（C-28）のため。C-30 で反転は無くなったが、CTA の面だけはモードで変わる（Mono: ground の塗り / Green: accent-fill）ので `poster/action/*` は残す。（DECISION C-28、C-30）
+ポスター専用の `action` と `focus` を切ったのは、ポスター面の明度が Mono と Green で反転する設計（C-28）のため。C-30 で反転は無くなり、C-31 でポスター CTA は Discord の Blurple（モードに依らない `discord/*`）になったので、`poster/action/*` は Mono 検証用のライブラリとして残すだけ。（DECISION C-28、C-30、C-31）
 
 #### 1.3.6 状態
 
@@ -293,17 +306,19 @@ GitHub Primer の green をそのまま採用（**DECISION C-29**、2026-09-12�
 
 #### 1.3.7 アクション（ボタン）
 
-地の上の主要アクション（Nav CTA）はインク色ボタン。**参加 CTA（Hero 主・Poster）は accent-fill の緑のボタン**（DECISION C-30。C-18 は撤回 — 競合する緑の大面が無くなった）。
+地の上の主要アクション（Nav CTA）はインク色ボタン。**参加 CTA（Hero 主・Poster）は Discord の Blurple のボタン**（`discord/*`、DECISION C-31。C-30 の accent-fill は同日に置換 — Discord マークを自社の緑に載せると「Discord らしくない」）。
 
 | ロール | 値 | Scopes | 使用箇所 | 比 |
 |---|---|---|---|---|
 | `color/action/fill` / `fill-hover` / `fill-pressed` | neutral-950 / 800 / 700 | FF | ナビ CTA「参加する」、Mobile メニュー CTA、スキップリンク | ラベル 14.86 / 9.04 / 5.83 |
 | `color/action/ink` | neutral-100 | TF SF | 同ラベルとアイコン | — |
 | `color/inverse/action/fill` / `fill-hover` / `fill-pressed` | neutral-100 / 200 / 300 | FF | ヒーロー主ボタン（**インク面のみ**） | ラベル 14.86 / 13.51 / 11.19 |
-| `color/poster/action/fill` | Mono → inverse/action/fill (neutral-100) / Green → **accent-fill (green-600)** | FF | ポスター CTA の面 | 面 vs ポスター 14.86 / 3.59 |
-| `color/poster/action/fill-hover` | Mono → inverse/action/fill-hover (neutral-200) / Green → accent-hover (green-700) | FF | 同ホバー。汎用 `action/fill-hover` を直接引くと Mono で反転しないので専用ロールにする | 13.51 / 3.27 |
-| `color/poster/action/fill-pressed` | Mono → inverse/action/fill-pressed (neutral-300) / Green → accent-pressed (green-800) | FF | 同プレス。ホバーの次の 1 段 | 11.19 / 2.25（押下の瞬間のみ 3:1 未満。ラベル 7.39） |
-| `color/poster/action/ink` | Mono → inverse/action/ink (neutral-950) / Green → on-accent (neutral-0) | TF SF | 同ラベルとアイコン | 14.86 / 4.63（hover 5.08 / pressed 7.39） |
+| `color/poster/action/fill` | Mono → inverse/action/fill (neutral-100) / Green → **accent-fill (green-600)** | FF | ライブラリ（C-30 のポスター CTA の面。C-31 で `discord/fill` へ） | 面 vs ポスター 14.86 / 3.59 |
+| `color/poster/action/fill-hover` | Mono → inverse/action/fill-hover (neutral-200) / Green → accent-hover (green-700) | FF | 同ホバー（ライブラリ）。汎用 `action/fill-hover` を直接引くと Mono で反転しないので専用ロールにする | 13.51 / 3.27 |
+| `color/poster/action/fill-pressed` | Mono → inverse/action/fill-pressed (neutral-300) / Green → accent-pressed (green-800) | FF | 同プレス（ライブラリ）。ホバーの次の 1 段 | 11.19 / 2.25（押下の瞬間のみ 3:1 未満。ラベル 7.39） |
+| `color/poster/action/ink` | Mono → inverse/action/ink (neutral-950) / Green → on-accent (neutral-0) | TF SF | 同ラベルとアイコン（ライブラリ） | 14.86 / 4.63（hover 5.08 / pressed 7.39） |
+| `color/discord/fill` / `hover` / `pressed` | blurple-500 / 530 / 560（モード非依存） | FF | 参加 CTA（Hero 主・Poster）の面（C-31、§1.3.9） | ラベル 4.61 / 5.38 / 6.42、面 vs ink 3.60 / 3.09 / 2.59（プレスは押下の瞬間） |
+| `color/on-discord` | neutral-0 | TF SF | 同ラベル・Discord マーク・矢印 | — |
 | `color/inverse/action/ink` | neutral-950 | TF SF | 同ラベルとアイコン | — |
 
 規則（DECISION C-10）: ホバーは基底から中間調へ 1 段（950 → 800。900 は 950 との差 1.18 で区別できないため飛ばす）、プレスはさらに 1 段（700、800 との差 1.55）。Apple の「押下は即時、ホバーより強く」に従い、プレスがホバーの手前に戻ることはない。アウトライン・ゴースト・アイコンボタンはラベルを ink（インク面は inverse/ink）に固定し、状態は `state/*` のティントだけで示す。ティント上にアクセント文字を置かない（DECISION C-24: 600 は pressed-tint 上 4.59 で余裕がない）。マーキー停止／再生ボタンとスキップリンクは上記と `divider` / `focus/ring` で足り、専用ロールを置かない。
@@ -321,6 +336,17 @@ GitHub Primer の green をそのまま採用（**DECISION C-29**、2026-09-12�
 | `color/shadow` | `alpha/ink/24` | — | `shadow/sm` / `md` / `lg` の色（ライブラリ。ページに影はない） | 影は 1 濃度、段差は幾何（§4.4） |
 | `color/backdrop` | `alpha/ink/48` | FF | ダイアログの幕（ライブラリ）。`prefers-reduced-transparency` / `prefers-contrast: more` では `alpha/ink/88` | 幕は面を半分に落とす |
 | アイコン | currentColor | — | すべての Tabler アイコン | 行のテキスト色を継ぐ。アイコン専用トークンは置かない。最薄値は ink-tertiary |
+
+#### 1.3.9 ブランド色（第三者、C-31）
+
+| ロール | 値 | Scopes | 使用箇所 | 比 |
+|---|---|---|---|---|
+| `color/discord/fill` | blurple-500 `#5865f2` | FF | Discord へ出るボタンの面（Hero 主・Poster）。Mono / Green で不変 | 面 vs ink 3.60 / vs ground 4.12 |
+| `color/on-discord` | neutral-0 | TF SF | 同ラベル（Label/M 15 B）、Discord マーク、矢印 | 4.61（hover 5.38 / pressed 6.42） |
+| `color/discord/hover` | blurple-530 `#505cdc` | FF | 同ホバー（暗い方へ 1 段） | 面 vs ink 3.09 / vs ground 4.81 |
+| `color/discord/pressed` | blurple-560 `#4752c4` | FF | 同プレス | 面 vs ink 2.59（押下の瞬間）/ vs ground 5.74 |
+
+アクセント（§1.3.5）の規則は適用しない — これは本システムの色ではなく、行き先の識別子。だから (1) ボタン以外（文字・罫・印・面）に置かない、(2) 地の上でも同じ値（Blurple は ground 上 4.12 で輪郭 3:1 を満たし、極性を持たない）、(3) フォーカスリングは面の規則どおり（ground `focus/ring`、ink `focus/ring-inverse`）で Blurple にしない。
 
 ### 1.4 コントラストマトリクス
 
@@ -376,20 +402,28 @@ GitHub Primer の green をそのまま採用（**DECISION C-29**、2026-09-12�
 | inverse/ink | inverse/selection 上（green-400@24） | N | 9.78 | PASS | — |
 | inverse/hairline (900) | 格子線 | — | 1.18 | n/a | テクスチャ |
 
-#### 1.4.4 アクセントの面 `accent-fill` `#238636`（参加 CTA ×2、チャット自分側バブル。C-30）
+#### 1.4.4 アクセントの面 `accent-fill` `#238636`（チャット自分側バブル。C-30 / C-31）
 
-ポスター面は C-30 でインク面に戻った（§1.4.3 の値）。緑が面として現れるのは文字を載せる 3 つの小さな面だけで、文字は白（`on-accent` = neutral-0）。
+ポスター面は C-30 でインク面に戻った（§1.4.3 の値）。緑が面として現れるのは文字を載せる小さな面 1 つ（チャット自分側バブル）だけで、文字は白（`on-accent` = neutral-0）。参加 CTA の面は C-31 で Discord の Blurple になった（§1.4.5）。
 
 | ロール | 代表用途 | 区分 | 比 | 判定 | 修正 |
 |---|---|---|---|---|---|
-| on-accent (neutral-0) | CTA ラベル Label/M 15 B、自分側バブル Callout 14 B、Discord マーク・矢印 | N | 4.63 | PASS | ground `#f3f2f2` だと 4.14 で FAIL → 白 |
-| on-accent | accent-hover (700) / accent-pressed (800) 上 | N | 5.08 / 7.39 | PASS | — |
-| accent-fill (600) | 面の輪郭 vs ink（Hero・Poster の CTA） | U | 3.59 | PASS | — |
+| on-accent (neutral-0) | 自分側バブル Callout 14 B | N | 4.63 | PASS | ground `#f3f2f2` だと 4.14 で FAIL → 白 |
 | accent-fill (600) | 面の輪郭 vs ground / surface（チャット自分側バブル） | U | 4.14 / 3.77 | PASS | — |
-| accent-hover (700) / accent-pressed (800) | 面の輪郭 vs ink | U | 3.27 / 2.25 | hover PASS / pressed **FAIL** | 押下は duration/0 の瞬間。ラベル 7.39 が識別を担う |
-| focus/ring-inverse (green-300) | CTA のリング（offset 2 でインク面の上） | U | 8.62 | PASS | — |
+| on-accent / accent-hover (700)・accent-pressed (800) | ライブラリ（Accent ボタン、K-5）。面 vs ink 3.59 / 3.27 / 2.25 | N | 5.08 / 7.39 | PASS | — |
 | poster/display (green-400) | ポスター見出し Display L 96 EB（インク面上） | L | 6.54 | PASS | — |
 | （旧）poster/ink on green-400 | 明るい緑面だった時期（2026-09-12 の一時期） | N | 6.54 | PASS だが読みにくい | クライアント所見で撤回（C-30）。数値は付録 C.5 |
+
+#### 1.4.5 Discord の面 `discord/fill` `#5865f2`（参加 CTA ×2。C-31）
+
+| ロール | 代表用途 | 区分 | 比 | 判定 | 修正 |
+|---|---|---|---|---|---|
+| on-discord (neutral-0) | CTA ラベル Label/M 15 B、Discord マーク 20、矢印 20 | N | 4.61 | PASS | — |
+| on-discord | discord/hover (530) / discord/pressed (560) 上 | N | 5.38 / 6.42 | PASS | — |
+| discord/fill (500) | 面の輪郭 vs ink（Hero・Poster の CTA） | U | 3.60 | PASS | — |
+| discord/fill (500) | 面の輪郭 vs ground / surface（地の上に置いても成立する） | U | 4.12 / 3.75 | PASS | — |
+| discord/hover (530) / discord/pressed (560) | 面の輪郭 vs ink | U | 3.09 / 2.59 | hover PASS / pressed **FAIL** | 押下は duration/0 の瞬間。ラベル 6.42 が識別を担う（accent-pressed 2.25 と同じ扱い） |
+| focus/ring-inverse (green-300) | CTA のリング（offset 2 でインク面の上） | U | 8.62 | PASS | リングは面の規則。Blurple の隣でも緑のまま（C-8） |
 
 ### 1.5 ルール
 
@@ -404,7 +438,7 @@ GitHub Primer の green をそのまま採用（**DECISION C-29**、2026-09-12�
 | マーキー区切りアイコン | — | ○ | 700 |
 | 活動バッジ文字 | — | ○ | 800 |
 | ポスター見出し（Display L） | — | ○ | 400（インク面上） |
-| 参加 CTA（Hero 主 / Poster）とチャット自分側バブルの面 | — | ○ | 600（accent-fill、白文字。hover 700 / pressed 800） |
+| チャット自分側バブルの面 | — | ○ | 600（accent-fill、白文字） |
 | ヒーロー h1 の句点（U-39） | — | ○ | 400（墨の板の上） |
 | 上記以外（見出し、アイコン、ボタン塗り、罫線、写真の着色、ホバー中の文字色） | × | × | — |
 
@@ -413,14 +447,15 @@ GitHub Primer の green をそのまま採用（**DECISION C-29**、2026-09-12�
 - アクセントを文字に使うときの下限: 13px 以上は 800（6.62）、12px 以下は 900（8.77）。green-700 は 4.55 で余裕がなく hover-tint 上で割るため文字に使わない。ティント面にはアクセント文字を置かない（バッジのみ例外、900 で 6.95）。
 - インク面のアクセントは印と見出し（ヒーロー句点、ポスター見出し、選択）で、値は 400。本文サイズの文字には使わない。
 - 明るい地の上で green-400 を**面**として使わない（2.27。C-25）。地の上のアクションは `action/fill`（インク）で、グリーンは大面・印・状態に限る。
-- アクセント塗り（accent-fill 600）は**文字を載せる小さな面**（参加 CTA ×2、自分側バブル）だけ。セクション背景のような大面には使わない — 400 に墨の文字を載せると読みにくく、600 に白を載せた大面は重い（C-30）。2 つ目のアクセント面を足したくなったら、それはアクセントではなく新しいセクション色であり、本システムの外。
+- 参加 CTA（Hero 主 / Poster）の面は Discord の Blurple（`discord/fill`、C-31）。アクセントの出現に数えない — 第三者の識別色の引用（U-21）で、Mono でも変わらない。
+- アクセント塗り（accent-fill 600）は**文字を載せる小さな面**（自分側バブル）だけ。セクション背景のような大面には使わない — 400 に墨の文字を載せると読みにくく、600 に白を載せた大面は重い（C-30）。2 つ目のアクセント面を足したくなったら、それはアクセントではなく新しいセクション色であり、本システムの外。
 - 既定モードは **Green accent**（DECISION C-29、2026-09-12 クライアント確定。C-17 の Lime accent を置換）、Mono は検証モード。
 
 #### 1.5.2 暗い面
 
 - テキストは `inverse/*` の梯子だけを使い、実色のニュートラルを置かない（ティントが面の色相を継がなくなる）。
 - インク面: primary / secondary / tertiary を使用可、quaternary はディスプレイサイズのみ。
-- ポスター面はインク面と同じ規則（C-30）: primary / secondary のみ、状態は `inverse/state/*`。CTA は accent-fill（白ラベル）、副次があれば Outline。リングは `focus/ring-inverse`。
+- ポスター面はインク面と同じ規則（C-30）: primary / secondary のみ、状態は `inverse/state/*`。CTA は Discord の Blurple（`discord/fill`、白ラベル、C-31）、副次があれば Outline。リングは `focus/ring-inverse`。
 - ヒーロー・ベントのインクセルはモードで変わらない。モードが差し替えるのはポスターの見出しと CTA、ヒーロー句点、マーキー区切り、活動バッジだけ。
 
 #### 1.5.3 Do / Don't
@@ -666,12 +701,14 @@ CSS 変数名は Figma 名の `/` を `-` に置換する（例 `--color-inverse
 | `color/inverse/ink-quaternary`（ground@48） | Display XL 導入句のみ | 4.45 | PASS（大きな文字 3:1。12–17px には **使わない**） |
 | green-800（明るい地の文字色をそのまま持ち込む） | — | 2.25 | FAIL → インク面のアクセントは印のみ（`color/accent-on-ink` = green-400。抑制により文字には使わない） |
 
-#### 2.4.3 アクセントの面（`accent-fill` green-600、参加 CTA とチャット自分側バブル。C-30）
+#### 2.4.3 アクセントの面（`accent-fill` green-600、チャット自分側バブル。C-30 / C-31）と Discord の面（`discord/fill`、参加 CTA。C-31）
 
 | 色トークン | 使うロール | 比 | 判定 |
 |---|---|---|---|
-| `color/on-accent`（neutral-0） | Label/M 15 B（参加 CTA）、Callout 14 B（自分側バブル） | 4.63 | PASS |
-| `color/on-accent` on accent-hover / accent-pressed | 同 | 5.08 / 7.39 | PASS |
+| `color/on-accent`（neutral-0） | Callout 14 B（自分側バブル） | 4.63 | PASS |
+| `color/on-accent` on accent-hover / accent-pressed | 同（ライブラリ） | 5.08 / 7.39 | PASS |
+| `color/on-discord`（neutral-0）on `discord/fill` | Label/M 15 B（参加 CTA: Hero 主・Poster）、Discord マーク、矢印 | 4.61 | PASS |
+| `color/on-discord` on discord/hover / discord/pressed | 同 | 5.38 / 6.42 | PASS |
 | `color/poster/display`（green-400）on ink | Display L（ポスター見出し） | 6.54 | PASS（L） |
 | ground `#f3f2f2` on accent-fill | — | 4.14 | **FAIL** → ラベルは neutral-0 |
 | ink on green-400（旧ポスター面） | — | 6.54 | PASS だが読みにくい → C-30 で面をインクに |
@@ -1261,7 +1298,7 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 | `color/inverse/ink` / `inverse/ink-tertiary`（ground @ 72%） | ink | 14.86 / 8.29 | ✓ hero kicker 行 |
 | `color/pop/badge` green-800（Green）/ ink-secondary（Mono） | ground | 6.62 / 5.83 | ✓ badge の矢印 |
 | `color/pop/separator` green-700（Green）/ ink-tertiary（Mono） | ground | 4.55 / 3.85 | ✓（R17: アイコンは形なので 3:1 を床にする） |
-| `color/on-accent` neutral-0 | accent-fill（参加 CTA の Discord マーク・矢印、C-30） | 4.63 | ✓ |
+| `color/on-discord` neutral-0 | discord/fill（参加 CTA の Discord マーク・矢印、C-31） | 4.61 | ✓ |
 
 **DECISION L-15** typing dot と placeholder のアイコンは `color/ink-tertiary`（3.85 / 3.50）以上。コンセプトは n500 の `currentColor` だが非テキストとして不足。
 
@@ -1487,7 +1524,7 @@ Spring は移動にだけ使う（M2）。本章の部品で移動するのは M
 | Chat reaction | 実際の絵文字 👍 / 👀（U-25） | 16 相当 | `🙌` → 👍 |
 | Mobile menu 開 / 閉 | `menu-2` / `x` | Icon button md 24（sm なら 20） | — |
 | Image placeholder | `photo` | 24 | — |
-| Discord への導線（ボタン） | `brand-discord`（**先頭**）+ `arrow-up-right`（末尾） | 16 / 20 | — |
+| Discord への導線（ボタン。面は Discord の Blurple、C-31） | 公式マーク `BrandDiscord`（**先頭**、白）+ `arrow-up-right`（末尾） | 16 / 20 | — |
 | SNS への導線（X / Instagram / GitHub） | 公式ブランドマーク（§5.1、**先頭**）+ `arrow-up-right`（末尾） | 16 | — |
 
 **DECISION U-19** Discord と SNS の導線にはブランドマークを**先頭**に添える。行き先が「外部」であることは `arrow-up-right` が言うが、**どこへ**行くかは文字を読まないと分からない。ロゴは読む前に分かる唯一の記号で、ここだけは §5.1 の「アイコンは装飾、意味は隣の文字が運ぶ」の例外にあたる（マークそのものが固有名詞）。
@@ -1548,7 +1585,7 @@ Focus-visible は全スタイル共通で **リング 2px offset 2**、色は地
 | | Hover | `state/hover-tint` | ink（13.21） | — | |
 | | Pressed | `state/pressed-tint` | ink（11.78） | — | |
 
-- **DECISION K-5 改（C-30）** ground 地では Accent・Outline・Ghost を**ページに置かない**（Nav CTA・Menu panel CTA・Skip link は Ink solid。帯の中で緑を増やさない）。**ink 地の参加 CTA（Hero 主・Poster）は Accent**（accent-fill + 白）— 参加の動線だけが緑を面で持つ。旧 K-5 の根拠（lime-400 の面は地の上 1.37）は accent-fill を 600 にしたことで解けた。
+- **DECISION K-5 改（C-30 → C-31）** ground 地では Accent・Outline・Ghost を**ページに置かない**（Nav CTA・Menu panel CTA・Skip link は Ink solid。帯の中で色を増やさない）。**ink 地の参加 CTA（Hero 主・Poster）は Discord**（`discord/fill` Blurple + 白、C-31）— 参加の動線だけが有彩色の面を持ち、その色は行き先の持ち主のもの。C-30 の Accent（accent-fill + 白）は同日に置換し、Accent はどの地でもライブラリ。旧 K-5 の根拠（lime-400 の面は地の上 1.37）は accent-fill を 600 にしたことで解けている。
 - **DECISION K-2** Outline の枠は `color/divider`（2.59）ではなく **currentColor（ink）**。枠だけがボタンを識別する情報なので非テキスト 3:1 が要る（WCAG 1.4.11）。
 - Ghost のラベルは ink 固定（R21）。
 
@@ -1559,14 +1596,17 @@ Focus-visible は全スタイル共通で **リング 2px offset 2**、色は地
 | **Ground solid** | Default | `inverse/action/fill` 100 | `inverse/action/ink` ink（14.86） | — | Ink / Solid（H:46, 233） |
 | | Hover | `inverse/action/fill-hover` 200 | ink（13.51） | — | |
 | | Pressed | `inverse/action/fill-pressed` 300 | ink（11.19） | — | |
-| **Accent**（参加 CTA、C-30） | Default | `accent-fill` green-600（面 vs ink 3.59） | `on-accent` neutral-0（4.63） | — | — |
+| **Discord**（参加 CTA、C-31） | Default | `discord/fill` blurple-500（面 vs ink 3.60） | `on-discord` neutral-0（4.61） | — | — |
+| | Hover | `discord/hover` blurple-530（3.09） | 白（5.38） | — | |
+| | Pressed | `discord/pressed` blurple-560（2.59、押下の瞬間） | 白（6.42） | — | |
+| **Accent**（ライブラリ。C-30 → C-31） | Default | `accent-fill` green-600（面 vs ink 3.59） | `on-accent` neutral-0（4.63） | — | — |
 | | Hover | `accent-hover` green-700（3.27） | 白（5.08） | — | |
 | | Pressed | `accent-pressed` green-800（2.25、押下の瞬間） | 白（7.39） | — | |
 | **Outline** | Default | なし | `inverse/ink` | `inverse/outline`（14.86） | Ink / Outline 55・100 を統合（R3） |
 | | Hover | `inverse/state/hover-tint` | ground（10.58） | 同 | |
 | | Pressed | `inverse/state/pressed-tint` | ground（7.06） | 同 | |
 
-- 制約: **Outline は ink 地専用**（Hero）。Poster もインク面（C-30）なので Outline を置けるが、現ページの Poster は Accent 1 本。Poster の CTA は `poster/action/*`（Green: accent-fill 系 / Mono: ground の塗り）を通す。
+- 制約: **Outline は ink 地専用**（Hero）。Poster もインク面（C-30）なので Outline を置けるが、現ページの Poster は Discord 1 本（C-31）。`poster/action/*` はライブラリ（Mono 検証用）。
 - 同じ面に主ボタン（Accent または Ground solid）があるとき副次は Outline。
 
 **Icon button（`Button / Icon`）**
@@ -1597,7 +1637,7 @@ Focus-visible は全スタイル共通で **リング 2px offset 2**、色は地
 - 和欧間に手動スペースを **入れない**（`Discordに参加する`）。自動アキも無効（§2.6.2）。
 - 外部リンクは `arrow-up-right`、サイト内は `arrow-right`、ページ内スクロールはアイコンなし（§6.1.9）。矢印は必ず末尾。
 - ラベルに記号（`→`、`!`）を含めない。
-- 同一画面の主 CTA は 1 つ（Hero: Ground solid、Poster: Ground solid、Bento: Outline は副次）。
+- 同一画面の主 CTA は 1 つ（Hero: Discord、Poster: Discord、副次は Outline）。
 
 #### 6.2.6 Figma
 
@@ -1618,10 +1658,10 @@ Focus-visible は全スタイル共通で **リング 2px offset 2**、色は地
 |---|---|---|---|
 | Nav CTA（Desktop） | Ground / Ink / **sm** | `参加する` | `arrow-up-right` 16 |
 | Nav CTA（Mobile） | Ground / Ink / **md** | `参加する` | `arrow-up-right` 20 |
-| Hero 主 | On Ink / **Accent** / md（C-30） | `参加する` | Discord マーク 20 + `arrow-up-right` 20 |
+| Hero 主 | On Ink / **Discord** / md（C-31） | `参加する` | Discord マーク 20 + `arrow-up-right` 20 |
 | Hero 副 | On Ink / Outline / md | `活動を見る` | なし（ページ内スクロール） |
 | ~~Bento CTA~~ | ~~On Ink / Outline / md~~（U-40 で撤去） | — | — |
-| Poster | On Ink / **Accent** / md（`poster/action/*`、C-30） | `Discordに参加する` | Discord マーク 20 + `arrow-up-right` 20 |
+| Poster | On Ink / **Discord** / md（C-31） | `Discordに参加する` | Discord マーク 20 + `arrow-up-right` 20 |
 | Mobile menu | Icon / Ground / md | — | `menu-2` / `x` 24 |
 | Menu panel CTA | Ground / Ink / md、`fullWidth` | `参加する` | `arrow-up-right` 20 |
 | Skip link | Ground / Ink / sm（D）/ md（M） | `本文へスキップ` | なし |
@@ -1782,7 +1822,7 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 | h1 | `Display/XL` **116** / 56、`lang="en"`。**`Hack Your Limits.`**（タグラインと同文、**DECISION U-37**）。文を**墨の板**（`inverse/ground` 実色、inline-block、padding 左右 **0.2em** / 上下 **0.1em**、左右は `−0.2em` の負マージンで container の外へ吊るし**字の左端**を lead と揃える）に載せ、文は `inverse/ink`（14.86）、句点 **`.` だけ `color/hero/word`**（**DECISION U-39**。U-37 の「動詞 `Hack` をアクセント」は撤回 — 板が強調を担うので色の強調は 1 か所）。板を inline ではなく inline-block にするのは、この書体の content area（≈ 1.6em）が行送り 1.11 を超えて背景が上下 30px はみ出すため。Desktop 1 行（板 ≈ 1177 = 1131 + 46、124 のままだと 1209 で 1280 幅では入るのに 1440 幅で折れるため上限を 116 に）。Mobile は板の中で `Hack Your` / `Limits.` の自然折返し（`Hack Your` ≈ 322 ≤ 342）。著者改行は入れない。`text-wrap: balance` は使わない。名前は可視の文そのもの（visually-hidden なし） |
 | lead | `Title/1` **32 / 26**、`inverse/ink`（14.86）。Display 124 と本文 16 の間に中間の階層を作る（**DECISION U-5**） |
 | 段落 | `Body/L` 16、`inverse/ink-secondary`（11.78）、`max-width: measure/paragraph` 588（≈ 36.8 全角）。Mobile は container 幅 |
-| actions | 横 flex、gap `inline/sm` 12。主 = On Ink / **Accent** / md（accent-fill + 白、Discord マーク先頭、C-30）、副 = On Ink / Outline / md（アイコンなし）。Mobile も 1 行（255 ≤ 342） |
+| actions | 横 flex、gap `inline/sm` 12。主 = On Ink / **Discord** / md（`discord/fill` Blurple + 白、Discord マーク先頭、C-31）、副 = On Ink / Outline / md（アイコンなし）。Mobile も 1 行（255 ≤ 342） |
 | 縦リズム | h1 → lead → actions は `stack/xl` 32、lead → 段落は `stack/xs` 8（DECISION L-6） |
 | 状態 | ボタン §6.2、Focus ring `focus/ring-inverse`、Selection `inverse/selection` |
 | Reveal | 段は h1 0 / lead 1 / actions 2（meta strip 撤去で 1 段詰める）。§7.4.1（Hero はオブザーバなし、`document.fonts.ready` か 400ms） |
@@ -2144,7 +2184,7 @@ stack/xl 32
 section/pad-display 96 (M 64)
 ```
 
-**DECISION C-30**（2026-09-12、クライアント判断）ポスター面を**インク面**にする。Green の 400 を面にして墨の文字を載せた版（C-27 / C-28 の明るい緑面）は、数値上 6.54 で AA を通っても「見にくい」という所見だった — 中明度の高彩度面に墨の本文は、輝度差があっても色の振動で読みにくい。緑は面ではなく、見出し「Hack Your Limits.」（`poster/display` = green-400、ink 上 6.54）と参加 CTA の緑のボタン（`accent-fill` = green-600 + 白 4.63）で出す。Hero（インク面 + 墨の板の h1）と同じ面で開幕と終幕が対になり、GitHub のダークモードと同じ「墨地に緑」の表情になる。上端の 2px 罫（C-27）は撤去 — 面が地に対して 14.86 で、境界は色面の切り替えそのもの。
+**DECISION C-30**（2026-09-12、クライアント判断）ポスター面を**インク面**にする。Green の 400 を面にして墨の文字を載せた版（C-27 / C-28 の明るい緑面）は、数値上 6.54 で AA を通っても「見にくい」という所見だった — 中明度の高彩度面に墨の本文は、輝度差があっても色の振動で読みにくい。緑は面ではなく、見出し「Hack Your Limits.」（`poster/display` = green-400、ink 上 6.54）で出す（参加 CTA も C-30 の時点では緑のボタンだったが、同日の C-31 で Discord の Blurple に置換）。Hero（インク面 + 墨の板の h1）と同じ面で開幕と終幕が対になり、GitHub のダークモードと同じ「墨地に緑」の表情になる。上端の 2px 罫（C-27）は撤去 — 面が地に対して 14.86 で、境界は色面の切り替えそのもの。
 
 | 要素 | 仕様 |
 |---|---|
@@ -2153,7 +2193,7 @@ section/pad-display 96 (M 64)
 | display | `Display/L` **96 / 40**、**`poster/display`（green-400、6.54）**、`<h2>`、2 行（著者改行）。Mobile 6 全角 × 40 = 240 ≤ 272 |
 | 段落 | `Body/M` 15、`poster/ink-secondary`、`max-width: measure/paragraph` 588 |
 | actions | 横 flex、`align-items: center`、ボタン ↔ Social `inline/lg` 24、Social 間 `inline/lg` 24、`flex-wrap`（Mobile: ボタン → 次行に Social） |
-| CTA | `poster/action/*` = Green: **accent-fill / accent-hover / accent-pressed + on-accent（白）**、Mono: ground の塗り。md、Discord マーク 20（先頭、U-19）+ `Discordに参加する` + `arrow-up-right` 20。面 vs ink 3.59、ラベル 4.63（hover 5.08 / pressed 7.39） |
+| CTA | **Discord**（`discord/fill` Blurple + `on-discord` 白、モード非依存、C-31）。md、Discord マーク 20（先頭、U-19）+ `Discordに参加する` + `arrow-up-right` 20。面 vs ink 3.60、ラベル 4.61（hover 5.38 / pressed 6.42） |
 | Social | ブランドマーク **20 のみ** × 3（公式素材 §5.1 / U-38）。`poster/ink-secondary` → hover / pressed `poster/ink`（white）+ 1px 下線、hit area 44 角（U-28） |
 | Focus / Selection | `poster/focus/ring` = `focus/ring-inverse`（green-300、ink 上 8.62）、`poster/selection` = `inverse/selection`（`#274329`、上の ground 9.78） |
 
@@ -2414,7 +2454,9 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | `inverse/ink-quaternary` / ink | #858483 → #201e1d | 4.45 | 「仲間と、」124 EB のみ | L | ✓（N には使わない） |
 | `inverse/outline` / ink | #f3f2f2 → #201e1d | 14.86 | Hero 副・Bento CTA の 1 px 枠 | U | ✓ |
 | `inverse/ink` / `inverse/state/hover-tint`・`pressed-tint` | #f3f2f2 → #393737 / #535150 | 10.58 / 7.06 | Outline ボタン hover / press | N | ✓ |
-| `inverse/action/ink` / `inverse/action/fill`・`-hover`・`-pressed` | #201e1d → #f3f2f2 / #eae7e7 / #d7d3d3 | 14.86 / 13.51 / 11.19 | Hero 主・Poster CTA 15 B | N | ✓ |
+| `inverse/action/ink` / `inverse/action/fill`・`-hover`・`-pressed` | #201e1d → #f3f2f2 / #eae7e7 / #d7d3d3 | 14.86 / 13.51 / 11.19 | ライブラリ（Ground solid on ink。Hero 主・Poster は C-31 で Discord） | N | ✓ |
+| `on-discord` / `discord/fill`・`hover`・`pressed` | #ffffff → #5865f2 / #505cdc / #4752c4 | 4.61 / 5.38 / 6.42 | Hero 主・Poster CTA 15 B、Discord マーク、矢印（C-31） | N | ✓ |
+| `discord/fill` / ink | #5865f2 → #201e1d | 3.60 | CTA の面の輪郭（hover 3.09 ✓、pressed 2.59 は押下の瞬間） | U | ✓ |
 | `hero/word`（Lime）/ ink | #9ae600 → #201e1d | 10.83 | h1 動詞 `Hack` 116 EB | L | ✓。Mono は `inverse/ink` 14.86 |
 | `on-accent` / `accent`（チャット自分側） | #201e1d → #9ae600 | 10.83 | 吹き出しの文 14 B | N | ✓ |
 | `accent` / `ground`（チャット自分側の面） | #9ae600 → #f3f2f2 | 1.37 | 吹き出しの境界 | [参考] | 装飾。意味は文字 10.83・右寄せ・avatar の有無が冗長に運ぶ |
@@ -3044,6 +3086,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | C-17 | ~~既定モード = Lime accent~~ **C-29 で Green accent に置換（2026-09-12）**、Mono は検証モード | アクセント出現が 4 箇所に限定されるため。2026-09-01 クライアント確定 |
 | C-29 | アクセントを Lime（Tailwind v4 lime）→ **Green（GitHub Primer green: 200 `#aceebb` / 300 `#56d364` / 400 `#3fb950` / 500 `#2ea043` / 600 `#238636` / 700 `#1a7f37` / 800 `#116329` / 900 `#044f1e`）** に（2026-09-12、クライアント判断）。極性の規範（C-25 / C-26 / C-27 / C-28）は不変、§1 の実測値をすべて再計算（付録 C.5） | ライムは「雰囲気に合わない」（黄緑寄りの色相）。候補 A の Tailwind v4 green（`#05df72`）は「目にきつい」。B の GitHub green は彩度が低く、墨地の上で GitHub のダークモードと同じ表情になる。極性はライムと同じ（400 は地の上 2.27 で不可、地の上の文字は 800 / 900）ので、ロール構造に手を入れずに済む |
 | C-30 | ポスター面を**インク面**に戻し、緑は見出し（`poster/display` = green-400）と**文字を載せる小さな面** `accent-fill`（green-600 + 白 `on-accent` = neutral-0）で出す: 参加 CTA（Hero 主・Poster）とチャット自分側バブル（2026-09-12、クライアント判断）。`accent-hover` / `accent-pressed` は 700 / 800（暗い方へ）。C-27 の上端罫は撤去、C-18 と K-5 の「accent ボタンはページに置かない」は撤回 | 「緑の上に黒文字は見にくい」。中明度の高彩度面に墨の本文は、6.54 で AA を通っても色の振動で読みにくい。白を載せるなら面は 600 まで下げる必要があり（400 に白は 2.54）、600 の大面は重いので、面は文字を載せる小さな面に限る。ホバーを明るい方へ動かすと白が 4.5 を割るので暗い方へ 1 段ずつ |
+| C-31 | Discord マークを持つ参加ボタン（Hero 主・Poster）の面を accent-fill（green-600）から **Discord の Blurple**（`discord/fill` = `#5865f2` + 白 `on-discord`、hover `#505cdc` / pressed `#4752c4`）に（2026-09-12、クライアント判断）。プリミティブ `blurple/500 / 530 / 560`、ロール `discord/*` 4 行。緑の面はチャット自分側バブルだけになり、Accent ボタンはどの地でもライブラリ、`poster/action/*` もライブラリ | 「Discord アイコンがあるボタンは Discord のブランドカラーを使わないと違和感がある」。ロゴは公式素材を色も変えずに置く（U-38）のに、面だけ自社の緑にするとロゴが借り物に見える。パートナーロゴを原色で置く U-21 と同じ「第三者の識別子は引用」の扱いにし、アクセントの色相には数えない。実測: 白 4.61 / hover 5.38 / pressed 6.42、面は ink 3.60・ground 4.12（極性なし）。ホバーを明るくすると白が 3.29 で割るので暗い方へ |
 | C-18 | ページにアクセント塗りボタンを置かない（ライブラリのみ） | ポスター面と競合させない |
 | C-19 | neutral-50 / 400 は予備でテキスト不可。インディゴのランプ全段は記録用に残置 | 隣の段より優れる用途がない。ランプの完全性のために保持 |
 | C-20 | 画像プレースホルダ = surface、キャプション = ink-secondary、アイコン = ink-tertiary | 5.30 / 3.50 |
@@ -3335,6 +3378,6 @@ Green の実測（本文 §1 の値と同一。すべて実 hex から算出、�
 | [参考] ポスター面 vs 地（節の境目） | — | 1.37 | 2.27 |
 | [参考] pop/separator（700）vs 白（マーキー帯） | 3.0 | — | 5.08 |
 
-不合格 3 件はいずれもページに現れない（ink@72 / 48 は使わない、CTA プレスは duration/0 の瞬間）。**同日 C-30 でポスター面をインク面に戻した**ので、上表の「ポスター」行（明るい緑面）は記録。C-30 後の値: 参加 CTA の面 accent-fill green-600 vs ink 3.59、白ラベル 4.63（hover 5.08 / pressed 7.39）、ポスター見出し green-400 vs ink 6.54、自分側バブル green-600 vs ground 4.14。C-25〜C-26、C-28 の規範は Green でもそのまま成立し、C-27 は不要になった。
+不合格 3 件はいずれもページに現れない（ink@72 / 48 は使わない、CTA プレスは duration/0 の瞬間）。**同日 C-30 でポスター面をインク面に戻した**ので、上表の「ポスター」行（明るい緑面）は記録。C-30 後の値: 参加 CTA の面 accent-fill green-600 vs ink 3.59、白ラベル 4.63（hover 5.08 / pressed 7.39）、ポスター見出し green-400 vs ink 6.54、自分側バブル green-600 vs ground 4.14。C-25〜C-26、C-28 の規範は Green でもそのまま成立し、C-27 は不要になった。参加 CTA は同日 C-31 で Discord の Blurple に置換（§1.2.4 の実測）。
 
 Green プリミティブ: GitHub Primer green（200 `#aceebb` / 300 `#56d364` / 400 `#3fb950` / 500 `#2ea043` / 600 `#238636` / 700 `#1a7f37` / 800 `#116329` / 900 `#044f1e`）+ `alpha/green-400/24`。合成: green-400@24 over ground `#c8e4cb` / over ink `#274329`、ink@88 / 72 / 48 over green-400 `#243123` / `#29492b` / `#306f38`、ink@12 / 24 over green-400 `#3ba64a` / `#389444`。

@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
  * Outline で同じ高さトークンを使っても行が揃わなくなる（§6.2.1）。
  *
  * 配色は「地 × スタイル」の同時関数なので surface と variant の compoundVariants で持つ。
+ * 例外は Discord（C-31）: ブランド色は地に依らないので variant 単独で持つ。
  * フォーカスリングはここでは宣言しない: globals.css の `:focus-visible` が
  * 祖先の `data-surface` を見て 3 つのリング色を出し分ける（§4.5 / DECISION L-14）。
  * だからこのボタン自身に `data-surface` を付けてはならない — 付けると
@@ -46,7 +47,19 @@ const buttonVariants = cva(
     variants: {
       // 配色は下の compoundVariants が持つ。ここは軸の宣言だけ。
       surface: { ground: "", ink: "", poster: "" },
-      variant: { solid: "", outline: "", ghost: "", accent: "" },
+      variant: {
+        solid: "",
+        outline: "",
+        ghost: "",
+        accent: "",
+        // Discord へ出るボタン（C-31）。面は Blurple（discord-fill、ground 上 4.12 / ink 上 3.60）
+        // + 白（4.61）。ブランド色は地に依らないので surface との compound を持たない。
+        // 状態は暗い方へ 1 段ずつ（白 5.38 / 6.42）— 明るい方へ動かすと白が 3.29 で割る
+        discord: [
+          "bg-discord-fill text-on-discord",
+          "hover:bg-discord-hover active:bg-discord-pressed",
+        ],
+      },
       size: {
         // sm はポインタ専用（§6.1.5）。44 が要る場所では md を選ぶこと。
         // 箱は 36 のまま ::before で 44 に広げる（§6.1.5 / §8.3 の Nav CTA・Skip link）。
@@ -103,8 +116,8 @@ const buttonVariants = cva(
       {
         surface: "ink",
         variant: "accent",
-        // 参加 CTA（Hero 主）。緑の面 accent-fill（ink 上 3.59）に白のラベル（4.62、C-30）。
-        // ホバー・プレスは暗い方へ 1 段ずつ（700 / 800）— 明るい方へ動かすと白が 4.5 を割る
+        // ライブラリ（C-30 で Hero 主に使ったが、C-31 で Discord に置換）。緑の面 accent-fill
+        // （ink 上 3.59）に白のラベル（4.62）。ホバー・プレスは暗い方へ 1 段ずつ（700 / 800）
         class: [
           "bg-accent-fill text-on-accent",
           "hover:bg-accent-hover active:bg-accent-pressed",
@@ -124,8 +137,8 @@ const buttonVariants = cva(
       {
         surface: "poster",
         variant: "solid",
-        // ポスター CTA。poster/action/* は Green で accent-fill 系のエイリアス（C-30）、
-        // Mono で inverse/action/*（C-28）。汎用 action/* を直接引くとモードで反転しない。
+        // ライブラリ（Mono 検証用）。Poster の参加 CTA は C-31 で Discord に置換した。
+        // poster/action/* は Green で accent-fill 系（C-30）、Mono で inverse/action/*（C-28）。
         class: [
           "bg-poster-action-fill text-poster-action-ink",
           "hover:bg-poster-action-fill-hover active:bg-poster-action-fill-pressed",
@@ -155,11 +168,15 @@ const buttonIconVariants = cva("shrink-0", {
 /**
  * 地とスタイルの組は §6.2.3 の表に載っているものだけを型で許す。
  * ポスター面に Outline を置くと枠・ラベルが 1.53 で読めない（§1.4.4）。
+ * Discord はどの地でも可 — ブランド色は地に依らず、輪郭は ground / ink とも 3:1 を満たす（C-31）。
  */
 type ButtonPaletteProps =
-  | { surface?: "ground"; variant?: "solid" | "outline" | "ghost" | "accent" }
-  | { surface: "ink"; variant?: "solid" | "outline" | "accent" }
-  | { surface: "poster"; variant?: "solid" };
+  | {
+      surface?: "ground";
+      variant?: "solid" | "outline" | "ghost" | "accent" | "discord";
+    }
+  | { surface: "ink"; variant?: "solid" | "outline" | "accent" | "discord" }
+  | { surface: "poster"; variant?: "solid" | "discord" };
 
 type ButtonOwnProps = {
   size?: "sm" | "md";
