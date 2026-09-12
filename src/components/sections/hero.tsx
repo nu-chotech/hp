@@ -1,11 +1,11 @@
 import Image from "next/image";
 import { ArrowUpRight, BrandDiscord } from "@/components/icons";
+import { JoinTrigger } from "@/components/join/join-dialog-provider";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { sectionVariants } from "@/components/ui/section";
 import { sectionIds } from "@/config/site";
 import { heroContent } from "@/content/hero";
-import { externalLinkNote, externalLinkProps } from "@/lib/external-link";
 import { cn } from "@/lib/utils";
 import { HeroReveal } from "./hero/hero-reveal";
 
@@ -148,8 +148,9 @@ export function Hero() {
             data-reveal
             data-reveal-index="2"
           >
-            {/* 主 = 外部の Discord。面は Discord の Blurple（discord-fill）+ 白 — マークと同じ
-                持ち主の色で行き先を言う（C-31）。矢印と visually-hidden の注記を添え、新しいタブで開く（M-21） */}
+            {/* 主 = Discord へ。面は Discord の Blurple（discord-fill）+ 白 — マークと同じ
+                持ち主の色で行き先を言う（C-31）。押すと参加ダイアログが開き、約束に同意して
+                から新しいタブで出る（U-49 / M-21）。矢印は「外へ出る」の予告として残す */}
             <Button
               surface="ink"
               variant="discord"
@@ -157,10 +158,7 @@ export function Hero() {
               brand={BrandDiscord}
               icon={ArrowUpRight}
             >
-              <a href={actions.primary.href} {...externalLinkProps}>
-                {actions.primary.label}
-                <span className="sr-only">{externalLinkNote}</span>
-              </a>
+              <JoinTrigger>{actions.primary.label}</JoinTrigger>
             </Button>
             {/* 副 = ページ内スクロール。移動先が同じページなのでアイコンは付けない（§6.1.9） */}
             <Button surface="ink" variant="outline" asChild>

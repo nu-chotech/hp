@@ -24,6 +24,7 @@
 > - **2026-09-12（11）**: ポスター面を**インク面に戻し**、緑は見出し（`poster/display` = green-400）と**参加 CTA・チャット自分側バブルの面**（`accent-fill` = green-600 + 白）で出す（**DECISION C-30**。クライアント所見「緑の上に黒文字は見にくい」）。Hero 主 CTA も accent-fill。C-27 の上端罫は撤去、C-18 / K-5 の「accent ボタンはページに置かない」は撤回
 > - **2026-09-12（12）**: 釣り合いの調整（**DECISION U-46**）: Member の Socials をカードの底に、Activities の見出し余白を他節と同じ 32 / 24 に、About の CULTURE を Display/M・1×1 文字セルを Title/3 に
 > - **2026-09-12（13）**: Discord マークを持つ参加ボタン（Hero 主・Poster）の面を緑の `accent-fill` から **Discord のブランド色 Blurple**（`discord/fill` = `#5865f2` + 白 `on-discord`、hover `#505cdc` / pressed `#4752c4`、**DECISION C-31**）に。プリミティブ `blurple/500 / 530 / 560`、ロール `discord/*` 4 行（§1.2.4 / §1.3.9 / §1.4.5）。緑の面はチャット自分側バブルだけになり、Accent ボタンはどの地でもライブラリ、`poster/action/*` もライブラリ
+> - **2026-09-12（14）**: 参加の導線（Nav・Menu・Hero 主・Poster の 4 本）は Discord へ直接出ず、**参加ダイアログ**で約束に同意してから新しいタブで出る（**DECISION U-49**、§6.21）。素の `<dialog>` + `showModal()`、ground の面 480 × inset/cell、幕 `backdrop` ink@48 + `shadow/lg`（§4.4 で dialog 用に予約していた唯一の影）。主「同意して参加する」= Discord（外部リンク）、副「閉じる」= Ground / Outline（K-5 の帯の外での初出）。トリガーは `<button aria-haspopup="dialog">`、動きは reveal と同じ opacity + y 16 の `spring/quick`。約束の文言は草案（`src/content/join.ts`）
 > - **Figma v2 への反映は未実施**（2026-09-12 時点）。反映すべき変更の一覧と手順は [figma-sync-2026-09-12.md](./figma-sync-2026-09-12.md)
 > - **2026-09-11**: Cell Stat の所属バッジ（U-29）を**撤回**し、セルは `50+` の数字だけに戻す（**DECISION U-36**）。Chip の Inverse トーンは Accent と同じくライブラリのみ（ページに出さない）。About の CULTURE セルは本文を落として題だけ（「仲間と、学ぶ。創る。話す。」— Hero の h1 を `Hack Your Limits.` に差し替える予定に合わせ、3 語を Culture に降ろす）
 > - **2026-09-10（2）**: 外部リンクは**すべて新しいタブ**で開く（`target="_blank" rel="noopener noreferrer"`、vh「（外部、新しいタブで開く）」、**DECISION M-21**。M-15 は撤回）。Partner の Logo タイルは `href` があれば**タイル全体が団体サイトへのリンク**（**DECISION U-35**。hover / pressed の表現なし、フォーカスリングは内側）
@@ -65,7 +66,7 @@ Familiarity（慣れ）・Agency（主体性）・Flexibility（柔軟）・Resp
 
 ### 0.3 ページの骨格（コンセプトの認識可能な部分）
 
-Nav（sticky、2px 下罫）→ Hero（インク面、背景写真、墨の板の h1 と Discord 色の参加ボタン）→ Marquee 帯（2px 上下罫、白の面、パートナーロゴ 3:2 高さ 96、asterisk は PARTNERS の両脇のみ。停止ボタンは U-31 で撤去）→ About（ベント 3 行 7 セル: 文化 / 統計 / 設立 / チャット / 公認 / 場 / 対象、U-40）→ Activities（均等 2×2 の写真セル、U-41）→ For You（ペルソナカード 3 × 2）→ Members（リーダー 2 列 + スタッフ 3 列）→ Partners（外枠だけの白い面にロゴを等分の 1 行、U-43）→ Poster（クロージング CTA。インク面に緑の見出しと Discord 色の参加ボタン、C-30 / C-31）→ Footer。全要素左揃え。
+Nav（sticky、2px 下罫）→ Hero（インク面、背景写真、墨の板の h1 と Discord 色の参加ボタン）→ Marquee 帯（2px 上下罫、白の面、パートナーロゴ 3:2 高さ 96、asterisk は PARTNERS の両脇のみ。停止ボタンは U-31 で撤去）→ About（ベント 3 行 7 セル: 文化 / 統計 / 設立 / チャット / 公認 / 場 / 対象、U-40）→ Activities（均等 2×2 の写真セル、U-41）→ For You（ペルソナカード 3 × 2）→ Members（リーダー 2 列 + スタッフ 3 列）→ Partners（外枠だけの白い面にロゴを等分の 1 行、U-43）→ Poster（クロージング CTA。インク面に緑の見出しと Discord 色の参加ボタン、C-30 / C-31）→ Footer。参加の導線 4 本はすべて参加ダイアログ（U-49）を経て Discord へ。全要素左揃え。
 
 ### 0.4 分冊間の矛盾と解決
 
@@ -334,14 +335,14 @@ Blurple を文字・罫・印・大面に使わない。Discord 以外のサー�
 | typing dot | → ink-tertiary | SF | 入力中インジケータの 3 点 | 図形 3.85 ≥ 3:1（`ink-tertiary` に直接バインド、専用ロールなし） |
 | placeholder アイコン | → ink-tertiary | SF SC | `Icon/Photo` | surface 上 3.50 |
 | `color/shadow` | `alpha/ink/24` | — | `shadow/sm` / `md` / `lg` の色（ライブラリ。ページに影はない） | 影は 1 濃度、段差は幾何（§4.4） |
-| `color/backdrop` | `alpha/ink/48` | FF | ダイアログの幕（ライブラリ）。`prefers-reduced-transparency` / `prefers-contrast: more` では `alpha/ink/88` | 幕は面を半分に落とす |
+| `color/backdrop` | `alpha/ink/48` | FF | 参加ダイアログの幕（U-49）。`prefers-reduced-transparency` / `prefers-contrast: more` では `alpha/ink/88` | 幕は面を半分に落とす |
 | アイコン | currentColor | — | すべての Tabler アイコン | 行のテキスト色を継ぐ。アイコン専用トークンは置かない。最薄値は ink-tertiary |
 
 #### 1.3.9 ブランド色（第三者、C-31）
 
 | ロール | 値 | Scopes | 使用箇所 | 比 |
 |---|---|---|---|---|
-| `color/discord/fill` | blurple-500 `#5865f2` | FF | Discord へ出るボタンの面（Hero 主・Poster）。Mono / Green で不変 | 面 vs ink 3.60 / vs ground 4.12 |
+| `color/discord/fill` | blurple-500 `#5865f2` | FF | Discord へ出るボタンの面（Hero 主・Poster、参加ダイアログの同意 U-49）。Mono / Green で不変 | 面 vs ink 3.60 / vs ground 4.12 |
 | `color/on-discord` | neutral-0 | TF SF | 同ラベル（Label/M 15 B）、Discord マーク、矢印 | 4.61（hover 5.38 / pressed 6.42） |
 | `color/discord/hover` | blurple-530 `#505cdc` | FF | 同ホバー（暗い方へ 1 段） | 面 vs ink 3.09 / vs ground 4.81 |
 | `color/discord/pressed` | blurple-560 `#4752c4` | FF | 同プレス | 面 vs ink 2.59（押下の瞬間）/ vs ground 5.74 |
@@ -414,14 +415,16 @@ Blurple を文字・罫・印・大面に使わない。Discord 以外のサー�
 | poster/display (green-400) | ポスター見出し Display L 96 EB（インク面上） | L | 6.54 | PASS | — |
 | （旧）poster/ink on green-400 | 明るい緑面だった時期（2026-09-12 の一時期） | N | 6.54 | PASS だが読みにくい | クライアント所見で撤回（C-30）。数値は付録 C.5 |
 
-#### 1.4.5 Discord の面 `discord/fill` `#5865f2`（参加 CTA ×2。C-31）
+#### 1.4.5 Discord の面 `discord/fill` `#5865f2`（参加 CTA ×2 と参加ダイアログの同意。C-31 / U-49）
 
 | ロール | 代表用途 | 区分 | 比 | 判定 | 修正 |
 |---|---|---|---|---|---|
 | on-discord (neutral-0) | CTA ラベル Label/M 15 B、Discord マーク 20、矢印 20 | N | 4.61 | PASS | — |
 | on-discord | discord/hover (530) / discord/pressed (560) 上 | N | 5.38 / 6.42 | PASS | — |
 | discord/fill (500) | 面の輪郭 vs ink（Hero・Poster の CTA） | U | 3.60 | PASS | — |
-| discord/fill (500) | 面の輪郭 vs ground / surface（地の上に置いても成立する） | U | 4.12 / 3.75 | PASS | — |
+| discord/fill (500) | 面の輪郭 vs ground（参加ダイアログの「同意して参加する」、U-49）/ surface | U | 4.12 / 3.75 | PASS | — |
+| discord/hover (530) / discord/pressed (560) | 面の輪郭 vs ground（同） | U | 4.81 / 5.74 | PASS | — |
+| focus/ring (green-700) | 同意ボタンのリング（offset 2 で ground の上） | U | 4.55 | PASS | — |
 | discord/hover (530) / discord/pressed (560) | 面の輪郭 vs ink | U | 3.09 / 2.59 | hover PASS / pressed **FAIL** | 押下は duration/0 の瞬間。ラベル 6.42 が識別を担う（accent-pressed 2.25 と同じ扱い） |
 | focus/ring-inverse (green-300) | CTA のリング（offset 2 でインク面の上） | U | 8.62 | PASS | リングは面の規則。Blurple の隣でも緑のまま（C-8） |
 
@@ -1051,6 +1054,7 @@ Desktop / Mobile が同値の行は Mobile 列を「=」とする。根拠中の
 | `size/illustration` | **80** | persona イラスト（円） | 96 → 80（U-42: 題の横に置くので、Headline 2 行 48 を中に収める最小の径）。`space/80`、24 grid × 10/3 |
 | `size/mark-nav` / `size/mark-footer` | 28 / 24 | logo mark（両 viewport 同値） | 4 の倍数。wordmark Title 3 19 / Headline 17 に対する比 1.47 / 1.41（**DECISION L-21**） |
 | `size/rule-v` | 12 | 縦 hairline の高さ（brand tagline の左、hero meta の区切り） | 隣接文字の font-size（Caption / Overline 12）と同値。行送り 18 だと行を跨いで見え、cap 高 9 だと点に見える（**DECISION L-16**） |
+| `size/dialog` | 480 | 参加ダイアログの `max-width`（U-49）。幅は `calc(100% − 2 × page/inset)` をこれで止める | 4 × `size/cell-min`。Mobile は container と同じ 342。2×1 セル（597）より狭く 1×1（298）より広い「持ち上げた 1 セル」の幅 |
 | `measure/paragraph` | 588 / 342 | 段落の `max-width` | §3.10 |
 
 CSS: `--size-nav: 3.875rem; --size-hero-max: 60rem; --size-cell-min: 7.5rem; --size-control-md: 2.75rem`。固定値ではなく `min-height` に渡す。
@@ -1237,7 +1241,7 @@ tag / reaction chip に枠はない（塗り `color/chip/fill` が境界、§3.4
 |---|---|---|
 | `shadow/sm` | `0 1px 2px` `color/shadow`（ink @ 24%） | 予備（ページで未使用） |
 | `shadow/md` | `0 4px 8px` `color/shadow` | 予備（menu / popover が将来必要になった場合） |
-| `shadow/lg` | `0 16px 32px` `color/shadow` | **dialog のみ**。必ず幕 `color/backdrop`（ink @ 48%）と併用 |
+| `shadow/lg` | `0 16px 32px` `color/shadow` | **参加ダイアログのみ**（§6.21、U-49）。必ず幕 `color/backdrop`（ink @ 48%）と併用 |
 
 Figma は `shadow/{sm,md,lg}/y` と `shadow/{sm,md,lg}/blur` の FLOAT 2 本（`Shape`）と `color/shadow` で持つ。
 
@@ -1298,7 +1302,7 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 | `color/inverse/ink` / `inverse/ink-tertiary`（ground @ 72%） | ink | 14.86 / 8.29 | ✓ hero kicker 行 |
 | `color/pop/badge` green-800（Green）/ ink-secondary（Mono） | ground | 6.62 / 5.83 | ✓ badge の矢印 |
 | `color/pop/separator` green-700（Green）/ ink-tertiary（Mono） | ground | 4.55 / 3.85 | ✓（R17: アイコンは形なので 3:1 を床にする） |
-| `color/on-discord` neutral-0 | discord/fill（参加 CTA の Discord マーク・矢印、C-31） | 4.61 | ✓ |
+| `color/on-discord` neutral-0 | discord/fill（参加 CTA と参加ダイアログの同意の Discord マーク・矢印、C-31 / U-49） | 4.61 | ✓ |
 
 **DECISION L-15** typing dot と placeholder のアイコンは `color/ink-tertiary`（3.85 / 3.50）以上。コンセプトは n500 の `currentColor` だが非テキストとして不足。
 
@@ -1395,6 +1399,7 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 | 18 | Poster CTA | Section / Poster | Join |
 | 19 | Footer | Section / Footer | 末尾 |
 | 20 | Image slot | Media / Image Slot | Bento・Persona・Member・Partner |
+| 21 | Join dialog（参加ダイアログ、U-49） | — | Nav・Menu・Hero 主・Poster の参加 CTA が開く |
 
 コンセプトにあって **落とした** もの: Tag `Accent 2` / `Outline`（1 アクセント原則）、テキスト記号アイコン（`→ ↑ ✳ 🙌 👀` → Tabler、§5.5）、Chat 再生ループと Hero 浮遊バブル（§7 M9）、Members 見出しの編集ヒント `写真はドロップで差し替え可`（制作ツールの痕跡）、Section heading の `note`（同）。
 
@@ -1493,6 +1498,8 @@ Apple の `scale(0.97)` は「押し込める物体」の比喩で、影・奥�
 10. Poster: CTA → X / Instagram / GitHub
 11. Footer: Brand → 4 リンク
 
+参加ダイアログ（U-49）: Nav / Menu / Hero 主 / Poster の CTA が開く。開いたら「同意して参加する」（外部リンク）→「閉じる」の順に Tab が巡り、背後は inert。閉じたら押した CTA へ戻る（`<dialog>` の既定）。
+
 Rotating word: 可視部分は `aria-hidden`、`<h1>` の名前は visually-hidden の全文 `仲間と、学ぶ。創る。話す。`（§8.5）。`aria-live` は使わない。アンカー移動後は見出しへフォーカス（`tabindex="-1"`、§7.4.6）。
 
 #### 6.1.8 モーション（§7 のトークンで参照）
@@ -1525,6 +1532,7 @@ Spring は移動にだけ使う（M2）。本章の部品で移動するのは M
 | Mobile menu 開 / 閉 | `menu-2` / `x` | Icon button md 24（sm なら 20） | — |
 | Image placeholder | `photo` | 24 | — |
 | Discord への導線（ボタン。面は Discord の Blurple、C-31） | 公式マーク `BrandDiscord`（**先頭**、白）+ `arrow-up-right`（末尾） | 16 / 20 | — |
+| 参加ダイアログを開くボタン（Nav・Menu・Hero 主・Poster、U-49） | `arrow-up-right`（末尾。行き先は外部だが、出る前に同意を挟む。ダイアログの同意リンクにも同じ矢印） | 16 / 20 | — |
 | SNS への導線（X / Instagram / GitHub） | 公式ブランドマーク（§5.1、**先頭**）+ `arrow-up-right`（末尾） | 16 | — |
 
 **DECISION U-19** Discord と SNS の導線にはブランドマークを**先頭**に添える。行き先が「外部」であることは `arrow-up-right` が言うが、**どこへ**行くかは文字を読まないと分からない。ロゴは読む前に分かる唯一の記号で、ここだけは §5.1 の「アイコンは装飾、意味は隣の文字が運ぶ」の例外にあたる（マークそのものが固有名詞）。
@@ -1540,7 +1548,7 @@ Spring は移動にだけ使う（M2）。本章の部品で移動するのは M
 
 #### 6.2.1 目的と解剖
 
-行動を起こす唯一の「面」。ページの CTA はすべて Discord への導線か、ページ内移動。
+行動を起こす唯一の「面」。ページの CTA はすべて Discord への導線（参加ダイアログを経る、U-49）か、ページ内移動。
 
 ```
 [ inset ][ label ][ inline/xs 8 ][ icon ][ inset ]      高さ = size/control/*（高さ駆動、ラベルは垂直中央）
@@ -1575,17 +1583,20 @@ Focus-visible は全スタイル共通で **リング 2px offset 2**、色は地
 | **Ink solid** | Default | `action/fill` 950 | `action/ink` ground（14.86） | — | Ground / Ink（H:28） |
 | | Hover | `action/fill-hover` 800 | ground（9.04） | — | |
 | | Pressed | `action/fill-pressed` 700 | ground（5.83） | — | |
+| **Discord**（参加ダイアログの同意、U-49） | Default | `discord/fill` blurple-500（面 vs ground 4.12） | `on-discord` neutral-0（4.61） | — | — |
+| | Hover | `discord/hover` blurple-530（4.81） | 白（5.38） | — | |
+| | Pressed | `discord/pressed` blurple-560（5.74） | 白（6.42） | — | |
 | **Accent**（地の上はライブラリ） | Default | `accent-fill` green-600 | `on-accent` neutral-0（4.63） | — | Ground / Primary（S:81） |
 | | Hover | `accent-hover` green-700 | 白（5.08） | — | |
 | | Pressed | `accent-pressed` green-800 | 白（7.39） | — | |
-| **Outline**（ライブラリ） | Default | なし | `ink` | currentColor（ink） | Ground / Secondary（S:84） |
+| **Outline**（参加ダイアログの閉じる、U-49） | Default | なし | `ink` | currentColor（ink） | Ground / Secondary（S:84） |
 | | Hover | `state/hover-tint` | ink（13.21） | ink | |
 | | Pressed | `state/pressed-tint` | ink（11.78） | ink | |
 | **Ghost**（ライブラリ） | Default | なし | `ink`（14.86） | — | Ground / Ghost（S:87） |
 | | Hover | `state/hover-tint` | ink（13.21） | — | |
 | | Pressed | `state/pressed-tint` | ink（11.78） | — | |
 
-- **DECISION K-5 改（C-30 → C-31）** ground 地では Accent・Outline・Ghost を**ページに置かない**（Nav CTA・Menu panel CTA・Skip link は Ink solid。帯の中で色を増やさない）。**ink 地の参加 CTA（Hero 主・Poster）は Discord**（`discord/fill` Blurple + 白、C-31）— 参加の動線だけが有彩色の面を持ち、その色は行き先の持ち主のもの。C-30 の Accent（accent-fill + 白）は同日に置換し、Accent はどの地でもライブラリ。旧 K-5 の根拠（lime-400 の面は地の上 1.37）は accent-fill を 600 にしたことで解けている。
+- **DECISION K-5 改（C-30 → C-31 → U-49）** ground 地の帯と本文では Accent・Outline・Ghost を**置かない**（Nav CTA・Menu panel CTA・Skip link は Ink solid。帯の中で色を増やさない）。例外は参加ダイアログ（U-49）: 同意は Discord、閉じるは Outline — 紙から持ち上げた面の中で主と副を並べる必要がある唯一の場所。**ink 地の参加 CTA（Hero 主・Poster）は Discord**（`discord/fill` Blurple + 白、C-31）— 参加の動線だけが有彩色の面を持ち、その色は行き先の持ち主のもの。C-30 の Accent（accent-fill + 白）は同日に置換し、Accent はどの地でもライブラリ。旧 K-5 の根拠（lime-400 の面は地の上 1.37）は accent-fill を 600 にしたことで解けている。
 - **DECISION K-2** Outline の枠は `color/divider`（2.59）ではなく **currentColor（ink）**。枠だけがボタンを識別する情報なので非テキスト 3:1 が要る（WCAG 1.4.11）。
 - Ghost のラベルは ink 固定（R21）。
 
@@ -1637,7 +1648,7 @@ Focus-visible は全スタイル共通で **リング 2px offset 2**、色は地
 - 和欧間に手動スペースを **入れない**（`Discordに参加する`）。自動アキも無効（§2.6.2）。
 - 外部リンクは `arrow-up-right`、サイト内は `arrow-right`、ページ内スクロールはアイコンなし（§6.1.9）。矢印は必ず末尾。
 - ラベルに記号（`→`、`!`）を含めない。
-- 同一画面の主 CTA は 1 つ（Hero: Discord、Poster: Discord、副次は Outline）。
+- 同一画面の主 CTA は 1 つ（Hero: Discord、Poster: Discord、参加ダイアログ: 同意 = Discord、副次は Outline）。
 
 #### 6.2.6 Figma
 
@@ -1656,14 +1667,16 @@ Focus-visible は全スタイル共通で **リング 2px offset 2**、色は地
 
 | 場所 | Set / Style / Size | ラベル | アイコン |
 |---|---|---|---|
-| Nav CTA（Desktop） | Ground / Ink / **sm** | `参加する` | `arrow-up-right` 16 |
-| Nav CTA（Mobile） | Ground / Ink / **md** | `参加する` | `arrow-up-right` 20 |
-| Hero 主 | On Ink / **Discord** / md（C-31） | `参加する` | Discord マーク 20 + `arrow-up-right` 20 |
+| Nav CTA（Desktop） | Ground / Ink / **sm** | `参加する`（参加ダイアログを開く、U-49） | `arrow-up-right` 16 |
+| Nav CTA（Mobile） | Ground / Ink / **md** | `参加する`（同） | `arrow-up-right` 20 |
+| Hero 主 | On Ink / **Discord** / md（C-31） | `参加する`（参加ダイアログを開く） | Discord マーク 20 + `arrow-up-right` 20 |
 | Hero 副 | On Ink / Outline / md | `活動を見る` | なし（ページ内スクロール） |
 | ~~Bento CTA~~ | ~~On Ink / Outline / md~~（U-40 で撤去） | — | — |
-| Poster | On Ink / **Discord** / md（C-31） | `Discordに参加する` | Discord マーク 20 + `arrow-up-right` 20 |
+| Poster | On Ink / **Discord** / md（C-31） | `Discordに参加する`（参加ダイアログを開く） | Discord マーク 20 + `arrow-up-right` 20 |
 | Mobile menu | Icon / Ground / md | — | `menu-2` / `x` 24 |
-| Menu panel CTA | Ground / Ink / md、`fullWidth` | `参加する` | `arrow-up-right` 20 |
+| Menu panel CTA | Ground / Ink / md、`fullWidth` | `参加する`（参加ダイアログを開く） | `arrow-up-right` 20 |
+| 参加ダイアログ 同意 | Ground / **Discord** / md（Mobile は `fullWidth`、U-49） | `同意して参加する` | Discord マーク 20 + `arrow-up-right` 20 |
+| 参加ダイアログ 閉じる | Ground / **Outline** / md（Mobile は `fullWidth`。`<form method="dialog">` の submit） | `閉じる` | なし |
 | Skip link | Ground / Ink / sm（D）/ md（M） | `本文へスキップ` | なし |
 
 Desktop Nav に sm を使う理由: バー高 `nav/pad-y` 12 + 36 + 12 + `stroke/rule` 2 = **62**（§3.9）。Mobile は 8 + 44 + 8 + 2 = 62 で同じ帯高を保つ。
@@ -1689,7 +1702,7 @@ Desktop Nav に sm を使う理由: バー高 `nav/pad-y` 12 + 36 + 12 + `stroke
 #### 6.3.2 振る舞い
 
 - Nav link はページ内アンカー（`scroll-behavior: smooth`、Reduced motion で `auto`）。`aria-current="true"` を使う場合は IntersectionObserver 閾値 50%。
-- 外部リンク（Social・Discord・mailto・Partner ロゴ・Member SNS）は **すべて `target="_blank"` + `rel="noopener noreferrer"` で新しいタブに開く**（**DECISION M-21**、§8.5）。visually-hidden で `（外部、新しいタブで開く）` を添え（WCAG G201）、文字リンクには `arrow-up-right` を付ける。属性と文言は `lib/external-link.ts` の 1 か所で持つ。文字ラベルは CSS で大文字化し、ソースは `X` `Instagram` `GitHub` の正書法。
+- 外部リンク（Social・Discord・mailto・Partner ロゴ・Member SNS）は **すべて `target="_blank"` + `rel="noopener noreferrer"` で新しいタブに開く**（**DECISION M-21**、§8.5）。visually-hidden で `（外部、新しいタブで開く）` を添え（WCAG G201）、文字リンクには `arrow-up-right` を付ける。属性と文言は `lib/external-link.ts` の 1 か所で持つ。文字ラベルは CSS で大文字化し、ソースは `X` `Instagram` `GitHub` の正書法。参加の CTA 4 本はリンクではなくボタン（参加ダイアログを開く、U-49）で、Discord へ出るのはダイアログの同意リンク。
 - Hit area は §6.1.5。
 
 #### 6.3.3 コンテンツ規則
@@ -1766,7 +1779,7 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 |---|---|
 | 高さ | **62** = `nav/pad-y` 12 + `size/control/sm` 36 + 12 + `stroke/rule` 2 |
 | 横 | full-bleed、`page/inset` 24（container に縛らない: バーは紙の端まで、DECISION L-23） |
-| 構成 | Brand lockup（左）← `margin-right: auto` → Link Nav × 4（gap `inline/md` 16）→ 16 → Button Ground / Ink / sm `参加する` + `arrow-up-right`（Discord マークは置かない: U-19。U-27 で一度足したが同日に撤回 — 帯の CTA は文言だけで足りる） |
+| 構成 | Brand lockup（左）← `margin-right: auto` → Link Nav × 4（gap `inline/md` 16）→ 16 → Button Ground / Ink / sm `参加する` + `arrow-up-right`（参加ダイアログを開く `<button aria-haspopup="dialog">`、U-49。Discord マークは置かない: U-19。U-27 で一度足したが同日に撤回 — 帯の CTA は文言だけで足りる） |
 | 塗り | `ground`、下辺 Rule 2/H |
 | 固定 | `position: sticky; top: 0`。不透明（半透明マテリアルは使わない: フラット原則、`prefers-reduced-transparency` 分岐不要） |
 | スクロール中 | 変化なし（影・縮小・自動隠しをしない、§7 D7）。セクションに `scroll-margin-top: var(--size-nav)` |
@@ -1776,7 +1789,7 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 | 項目 | 値 |
 |---|---|
 | 高さ | 62 = 8 + `size/control/md` 44 + 8 + 2（DECISION L-22） |
-| 構成 | Brand（tagline なし）← auto → Button Ground / Ink / md `参加する` + `arrow-up-right` → `inline/sm` 12 → Icon button md `menu-2` |
+| 構成 | Brand（tagline なし）← auto → Button Ground / Ink / md `参加する` + `arrow-up-right`（参加ダイアログを開く、U-49）→ `inline/sm` 12 → Icon button md `menu-2` |
 | 幅検算 | 24 + mark 24 + 12 + wordmark 95（`ChoTech` Title 3 19、実測）+ ≥ 16 + CTA 127（inset 20 + ラベル 59 + 8 + 矢印 20 + 20）+ 12 + 44 + 24 = **378 ≤ 390**（実測 2026-09-05: brand 131、CTA 127、余り 28）。wordmark は `white-space: nowrap` で折らない |
 
 #### 6.7.3 Menu panel（Mobile、DECISION K-6）
@@ -1784,7 +1797,7 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 | 項目 | 値 |
 |---|---|
 | 位置 | Nav bar 直下、幅 100%、`ground`、下辺 Rule 2/H |
-| 行 | Menu row 高 `size/control/md` 44、`Label/Nav` 14 `ink`、横 inset `page/inset` 24、行間 Rule 1/H。4 行 + 末尾に Button Ground / Ink / md `参加する`（`fullWidth`、上下 `inset/md` 16、左右 24） |
+| 行 | Menu row 高 `size/control/md` 44、`Label/Nav` 14 `ink`、横 inset `page/inset` 24、行間 Rule 1/H。4 行 + 末尾に Button Ground / Ink / md `参加する`（`fullWidth`、上下 `inset/md` 16、左右 24。参加ダイアログを開く — ダイアログの Escape はメニューに伝えず、閉じたらフォーカスは CTA へ戻りメニューは開いたまま、U-49） |
 | 状態（row） | Default `ink` / Hover `state/hover-tint`（13.21）/ Pressed `pressed-tint`（11.78）/ Current ラベル幅の 2px `link/current` 下線（R16。左の縦バーは §4.3 規則 6 に反する）/ Focus **inset** ring（offset −2、K-7） |
 | 開閉 | Icon button `aria-expanded` `aria-controls`。開: **フォーカスはボタンに留める**（非モーダル disclosure、APG）。ArrowDown で 1 行目へ。閉: Escape / 外側タップ / 行選択、フォーカスをボタンへ戻す。アイコン `menu-2` ↔ `x` は `duration/0` |
 | モーダル性 | 非モーダル（背後を暗くしない・スクロールロックなし）。項目 4 つの開示であり、Apple「dim to focus, separate to keep flow」の後者 |
@@ -1822,7 +1835,7 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 | h1 | `Display/XL` **116** / 56、`lang="en"`。**`Hack Your Limits.`**（タグラインと同文、**DECISION U-37**）。文を**墨の板**（`inverse/ground` 実色、inline-block、padding 左右 **0.2em** / 上下 **0.1em**、左右は `−0.2em` の負マージンで container の外へ吊るし**字の左端**を lead と揃える）に載せ、文は `inverse/ink`（14.86）、句点 **`.` だけ `color/hero/word`**（**DECISION U-39**。U-37 の「動詞 `Hack` をアクセント」は撤回 — 板が強調を担うので色の強調は 1 か所）。板を inline ではなく inline-block にするのは、この書体の content area（≈ 1.6em）が行送り 1.11 を超えて背景が上下 30px はみ出すため。Desktop 1 行（板 ≈ 1177 = 1131 + 46、124 のままだと 1209 で 1280 幅では入るのに 1440 幅で折れるため上限を 116 に）。Mobile は板の中で `Hack Your` / `Limits.` の自然折返し（`Hack Your` ≈ 322 ≤ 342）。著者改行は入れない。`text-wrap: balance` は使わない。名前は可視の文そのもの（visually-hidden なし） |
 | lead | `Title/1` **32 / 26**、`inverse/ink`（14.86）。Display 124 と本文 16 の間に中間の階層を作る（**DECISION U-5**） |
 | 段落 | `Body/L` 16、`inverse/ink-secondary`（11.78）、`max-width: measure/paragraph` 588（≈ 36.8 全角）。Mobile は container 幅 |
-| actions | 横 flex、gap `inline/sm` 12。主 = On Ink / **Discord** / md（`discord/fill` Blurple + 白、Discord マーク先頭、C-31）、副 = On Ink / Outline / md（アイコンなし）。Mobile も 1 行（255 ≤ 342） |
+| actions | 横 flex、gap `inline/sm` 12。主 = On Ink / **Discord** / md（`discord/fill` Blurple + 白、Discord マーク先頭、C-31。押すと参加ダイアログ、U-49）、副 = On Ink / Outline / md（アイコンなし）。Mobile も 1 行（255 ≤ 342） |
 | 縦リズム | h1 → lead → actions は `stack/xl` 32、lead → 段落は `stack/xs` 8（DECISION L-6） |
 | 状態 | ボタン §6.2、Focus ring `focus/ring-inverse`、Selection `inverse/selection` |
 | Reveal | 段は h1 0 / lead 1 / actions 2（meta strip 撤去で 1 段詰める）。§7.4.1（Hero はオブザーバなし、`document.fonts.ready` か 400ms） |
@@ -2193,7 +2206,7 @@ section/pad-display 96 (M 64)
 | display | `Display/L` **96 / 40**、**`poster/display`（green-400、6.54）**、`<h2>`、2 行（著者改行）。Mobile 6 全角 × 40 = 240 ≤ 272 |
 | 段落 | `Body/M` 15、`poster/ink-secondary`、`max-width: measure/paragraph` 588 |
 | actions | 横 flex、`align-items: center`、ボタン ↔ Social `inline/lg` 24、Social 間 `inline/lg` 24、`flex-wrap`（Mobile: ボタン → 次行に Social） |
-| CTA | **Discord**（`discord/fill` Blurple + `on-discord` 白、モード非依存、C-31）。md、Discord マーク 20（先頭、U-19）+ `Discordに参加する` + `arrow-up-right` 20。面 vs ink 3.60、ラベル 4.61（hover 5.38 / pressed 6.42） |
+| CTA | **Discord**（`discord/fill` Blurple + `on-discord` 白、モード非依存、C-31）。md、Discord マーク 20（先頭、U-19）+ `Discordに参加する` + `arrow-up-right` 20。面 vs ink 3.60、ラベル 4.61（hover 5.38 / pressed 6.42）。押すと参加ダイアログ（U-49） |
 | Social | ブランドマーク **20 のみ** × 3（公式素材 §5.1 / U-38）。`poster/ink-secondary` → hover / pressed `poster/ink`（white）+ 1px 下線、hit area 44 角（U-28） |
 | Focus / Selection | `poster/focus/ring` = `focus/ring-inverse`（green-300、ink 上 8.62）、`poster/selection` = `inverse/selection`（`#274329`、上の ground 9.78） |
 
@@ -2242,10 +2255,54 @@ Figma: `Media / Image Slot` `Shape` {Rect, Circle} × `Fit` {Cover, Contain} × 
 | 記号 | 矢印・星・絵文字を文字として置かない（§6.1.9）。鉤括弧・em dash・中黒・三点リーダ（U+2026 × 1）は句読点として可 |
 | 最小サイズ | 12px、例外なし（R10） |
 
+### 6.21 Join dialog（参加ダイアログ、U-49）
+
+参加の導線（Nav CTA・Menu panel CTA・Hero 主・Poster の 4 本）は Discord へ直接出ず、このダイアログで**コミュニティの約束に同意してから**新しいタブで出る（**DECISION U-49**、2026-09-12、クライアント判断）。同意の操作は「同意して参加する」を押すことそのもの — チェックボックスは置かない（1 手増えるだけで、読んだかどうかは変わらない）。
+
+```
+┌ ground、shadow/lg、幕 backdrop ink@48 ── 幅 min(viewport − 2 × page/inset, size/dialog 480) ┐
+│ inset/cell 24 (M 20)                                                                        │
+│ Discordに参加する前に                                     h2 Title/2 22、ink                │
+│ stack/md 16                                                                                 │
+│ ChoTechのDiscordは、誰でも安心して学び合える場所です。…     p Body/S 14、ink-secondary        │
+│ stack/lg 24                                                                                 │
+│ 相手を尊重する。                                           Subheadline 15 B、ink             │
+│ 誹謗中傷、ハラスメント、差別的な発言をしない。              Footnote 13、ink-secondary（+4）   │
+│ ── inset/sm 12 ─ Rule 1/H hairline ─ 12 ──                                                   │
+│ 宣伝・勧誘は持ち込まない。 …                                                                 │
+│ ──                                                                                           │
+│ ここでの会話は、ここだけに。 …                                                               │
+│ stack/xl 32                                                                                 │
+│ [ (Discord) 同意して参加する [arrow-up-right] ]  inline/sm 12  [ 閉じる ]                     │
+│ inset/cell 24 (M 20)                                                                        │
+└─────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+罫線グリッドのセル 1 枚を紙から持ち上げた形。ページで唯一の影（`shadow/lg`、§4.4 が dialog 用に予約していたもの）を幕と組んで使う。
+
+| 要素 | 仕様 |
+|---|---|
+| 要素 | 素の `<dialog>` + `showModal()`（幕・最上層・背後の inert・Escape・フォーカスの往復をブラウザが持つ。ライブラリは足さない）。`aria-labelledby` = 題、`aria-describedby` = 導入 + 約束の `<ul>`（開いた瞬間に約束まで読み上げる） |
+| 面 | `ground`、`radius/none`、`shadow/lg`。UA の padding / border / Canvas 色は打ち消す（preflight は dialog を触らない）。幕 `color/backdrop` ink@48（高コントラスト・低透明時は 88） |
+| 幅・位置 | `width: calc(100% − 2 × page/inset)`、`max-width: size/dialog` **480**（= 4 × cell-min）。Desktop 480、Mobile 342（container と同じ）。上下左右中央（`inset: 0; margin: auto`）。高さは内容（Desktop 434）、`max-height: calc(100% − 2 × page/inset)` を超えたら中でスクロール（`overscroll-behavior: contain`） |
+| 題 | `Title/2` 22 EB `ink`、`<h2>`。「Discordに参加する前に」（≈ 11.3 em = 249 ≤ 302 で Mobile も 1 行） |
+| 導入 | `Body/S` 14 `ink-secondary`、`<p>`。41 字 → 2 行（D 30 字 / M 21 字の行） |
+| 約束 | `<ul role="list">` 3 行。行 = `Subheadline` 15 B `ink` + `stack/2xs` 4 + `Footnote` 13 `ink-secondary`。行間は `inset/sm` 12 + Rule 1/H hairline + 12。先頭の上・末尾の下に余白なし（導入・行動との距離は stack/* が決める） |
+| 行動 | 主 = Ground / **Discord** / md `同意して参加する`（`<a target="_blank">`、Discord マーク 20 先頭 + `arrow-up-right` 20、vh「（外部、新しいタブで開く）」）、副 = Ground / **Outline** / md `閉じる`（`<form method="dialog">` の submit。JS を介さず閉じる）。tablet 以降は横並び gap `inline/sm` 12（213 + 12 + 85 = 310 ≤ 432）、Mobile は縦積み gap `stack/sm` 12 で両方 `fullWidth`。主が先（L-3） |
+| 縦リズム | 題 → 導入 `stack/md` 16、導入 → 約束 `stack/lg` 24（導入 → グリッド）、約束 → 行動 `stack/xl` 32（Hero の段落 → 行動と同じ） |
+| トリガー | 4 本とも `<button type="button" aria-haspopup="dialog">`（Button の asChild）。文言・矢印は従来どおり（`参加する` + `arrow-up-right`: 行き先は外部）。vh の「新しいタブ」注記はトリガーには付けず、同意リンクが持つ |
+| 開く | `showModal()`。初期フォーカスは DOM 先頭のフォーカス可能要素 = 「同意して参加する」（もう 1 手の Enter が同意。開いた Enter の keyup では発火しない） |
+| 閉じる | 「閉じる」/ Escape / 幕のクリック / 同意リンクを踏んだとき（新しいタブから戻ったときに幕が残らない）。閉じたらフォーカスは押した CTA へ戻る（UA 既定）。Escape はダイアログで止め、document で Escape を聞く Mobile メニューまで畳まない（メニューは開いたまま、フォーカスは Menu CTA へ） |
+| 背後 | `html:has(dialog:modal) { overflow: hidden; scrollbar-gutter: stable }` — 幕の裏のスクロールを止め、スクロールバーの溝を残してレイアウトを動かさない（実測: 1440 で header 幅 1440 のまま） |
+| 状態 | ボタン §6.2。フォーカスリングは ground の `focus/ring`（green-700、4.55）。Blurple の隣でも緑（C-8） |
+| モーション | 開: opacity 0 → 1、y `reveal-y` 16 → 0、`spring/quick`（`@starting-style`）。幕は opacity のみ。閉: 逆再生（`transition-behavior: allow-discrete` で display / overlay を待つ）。`prefers-reduced-motion`: 移動なし、opacity `duration/2`。§7.3 |
+| コピー | §9.1 の声。題は体言止め、導入は です・ます + 「〜しよう」、約束は「〜する。」「〜しない。」の言い切り、CTA は目的語 + 動詞（同意して参加する / 閉じる）。文言は `src/content/join.ts`（**草案**。クライアント確定で差し替え） |
+| Figma | 未反映（クライアント判断で Figma 同期は停止） |
+
 ---
 ## 7. Motion
 
-本章がモーションのオーナー。§6 の部品はここで定義するトークン名で動きを参照し、値を再記述しない。原則の出典: Apple *Designing Fluid Interfaces* / HIG、WCAG 2.2。本ページにジェスチャ駆動 UI（ドラッグ、シート、スワイプ）はなく、動くものは reveal・マーキー・入力中ドット・Mobile メニュー・Hero の背景写真の 5 つだけ（回転語は U-37 で撤去）。
+本章がモーションのオーナー。§6 の部品はここで定義するトークン名で動きを参照し、値を再記述しない。原則の出典: Apple *Designing Fluid Interfaces* / HIG、WCAG 2.2。本ページにジェスチャ駆動 UI（ドラッグ、シート、スワイプ）はなく、動くものは reveal・マーキー・入力中ドット・Mobile メニュー・Hero の背景写真・参加ダイアログの 6 つだけ（回転語は U-37 で撤去、参加ダイアログは U-49）。
 
 ### 7.1 原則
 
@@ -2255,7 +2312,7 @@ Figma: `Media / Image Slot` `Shape` {Rect, Circle} × `Fit` {Cover, Contain} × 
 | M2 | 動きはスプリング、色は固定時間 | 位置・不透明度の「移動」（reveal、メニュー展開）は臨界減衰スプリング。色・下線・背景色は固定時間トランジション | スプリングは現在値から再ターゲットでき中断可能。色には物理がない |
 | M3 | 既定は減衰比 1.0 | `spring/default` = damping 1.0 / response 0.40 s。damping 0.8 は **ユーザーの投げ・フリックが先行した時のみ**。本ページに該当操作はない | 勝手に現れたものが跳ねると不自然。運動量を継いだものだけが跳ねる |
 | M4 | 中断可能・現在値から | すべてのトランジションは途中で逆転できる。hover 離脱、メニューの再タップ、語の切替中の停止のいずれも、表示中の値から次の目標へ | 「思考とジェスチャは並行する」。入力をロックする時間を作らない |
-| M5 | 出入りは対称、起点は発生源 | 開閉するものは同じ経路を逆再生。展開パネルは発生源（Nav の下罫）から現れる | 「消えた方向から戻ってくる」空間的一貫性 |
+| M5 | 出入りは対称、起点は発生源 | 開閉するものは同じ経路を逆再生。展開パネルは発生源（Nav の下罫）から現れる。参加ダイアログは reveal と同じ経路（下から 16）で現れ、幕と一緒に消える（U-49） | 「消えた方向から戻ってくる」空間的一貫性 |
 | M6 | compositor プロパティのみ | アニメーションは `transform` と `opacity` のみ（色は `background-color` / `color` / `text-decoration-color` / `text-decoration-thickness` を固定時間で）。`height` / `top` / `clip-path` / `filter` は不可 | 60 fps とジッターのなさが craft の最低条件。`clip-path` は全エンジンで compositor 処理されない |
 | M7 | 減速運動の停止は 1 % 残りで判定 | スプリングの「見かけの長さ」= 目標との差が 1 % を切る時刻 | 0.1 % まで待つと約 1.4 倍長くなり、体感と一致しない |
 | M8 | ループは低減設定・画面外で停止 | 自動で動くもの（マーキー、入力中ドット、背景写真、チャット再生。写真送りは U-40 で撤去）は `prefers-reduced-motion` で止まり、画面外・バックグラウンドタブでも止まる。ページ内スイッチ（停止 / 再生ボタン）は **U-31 で撤去** | WCAG 2.2.2 はページ内の停止手段を求めるため**未達**（クライアント判断で許容） |
@@ -2311,6 +2368,7 @@ CSS カスタムプロパティで持つ。Figma には Variables として置�
 | Hero 背景写真（`.hero__backdrop`） | 未定義 | `scale` 1.12 を静的に当て、`translate` を ±2 % / ±1 % に `48s ease-in-out infinite alternate`。不透明度 0.2 で ink 面に重ね、原色（U-20 / U-21） | **静止**（`animation: none`）。写真は残る。`prefers-reduced-transparency` と `forced-colors` では層ごと消える |
 | Nav（sticky） | sticky | 縮小・隠れなし。アンカー移動は `scroll-behavior: smooth` | `scroll-behavior: auto` |
 | Mobile メニュー | — | `overflow: hidden` のラッパー内でパネルを `translateY(−100 %) → 0` に `spring/quick`。閉じは逆再生。アイコン `menu-2` ⇄ `x` は `duration/0` | opacity `duration/2` |
+| 参加ダイアログ（U-49） | — | `<dialog>` を opacity 0 → 1、y `reveal-y` 16 → 0 に `spring/quick`（`@starting-style`）、幕は opacity。閉じは逆再生（`transition-behavior: allow-discrete` で display / overlay を待つ） | opacity `duration/2`、移動なし |
 | Mono ⇄ Lime | — | デザインモード。ランタイム切替なし | — |
 
 ### 7.4 個別仕様
@@ -2371,6 +2429,7 @@ CSS カスタムプロパティで持つ。Figma には Variables として置�
   .marquee__track, .typing__dot { animation: none; }
   .hero__word { transition: none; }
   .menu__panel { transition: opacity var(--dur-2) var(--ease-color); transform: none; }
+  .join-dialog, .join-dialog::backdrop { transform: none; transition: opacity var(--dur-2) var(--ease-color), display var(--dur-2) allow-discrete, overlay var(--dur-2) allow-discrete; }
   html { scroll-behavior: auto; }
 }
 @media (prefers-contrast: more) {
@@ -2389,6 +2448,7 @@ CSS カスタムプロパティで持つ。Figma には Variables として置�
 | Marquee | CSS keyframes、duration = 幅 ÷ 40 | 表示のみ（26 s linear、ループ）。速度 40 px/s を説明に明記 |
 | Hover / press | `:hover` `duration/1` / `duration/2` `ease-out`、`:active` `duration/0` | While hovering → Change to（100 ms ease-out）、While pressing → Instant |
 | Mobile メニュー | `translateY` + `spring/quick`、ラッパー `overflow: hidden` | Move in（上から）Spring `spring/quick`、閉じは Move out（同経路） |
+| 参加ダイアログ | `@starting-style` + `transition: opacity, transform, display, overlay` を `spring/quick` | 未反映（Figma 同期停止） |
 
 stiffness = (2π / response)²、damping = 2·√stiffness（減衰比 1.0）。
 
@@ -2498,6 +2558,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | Footer リンク × 4 | Footnote 13 / 20 | 44 | 上下 −12。gap `inline/lg` 24 |
 | Mobile メニューボタン | `size/control/md` 44 | ✓ | 拡張不要（DECISION M-13） |
 | Menu row × 4 + CTA | 44 高 | ✓ | — |
+| 参加ダイアログ 同意 / 閉じる | `size/control/md` 44 | ✓ | Mobile は `fullWidth`、縦の gap `stack/sm` 12 ≥ 8 |
 | Skip link | Desktop `size/control/sm` 36（フォーカス時のみ表示）/ Mobile 44 | 44 | Desktop は `::before { inset: -4px }`（キーボード専用なので実質不要） |
 
 ### 8.4 フォーカス
@@ -2528,7 +2589,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | Marquee | `<div aria-hidden="true">`（トラック）+ 停止 `<button>`（aria-hidden の外） |
 | Footer | `<footer>`（contentinfo）。リンクは `<nav aria-label="フッター">` |
 
-**フォーカス順序**: Skip → Brand → Nav リンク × 4 → Nav CTA →（Mobile: メニューボタン → 開時 Menu row × 4 → Menu CTA）→ Hero 主 → Hero 副 → Bento CTA → Activity セル × 3 → Partner リンク → Poster CTA → Social × 3 → Footer Brand → Footer リンク × 4。
+**フォーカス順序**: Skip → Brand → Nav リンク × 4 → Nav CTA →（Mobile: メニューボタン → 開時 Menu row × 4 → Menu CTA）→ Hero 主 → Hero 副 → Bento CTA → Activity セル × 3 → Partner リンク → Poster CTA → Social × 3 → Footer Brand → Footer リンク × 4。参加 CTA を押すと参加ダイアログ（同意して参加する → 閉じる、背後は inert、閉じたら押した CTA へ戻る。U-49）。
 
 **見出し階層**（h1 は 1 つ、階層を飛ばさない）
 
@@ -2551,6 +2612,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | ボタン内アイコン | `<svg aria-hidden="true" focusable="false">`。名前は可視ラベルのみ |
 | 外部リンク | Discord / X / Instagram / GitHub / mailto / Partner ロゴ / Member SNS: `target="_blank" rel="noopener noreferrer"` + vh「（外部、新しいタブで開く）」（DECISION M-21、WCAG G201）。文字リンクは `arrow-up-right` アイコンも付ける |
 | Mobile メニュー | `<button aria-expanded aria-controls>`、パネルは非モーダル。開いてもフォーカスはボタンに留め、ArrowDown で 1 行目へ（§6.7.3） |
+| 参加ダイアログ | `<dialog aria-labelledby="{h2}" aria-describedby="{導入 p} {約束 ul}">` を `showModal()`。トリガーは `<button type="button" aria-haspopup="dialog">`。開いたら「同意して参加する」（`<a target="_blank">` + vh 注記）にフォーカス、背後は inert、閉じたら押した要素へ戻る。「閉じる」は `<form method="dialog">` の submit（U-49） |
 
 ### 8.6 画像と代替テキスト
 
@@ -2611,6 +2673,8 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | タグ | 名詞、4–8 字 | 初心者歓迎 |
 | Persona 引用 | 「」内に話し言葉 | 「個人開発、一人だと続かないんだよね」 |
 | Persona 推奨 | 「〜しよう」「〜でOK」 | Dev Dayで一緒に手を動かそう |
+| ダイアログ題 | 体言止め | Discordに参加する前に |
+| ダイアログ約束 | 「〜する。」「〜しない。」の言い切り。本文は禁止事項を並べて終える | 相手を尊重する。／誹謗中傷、ハラスメント、差別的な発言をしない。 |
 
 ### 9.3 文字数上限
 
@@ -2657,6 +2721,10 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | タグライン（英） | Caption Bold 12 | — | — | 20（"Hack Your Limits." = 17） | 1 |
 | Footer リンク / © | Footnote 13 / Caption 12 | — | — | 10 / `© YYYY ChoTech` | 1 |
 | Marquee 項目 | Title 3 Caps 19 | — | — | 12 | 1 |
+| ダイアログ題 | Title 2 22 | 432 / 302 | 19 / 13 | 12（「Discordに参加する前に」= 11.3） | 1 |
+| ダイアログ導入 | Body S 14 | 432 / 302 | 30 / 21 | 45 | 2 / 3 |
+| ダイアログ約束 題 / 本文 | Subheadline 15 / Footnote 13 | 432 / 302 | 28 / 20 · 33 / 23 | 14 / 30 | 1 / 1–2 |
+| ダイアログ CTA | Label M 15 | — | — | 8（「同意して参加する」= 8） | 1 |
 
 ### 9.4 句読点・記号
 
@@ -2688,7 +2756,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | 規則 | 内容 |
 |---|---|
 | 左寄せ | すべてのラベルは flush-left。ボタン内も左寄せ、アイコンはラベル直後（L-3） |
-| 動詞先行 | CTA は目的語 + 動詞終止形で終える（参加する／活動を見る／パートナーになる）。名詞だけの CTA は不可 |
+| 動詞先行 | CTA は目的語 + 動詞終止形で終える（参加する／活動を見る／パートナーになる／同意して参加する／閉じる）。名詞だけの CTA は不可 — ダイアログの副次も「キャンセル」ではなく起きることそのもの「閉じる」（U-49） |
 | 1 画面 1 主 CTA | Hero の「参加する」が主。他は目的語付きで区別（Discordに参加する／Discordに参加する） |
 | 矢印の意味 | 末尾の矢印 = 遷移。サイト内（Activity 行）: `arrow-right`。外部（Discord、X、Instagram、GitHub、mailto）: `arrow-up-right`。ページ内スクロール（Hero「活動を見る」、Nav リンク）: アイコンなし（R9）。先頭の `arrow-right` は Persona 推奨の「次の一歩」を指す指示子のみ（リンクではない） |
 | アイコン仕様 | Tabler outline、24 グリッド、stroke 2、`currentColor`、常に `aria-hidden`。サイズは §5.2 の判定順: **コントロール高で決める** 36 → 16、44 → 20、アイコンボタン 44 → 24。**文中は文字サイズで決める** ≤ 14 px → 16、15–19 px → 20（Marquee 19 Caps → 20） |
@@ -3272,6 +3340,7 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 | U-46 | 釣り合いの調整（2026-09-12、クライアント所見「まだアンバランスな UI が多い」）: (1) Member カードの Socials 行を `margin-top: auto` でカードの底に揃える、(2) Activities の見出し → グリッドを他節と同じ `heading-mb` 32 / 24 に（旧 `heading-mb-list` 8 を撤回）、(3) About の CULTURE を **Display/M** の statement セルに、1×1 の文字セル（SINCE / ONLINE & OFFLINE / FOR EVERYONE）を Headline 17 → **Title/3 19** に | (1) 紹介文が 2 行と 3 行のカードで導線の高さが 20px ずれていた。(2) 写真セルの上に 8 しか無く、見出しが格子に貼り付いて About / For You と縦リズムが違った。(3) 597 幅の 2×1 に Title/2 では文字が左 1/3 に寄り、隣の 50+（Display/L）と釣り合わなかった。1×1 は Headline では行 2–3 の右側が軽かった |
 | U-47 | Poster の Social とフッターのリンクの `<li>` を `display: flex` にする（2026-09-12） | 親の 15px の strut が `<li>` の行ボックスを 26 に広げ、inline-flex のマーク（20）が 3px 下がって 44 のボタンと上下中央が合わなかった（フッターは 1px）。実測で確認: Desktop / tablet / Mobile の 3 幅でボタンとマークの中心が一致 |
 | U-48 | 段落にも `word-break: auto-phrase` を当て、Hero のリード（Title/1）に `text-wrap: balance`（2026-09-12） | Mobile の Hero リードが「長崎にテック好きのためのハ / ブを。」、Poster の段落が「最初の一 / 歩」と語中で折れていた。見出しだけに auto-phrase を当てる旧規則では p のリードと段落が漏れる。対応ブラウザだけの段階的強化で、Figma との折返し一致（§2.6.2）は見出しの著者改行が正のまま |
+| U-49 | 参加の導線 4 本（Nav・Menu・Hero 主・Poster）は Discord へ直接出ず、**参加ダイアログ**（§6.21）でコミュニティの約束に同意してから新しいタブで出る（2026-09-12、クライアント判断）。素の `<dialog>` + `showModal()`、ground のセル 480、幕 ink@48 + `shadow/lg`。主「同意して参加する」= Discord、副「閉じる」= Ground / Outline。トリガーは `<button aria-haspopup="dialog">`。約束の文言は草案 | 「Discordに参加するボタンのみ、確認モーダルを設けて同意してから参加するようにした方がよさそう」。招待リンクは誰でも踏めるので、約束を読む場所はサーバの中ではなく手前に要る。同意はボタンを押すことそのもの — チェックボックスは 1 手増やすだけで読んだ証明にならない。ネイティブ `<dialog>` にしたのは、幕・inert・Escape・フォーカスの往復を自前で書くとどれかが漏れるため。影と幕は §4.4 が「dialog のみ」と予約していた段 |
 
 ## 付録 B. 検証
 

@@ -1,4 +1,5 @@
 import { ArrowUpRight, BrandDiscord, brandIcons } from "@/components/icons";
+import { JoinTrigger } from "@/components/join/join-dialog-provider";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { sectionVariants } from "@/components/ui/section";
@@ -57,7 +58,8 @@ export function Poster() {
           className="mt-stack-xl flex flex-wrap items-center gap-x-inline-lg gap-y-stack-md"
           data-reveal
         >
-          {/* 行き先が Discord であることは矢印ではなくマークが言う（U-19） */}
+          {/* 行き先が Discord であることは矢印ではなくマークが言う（U-19）。
+              押すと参加ダイアログが開く（U-49） */}
           <Button
             surface="poster"
             variant="discord"
@@ -65,10 +67,7 @@ export function Poster() {
             brand={BrandDiscord}
             icon={ArrowUpRight}
           >
-            <a href={posterContent.action.href} {...externalLinkProps}>
-              {posterContent.action.label}
-              <span className="sr-only">{externalLinkNote}</span>
-            </a>
+            <JoinTrigger>{posterContent.action.label}</JoinTrigger>
           </Button>
 
           {/* Tailwind preflight の list-style: none で Safari はリスト性を落とす。

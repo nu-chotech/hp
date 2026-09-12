@@ -93,8 +93,9 @@ const buttonVariants = cva(
       {
         surface: "ground",
         variant: "outline",
-        // ライブラリ専用（K-5）。枠だけがボタンを識別する情報なので divider ではなく
-        // currentColor = ink を使い、非テキスト 3:1 を満たす（DECISION K-2）。
+        // 参加ダイアログの「閉じる」（U-49）。帯の中には置かない（K-5）。枠だけがボタンを
+        // 識別する情報なので divider ではなく currentColor = ink を使い、非テキスト 3:1 を
+        // 満たす（DECISION K-2）。
         class: ["inset-ring inset-ring-current text-ink", stateTint],
       },
       {
