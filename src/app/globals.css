@@ -65,6 +65,19 @@
   --blurple-530: #505cdc; /* Y 0.145 — ホバー。白 5.38、ground 上 4.81 / ink 上 3.09 */
   --blurple-560: #4752c4; /* Y 0.114 — プレス。白 6.42、ink 上 2.59 は押下の瞬間 */
 
+  /* tint — About のベントの図の色（DECISION C-32、2026-09-14）。GitHub Primer light の
+     段 2（塗り）と段 7（図）を、green と同じ流儀で 300 / 900 に写す。イメージ扱い（U-21）で
+     アクセントではない。4 つの塗りは Y 0.55–0.58 の同じ帯にあり、色相は意味を運ぶが階層は
+     運ばない。図（段 7）は塗りの上で 5.75–5.87、prefers-contrast では ink（9.49–9.96）。 */
+  --blue-300: #80ccff; /* Y 0.550 — figure/blue の塗り。ground 1.57 */
+  --blue-900: #033d8b; /* 図。blue-300 上 5.87 */
+  --orange-300: #ffb77c; /* Y 0.566 — figure/orange の塗り。ground 1.53 */
+  --orange-900: #762c00; /* 図。orange-300 上 5.78 */
+  --pink-300: #ffadda; /* Y 0.562 — figure/pink の塗り。ground 1.54 */
+  --pink-900: #772057; /* 図。pink-300 上 5.75 */
+  --yellow-300: #eac54f; /* Y 0.580 — figure/yellow の塗り。ground 1.49 */
+  --yellow-900: #633c01; /* 図。yellow-300 上 5.79 */
+
   /* alpha — 12 個（ink 5 / ground 5 / green-400 1 / black 1、black だけ尺度外の 64）。
      6 → 12 → 24 → 48 は倍々（ティント・影・幕・無効）、72 = 3 × 24（tertiary 文字）、
      88 は secondary 文字。合成 hex をハードコードせず color-mix で持つ
@@ -85,7 +98,7 @@
 }
 
 /* =============================================================================
- * 3. Semantic roles — 66 行（Figma: Color コレクション / 既定モード Green accent）
+ * 3. Semantic roles — 74 行（Figma: Color コレクション / 既定モード Green accent）
  *
  * ページで色を触るときはここだけを参照する。primitive を直接使わない。
  * 行末のコメントは対比比（vs ground / vs ink）。理由は各グループの見出しに書く。
@@ -245,6 +258,21 @@
   --on-discord: var(--neutral-0); /* ラベル・Discord マーク・矢印 */
   --discord-hover: var(--blurple-530); /* 白 5.38。ground 4.81 / ink 3.09 */
   --discord-pressed: var(--blurple-560); /* 白 6.42。ink 上 2.59 は押下の瞬間 */
+
+  /* --- 1.3.10 図のティント（Bento Figure、C-32） ----------------------------
+   * About のベントの図（色の円 + Tabler 32）だけが使う 4 色。イメージ（U-21）と同じ扱いで、
+   * アクセントの出現に数えず、Mono でも変わらない。文字・罫・ボタン・面には使わない。
+   * 色相は意味: blue = 知る / orange = 作る・場 / pink = 話す・つながる / yellow = しるし・探る。
+   * Discord を指す図（オンライン）に blue は置かない — Blurple と混ざる。
+   * ---------------------------------------------------------------------- */
+  --figure-blue-fill: var(--blue-300);
+  --figure-blue-ink: var(--blue-900); /* 塗り上 5.87 */
+  --figure-orange-fill: var(--orange-300);
+  --figure-orange-ink: var(--orange-900); /* 塗り上 5.78 */
+  --figure-pink-fill: var(--pink-300);
+  --figure-pink-ink: var(--pink-900); /* 塗り上 5.75 */
+  --figure-yellow-fill: var(--yellow-300);
+  --figure-yellow-ink: var(--yellow-900); /* 塗り上 5.79 */
 
   /* 専用ロールを置かないもの:
      typing dot / placeholder アイコン → --ink-tertiary に直接 bind（3.85 / 3.50）
@@ -512,6 +540,7 @@
   --size-mark-footer: 1.25rem; /* 20 — フッターのロゴマーク。Headline 17 に対し比 1.18 */
   --size-rule-v: 0.75rem; /* 12 — 縦 hairline の高さ。隣接する文字サイズと等しい（L-16） */
   --size-dialog: 30rem; /* 480 — 参加ダイアログの最大幅（= 4 × cell-min、U-49）。Mobile は container 幅 */
+  --size-figure: 4rem; /* 64 — ベントの図の円（md、= 2 × icon/xl）。lg は size/illustration 80（U-52） */
 
   /* --- 5.3 アイコン（Tabler outline、24 グリッド、stroke 2、round cap/join） -- */
   --icon-sm: 1rem; /* 16 — 12〜14px の文字の横、36px コントロールのラベル横 */
@@ -670,6 +699,15 @@
   --color-on-discord: var(--on-discord);
   --color-discord-hover: var(--discord-hover);
   --color-discord-pressed: var(--discord-pressed);
+  /* 図のティント（C-32） */
+  --color-figure-blue-fill: var(--figure-blue-fill);
+  --color-figure-blue-ink: var(--figure-blue-ink);
+  --color-figure-orange-fill: var(--figure-orange-fill);
+  --color-figure-orange-ink: var(--figure-orange-ink);
+  --color-figure-pink-fill: var(--figure-pink-fill);
+  --color-figure-pink-ink: var(--figure-pink-ink);
+  --color-figure-yellow-fill: var(--figure-yellow-fill);
+  --color-figure-yellow-ink: var(--figure-yellow-ink);
   /* 状態 */
   --color-state-hover-tint: var(--state-hover-tint);
   --color-state-pressed-tint: var(--state-pressed-tint);
@@ -864,6 +902,7 @@
   --spacing-avatar: var(--size-avatar);
   --spacing-dot: var(--size-dot);
   --spacing-illustration: var(--size-illustration);
+  --spacing-figure: var(--size-figure);
   --spacing-mark-nav: var(--size-mark-nav);
   --spacing-mark-footer: var(--size-mark-footer);
   --spacing-rule-v: var(--size-rule-v);
@@ -1200,6 +1239,11 @@
     --state-hover-tint: var(--alpha-ink-12); /* 6 → 12（上の ink 11.78） */
     --state-pressed-tint: var(--alpha-ink-24); /* 12 → 24（9.05） */
     --backdrop: var(--alpha-ink-88); /* 48 → 88 */
+    /* 図は塗りの上で ink（9.49–9.96）。塗りは変えない（C-32） */
+    --figure-blue-ink: var(--ink);
+    --figure-orange-ink: var(--ink);
+    --figure-pink-ink: var(--ink);
+    --figure-yellow-ink: var(--ink);
   }
 
   :focus-visible {
