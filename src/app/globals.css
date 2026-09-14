@@ -246,13 +246,13 @@
   --discord-hover: var(--blurple-530); /* 白 5.38。ground 4.81 / ink 3.09 */
   --discord-pressed: var(--blurple-560); /* 白 6.42。ink 上 2.59 は押下の瞬間 */
 
-  /* --- 1.3.10 図のティント（Bento Figure、C-32） ----------------------------
-   * About のベントの図（淡い緑の円 + Tabler 32）だけが使う 2 行。accent-subtle / on-accent-subtle
-   * のエイリアスで、アクセントの緑系に統一する（クライアント判断: 3 色の使い分けは浮きすぎた）。
-   * 図は装飾なので語は添えない。
+  /* --- 1.3.10 図の円（Bento Figure、C-32） --------------------------------
+   * About のベントの図（緑の円 + 白い Tabler 32）だけが使う 2 行。チャットの自分側バブルと
+   * 同じ accent-fill + on-accent のエイリアス — 「周りと同じ緑」（クライアント判断。淡い
+   * 緑 + 濃い緑の図は「キモい」、4 色相は「浮きすぎ」で撤回）。図は装飾なので語は添えない。
    * ---------------------------------------------------------------------- */
-  --figure-fill: var(--accent-subtle); /* green-200。ground 1.20 */
-  --figure-ink: var(--on-accent-subtle); /* green-900。塗り上 7.33 */
+  --figure-fill: var(--accent-fill); /* green-600。ground 4.14 */
+  --figure-ink: var(--on-accent); /* 白。green-600 上 4.63 */
 
   /* 専用ロールを置かないもの:
      typing dot / placeholder アイコン → --ink-tertiary に直接 bind（3.85 / 3.50）
@@ -1227,7 +1227,6 @@
     --state-hover-tint: var(--alpha-ink-12); /* 6 → 12（上の ink 11.78） */
     --state-pressed-tint: var(--alpha-ink-24); /* 12 → 24（9.05） */
     --backdrop: var(--alpha-ink-88); /* 48 → 88 */
-    --figure-ink: var(--ink); /* 図。green-200 上 12.46（C-32） */
   }
 
   :focus-visible {

@@ -5,10 +5,10 @@ import { cn } from "@/lib/utils";
 /**
  * Bento / Figure（§6.11.2、DECISION U-52 / C-32）
  *
- * ベントの図: 淡い緑の円（64 = `size/figure`）の中の Tabler 32 / stroke 1.5。語は添えない —
+ * ベントの図: 緑の円（64 = `size/figure`）の中の白い Tabler 32 / stroke 1.5。語は添えない —
  * 意味は題が運び、図は Apple のベントと同じ「1 タイル 1 つの絵」として題の下に並ぶ
- * （クライアント判断 2026-09-15: 3 色の使い分けと説明書きはやめ、アクセントの緑系で統一）。
- * 色は `figure/fill` = accent-subtle（green-200）、図は `figure/ink` = on-accent-subtle（green-900、7.33）。
+ * （クライアント判断 2026-09-15: 3 色の使い分けと説明書きはやめ、周りと同じ緑で統一）。
+ * 色は `figure/fill` = accent-fill（green-600、チャットの自分側バブルと同じ）、図は `figure/ink` = on-accent（白、4.63）。
  * 円は §4.1 の radius/full の 4 つ目の例外（似顔絵・点・吹き出しと同じ「絵」の族）。
  *
  * 行全体は aria-hidden（装飾、§6.11.2）。だから <ul> ではなく素の div で組む。

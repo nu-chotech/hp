@@ -27,7 +27,7 @@
 > - **2026-09-12（14）**: 参加の導線（Nav・Menu・Hero 主・Poster の 4 本）は Discord へ直接出ず、**参加ダイアログ**で約束に同意してから新しいタブで出る（**DECISION U-49**、§6.21）。素の `<dialog>` + `showModal()`、ground の面 480 × inset/cell、幕 `backdrop` ink@48 + `shadow/lg`（§4.4 で dialog 用に予約していた唯一の影）。主「同意して参加する」= Discord（外部リンク）、副「閉じる」= Ground / Outline（K-5 の帯の外での初出）。トリガーは `<button aria-haspopup="dialog">`、動きは reveal と同じ opacity + y 16 の `spring/quick`。約束の文言は草案（`src/content/join.ts`）
 > - **2026-09-14**: Hero の h1 の板を実色の ink から**真っ黒 64%**（`hero/plate` = `alpha/black/64`、プリミティブ `neutral/1000`。板越しに写真がうっすら透ける）に、背景写真は **`blur(4px)`** で軽くぼかし、U-20 の漂い（48 s の translate）を**撤去**して静止画に（**DECISION U-50**）。動くものは 5 つ（reveal・マーキー・入力中ドット・Mobile メニュー・参加ダイアログ）
 > - **2026-09-14（2）**: Poster の見出し「Hack Your Limits.」を全文 green-400 から**文は白・句点だけ green-400**（`poster/display`）に（**DECISION U-51**）。Hero の h1 と同じ印
-> - **2026-09-14（3）**: About のベントの図を **Bento / Figure**（淡い緑の円 64 の中の Tabler 32、語なし）にし、解剖を全セル「kicker（天）／題 → 図（地）」に統一（**DECISION U-52**）。SINCE は Title/1 の日付 + 旗の図、OFFICIAL は 2×1 の中を **2 列**に。円の色は `accent-subtle`（green-200）+ `on-accent-subtle`（green-900、7.33）（**DECISION C-32**、§1.2.5 / §1.3.10）。2026-09-15 改: 初版の 4 色相 + 語つきの図は所見「配色が浮きすぎ、説明書きは不要、Apple の Bento のように洗練させる」で撤回
+> - **2026-09-14（3）**: About のベントの図を **Bento / Figure**（淡い緑の円 64 の中の Tabler 32、語なし）にし、解剖を全セル「kicker（天）／題 → 図（地）」に統一（**DECISION U-52**）。SINCE は Title/1 の日付 + 旗の図、OFFICIAL は 2×1 の中を **2 列**に。円の色は自分側バブルと同じ `accent-fill`（green-600）+ 白（**DECISION C-32**、§1.2.5 / §1.3.10）。2026-09-15 改: 初版の 4 色相 + 語つきの図は「配色が浮きすぎ、説明書きは不要」、改 1 の淡い緑 + 濃い緑の図は「キモい、周りと同じ緑で」で撤回
 > - **2026-09-14（4）**: Persona card の引用から**墨の板を外し**、地の上の Callout に。引用 `size/persona-quote` 44（2 行ぶん）と次の一歩 `size/persona-rec` 64（2 行 + inset）の**目標高**で、6 枚が上下 2 段とも同じ高さ（Desktop 268 / Mobile 260）になる（**DECISION U-53**）。§9.3 の上限を 引用 42 / 推薦 36 に締める
 > - **2026-09-14（5）**: 参加ダイアログの中身を「約束 3 つに同意」から**「学生ですか？」の 1 問**に（**DECISION U-54**）。導入「ChoTechは学生向けのテックコミュニティです。大学・学部・学科は問いません。」（文節の塊を nowrap で）、主「学生として参加する」（Discord）、副「閉じる」。約束の行と hairline は撤去。学生の前提（大学・大学院・高専・専門学校、高校生は対象外）は `src/content/join.ts` に集約
 > - **Figma v2 への反映は未実施**（2026-09-12 時点）。反映すべき変更の一覧と手順は [figma-sync-2026-09-12.md](./figma-sync-2026-09-12.md)
@@ -54,7 +54,7 @@
 | **Purpose（目的）** | ページの仕事は「ChoTech を知り、Discord に来てもらう」の 1 つ。要素はこの仕事に寄与するときだけ置く | 主 CTA は 1 画面 1 つ。装飾のためだけの動き・色・影を足さない（M9）。落としたもの: チャット再生ループ、浮遊バブル、編集ヒント、accent-2、絵文字 |
 | **Clarity（明快）** | 読めることが最初。インク・オン・グラウンド（14.86:1）で成立させ、色は構造を補わない | 明るい面の文字は ink / ink-secondary の 2 段、暗い面は ground のアルファ 100 / 88 / 72 / 48。全ペアを計算し AA を満たす。12px 未満の文字はない |
 | **Hierarchy（階層）** | 階層は「ウェイト × サイズ × 行送り」の組と、罫線の太さ（1 / 2 / 4px）と余白の段（4px モジュール）で作る。色で作らない | Display 800 −2%、見出し 800、声 700、本文 400。2px rule = 区画、1px hairline = 行、4px = ポスターの下線。罫線の上 80 ≥ 下 64 |
-| **Restraint（抑制）** | 一書体、一色相、角丸ゼロ、影ゼロ、中央揃えなし。Mono モードで成立しない設計は Green でも不可。第三者の識別色（パートナーロゴの原色、Discord ボタンの Blurple）は「引用」で、色相には数えない（U-21 / C-31）。ベントの図の円は緑の淡い段（accent-subtle、C-32） | アクセントの出現は Green で 6 種（マーキー区切り、活動バッジ、Hero と Poster の句点、チャット自分側バブルの accent-fill、ベントの図の淡い塗り accent-subtle）+ 状態 4 種（hover 下線 / pressed 文字 / focus / selection）だけ。参加ボタンは Discord の Blurple（C-31）。写真・イラスト・ロゴは原色（U-21） |
+| **Restraint（抑制）** | 一書体、一色相、角丸ゼロ、影ゼロ、中央揃えなし。Mono モードで成立しない設計は Green でも不可。第三者の識別色（パートナーロゴの原色、Discord ボタンの Blurple）は「引用」で、色相には数えない（U-21 / C-31）。ベントの図の円は自分側バブルと同じ緑の面（accent-fill、C-32） | アクセントの出現は Green で 5 種（マーキー区切り、活動バッジ、Hero と Poster の句点、チャット自分側バブルとベントの図の円の accent-fill）+ 状態 4 種（hover 下線 / pressed 文字 / focus / selection）だけ。参加ボタンは Discord の Blurple（C-31）。写真・イラスト・ロゴは原色（U-21） |
 | **Craft（精度）** | すべての値が梯子の段であり、根拠を言える。Figma と CSS が同じ構造で同じ数を持つ | 4px モジュール、整数 px の行送り、高さ駆動のコントロール（36 / 44）、fill + gap で描く罫線グリッド、`n 文字 = n em` の和文組版、compositor プロパティだけの動き |
 
 Familiarity（慣れ）・Agency（主体性）・Flexibility（柔軟）・Responsibility（責任）は個別規則に溶かした: 矢印の意味を 2 種に固定する（§5）、外部リンクは新しいタブで開く（§8、M-21 で M-15 を撤回）、ループはページ内スイッチで止められる（§7）、Mobile は 1 列で DOM 順（§3）、200% 拡大とリフローで壊れない（§8）。
@@ -199,12 +199,12 @@ Blurple を文字・罫・印・大面に使わない。Discord 以外のサー�
 
 #### 1.2.5 ベントの図の色（C-32）
 
-About のベントの図（Bento / Figure、§6.11.2）の円は **アクセントの緑系の淡い段**で塗る: 塗り `figure/fill` = `accent-subtle`（green-200 `#aceebb`、Y 0.735、ground 1.20）、図 `figure/ink` = `on-accent-subtle`（green-900 `#044f1e`、塗り上 **7.33**）。新しいプリミティブは無い（**DECISION C-32**、2026-09-14 → 2026-09-15 改）。
+About のベントの図（Bento / Figure、§6.11.2）の円は **チャットの自分側バブルと同じ緑**で塗る: `figure/fill` = `accent-fill`（green-600 `#238636`、ground 4.14）、図 `figure/ink` = `on-accent`（neutral-0、塗り上 **4.63**）。新しいプリミティブもロールの値も無い（**DECISION C-32**、2026-09-14 → 2026-09-15 改 2）。
 
-経緯: 2026-09-14 の初版は GitHub Primer light の段 2 / 7 を 4 色相（blue / orange / pink / yellow）で写し、意味ごとに色を分けた（実測 図 5.75–5.87、塗り vs ground 1.49–1.57）。クライアント所見「アイコンの配色が浮きすぎ。色を使うならアクセントのグリーン系で統一。3 色使い分けもやらなくていい」で同日中に撤回。green-200 は ground との差 1.20 で、64 の円なら塗りとして十分に読め、チャットの自分側バブル（green-600）より弱いので緑の階層（印 > 面 > 淡い塗り）を崩さない。比較した候補: Primer light green-2 `#6fdd8b`（ground 1.52）は近くの green-600 のバブルと競り、green-300 `#56d364`（1.72）は「目にきつい」側に戻る。
+経緯: 初版は GitHub Primer light の段 2 / 7 を 4 色相で写し意味で使い分けた → 「配色が浮きすぎ。アクセントのグリーン系で統一」で撤回。改 1 は accent-subtle（green-200）+ green-900 の図 → 「色がキモい。周りと同じ緑でいい」で撤回。周りの緑 = 同じ About の中の自分側バブル（accent-fill + 白）なので、その対をそのまま使う。緑の面はこれで「文字を載せる小さな面」（C-30）に図の円が加わる — 64 の円は小さな面で、大面ではない。
 
-- `prefers-contrast: more`: 図を `ink`（green-200 上 12.46）。`forced-colors`: 塗りが消えるので円に 1px の枠。
-- ティントは accent-subtle の**初のページ使用**。§1.5.1 のアクセントの出現に 1 種として数える（淡い塗り）。
+- `prefers-contrast: more`: 白のまま（ink は green-600 上 3.59 で白より弱い）。`forced-colors`: 塗りが消えるので円に 1px の枠。
+- §1.5.1 のアクセントの出現: 「チャット自分側バブルとベントの図の円の面」として 1 種に数える。
 
 ### 1.3 セマンティックロール
 
@@ -367,14 +367,14 @@ About のベントの図（Bento / Figure、§6.11.2）の円は **アクセン�
 
 アクセント（§1.3.5）の規則は適用しない — これは本システムの色ではなく、行き先の識別子。だから (1) ボタン以外（文字・罫・印・面）に置かない、(2) 地の上でも同じ値（Blurple は ground 上 4.12 で輪郭 3:1 を満たし、極性を持たない）、(3) フォーカスリングは面の規則どおり（ground `focus/ring`、ink `focus/ring-inverse`）で Blurple にしない。
 
-#### 1.3.10 図のティント（Bento Figure、C-32）
+#### 1.3.10 図の円（Bento Figure、C-32）
 
 | ロール | 値 | Scopes | 使用箇所 | 比 |
 |---|---|---|---|---|
-| `color/figure/fill` | → accent-subtle（green-200） | FF | ベントの図の円（64） | vs ground 1.20（塗り） |
-| `color/figure/ink` | → on-accent-subtle（green-900） | SF | 円の中の Tabler 32 | 塗り上 7.33 |
+| `color/figure/fill` | → accent-fill（green-600） | FF | ベントの図の円（64） | vs ground 4.14 |
+| `color/figure/ink` | → on-accent（neutral-0） | SF | 円の中の Tabler 32 | 塗り上 4.63 |
 
-Bento / Figure 以外がこのロールを引いてはならない。Mono では accent-subtle と同じく状態にしか現れない色なので、図は Mono でも緑の淡い塗り（U-21 のイメージと同じく「絵」として許す）。`prefers-contrast: more` では `ink` を `color/ink` に（§1.5.5）、`forced-colors` では塗りが消えるので円に 1px の枠（Cell と同じ）。
+Bento / Figure 以外がこのロールを引いてはならない。Mono では accent-fill の行き先（緑）がそのまま残る（自分側バブルと同じ扱い）。`prefers-contrast: more` でも白のまま、`forced-colors` では塗りが消えるので円に 1px の枠（Cell と同じ）。
 
 ### 1.4 コントラストマトリクス
 
@@ -400,8 +400,8 @@ Bento / Figure 以外がこのロールを引いてはならない。Mono では
 
 | ロール | 下地 | 代表用途 | 区分 | 比 | 判定 |
 |---|---|---|---|---|---|
-| figure/ink (green-900) | figure/fill (green-200) | ベントの図の Tabler 32（C-32） | U | 7.33 | PASS |
-| figure/fill (green-200) | ground | 図の円の輪郭 | — | 1.20 | 装飾（淡い塗りの面差で読む） |
+| figure/ink (neutral-0) | figure/fill (green-600) | ベントの図の Tabler 32（C-32） | U | 4.63 | PASS |
+| figure/fill (green-600) | ground | 図の円の輪郭 | U | 4.14 | PASS |
 | ink | surface | Callout 14 B（相手側バブル）、Footnote/Bold 13（ペルソナ次の一歩、U-53）、チップ数値 Caption 12 B | N | 13.51 | PASS |
 | ink-secondary | surface / chip/fill | Caption 12 R（画像キャプション、タグ文字）、チップアイコン | N / U | 5.30 | PASS |
 | ink-tertiary | surface | placeholder アイコン | U | 3.50 | PASS |
@@ -474,7 +474,7 @@ Bento / Figure 以外がこのロールを引いてはならない。Mono では
 | ポスター見出しの句点（Display L、U-51） | — | ○ | 400（インク面上） |
 | チャット自分側バブルの面 | — | ○ | 600（accent-fill、白文字） |
 | ヒーロー h1 の句点（U-39） | — | ○ | 400（墨の板の上） |
-| ベントの図の円（C-32） | ○ | ○ | 200（accent-subtle の塗り）+ 900（図）。淡い塗りの初のページ使用 |
+| ベントの図の円（C-32） | — | ○ | 600（accent-fill、白い図）— 自分側バブルと同じ面 |
 | 上記以外（見出し、アイコン、ボタン塗り、罫線、写真の着色、ホバー中の文字色） | × | × | — |
 
 - Mono の 4 出現はすべて一時的状態（hover / pressed / focus / selection）。持続状態（`aria-current`、静止テキスト）にアクセントを使わない。
@@ -530,7 +530,6 @@ Bento / Figure 以外がこのロールを引いてはならない。Mono では
 | `inverse/state/*` | 変更なし | ラベルは inverse/ink 100 % で 10.58 / 7.06。48 % に上げると ground ラベルが約 3.4 で N 不合格 |
 | `inverse/hairline` | 変更なし（テクスチャ） | — |
 | `backdrop` 48 → 88 | `prefers-reduced-transparency` と同値 | — |
-| `figure/ink`（green-900） | → `ink` | green-200 の上 12.46（C-32） |
 
 CSS 変数名は Figma 名の `/` を `-` に置換する（例 `--color-inverse-ink-secondary`）。アルファは `color-mix(in srgb, var(--color-ground) 88%, transparent)` で表現し、合成値をハードコードしない（固定値が要る `prefers-reduced-transparency` だけ §1.2.3 の合成 hex を使う）。
 
@@ -1312,7 +1311,7 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 | `icon/sm` | 16 | 12〜14px の文字（badge Overline 12、chip Caption 12、persona rec / sponsor link Footnote 13、footer の任意 brand アイコン）、36px コントロールのラベル横 | glyph の実寸は 16 × 20/24 ≈ 13px ≈ 14px 文字の cap 高 + α |
 | `icon/md` | 20 | 15〜19px の文字（marquee Title 3 Caps 19 の区切り）、44px コントロールのラベル横、icon-only 36 | glyph ≈ 17px。19px 大文字の cap 高 ≈ 15px と釣り合う |
 | `icon/lg` | 24 | icon-only 44（menu、x）、placeholder の写真アイコン | Tabler のネイティブサイズ |
-| `icon/xl` | 32 | About ベントの図 — 淡い緑の円（64）の中、題の下（U-40 → U-52） | stroke **1.5**（§5.1: 32 以上は 1.5）。24 grid × 4/3。色は `figure/ink`（green-900、C-32） |
+| `icon/xl` | 32 | About ベントの図 — 緑の円（64）の中、題の下（U-40 → U-52） | stroke **1.5**（§5.1: 32 以上は 1.5）。24 grid × 4/3。色は `figure/ink`（白、C-32） |
 
 判定順: コントロール内 → 高さで決める（ラベル横: 36 → 16、44 → 20。icon-only: 36 → 20、44 → 24）。文中 → 文字サイズで決める（≤ 14 → 16、15〜19 → 20）。（DECISION L-27、R7）
 
@@ -1974,7 +1973,7 @@ Figma: `Section / Heading` `Layout` {Row, Stacked} 2。Props: `title` `label` TE
 | 1×1 sm | 同 | `Headline` 17、≤ 3 行 | 同 | 同（`showBody`） |
 
 - 解剖は **2 段**、全セル共通: kicker（天）／ [title（→ body）→ `stack/md` 16 → figures]（地）。縦 flex、`justify-content: space-between`。図は題と 1 つの塊にする — 天・中・地の 3 段に散らすと、行が伸びたとき図だけが中空に浮く（U-40）。図が題の**下**にあるのは、クライアントの絵「仲間と、の下に丸の背景に囲まれたアイコン」どおり — 題を読んだ続きに図が並び、円の列がベント全体の底の帯になる（U-52）。
-- **Bento / Figure**（`figure.tsx`）: 淡い緑の円（`radius/full`、§4.1 の 4 つ目の例外、`figure/fill` = green-200）の中の Tabler **32 / stroke 1.5**（`icon/xl`、`figure/ink` = green-900、7.33）。**語は添えない** — 意味は題が運び、図は Apple のベントの「1 タイル 1 つの絵」（クライアント判断 2026-09-15: 初版の語つき 4 色の図は「浮きすぎ」「説明書きは不要」で撤回、§1.2.5）。行全体は `aria-hidden`（装飾）。`forced-colors` では円に 1px の枠。左揃え、中央揃えはしない。
+- **Bento / Figure**（`figure.tsx`）: 緑の円（`radius/full`、§4.1 の 4 つ目の例外、`figure/fill` = accent-fill green-600 — 自分側バブルと同じ）の中の白い Tabler **32 / stroke 1.5**（`icon/xl`、`figure/ink` = on-accent、4.63）。**語は添えない** — 意味は題が運び、図は Apple のベントの「1 タイル 1 つの絵」（クライアント判断 2026-09-15: 初版の語つき 4 色の図は「浮きすぎ」「説明書きは不要」で撤回、§1.2.5）。行全体は `aria-hidden`（装飾）。`forced-colors` では円に 1px の枠。左揃え、中央揃えはしない。
 - 可視の題が文の一部（SINCE「2025年4月」）のときは `accessibleTitle` に全文「2025年4月 設立」を渡し、可視側 `aria-hidden` + `sr-only` 全文（Stat の 50+ と同じ形）。content は文字列（`AboutIcon`）で持ち、`bentoIcons` が解決する。
 - ページの 4 セル: **CULTURE**（2×1 statement、「仲間と、／学ぶ。創る。話す。」+ book / hammer / message-circle）、**SINCE**（1×1 lg、「2025年4月」+ flag）、**ONLINE & OFFLINE**（1×1 md、題 + map-pin / messages）、**FOR EVERYONE**（1×1 md、題 + code / palette / flask）。1×1 は sm ではなく md（Title/3 19）— U-46: Headline 17 では行 2–3 の右セルが軽く、空きが目立った。
 - **DECISION U-52**（2026-09-14、クライアント判断「アイコンの存在感がなさすぎます … 極端にそれぞれのスペースに対して文字が小さかったりアンバランス、特に設立のところ」）: U-40 の線画 32（題の上）は面積に対して軽く、SINCE は Title/3 の 1 行が 1×1 の中で浮いていた。図を 64 の円にして題の下に置き、SINCE の題を Title/1 の日付にすると、各セルの地のブロックが面積に釣り合う（CULTURE 地 204 / 236、SINCE 120 / 236）。
@@ -3190,7 +3189,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | C-29 | アクセントを Lime（Tailwind v4 lime）→ **Green（GitHub Primer green: 200 `#aceebb` / 300 `#56d364` / 400 `#3fb950` / 500 `#2ea043` / 600 `#238636` / 700 `#1a7f37` / 800 `#116329` / 900 `#044f1e`）** に（2026-09-12、クライアント判断）。極性の規範（C-25 / C-26 / C-27 / C-28）は不変、§1 の実測値をすべて再計算（付録 C.5） | ライムは「雰囲気に合わない」（黄緑寄りの色相）。候補 A の Tailwind v4 green（`#05df72`）は「目にきつい」。B の GitHub green は彩度が低く、墨地の上で GitHub のダークモードと同じ表情になる。極性はライムと同じ（400 は地の上 2.27 で不可、地の上の文字は 800 / 900）ので、ロール構造に手を入れずに済む |
 | C-30 | ポスター面を**インク面**に戻し、緑は見出し（`poster/display` = green-400）と**文字を載せる小さな面** `accent-fill`（green-600 + 白 `on-accent` = neutral-0）で出す: 参加 CTA（Hero 主・Poster）とチャット自分側バブル（2026-09-12、クライアント判断）。`accent-hover` / `accent-pressed` は 700 / 800（暗い方へ）。C-27 の上端罫は撤去、C-18 と K-5 の「accent ボタンはページに置かない」は撤回 | 「緑の上に黒文字は見にくい」。中明度の高彩度面に墨の本文は、6.54 で AA を通っても色の振動で読みにくい。白を載せるなら面は 600 まで下げる必要があり（400 に白は 2.54）、600 の大面は重いので、面は文字を載せる小さな面に限る。ホバーを明るい方へ動かすと白が 4.5 を割るので暗い方へ 1 段ずつ |
 | C-31 | Discord マークを持つ参加ボタン（Hero 主・Poster）の面を accent-fill（green-600）から **Discord の Blurple**（`discord/fill` = `#5865f2` + 白 `on-discord`、hover `#505cdc` / pressed `#4752c4`）に（2026-09-12、クライアント判断）。プリミティブ `blurple/500 / 530 / 560`、ロール `discord/*` 4 行。緑の面はチャット自分側バブルだけになり、Accent ボタンはどの地でもライブラリ、`poster/action/*` もライブラリ | 「Discord アイコンがあるボタンは Discord のブランドカラーを使わないと違和感がある」。ロゴは公式素材を色も変えずに置く（U-38）のに、面だけ自社の緑にするとロゴが借り物に見える。パートナーロゴを原色で置く U-21 と同じ「第三者の識別子は引用」の扱いにし、アクセントの色相には数えない。実測: 白 4.61 / hover 5.38 / pressed 6.42、面は ink 3.60・ground 4.12（極性なし）。ホバーを明るくすると白が 3.29 で割るので暗い方へ |
-| C-32 | ベントの図の円を **アクセントの緑系の淡い段**で塗る: `figure/fill` = accent-subtle（green-200）、`figure/ink` = on-accent-subtle（green-900、7.33）。新しいプリミティブ無し（2026-09-14 初版 → 2026-09-15 改、クライアント判断）。`prefers-contrast` では図を ink（12.46）に、`forced-colors` では円に 1px 枠 | 初版は GitHub Primer light の段 2 / 7 を 4 色相（blue / orange / pink / yellow）で写し意味で使い分けたが、「配色が浮きすぎ。色を使うならアクセントのグリーン系で統一。3 色の使い分けは不要」で撤回。green-200 は ground との差 1.20 で 64 の円なら十分に読め、自分側バブル（green-600）より弱いので緑の階層（印 > 面 > 淡い塗り）を崩さない。比較: Primer green-2 `#6fdd8b` は近くの green-600 と競り、green-300 は「目にきつい」側に戻る |
+| C-32 | ベントの図の円を **自分側バブルと同じ緑の面**で塗る: `figure/fill` = accent-fill（green-600）、`figure/ink` = on-accent（白、4.63）。新しいプリミティブもロールの値も無し（2026-09-14 初版 → 2026-09-15 改 2、クライアント判断）。`forced-colors` では円に 1px 枠 | 初版は GitHub Primer light の段 2 / 7 を 4 色相で写し意味で使い分けた →「配色が浮きすぎ。アクセントのグリーン系で統一。3 色の使い分けは不要」。改 1 は accent-subtle（green-200）+ green-900 の図 →「色がキモい。周りと同じ緑でいい」。周りの緑は同じ About の自分側バブル（accent-fill + 白）で、その対をそのまま使えば About の緑は 1 種になる。64 の円は C-30 の「文字を載せる小さな面」の族 |
 | C-18 | ページにアクセント塗りボタンを置かない（ライブラリのみ） | ポスター面と競合させない |
 | C-19 | neutral-50 / 400 は予備でテキスト不可。インディゴのランプ全段は記録用に残置 | 隣の段より優れる用途がない。ランプの完全性のために保持 |
 | C-20 | 画像プレースホルダ = surface、キャプション = ink-secondary、アイコン = ink-tertiary | 5.30 / 3.50 |
