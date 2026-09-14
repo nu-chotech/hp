@@ -14,23 +14,29 @@ export interface PersonaCardProps {
  * カードはリンクではない。だから状態を一つも持たない — ホバーもフォーカスも無い面に
  * 見えることが、そのまま「ここは押せない」という情報になる（§6.14「状態なし」）。
  *
- * 縦の並びは 3 行: header（イラスト 80 + [CASE 番号 / 題]）、悩み（墨の板）、次の一歩
- * （surface の板）。後ろの 2 枚は隙間なしで積む — 「悩み」と「答え」が 1 つの対であること
- * を形で言うため。旧解剖（番号 / イラスト右上 / 題 / 引用 / 矢印行）は、番号と題の間に
- * イラストの高さぶんの空きができ、引用と推薦の行数でそれぞれの位置が揺れていた。
+ * 縦の並びは 3 行: header（イラスト 80 + [CASE 番号 / 題]）、悩み（声。地の上の Callout）、
+ * 次の一歩（surface の板）。旧解剖（番号 / イラスト右上 / 題 / 引用 / 矢印行）は、番号と
+ * 題の間にイラストの高さぶんの空きができ、引用と推薦の行数でそれぞれの位置が揺れていた。
+ *
+ * 悩みは板を持たない（DECISION U-53）。U-42 の墨の板は inverse/ground = action/fill と同じ
+ * 色で、6 枚並ぶと 6 個のボタンのように読め、Hero と Poster の間で唯一の暗い面として浮いた。
+ * 声は「」が運ぶ。板は「答え」（次の一歩）だけが持ち、カードの中で強調は 1 か所になる。
+ *
+ * 高さは **目標値**の 2 つの箱で決める: 引用 `size/persona-quote` 44（Callout 2 行）、次の一歩
+ * `size/persona-rec` 64（Footnote/Bold 2 行 + inset 12 × 2）。引用が 1 行でも 2 行ぶん取る —
+ * 同じ行の中だけでなく、上下 2 段の 6 枚が同じ高さ（Desktop 268 / tablet・Mobile 260）になる
+ * ため。前提は §9.3 の字数上限（引用 ≤ 42 全角、推薦 ≤ 36）。
  *
  * 3 行は **subgrid**。カードは親グリッド（`<ul>`）の 3 行ぶんを占め、行の高さを親から
- * 受け取るので、同じ行のカード同士で header・悩み・次の一歩の境目が**必ず**揃う
- * （悩みが 1 行のカードも 2 行のカードも、推薦が 1 行でも 2 行でも）。flex-1 で残りを
- * 埋める作りだと、推薦が 2 行に折れたカードだけ板の境目が 20px ずれた。
- *
- * 引用は墨の板（inverse/ground 上 inverse/ink 14.86）、推薦は surface の板（ink 13.51）。
+ * 受け取るので、同じ行のカード同士で header・悩み・次の一歩の境目が**必ず**揃う。
+ * DevTools のトラックは 119 / 58 / 87 と見える（親の gap 2 と subgrid の gap 0 の差分 ±1 と、
+ * li の inset がトラック 1・3 に畳み込まれるため）— 実体は 96 / 60 / 64。
  */
 export function PersonaCard({ persona }: PersonaCardProps) {
   return (
     <Cell asChild>
       {/* row-span-3 + subgrid: 親の 3 行を借りる。親の gap（罫 2px）は行間に持ち込まない
-          （gap-y-0）— 板と板の間に地の色の線が出る。header と板の間は margin で取る */}
+          （gap-y-0）。行の間は margin で取る（header → 引用 16、引用 → 板 16） */}
       <li className="row-span-3 grid grid-rows-[subgrid] gap-y-0">
         {/* イラストは装飾。人物像を運ぶのは見出しと引用なので alt を持たない（§8.6）。
             径は shape が持つ（80 = size/illustration、U-42 で 96 → 80）。
@@ -50,25 +56,29 @@ export function PersonaCard({ persona }: PersonaCardProps) {
           </div>
         </div>
 
-        {/* 悩み（行 2）。鉤括弧はコンテンツ側にあるので、ここでは足さない。
-            `「` 始まりは左端を揃える（trim-start）。板は行の高さいっぱいに伸びる（stretch） */}
+        {/* 悩み（行 2）。板なし、地の上の Callout ink（14.86）。鉤括弧はコンテンツ側にあるので
+            ここでは足さない。`「` 始まりは左端を揃える（trim-start）。箱は 2 行ぶん（44）で、
+            1 行の引用は上下中央 — 題の直下から同じ距離で始まる（U-53） */}
         <p
           className={cn(
-            "on-ink bg-inverse-ground px-inset-md py-inset-sm text-callout text-inverse-ink",
+            "mb-stack-md flex min-h-persona-quote items-center text-callout text-ink",
             persona.quote.startsWith("「") && "trim-start",
           )}
         >
           {persona.quote}
         </p>
-        {/* 次の一歩（行 3）。mt-0: @layer base の p + p 12 を打ち消し、悩みの板に隙間なく接する */}
-        <p className="mt-0 flex items-start gap-inline-icon bg-surface px-inset-md py-inset-sm text-footnote-bold text-ink">
+        {/* 次の一歩（行 3）。カードの中で唯一の板（surface、ink 13.51）。箱は 2 行ぶん（64）で
+            1 行の推薦は上下中央、2 行は inset 12 で収まる。mt-0: @layer base の p + p 12 を打ち消す */}
+        <p className="mt-0 flex min-h-persona-rec items-center bg-surface px-inset-md py-inset-sm text-footnote-bold text-ink">
           {/* 矢印は「次に」を指す指示子なので、この行だけ先頭に置く（§6.1.9 の例外）。
                 h-5 = Footnote の行ボックス 20。1 行目の行ボックスの中央に置くための箱で、
                 推薦文が 2 行に折り返しても矢印は 1 行目に留まる */}
-          <span className="flex h-5 shrink-0 items-center">
-            <ArrowRight className="size-icon-sm" />
+          <span className="flex items-start gap-inline-icon">
+            <span className="flex h-5 shrink-0 items-center">
+              <ArrowRight className="size-icon-sm" />
+            </span>
+            {persona.recommendation}
           </span>
-          {persona.recommendation}
         </p>
       </li>
     </Cell>

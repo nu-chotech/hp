@@ -2,10 +2,15 @@ export interface Persona {
   /** Case 01 … 06。連番はここだけに残る（DECISION U-4） */
   caseNo: string;
   title: string;
-  /** 一人称の声。鉤括弧はコンテンツ側に持つ（§6.14） */
+  /**
+   * 一人称の声。鉤括弧はコンテンツ側に持つ（§6.14）。
+   * 上限 **42 全角**（「」込み）— Mobile の箱 298 / 14 = 21 字 × 2 行。箱の高さ
+   * `size/persona-quote` 44 はこの上限が前提で、超えると 1 枚だけ伸びて 6 枚の高さが崩れる（U-53）
+   */
   quote: string;
   /**
    * 次の一歩。先頭に arrow-right を添える。
+   * 上限 **36 全角** — Mobile の板の内側 246 / 13 = 18 字 × 2 行（`size/persona-rec` 64 の前提、U-53）。
    * 「Talk Day」「Dev Day」は語中で折らない（§2.6.4）ので NBSP（U+00A0）で結ぶ（U-48）—
    * auto-phrase は欧文のスペースを折返し点と見なし、Mobile で「Talk / Day」に割れた
    */

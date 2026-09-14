@@ -28,6 +28,7 @@
 > - **2026-09-14**: Hero の h1 の板を実色の ink から**真っ黒 64%**（`hero/plate` = `alpha/black/64`、プリミティブ `neutral/1000`。板越しに写真がうっすら透ける）に、背景写真は **`blur(4px)`** で軽くぼかし、U-20 の漂い（48 s の translate）を**撤去**して静止画に（**DECISION U-50**）。動くものは 5 つ（reveal・マーキー・入力中ドット・Mobile メニュー・参加ダイアログ）
 > - **2026-09-14（2）**: Poster の見出し「Hack Your Limits.」を全文 green-400 から**文は白・句点だけ green-400**（`poster/display`）に（**DECISION U-51**）。Hero の h1 と同じ印
 > - **2026-09-14（3）**: About のベントの図を **Bento / Figure**（語 + 色の円 64 / 80 の中の Tabler 32）にし、解剖を全セル「kicker（天）／題 → 図（地）」に統一（**DECISION U-52**）。CULTURE は「仲間と、」+ 学ぶ / 創る / 話す の図、SINCE は Title/1 の日付 + 設立の図、OFFICIAL は 2×1 の中を **2 列**に。円の色は GitHub Primer light の段 2 / 7 を 300 / 900 に写した 4 色（blue / orange / pink / yellow、**DECISION C-32**、§1.2.5 / §1.3.10）— イメージ扱いでアクセントに数えない
+> - **2026-09-14（4）**: Persona card の引用から**墨の板を外し**、地の上の Callout に。引用 `size/persona-quote` 44（2 行ぶん）と次の一歩 `size/persona-rec` 64（2 行 + inset）の**目標高**で、6 枚が上下 2 段とも同じ高さ（Desktop 268 / Mobile 260）になる（**DECISION U-53**）。§9.3 の上限を 引用 42 / 推薦 36 に締める
 > - **Figma v2 への反映は未実施**（2026-09-12 時点）。反映すべき変更の一覧と手順は [figma-sync-2026-09-12.md](./figma-sync-2026-09-12.md)
 > - **2026-09-11**: Cell Stat の所属バッジ（U-29）を**撤回**し、セルは `50+` の数字だけに戻す（**DECISION U-36**）。Chip の Inverse トーンは Accent と同じくライブラリのみ（ページに出さない）。About の CULTURE セルは本文を落として題だけ（「仲間と、学ぶ。創る。話す。」— Hero の h1 を `Hack Your Limits.` に差し替える予定に合わせ、3 語を Culture に降ろす）
 > - **2026-09-10（2）**: 外部リンクは**すべて新しいタブ**で開く（`target="_blank" rel="noopener noreferrer"`、vh「（外部、新しいタブで開く）」、**DECISION M-21**。M-15 は撤回）。Partner の Logo タイルは `href` があれば**タイル全体が団体サイトへのリンク**（**DECISION U-35**。hover / pressed の表現なし、フォーカスリングは内側）
@@ -217,7 +218,7 @@ About のベントの図（Bento / Figure、§6.11.2）の円の塗りと、そ�
 | ロール | Mono | Green accent | Scopes | 使用箇所 | 根拠 |
 |---|---|---|---|---|---|
 | `color/ground` | neutral-100 | = | FF SF | ページ、ナビ、明るいセル、フッター、画像スロット背後、Mobile メニューパネル | 基準面 |
-| `color/surface` | neutral-200 | = | FF SF | チャット相手側バブル、ペルソナ引用枠、画像プレースホルダ、チップの塗り（`chip/fill`） | グラウンドとの比 1.10 で罫線なしに輪郭が読める最小段 |
+| `color/surface` | neutral-200 | = | FF SF | チャット相手側バブル、ペルソナ次の一歩の板（U-53）、画像プレースホルダ、チップの塗り（`chip/fill`） | グラウンドとの比 1.10 で罫線なしに輪郭が読める最小段 |
 | `color/logo-ground` | neutral-0（白） | = | FF | パートナーのロゴタイル（行を埋める空タイル含む）とマーキー帯**のみ** | 白背景のロゴ素材（jpg / png）と同じ面にして板として浮かせない（**U-33**）。ground との比 1.12。文字を置かない（旧 Placeholder の Overline は U-34 で撤去） |
 | `color/inverse/ground` | neutral-950 | = | FF | ヒーロー、ベント統計セル、ベント CTA セル、チャット自分側バブル | インクを塗りに転用 |
 | `color/poster/ground` | neutral-950 | **= neutral-950**（C-30） | FF | ポスター（Join）セクションのみ | Mono と同じ暗い面。2026-09-12 の一時期 green-400 の明るい面にしたが、上の墨の文字が読みにくく撤回。アクセントは面ではなく見出し（`poster/display`）で現れ、CTA は Discord の Blurple（C-31、§1.3.9）。専用ロール群は C-28 の名残として残す |
@@ -406,7 +407,7 @@ Bento / Figure 以外がこのロールを引いてはならない。Mono / Gree
 |---|---|---|---|---|---|
 | figure/{hue}/ink | figure/{hue}/fill | ベントの図の Tabler 32（blue / orange / pink / yellow、C-32） | U | 5.87 / 5.78 / 5.75 / 5.79 | PASS |
 | figure/{hue}/fill | ground | 図の円の輪郭 | — | 1.57 / 1.53 / 1.54 / 1.49 | 装飾（塗りの面差で読む。図の色が意味を担う） |
-| ink | surface | Callout 14 B（相手側バブル、ペルソナ引用）、チップ数値 Caption 12 B | N | 13.51 | PASS |
+| ink | surface | Callout 14 B（相手側バブル）、Footnote/Bold 13（ペルソナ次の一歩、U-53）、チップ数値 Caption 12 B | N | 13.51 | PASS |
 | ink-secondary | surface / chip/fill | Caption 12 R（画像キャプション、タグ文字）、チップアイコン | N / U | 5.30 | PASS |
 | ink-tertiary | surface | placeholder アイコン | U | 3.50 | PASS |
 | chip/fill | ground / hover-tint / pressed-tint | チップの面 | — | 1.10 / 1.03 / 1.15 | 装飾（面の差で読む） |
@@ -639,12 +640,12 @@ CSS 変数名は Figma 名の `/` を `-` に置換する（例 `--color-inverse
 | Title/3 Caps | 19 | 800 | 26 | +3% | UPPER | 1 行 | `color/ink`、ゴーストは `color/ink-tertiary` | マーキー項目 |
 | **Headline** | 17 | 800 | 24（1.41） | 0 | — | ≤ 3 行 | `color/ink` | ベント 1×1（小）見出し、ペルソナ見出し、スタッフ名、フッターのワードマーク |
 | **Subheadline** | 15 | 700 | 24（1.60） | 0 | — | ≤ 2 行 | `color/ink-secondary` | 活動サブタイトル（Display M とベースライン揃え） |
-| **Callout** | 14 | 700 | 22（1.57） | 0 | — | ≤ 3 行 | `color/ink`（surface 上）/ `color/inverse/ink` | チャット吹き出し、ペルソナ引用 |
+| **Callout** | 14 | 700 | 22（1.57） | 0 | — | ≤ 3 行 | `color/ink`（ground / surface 上）/ `color/inverse/ink` | チャット吹き出し、ペルソナ引用（地の上、板なし。U-53） |
 | **Body/L** | 16 | 400 | 28（1.75） | 0 | — | 35–45 全角（§2.6.3） | `color/inverse/ink-secondary` | ヒーロー段落（反転地の長文は行送りを最大に） |
 | **Body/M** | 15 | 400 | 26（1.73） | 0 | — | 35–45 全角 | `color/poster/ink-secondary` | ポスター段落 |
 | **Body/S** | 14 | 400 | 24（1.71） | 0 | — | 35–45 全角 | `color/ink-secondary` | 活動説明、パートナー導入、ベント本文。段落として許す最小サイズ |
 | **Footnote/Regular** | 13 | 400 | 20（1.54） | 0 | — | ≤ 2 行 | `color/ink-secondary` / `color/inverse/ink-secondary` | フッターリンク、リーダー紹介、CTA セル副文 |
-| Footnote/Bold | 13 | 700 | 20 | 0 | — | ≤ 2 行 | `color/ink-secondary`、インラインリンクは `color/ink` | ペルソナ推薦、パートナー申込リンク |
+| Footnote/Bold | 13 | 700 | 20 | 0 | — | ≤ 2 行 | `color/ink-secondary`。ペルソナ推薦（surface の板、U-42 → U-53）とインラインリンクは `color/ink` | ペルソナ推薦、パートナー申込リンク |
 | **Caption/Regular** | 12 | 400 | 18（1.50） | 0 | — | ≤ 2 行 | `color/ink-secondary`、タグは `color/chip/ink` | ©、入力中…、チャット注記、タグ、画像キャプション、スタッフ紹介 |
 | Caption/Bold | 12 | 700 | 18 | 0 | — | 1 行 | `color/ink-secondary`（タグライン）、`color/ink`（頭文字・数） | Hack Your Limits.、アバター頭文字、リアクション数 |
 | **Label/M** | 15 | 700 | 20（1.33） | 0 | — | 1 行 ≤ 12 全角、折返し禁止 | ボタンの ink トークン（§6.2） | 44px コントロール（`size/control/md`）: ヒーロー・ポスター・ベント CTA、Mobile ナビ CTA・スキップリンク |
@@ -696,7 +697,7 @@ CSS 変数名は Figma 名の `/` を `-` に置換する（例 `--color-inverse
 | Activities | バッジ 月1〜2回 | 12 / +10% | Overline/JP + `arrow-right` | `color/pop/badge` | +6% |
 | Activities | 説明 | 14 / 170%、46em | Body/S | `color/ink-secondary` | 行長は `measure/paragraph`（42 全角） |
 | Activities | タグ | 11 / +2% | Caption/Regular | `color/chip/ink` | 11 → 12、LS 0 |
-| For You | CASE 01 / 見出し / 引用 / 推薦 | 10 / 17 / 13.5 B / 12.5 B | Overline/Latin / Headline / Callout / Footnote/Bold | `color/ink-secondary` / `color/ink` / `color/ink` / `color/ink-secondary` | 10 → 12、13.5 → 14、12.5 → 13 |
+| For You | CASE 01 / 見出し / 引用 / 推薦 | 10 / 17 / 13.5 B / 12.5 B | Overline/Latin / Headline / Callout / Footnote/Bold | `color/ink-secondary` / `color/ink` / `color/ink`（地の上、U-53）/ `color/ink`（surface の板、U-42） | 10 → 12、13.5 → 14、12.5 → 13 |
 | Members | 役職 代表 / TECH LEAD | 11 / +12% · 10 | Overline/JP / Overline/Latin | `color/ink-secondary` | 12 に統一 |
 | Members | リーダー名 / スタッフ名 | 22 / 17 | Title/2 / Headline | `color/ink` | — |
 | Members | 紹介（skills） | 13 / 150% · 12 | Footnote/Regular（リーダー）/ Caption/Regular（スタッフ） | `color/ink-secondary` | 行送り 20 / 18 |
@@ -1094,6 +1095,8 @@ Desktop / Mobile が同値の行は Mobile 列を「=」とする。根拠中の
 | `size/rule-v` | 12 | 縦 hairline の高さ（brand tagline の左、hero meta の区切り） | 隣接文字の font-size（Caption / Overline 12）と同値。行送り 18 だと行を跨いで見え、cap 高 9 だと点に見える（**DECISION L-16**） |
 | `size/dialog` | 480 | 参加ダイアログの `max-width`（U-49）。幅は `calc(100% − 2 × page/inset)` をこれで止める | 4 × `size/cell-min`。Mobile は container と同じ 342。2×1 セル（597）より狭く 1×1（298）より広い「持ち上げた 1 セル」の幅 |
 | `size/figure` | 64 | ベントの図の円（md: 1×1 と OFFICIAL、U-52）。lg（CULTURE）は `size/illustration` 80 | 2 × `icon/xl` 32。3 つ並べて 64 + 12 + 64 + 12 + 96（語 8 全角）= 248 ≤ 1×1 の内側 249.5 — 語の字数上限（§9.3）と対で決まる径 |
+| `size/persona-quote` | 44 | ペルソナ引用の箱の高さ（U-53） | 2 × Callout 行送り 22。**床ではなく目標**（§3.5 の原則の例外、ペルソナカードに閉じる）: 引用が 1 行でも 2 行ぶん取り、6 枚を 2 段とも同じ高さにする。前提は §9.3 の上限 42 字 |
+| `size/persona-rec` | 64 | ペルソナ次の一歩の板の高さ（U-53） | 2 × Footnote/Bold 行送り 20 + `inset/sm` 12 × 2。同上。前提は上限 36 字 |
 | `measure/paragraph` | 588 / 342 | 段落の `max-width` | §3.10 |
 
 CSS: `--size-nav: 3.875rem; --size-hero-max: 60rem; --size-cell-min: 7.5rem; --size-control-md: 2.75rem`。固定値ではなく `min-height` に渡す。
@@ -2143,23 +2146,26 @@ Project と Hackathon を分ける理由: 前者は継続的な営み、後者�
 ┌ inset/cell 24 (M 20) ─────────────────────────┐
 │ ( 80 )  CASE 01                               │  header: イラスト + [番号 / 題]、上下中央、gap inline/sm 12
 │         これから始めたい人                      │  ↓ stack/md 16
-│ ▓▓「プログラミング、何から始めれば…」▓▓▓▓▓▓▓  │  quote: inverse/ground の板（行 2、stretch）
-│ ░░→ Dev Dayで一緒に手を動かしてみよう！░░░░░  │  rec: surface の板（行 3）、quote に隙間なく接する
+│ 「プログラミング、何から始めれば…」             │  quote: 地の上の Callout、箱 size/persona-quote 44（2 行ぶん、上下中央）
+│                                               │  ↓ stack/md 16
+│ ░░→ Dev Dayで一緒に手を動かしてみよう！░░░░░  │  rec: surface の板、箱 size/persona-rec 64（2 行ぶん、上下中央）
 └───────────────────────────────────────────────┘
 ```
 
 **DECISION U-42**（2026-09-12、クライアント判断）解剖を「番号 / イラスト右上 / 題 / 引用 / 矢印行」の 5 段から **3 行**に組み直す。(1) イラストを **80** に縮めて題の横に置く — 旧解剖は番号と題の間にイラストの高さ（96）ぶんの空きができ、番号だけが天に浮いていた。(2) 引用は**墨の板**（`inverse/ground` 上 `inverse/ink`）、次の一歩は **`surface` の板**にし、2 枚を**隙間なし**で積む — 「悩み」と「答え」が 1 つの対であることを形で言う。旧「→ 文」の行は面を持たず、目に留まらなかった。(3) カードは親 `<ul>` の 3 行を借りる **subgrid** で、同じ行のカード同士で header・引用・次の一歩の境目が必ず揃う（引用が 1 行でも 2 行でも、推薦が 1 行でも 2 行でも）。flex-1 で残りを埋める作りでは、推薦が 2 行に折れたカードだけ板の境目が 20px ずれた。
 
+**DECISION U-53**（2026-09-14、クライアント判断「2 行だったり 1 行だったりで高さが統一されていない。黒ボックスは存在感ありすぎて逆に浮いて見える」）U-42 の (2) を改める。(a) 引用の**墨の板を外す** — `inverse/ground` は `action/fill` と同じ色で、6 枚並ぶと 6 個のボタンのように読め、Hero と Poster の間で唯一の暗い面として浮いた。声は「」が運び、板は「答え」（次の一歩、surface）だけが持つ。板が無くなると、板に `data-surface="ink"` が無く明るい面の選択色が暗い塗りに乗っていた `::selection` の潜在不具合も消える。(b) 高さは**目標値**の 2 つの箱で決める: 引用 `size/persona-quote` 44（Callout 2 行）、次の一歩 `size/persona-rec` 64（Footnote/Bold 2 行 + inset 12 × 2）。subgrid は同じ行の中しか揃えないので、行を跨いで 6 枚を同じ高さにするには行ごとの箱を固定するしかない。前提は §9.3 の上限（引用 42 / 推薦 36）。吹き出しにはしない — U-1 の角丸はチャット（Messages の引用）に閉じる。左の縦バーも置かない（§4.3 規則 6）。U-42 の (1)(3) はそのまま。
+
 | 要素 | 仕様 |
 |---|---|
 | header | 横 flex、`align-items: center`、gap `inline/sm` 12、下 `stack/md` 16。イラスト Image slot Circle **`size/illustration` 80**（96 → 80、U-42）、Humation、原色、`alt=""`（U-26）。右に縦積み: caseNo `Overline/Latin` 12 UPPER `ink-secondary` → `stack/2xs` 4 → title `Headline` 17 `ink` `<h3>`。番号 16 + 4 + 題 24 = 44 は 80 の中に収まり、題が 2 行（48）でも 68 で収まる |
-| quote | fill **`inverse/ground`**、inset `inset/sm` 12 × `inset/md` 16、`Callout` 14 Bold **`inverse/ink`**（14.86）。鉤括弧はコンテンツ側、`「` 始まりは `trim-start`。行 2 を stretch で埋める（同じ行の最長の引用が高さを決め、短い引用の板も同じ高さ） |
-| rec | fill `surface`、inset `inset/sm` 12 × `inset/md` 16、`arrow-right` 16（先頭、`inline/icon` 4、1 行目の行ボックス中央）+ `Footnote/Bold` 13 **`ink`**（13.51）。quote に**隙間なし**で接する（`p + p` の 12 を打ち消す） |
-| card | `ground`、inset `inset/cell` 24 / 20、**subgrid 3 行**（親 `<ul>` は `auto-rows: auto` — 罫線グリッド既定の行の床 120 を 3 行それぞれに掛けない）、行間 0（親の 2px gap を持ち込まない）。実測 Desktop **397 × 256 / 254**（行 1: quote 68 + rec 44、行 2: quote 46 + rec 64、板の間 0）、Mobile 338 × 226–248 |
+| quote | **板なし**（U-53）。`Callout` 14 Bold **`ink`**（ground 上 14.86）、箱 `min-height: size/persona-quote` **44**、`align-items: center`（1 行は上下中央、2 行は箱いっぱい）、下 `stack/md` 16。鉤括弧はコンテンツ側、`「` 始まりは `trim-start`（flex の中でも効く: 引用の左端 = イラストの左端、実測） |
+| rec | fill `surface`（カードで唯一の板）、inset `inset/sm` 12 × `inset/md` 16、箱 `min-height: size/persona-rec` **64**、`align-items: center`。中は `arrow-right` 16（先頭、`inline/icon` 4、1 行目の行ボックス中央）+ `Footnote/Bold` 13 **`ink`**（13.51）。ボタンではない: 64 ≠ 44、Footnote ≠ Label、矢印は先頭、状態なし（`p + p` の 12 は打ち消す） |
+| card | `ground`、inset `inset/cell` 24 / 20、**subgrid 3 行**（親 `<ul>` は `auto-rows: auto` — 罫線グリッド既定の行の床 120 を 3 行それぞれに掛けない）、行間 0（親の 2px gap を持ち込まない）。実測 Desktop **397 × 268**（6 枚同値: 24 + 80 + 16 + 44 + 16 + 64 + 24）、親のトラック 119 / 58 / 87（DevTools。gap の差分 ±1 と inset の畳み込み）、Mobile 338 × 260（6 枚同値） |
 
 イラスト 104 → 96 は DECISION L-12、96 → 80 は U-42。状態なし（カードはリンクではない）。Desktop 3 列（397.33）× 2 行、Mobile 1 列。`<ul>` > `<li>`（subgrid の `<li>` は `row-span: 3`）。
 
-Figma: `Persona / Card` 1。Props: `caseNo` `title` `quote` `rec` TEXT、`image` INSTANCE_SWAP。解剖の変更は**未反映**（2026-09-12、別作業）。
+Figma: `Persona / Card` 1。Props: `caseNo` `title` `quote` `rec` TEXT、`image` INSTANCE_SWAP。解剖の変更（U-42 / U-53）は**未反映**（Figma 同期はクライアント判断で停止）。
 
 ### 6.15 Member card（Leader / Staff）
 
@@ -2529,9 +2535,9 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 
 | トークン | 前景 → 背景 | 比 | 使用（サイズ / ウェイト） | 区分 | 判定 |
 |---|---|---|---|---|---|
-| `ink` / `ground` | #201e1d → #f3f2f2 | **14.86** | h2 32 EB、セル題、Nav 14 R、氏名、Activity 題 56 EB、Marquee 項目 19 EB | N | ✓ |
-| `ink` / `surface` | #201e1d → #eae7e7 | 13.51 | Persona 引用 14 B、相手側バブル 14 B、チップ数値 12 B | N | ✓ |
-| `ink-secondary` / ground | #605d5d → #f3f2f2 | **5.83** | 段落 14 R、Footer リンク 13 R、Persona 推奨 13 B、Activity 副題 15 B・説明 14 R、Member 紹介 12–13 R、セクション番号・キッカー・肩書・タグライン・© 12 B/R、Marquee ラベル 12 B、Mono バッジ 12 B | N | ✓（コンセプト n600 3.85 / n500 2.59 は ✗） |
+| `ink` / `ground` | #201e1d → #f3f2f2 | **14.86** | h2 32 EB、セル題、Nav 14 R、氏名、Activity 題 56 EB、Marquee 項目 19 EB、Persona 引用 14 B（U-53） | N | ✓ |
+| `ink` / `surface` | #201e1d → #eae7e7 | 13.51 | Persona 次の一歩 13 B（U-42 → U-53）、相手側バブル 14 B、チップ数値 12 B | N | ✓ |
+| `ink-secondary` / ground | #605d5d → #f3f2f2 | **5.83** | 段落 14 R、Footer リンク 13 R、Activity 副題 15 B・説明 14 R、Member 紹介 12–13 R、セクション番号・キッカー・肩書・タグライン・© 12 B/R、Marquee ラベル 12 B、Mono バッジ 12 B | N | ✓（コンセプト n600 3.85 / n500 2.59 は ✗） |
 | `ink-secondary` / surface | #605d5d → #eae7e7 | 5.30 | タグ 12 R、チップアイコン、画像キャプション 12 R（制作時のみ） | N / U | ✓ |
 | `ink-tertiary` / ground | #7d7979 → #f3f2f2 | 3.85 | Marquee ghost「YOUR COMPANY HERE」19 EB | L | ✓（コンセプト ink@40 は 2.41 ✗） |
 | `ink-tertiary` / ground・surface | #7d7979 → #f3f2f2 / #eae7e7 | 3.85 / 3.50 | 入力中ドット、placeholder アイコン、Mono の Marquee 区切り | U | ✓ |
@@ -2749,8 +2755,8 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | Activity 説明 | Body S 14 | 588 / 342 | 42 / 24 | **60**（概念版最長 57） | 2 / 3 |
 | Activity タグ | Caption 12 | — | — | 8 × 3 | 1 |
 | Persona 題 | Headline 17 | 349 / 298 | 20 / 17 | 17（「データサイエンティストを目指したい人」= 17 = Mobile の容量。これ以上は伸ばさない） | 1 |
-| Persona 引用 | Callout 14 | 325 / 274 | 23 / 19 | 44（「」込み。概念版最長 26） | 2 / 3 |
-| Persona 推奨 | Footnote Bold 13（先頭に arrow-right 16 + 4） | 329 / 278 | 25 / 21 | 30（混植。Case 05「Dev Dayで手を動かして、Talk Dayで共有しよう！」≈ 23 em） | 1 / 1–2（矢印は 1 行目に留まる） |
+| Persona 引用 | Callout 14 | 349 / 298 | 24 / 21 | **42**（「」込み。箱 `size/persona-quote` 44 = 2 行の前提、U-53。概念版最長 26） | ≤ 2 / ≤ 2 |
+| Persona 推奨 | Footnote Bold 13（先頭に arrow-right 16 + 4） | 297 / 246 | 22 / 18 | **36**（板 `size/persona-rec` 64 = 2 行の前提、U-53。Case 05「Dev Dayで手を動かして、Talk Dayで共有しよう！」≈ 23 em） | ≤ 2 / ≤ 2（矢印は 1 行目に留まる） |
 | Member 役職 | Overline 12 | — | — | 6（英 10） | 1 |
 | Member 氏名 | Title 2 22 · Headline 17 | 549 · 365 | 24 · 21 | 8（姓 + 半角空白 + 名） | 1 |
 | Member 紹介 | Footnote 13 · Caption 12 | 549 · 365 / 298 | 42 · 30 / 22 · 24 | 40 | 1 · 2 / 2 |
@@ -3390,6 +3396,7 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 | U-50 | Hero の h1 の板を実色の `inverse/ground` から**真っ黒 64%**（`hero/plate` = `alpha/black/64`、プリミティブ `neutral/1000` `#000000`）に、背景写真は **`blur(4px)`** で軽くぼかし、U-20 の漂い（48 s の translate）を**撤去**して静止画に（2026-09-14、クライアント判断）。`scale` は 1.12 → 1.04（ぼかしの縁の余白）。`prefers-reduced-transparency` では板は実色の黒 | 「hack your limits の背景部分をちょっとだけ半透明の真っ黒にする。hero の画像も若干ぼかして、アニメーションもなし」。実色の ink の板は周囲の ink 面と同じ色で、写真の明部の上でだけ板に見えた。真っ黒なら面より一段暗く、板が常に板として読める。64% は尺度の外で見た目から決めた値 — 写真層が 20% しか無いので 88 / 72 では不透明に見え、48 では薄すぎた（クライアント所見を 2 回反映）。最も明るい画素の上でも白 17.2 / 句点 6.77。影は持たない（§4.4）。ぼかしは文字の背後の粒を潰して輪郭を守り、動きを消したぶん M9 の例外が無くなる |
 | U-51 | Poster の見出し「Hack Your Limits.」を全文 green-400 から、**文は `poster/ink`（白）・句点だけ `poster/display`（green-400）**に（2026-09-14、クライアント判断）。Hero の h1（U-39）と同じ印。content は `{ text, period }` に分ける | 「JOIN US の Hack Your Limits. も hero と同じように . だけ色変えるようにしよう」。開幕と終幕で同じ文が同じ印を持ち、緑の出現は「言い切りの句点」1 種に揃う。Display/L 96 の全文が緑だと面積として緑の大面に近づき、C-30 の趣旨（緑は面ではなく印）からも外れていた |
 | U-52 | About のベントの図を **Bento / Figure**（語（上）+ 色の円 64 / 80 の中の Tabler 32、C-32）にし、解剖を全セル「kicker（天）／題 → `stack/md` 16 → 図（地）」に統一（2026-09-14、クライアント判断）。CULTURE は Display/M「仲間と、」+ 学ぶ / 創る / 話す（lg 80）、SINCE は **Title/1**「2025年4月」+ 設立（新 Kind 1×1 lg）、OFFICIAL は 2×1 の中を **2 列**（題 + 補足 → 図、円は底揃え、Mobile 1 列）。図の行は aria-hidden、可視の題が文の一部なら sr-only の全文。行高 266 / 254 + 234 = 490（チャットが追従） | 「アイコンの存在感がなさすぎます。Culture の部分で、仲間と、の下に丸の背景に囲まれたアイコン（それぞれ色が違う + 上に学ぶ / 創る / 話す がある）で語るようなイメージ。他のやつもそんな感じの雰囲気がいい。極端にそれぞれのスペースに対して文字が小さかったりアンバランス、特に設立のところ。OFFICIAL もグリッド内で 2 列で表現していい」。線画 32 は面積に対して軽く、SINCE の Title/3 1 行は 1×1 の中で浮いていた。語つきの円を題の下に置くと、各セルの地のブロックが面積に釣り合い（CULTURE 186 / 218、SINCE 142 / 218）、色の円の列がベントの底の帯になる。語を円の上に置くのはクライアントの文字どおりで、題の続きとして読める |
+| U-53 | Persona card の引用から**墨の板を外し**て地の上の Callout に、高さは**目標値**の箱 `size/persona-quote` 44 と `size/persona-rec` 64 で固定（2026-09-14、クライアント判断）。次の一歩の surface の板だけが残る。§9.3 の上限を引用 42 / 推薦 36 に。吹き出し（U-1 の拡張）と左の縦バーは退けた | 「FOR YOU のところは、2 行だったり 1 行だったりで高さが統一されていない部分があって気になる。あと、黒ボックスは存在感ありすぎて逆に浮いて見えるのかな？少し工夫して欲しい」。墨の板は action/fill と同色で 6 個のボタンに読め、Hero と Poster の間で唯一の暗い面だった。subgrid は行の中しか揃えないので、2 段 6 枚を同じ高さにするには行ごとの箱を目標値で固定するしかない（1 行の引用も 2 行ぶん）。実測 268 × 6 / 260 × 6 |
 
 ## 付録 B. 検証
 
