@@ -42,6 +42,7 @@
   --neutral-800: #444141; /* Y 0.054 — インク色ボタンのホバー */
   --neutral-900: #2d2b2b; /* Y 0.025 — ヒーロー格子線（inverse/hairline） */
   --neutral-950: #201e1d; /* Y 0.013 — ink、インク面、ポスター面（Mono）、backdrop / shadow の基底 */
+  --neutral-1000: #000000; /* Y 0.000 — 真っ黒。Hero の板（hero/plate）の基底だけ（U-50） */
 
   /* green — GitHub Primer green（DECISION C-29、2026-09-12。ライムから置換）。
      アクセントは二極性を持つ（C-25 / C-26）: 明るい地の上では暗い段
@@ -64,7 +65,7 @@
   --blurple-530: #505cdc; /* Y 0.145 — ホバー。白 5.38、ground 上 4.81 / ink 上 3.09 */
   --blurple-560: #4752c4; /* Y 0.114 — プレス。白 6.42、ink 上 2.59 は押下の瞬間 */
 
-  /* alpha — 11 個（ink 5 / ground 5 / green-400 1）。
+  /* alpha — 12 個（ink 5 / ground 5 / green-400 1 / black 1）。
      6 → 12 → 24 → 48 は倍々（ティント・影・幕・無効）、72 = 3 × 24（tertiary 文字）、
      88 は secondary 文字。合成 hex をハードコードせず color-mix で持つ
      （固定値が要る prefers-reduced-transparency だけ §1.2.3 の合成 hex を使う）。 */
@@ -79,6 +80,7 @@
   --alpha-ground-72: color-mix(in srgb, var(--neutral-100) 72%, transparent);
   --alpha-ground-88: color-mix(in srgb, var(--neutral-100) 88%, transparent);
   --alpha-green-400-24: color-mix(in srgb, var(--green-400) 24%, transparent);
+  --alpha-black-48: color-mix(in srgb, var(--neutral-1000) 48%, transparent);
 }
 
 /* =============================================================================
@@ -167,6 +169,9 @@
   --pop-separator: var(--green-700); /* ground 4.55 */
   --pop-badge: var(--green-800); /* ground 6.62 */
   --hero-word: var(--green-400); /* ink 6.54 */
+  /* h1 の板（U-50）: 写真の上に 48% の真っ黒 — 板越しに写真がうっすら透ける。
+     最も明るい画素の上でも白 14.9 / 句点 5.87（72% では不透明に見えた） */
+  --hero-plate: var(--alpha-black-48);
   --poster-display: var(
     --green-400
   ); /* ポスター見出し（Display L）。ink 面上 6.54 */
@@ -534,8 +539,8 @@
   --focus-offset-inset: -2px; /* full-bleed の行は inset にして隣接罫線と交差させない（K-7） */
 
   /* --- 7. モーション -------------------------------------------------------
-   * 動くものはページ全体で 6 つだけ: reveal・マーキー・入力中ドット・Mobile メニュー・
-   * Hero の背景写真・参加ダイアログ（U-49。回転語は U-37 で撤去）。
+   * 動くものはページ全体で 5 つだけ: reveal・マーキー・入力中ドット・Mobile メニュー・
+   * 参加ダイアログ（U-49。回転語は U-37、背景写真の漂いは U-50 で撤去）。
    * アニメーションできるのは transform と opacity のみ。scale() は使わない（M-6）。
    * -------------------------------------------------------------------------- */
   --dur-0: 0ms; /* 押下、フォーカスリング、アイコン差し替え、マーキーの一時停止・再開 */
@@ -556,13 +561,11 @@
   --dots-stagger: 200ms; /* ドット間ディレイ */
   --marquee-speed: 40; /* px/s。duration = グループ幅 ÷ 40 を ResizeObserver で書き込む */
 
-  /* Hero の背景写真（DECISION U-20）。動く 6 つ目で、唯一 1 分近い周期を持つ。
-     速いものは「起きたこと」を伝えるが、これは「そこに在る」だけの層なので、
-     1 フレームぶんの変化が知覚の閾値を下回る速さでしか動かしてはいけない。 */
+  /* Hero の背景写真（DECISION U-20 → U-50）。静止画。U-20 の漂い（48s 周期）は
+     クライアント判断で撤去し、代わりに軽くぼかす。ぼかしは静的な filter で動きではない。 */
   --hero-backdrop-opacity: 0.2; /* 実測上限（§6.8.1）。素材を替えたら測り直す */
-  --hero-backdrop-scale: 1.12; /* 移動の余白。静的な拡大でアニメーションではない */
-  --hero-backdrop-drift: 2%; /* 片道の移動量。scale の余白 6% の 1/3 で縁を出さない */
-  --hero-backdrop-period: 48s; /* 片道。往復 96s ≈ 0.4 px/s で、追える速さの 1/100 */
+  --hero-backdrop-blur: 4px; /* 若干のぼかし。文字の背後の明部の粒を潰す（U-50） */
+  --hero-backdrop-scale: 1.04; /* ぼかしで透ける縁を Hero の外へ出す余白。静的 */
 }
 
 /* -----------------------------------------------------------------------------
@@ -653,6 +656,7 @@
   --color-pop-separator: var(--pop-separator);
   --color-pop-badge: var(--pop-badge);
   --color-hero-word: var(--hero-word);
+  --color-hero-plate: var(--hero-plate);
   --color-poster-display: var(--poster-display);
   --color-poster-selection: var(--poster-selection);
   --color-poster-action-fill: var(--poster-action-fill);
@@ -1151,13 +1155,12 @@
   }
 
   /*
-   * ループする動き（マーキー・入力中ドット・背景写真）は低減設定で止める。
+   * ループする動き（マーキー・入力中ドット）は低減設定で止める。
    * かつてはページ内スイッチ（html[data-motion="playing"]）でオプトインできたが、
    * DECISION U-31 でスイッチごと撤去したので無条件に掛ける。
    */
   .marquee__track,
-  .typing__dot,
-  .hero__backdrop {
+  .typing__dot {
     animation: none;
   }
 
@@ -1229,6 +1232,8 @@
        これは階層の再計算も要らない — 上の 3 行が前提にしている「ink 面の上」に
        文字が戻るので、#dad9d8 / #b8b7b6 の比が spec の値どおりになる（U-20） */
     --hero-backdrop-opacity: 0;
+    /* 板も実色に。写真が消えるので透ける相手が無く、真っ黒の実色と見えは同じ（U-50） */
+    --hero-plate: var(--neutral-1000);
   }
 }
 

@@ -20,28 +20,6 @@ import { HeroReveal } from "./hero/hero-reveal";
  * 上罫線は持たない — 色面の切り替えそのものが境界になる。
  */
 
-/**
- * 背景写真の動き（DECISION U-20）
- *
- * 動きの既定を詳細度 0（`:where`）で置くのはマーキーと同じ理由 — 止める側
- * （globals.css の低減設定）に必ず負けるため。
- * 停止の規則をここで再宣言しないのも同じで、再生の条件が 2 か所に散ると必ず食い違う。
- *
- * 動かすのは `translate` だけ。`scale` は静的な余白（移動しても縁が出ないための
- * 1.12）であってアニメーションではないので、M6「compositor プロパティのみ」にも
- * DECISION M-6 の `scale()` 禁止（押下フィードバックの規定）にも触れない。
- * 個別プロパティで書けば、静的な拡大と動く移動が 1 つの transform を奪い合わない。
- */
-const BACKDROP_KEYFRAMES = `
-@keyframes chotech-hero-backdrop{
-from{translate:calc(var(--hero-backdrop-drift) * -1) calc(var(--hero-backdrop-drift) * -0.5)}
-to{translate:var(--hero-backdrop-drift) calc(var(--hero-backdrop-drift) * 0.5)}
-}
-:where(.hero__backdrop){
-scale:var(--hero-backdrop-scale);
-animation:chotech-hero-backdrop var(--hero-backdrop-period) ease-in-out infinite alternate
-}`;
-
 export function Hero() {
   const { backdrop, headline, lead, body, actions } = heroContent;
 
@@ -61,21 +39,15 @@ export function Hero() {
       )}
     >
       {/*
-       * 背景写真（DECISION U-20）。ink 面を置き換えず、その上に低い不透明度で重ねる。
-       * 「コミュニティの実像」という情報を運ぶ層なので M9「装飾のためだけの動きは
-       * 足さない」の例外にあたるが、動き自体は M8 のスイッチ 1 つで止まる。
-       *
-       * overflow-hidden は移動する画像の受け皿で、これが無いと拡大したぶんが Hero の外へ
-       * こぼれる。格子線（旧 K-12）は置かない — 写真の上に線が乗ると写真の一部に見える（U-22）。
+       * 背景写真（DECISION U-20 → U-50）。ink 面を置き換えず、その上に低い不透明度で重ねた
+       * **静止画**。U-20 の漂い（48s 周期の translate）はクライアント判断で撤去し、代わりに
+       * 軽くぼかす（filter は静的で、動きではない）。ぼかしで透ける縁は scale の余白で
+       * Hero の外へ出し、overflow-hidden が受ける。格子線（旧 K-12）は置かない（U-22）。
        */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 overflow-hidden"
       >
-        {/* `style` は precedence 付きで <head> へ巻き上げる（React 19） */}
-        <style href="hero-backdrop" precedence="components">
-          {BACKDROP_KEYFRAMES}
-        </style>
         {/* ImageSlot は使わない — この層は素材待ちの「枠」ではなく面の一部で、未読込時に
             placeholder の明るい地 #eae7e7 が Hero 全面で光る。next/image を直接置く（U-45）。
             priority: ファーストビューの地。遅れて入ると「後から暗くなる」ように見える。
@@ -84,8 +56,8 @@ export function Hero() {
           alt=""
           className={cn(
             "hero__backdrop object-cover",
-            // 色はそのまま（U-21）。不透明度だけで ink 面に沈める
-            "opacity-(--hero-backdrop-opacity)",
+            // 色はそのまま（U-21）。不透明度だけで ink 面に沈め、若干ぼかす（U-50）
+            "opacity-(--hero-backdrop-opacity) blur-(--hero-backdrop-blur) scale-(--hero-backdrop-scale)",
           )}
           fill
           priority
@@ -99,9 +71,10 @@ export function Hero() {
         <Container className="relative flex flex-col gap-stack-xl pt-section-pad-display pb-section-pad-bottom">
           {/*
            * タグラインを Display/XL で言い切る（DECISION U-37）。名前は可視の文そのもの。
-           * 文は**墨のボックス**に載せる（DECISION U-39）: 写真が透ける面の上で、実色の
-           * inverse/ground を敷いた板だけが「印刷された」ように一段沈み、文字の輪郭が
-           * 写真の明部に食われない。
+           * 文は**真っ黒 48% の板**に載せる（DECISION U-39 → U-50: 実色の inverse/ground から
+           * hero/plate へ）: 写真が透ける面の上で、周囲より暗い板が「印刷された」ように一段
+           * 沈み、文字の輪郭が写真の明部に食われない。板越しに写真がうっすら透ける
+           * （72% ではまだ不透明に見えた）。
            *
            * ボックスは inline-block。inline のまま背景を塗ると、この書体の content area
            * （≈ 1.6em）が行送り 1.11 を大きく超えて、板が上下に 30px ずつはみ出し lead に
@@ -120,7 +93,7 @@ export function Hero() {
             data-reveal-index="0"
             lang="en"
           >
-            <span className="-mx-[0.2em] inline-block bg-inverse-ground px-[0.2em] py-[0.1em]">
+            <span className="-mx-[0.2em] inline-block bg-hero-plate px-[0.2em] py-[0.1em]">
               {headline.text}
               <span className="text-hero-word">{headline.period}</span>
             </span>
