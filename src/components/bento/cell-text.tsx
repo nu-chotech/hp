@@ -1,7 +1,8 @@
 import { cva, type VariantProps } from "class-variance-authority";
-import type { ComponentProps, ComponentType } from "react";
-import type { IconProps } from "@/components/icons";
+import type { ComponentProps } from "react";
+import { FigureRow } from "@/components/bento/figure";
 import { Cell } from "@/components/ui/ruled-grid";
+import type { AboutFigure } from "@/content/about";
 import { cn } from "@/lib/utils";
 
 /**
@@ -11,15 +12,18 @@ import { cn } from "@/lib/utils";
  * セルが決めるので、内容の量に関わらず「キッカーは天、題は地」という位置関係だけが
  * 残るようにする。行が伸びてもセルの表情が変わらない。
  *
- * 題の上に図（Tabler 32、stroke 1.5）を並べられる（DECISION U-40）。題の語をひとつずつ
- * 図にしたもので、意味は題が運ぶので図は装飾（aria-hidden は icons.tsx が付ける）。
+ * 題の下に図（Bento / Figure: 語 + 色の円の中の Tabler 32）を並べる（DECISION U-52。
+ * U-40 の「題の上に線画 32」は存在感が無く、セルの文字が面積に対して小さく見えた）。
  * 図は題と 1 つの塊（stack/md 16）にして地に置く — 天・中・地の 3 段に散らすと、行が
- * 伸びたとき図だけが中空に浮く。
+ * 伸びたとき図だけが中空に浮く。解剖は全セル同じ: kicker（天）／ [題 → 図]（地）。
  *
  * 題の大きさはセルの面積に従う（2×1 = Title/2、1×1 中 = Title/3、1×1 小 = Headline）。
  * 面積が優先順位を示す部品なので、大きいセルの題が小さいと格が逆転して読める。
- * 2×1 の statement（CULTURE）だけ Display/M — 節の主張を 1 枚で言い切るセルで、Title/2 では
- * 597 幅の左 1/3 に文字が寄って右が空き、隣の 50+（Display/L）と釣り合わなかった（U-46）。
+ * 2×1 の statement（CULTURE）だけ Display/M — 節の主張を 1 枚で言い切るセル（U-46）。
+ * 1×1 lg（SINCE）は Title/1 — 日付 1 語のセルで、Title/3 では 1×1 の中で文字が小さく見えた（U-52）。
+ *
+ * 可視の題が文の一部（「仲間と、」「2025年4月」）のときは accessibleTitle に全文を渡す。
+ * 可視側は aria-hidden、読み上げは sr-only の全文（CellStat の 50+ と同じ形）。
  */
 
 const titleVariants = cva(
@@ -30,6 +34,7 @@ const titleVariants = cva(
       size: {
         "2x1-statement": "text-display-m",
         "2x1": "text-title-2",
+        "1x1-lg": "text-title-1",
         "1x1-md": "text-title-3",
         "1x1-sm": "text-headline",
       },
@@ -66,10 +71,12 @@ export interface CellTextProps // title は section の tooltip 属性と衝突�
   kicker: string;
   /** `\n` で意図的に改行してよい。`「` 始まりは左端を揃える（trim-start） */
   title: string;
+  /** 可視の題が文の一部のとき、見出しの読み上げ名に渡す全文（U-52） */
+  accessibleTitle?: string;
   /** §6.11.2 の showBody。全 Kind で使える（DECISION U-14） */
   body?: string;
-  /** 題の上に並べる図（U-40）。順序は題の語順 */
-  icons?: readonly ComponentType<IconProps>[];
+  /** 題の下に並べる図（U-52）。順序は題の語順。2×1 statement は lg 80、他は md 64 */
+  figures?: readonly AboutFigure[];
   /** ライブラリの Tone。ページで使うのは ground（インク面は Stat が持つ） */
   tone?: VariantProps<typeof kickerVariants>["tone"];
   /** 2×1 のときだけ 2。tablet 以上で効く */
@@ -79,8 +86,9 @@ export interface CellTextProps // title は section の tooltip 属性と衝突�
 export function CellText({
   kicker,
   title,
+  accessibleTitle,
   body,
-  icons,
+  figures,
   size,
   tone = "ground",
   colSpan,
@@ -100,18 +108,6 @@ export function CellText({
       <section {...props}>
         <p className={kickerVariants({ tone })}>{kicker}</p>
         <div className="flex flex-col gap-stack-md">
-          {icons && icons.length > 0 ? (
-            // 図の間は inline/sm 12。32 の図が 3 つで 120、1×1 セルの内側 249 に収まる
-            <div className="flex flex-wrap gap-inline-sm">
-              {icons.map((Icon) => (
-                <Icon
-                  className="size-icon-xl shrink-0"
-                  key={Icon.displayName}
-                  stroke={1.5}
-                />
-              ))}
-            </div>
-          ) : null}
           <div>
             <h3
               className={cn(
@@ -119,10 +115,23 @@ export function CellText({
                 title.startsWith("「") && "trim-start",
               )}
             >
-              {title}
+              {accessibleTitle ? (
+                <>
+                  <span aria-hidden="true">{title}</span>
+                  <span className="sr-only">{accessibleTitle}</span>
+                </>
+              ) : (
+                title
+              )}
             </h3>
             {body ? <p className={bodyVariants({ tone })}>{body}</p> : null}
           </div>
+          {figures && figures.length > 0 ? (
+            <FigureRow
+              figures={figures}
+              size={size === "2x1-statement" ? "lg" : "md"}
+            />
+          ) : null}
         </div>
       </section>
     </Cell>

@@ -83,7 +83,8 @@ export const Mail = decorative(IconMail, "Mail");
 export const Photo = decorative(IconPhoto, "Photo");
 
 /**
- * About のベントのビジュアル（§6.11.2 / DECISION U-40）。32 = icon/xl、stroke 1.5（§5.1）。
+ * About のベントのビジュアル（§6.11.2 / DECISION U-40 → U-52）。32 = icon/xl、stroke 1.5（§5.1）。
+ * Bento / Figure が色の円（C-32）の中に置き、色は currentColor = figure の ink ロール。
  * 題の語をひとつずつ図にする: 学ぶ = book、創る = hammer、話す = message-circle。
  * エンジニア = code、デザイナー = palette、サイエンティスト = flask。
  * 対面 = map-pin、オンライン = messages。公認 = school、公式パートナー = heart-handshake。

@@ -25,7 +25,7 @@ export type ChatEntry =
   | { kind: "typing" };
 
 /**
- * ベントのセルに置く図（§6.11.2、DECISION U-40）。実体は icons.tsx の bentoIcons が解決する。
+ * ベントのセルに置く図（§6.11.2、DECISION U-40 → U-52）。実体は icons.tsx の bentoIcons が解決する。
  * content は文字列で持ち、React 部品を知らない（brandIcons と同じ流儀）。
  */
 export type AboutIcon =
@@ -42,6 +42,26 @@ export type AboutIcon =
   | "flag";
 
 /**
+ * 図の円の色（DECISION C-32）。色相は意味で選ぶ — 同じ意味の図は常に同じ色:
+ *   blue = 知る（学ぶ・エンジニア・公認）/ orange = 作る・場（創る・デザイナー・対面）
+ *   pink = 話す・つながる（話す・オンライン・公式パートナー）/ yellow = しるし・探る（設立・サイエンティスト）
+ * 1 セルの中で色を繰り返さない。Discord を指す図（オンライン）に blue は置かない（Blurple と混ざる）。
+ */
+export type AboutTint = "blue" | "orange" | "pink" | "yellow";
+
+/**
+ * ベントの図 1 単位: 語（上）+ 色の円の中の Tabler（下）。§6.11.2 / U-52。
+ * 語の字数: md（1×1・OFFICIAL、円 64）は 8 全角まで — 3 つ並べて 64 + 12 + 64 + 12 + 96 = 248 ≤ 249.5
+ * （サイエンティスト = 8 が上限）。lg（CULTURE、円 80）は 6 全角まで。
+ * 語はそのセルの h3 の読み上げ名に含まれていること（図の行は aria-hidden、§8.5）。
+ */
+export interface AboutFigure {
+  icon: AboutIcon;
+  label: string;
+  tint: AboutTint;
+}
+
+/**
  * About のベント（§6.11）
  *
  * 7 セルを 3 行に組む（DECISION U-40）。
@@ -54,9 +74,14 @@ export const aboutContent = {
 
   culture: {
     kicker: "CULTURE",
-    title: "仲間と、\n学ぶ。創る。話す。",
-    /** 学ぶ / 創る / 話す */
-    icons: ["book", "hammer", "message"],
+    /** 可視は「仲間と、」だけ。3 語は図の語として続く（U-52）。読み上げは全文 */
+    title: "仲間と、",
+    accessibleTitle: "仲間と、学ぶ。創る。話す。",
+    figures: [
+      { icon: "book", label: "学ぶ", tint: "blue" },
+      { icon: "hammer", label: "創る", tint: "orange" },
+      { icon: "message", label: "話す", tint: "pink" },
+    ],
   },
 
   stat: {
@@ -75,22 +100,27 @@ export const aboutContent = {
    */
   founded: {
     kicker: "SINCE",
-    title: "2025年4月 設立",
-    icons: ["flag"],
+    /** 可視は日付だけを Title/1 で。「設立」は図の語が言う（U-52）。読み上げは全文 */
+    title: "2025年4月",
+    accessibleTitle: "2025年4月 設立",
+    figures: [{ icon: "flag", label: "設立", tint: "yellow" }],
   },
 
-  /** 公認と公式パートナーを 1 セルに集約し、各行を図 + 題 + 補足で並べる（DECISION U-14 → U-40） */
+  /**
+   * 公認と公式パートナーを 1 セルに集約し、2 列（題 + 補足 → 図）で並べる（DECISION U-14 → U-40 → U-52）。
+   * パートナーの題は著者改行 — 列幅 262.5 の中で「技育 / プロジェクト」と割れないように
+   */
   official: {
     kicker: "OFFICIAL",
     rows: [
       {
-        icon: "school",
+        figure: { icon: "school", label: "公認", tint: "blue" },
         title: "長崎大学公認団体",
         sub: "長崎大学の公認を受けた学生団体",
       },
       {
-        icon: "handshake",
-        title: "技育プロジェクト 学生団体公式パートナー",
+        figure: { icon: "handshake", label: "公式パートナー", tint: "pink" },
+        title: "技育プロジェクト\n学生団体公式パートナー",
         sub: "株式会社サポーターズが運営",
       },
     ],
@@ -156,14 +186,19 @@ export const aboutContent = {
   onlineOffline: {
     kicker: "ONLINE & OFFLINE",
     title: "対面活動も、Discordでのオンライン交流も活発。",
-    /** 対面 / オンライン */
-    icons: ["map-pin", "messages"],
+    figures: [
+      { icon: "map-pin", label: "対面", tint: "orange" },
+      { icon: "messages", label: "オンライン", tint: "pink" },
+    ],
   },
 
   forEveryone: {
     kicker: "FOR EVERYONE",
     title: "エンジニアもデザイナーもサイエンティストも。",
-    /** エンジニア / デザイナー / サイエンティスト */
-    icons: ["code", "palette", "flask"],
+    figures: [
+      { icon: "code", label: "エンジニア", tint: "blue" },
+      { icon: "palette", label: "デザイナー", tint: "orange" },
+      { icon: "flask", label: "サイエンティスト", tint: "yellow" },
+    ],
   },
 } as const;
