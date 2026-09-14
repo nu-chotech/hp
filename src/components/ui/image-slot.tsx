@@ -1,4 +1,5 @@
 import { cva, type VariantProps } from "class-variance-authority";
+import Image from "next/image";
 import type { ComponentProps } from "react";
 import { Photo } from "@/components/icons";
 import { cn } from "@/lib/utils";
@@ -10,11 +11,13 @@ import { cn } from "@/lib/utils";
  * 出し、揃ったら src を渡すだけで差し替わる — 比率と余白は枠側が持つので、素材の
  * 到着でレイアウトが動かない。
  *
- * next/image への移行を前提にした形にしてある。枠が relative + aspect-ratio を持ち、
- * 画像は absolute inset-0 で敷いてあるので、<img> の 1 行を <Image fill sizes={sizes} />
- * に置き換えるだけで済む（props 名も next/image に合わせた）。
- * §5.7.2 は CLS 対策に width / height 属性を求めるが、比率を枠の aspect-ratio が
- * 固定しているので属性なしでもシフトは起きない。fill と両立しないので持たせない。
+ * 画像は next/image の fill（DECISION U-45）。枠が relative + aspect-ratio を持ち、
+ * 画像は absolute inset-0 で敷かれるので、比率は枠が固定し CLS は起きない
+ * （§5.7.2 の width / height 属性は fill と両立しないので持たない）。
+ * 配信は §5.7.2 のとおり sizes に応じた幅で AVIF / WebP に変換される — 実素材
+ * （3〜4MB の jpg）を Mobile にそのまま送らないための移行で、素材が揃った 2026-09-12 に
+ * 実施した。.svg（ペルソナ・チャットのアバター）は next/image が自動で unoptimized に
+ * するので、そのまま通る。
  */
 const slot = cva(["relative overflow-hidden"], {
   variants: {
@@ -82,9 +85,12 @@ type ImageSlotBaseProps = ComponentProps<"div"> &
      * 閲覧者に見せる情報ではない。
      */
     caption?: string;
-    /** ベント写真だけ eager。それ以外は下方にあるので lazy（§5.7.2） */
+    /** ファーストビュー近傍だけ eager + preload。それ以外は下方にあるので lazy（§5.7.2） */
     priority?: boolean;
-    /** next/image に fill で渡すときと同じ意味。移行時にそのまま持ち上がる */
+    /**
+     * next/image の sizes。呼び出し側がスロットの実幅を渡す（member 597 / activity 597 /
+     * persona 80px / logo 144px）。無ければ 100vw = 最大幅の候補を選ぶ安全側の既定
+     */
     sizes?: string;
   };
 
@@ -105,9 +111,7 @@ export function ImageSlot({
   alt,
   caption,
   priority = false,
-  // sizes は srcset とセットでしか意味を持たない属性なので、<img> には渡さない。
-  // 型には残す — next/image に移すとき <Image fill sizes={sizes} /> でそのまま効く
-  sizes: _sizes,
+  sizes = "100vw",
   ...props
 }: ImageSlotProps) {
   // 地を落とすのは「素材が入った Contain」だけ。呼び出し側に判断させない（§6.16 から一意に決まる）
@@ -116,14 +120,14 @@ export function ImageSlot({
   return (
     <div className={cn(slot({ ratio, shape, ground }), className)} {...props}>
       {src ? (
-        // biome-ignore lint/performance/noImgElement: 素材が確定するまで next/image は入れない。ここが唯一の <img> で、差し替えは <Image fill sizes={sizes} /> の 1 行で済む
-        <img
-          src={src}
+        // fill は position:absolute; inset:0 を自分で当てる。object-fit / position は className で
+        <Image
           alt={alt}
-          loading={priority ? "eager" : "lazy"}
-          fetchPriority={priority ? "high" : undefined}
-          decoding="async"
           className={image({ fit, focal })}
+          fill
+          priority={priority}
+          sizes={sizes}
+          src={src}
         />
       ) : shape === "circle" ? (
         // 円はアイコンのみ中央。キャプションを置く余白が無く、置くと円が図に見えなくなる

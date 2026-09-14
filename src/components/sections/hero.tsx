@@ -1,13 +1,13 @@
+import Image from "next/image";
 import { ArrowUpRight, BrandDiscord } from "@/components/icons";
+import { JoinTrigger } from "@/components/join/join-dialog-provider";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { sectionVariants } from "@/components/ui/section";
 import { sectionIds } from "@/config/site";
 import { heroContent } from "@/content/hero";
-import { externalLinkNote, externalLinkProps } from "@/lib/external-link";
 import { cn } from "@/lib/utils";
 import { HeroReveal } from "./hero/hero-reveal";
-import { MetaStrip } from "./hero/meta-strip";
 
 /**
  * Section / Hero（§6.8.1）
@@ -19,28 +19,6 @@ import { MetaStrip } from "./hero/meta-strip";
  * 縦リズムは §3.9 の Hero 行: 上 section/pad-display 96 (M 64)、下 section/pad-bottom 80 (M 64)。
  * 上罫線は持たない — 色面の切り替えそのものが境界になる。
  */
-
-/**
- * 背景写真の動き（DECISION U-20）
- *
- * 動きの既定を詳細度 0（`:where`）で置くのはマーキーと同じ理由 — 止める側
- * （globals.css の低減設定）に必ず負けるため。
- * 停止の規則をここで再宣言しないのも同じで、再生の条件が 2 か所に散ると必ず食い違う。
- *
- * 動かすのは `translate` だけ。`scale` は静的な余白（移動しても縁が出ないための
- * 1.12）であってアニメーションではないので、M6「compositor プロパティのみ」にも
- * DECISION M-6 の `scale()` 禁止（押下フィードバックの規定）にも触れない。
- * 個別プロパティで書けば、静的な拡大と動く移動が 1 つの transform を奪い合わない。
- */
-const BACKDROP_KEYFRAMES = `
-@keyframes chotech-hero-backdrop{
-from{translate:calc(var(--hero-backdrop-drift) * -1) calc(var(--hero-backdrop-drift) * -0.5)}
-to{translate:var(--hero-backdrop-drift) calc(var(--hero-backdrop-drift) * 0.5)}
-}
-:where(.hero__backdrop){
-scale:var(--hero-backdrop-scale);
-animation:chotech-hero-backdrop var(--hero-backdrop-period) ease-in-out infinite alternate
-}`;
 
 export function Hero() {
   const { backdrop, headline, lead, body, actions } = heroContent;
@@ -61,65 +39,76 @@ export function Hero() {
       )}
     >
       {/*
-       * 背景写真（DECISION U-20）。ink 面を置き換えず、その上に低い不透明度で重ねる。
-       * 「コミュニティの実像」という情報を運ぶ層なので M9「装飾のためだけの動きは
-       * 足さない」の例外にあたるが、動き自体は M8 のスイッチ 1 つで止まる。
-       *
-       * overflow-hidden は移動する画像の受け皿で、これが無いと拡大したぶんが Hero の外へ
-       * こぼれる。格子線（旧 K-12）は置かない — 写真の上に線が乗ると写真の一部に見える（U-22）。
+       * 背景写真（DECISION U-20 → U-50）。ink 面を置き換えず、その上に低い不透明度で重ねた
+       * **静止画**。U-20 の漂い（48s 周期の translate）はクライアント判断で撤去し、代わりに
+       * 軽くぼかす（filter は静的で、動きではない）。ぼかしで透ける縁は scale の余白で
+       * Hero の外へ出し、overflow-hidden が受ける。格子線（旧 K-12）は置かない（U-22）。
        */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 overflow-hidden"
       >
-        {/* `style` は precedence 付きで <head> へ巻き上げる（React 19） */}
-        <style href="hero-backdrop" precedence="components">
-          {BACKDROP_KEYFRAMES}
-        </style>
-        {/* biome-ignore lint/performance/noImgElement: 実素材が確定するまで next/image は入れない（ImageSlot と同じ方針）。この層は素材待ちの「枠」ではなく面の一部なので ImageSlot は使わない — 未読込時に placeholder の明るい地 #eae7e7 が Hero 全面で光る */}
-        <img
-          src={backdrop.src}
+        {/* ImageSlot は使わない — この層は素材待ちの「枠」ではなく面の一部で、未読込時に
+            placeholder の明るい地 #eae7e7 が Hero 全面で光る。next/image を直接置く（U-45）。
+            priority: ファーストビューの地。遅れて入ると「後から暗くなる」ように見える。
+            sizes 100vw: 全幅の背景なので viewport 幅の候補を選ぶ */}
+        <Image
           alt=""
-          // ファーストビューの地。遅れて入ると「後から暗くなる」ように見える
-          fetchPriority="high"
-          decoding="async"
           className={cn(
-            "hero__backdrop absolute inset-0 size-full object-cover",
-            // 色はそのまま（U-21）。不透明度だけで ink 面に沈める
-            "opacity-(--hero-backdrop-opacity)",
+            "hero__backdrop object-cover",
+            // 色はそのまま（U-21）。不透明度だけで ink 面に沈め、若干ぼかす（U-50）
+            "opacity-(--hero-backdrop-opacity) blur-(--hero-backdrop-blur) scale-(--hero-backdrop-scale)",
           )}
+          fill
+          priority
+          sizes="100vw"
+          src={backdrop.src}
         />
       </div>
 
       <HeroReveal>
         {/* relative: 絶対配置の背景写真より前に描く */}
         <Container className="relative flex flex-col gap-stack-xl pt-section-pad-display pb-section-pad-bottom">
-          <MetaStrip />
-
           {/*
            * タグラインを Display/XL で言い切る（DECISION U-37）。名前は可視の文そのもの。
-           * アクセントの動詞 × 白の目的語で対比を作る。下線は無い（DECISION U-3）。
-           * Desktop は 1 行（116px で ≈ 1131 ≤ 1200）。Mobile は "Hack Your" / "Limits." に
-           * 自然折返し。balance は "Hack" / "Your Limits." に寄せるので解除する。
+           * 文は**真っ黒 64% の板**に載せる（DECISION U-39 → U-50: 実色の inverse/ground から
+           * hero/plate へ）: 写真が透ける面の上で、周囲より暗い板が「印刷された」ように一段
+           * 沈み、文字の輪郭が写真の明部に食われない。板越しに写真がうっすら透ける
+           * （48% は薄く、72% は不透明に見えた）。影は無い — 柔らかく見えるのはぼかした写真が透けるため。
+           *
+           * ボックスは inline-block。inline のまま背景を塗ると、この書体の content area
+           * （≈ 1.6em）が行送り 1.11 を大きく超えて、板が上下に 30px ずつはみ出し lead に
+           * 触れる。inline-block なら板の高さ = 行ボックス + padding で決まる。Mobile の
+           * "Hack Your" / "Limits." は 1 枚の板の中で 2 行に折れる。
+           * 余白は字の 0.2em / 0.1em — 固定 px にしないのは、板の厚みが級数に比例して
+           * 初めて「文字の一部」に見えるため。左右の 0.2em ぶんは負のマージンで
+           * container の外へ吊るし、**文字の左端**を lead・段落・ボタンと揃える（L-19 の
+           * フラッシュレフトは板ではなく字で守る）。
+           * 色の強調は句点の「.」だけ（hero/word）。balance は解除（"Hack" / "Your Limits."
+           * に寄ってしまう）。
            */}
           <h1
             className="text-wrap text-display-xl text-inverse-ink"
             data-reveal
-            data-reveal-index="1"
+            data-reveal-index="0"
             lang="en"
           >
-            <span className="text-hero-word">{headline.verb}</span>{" "}
-            {headline.object}
+            <span className="-mx-[0.2em] inline-block bg-hero-plate px-[0.2em] py-[0.1em]">
+              {headline.text}
+              <span className="text-hero-word">{headline.period}</span>
+            </span>
           </h1>
 
           {/* リード → 段落だけは stack/xs 8 で締める（DECISION L-6） */}
           <div
             className="flex flex-col gap-stack-xs"
             data-reveal
-            data-reveal-index="3"
+            data-reveal-index="1"
           >
-            {/* Display 124 と本文 16 の間の中間階層（DECISION U-5） */}
-            <p className="text-title-1 text-inverse-ink">{lead}</p>
+            {/* Display 124 と本文 16 の間の中間階層（DECISION U-5）。
+                Mobile で 2 行に折れるので balance（見出し扱い、§2.6.4）。文節で折るのは
+                @layer base の p が持つ（U-48: balance 無しでは「ハ / ブを。」で折れた） */}
+            <p className="text-balance text-title-1 text-inverse-ink">{lead}</p>
             {/* mt-0: 縦リズムは gap が持つので @layer base の p + p 12 を打ち消す。
                 whitespace-pre-line: content 側の著者改行をそのまま行に落とす */}
             <p className="mt-0 max-w-measure whitespace-pre-line text-body-l text-inverse-ink-secondary">
@@ -130,21 +119,19 @@ export function Hero() {
           <div
             className="flex flex-wrap items-center gap-inline-sm"
             data-reveal
-            data-reveal-index="4"
+            data-reveal-index="2"
           >
-            {/* 主 = 外部の Discord。矢印と visually-hidden の注記を添え、
-                新しいタブで開く（DECISION M-21） */}
+            {/* 主 = Discord へ。面は Discord の Blurple（discord-fill）+ 白 — マークと同じ
+                持ち主の色で行き先を言う（C-31）。押すと参加ダイアログが開き、学生であることを
+                確かめてから新しいタブで出る（U-49 / U-54 / M-21）。矢印は「外へ出る」の予告として残す */}
             <Button
               surface="ink"
-              variant="solid"
+              variant="discord"
               asChild
               brand={BrandDiscord}
               icon={ArrowUpRight}
             >
-              <a href={actions.primary.href} {...externalLinkProps}>
-                {actions.primary.label}
-                <span className="sr-only">{externalLinkNote}</span>
-              </a>
+              <JoinTrigger>{actions.primary.label}</JoinTrigger>
             </Button>
             {/* 副 = ページ内スクロール。移動先が同じページなのでアイコンは付けない（§6.1.9） */}
             <Button surface="ink" variant="outline" asChild>

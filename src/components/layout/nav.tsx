@@ -1,9 +1,8 @@
 import { ArrowUpRight } from "@/components/icons";
+import { JoinTrigger } from "@/components/join/join-dialog-provider";
 import { Brand } from "@/components/layout/brand";
 import { NavBar } from "@/components/layout/nav-bar";
 import { Button } from "@/components/ui/button";
-import { externalLinks } from "@/config/site";
-import { externalLinkNote, externalLinkProps } from "@/lib/external-link";
 
 /**
  * Nav bar（§6.7）
@@ -23,30 +22,18 @@ import { externalLinkNote, externalLinkProps } from "@/lib/external-link";
 
 export interface NavProps {
   /**
-   * CTA の文言と行き先。§6.7.1 が指定する既定は「参加する」→ Discord。
-   * content 層に Nav 用のエントリが無いので、既定値をここに置いて上書き可能にする。
+   * CTA の文言。§6.7.1 が指定する既定は「参加する」。行き先は参加ダイアログ（U-49）で、
+   * そこから Discord へ出る。content 層に Nav 用のエントリが無いので、既定値をここに置く。
    */
   ctaLabel?: string;
-  ctaHref?: string;
   className?: string;
 }
 
-export function Nav({
-  ctaLabel = "参加する",
-  ctaHref = externalLinks.discord,
-  className,
-}: NavProps) {
-  // 外部へ出るリンクなので、矢印（ArrowUpRight）だけでなく読み上げにも言い、
-  // 新しいタブで開く（DECISION M-21）。
+export function Nav({ ctaLabel = "参加する", className }: NavProps) {
+  // CTA は参加ダイアログを開くボタン（U-49）。行き先は外部なので矢印（ArrowUpRight）は
+  // 残すが、押した瞬間に新しいタブは開かない — 注記はダイアログの参加リンクが持つ。
   // Discord マークは置かない（U-19。U-27 で一度足したが、帯の CTA は文言だけで足りると
   // 同日に撤回。Mobile の幅検算 §6.7.2 も矢印ありの元の式に戻る）
-  const label = (
-    <>
-      {ctaLabel}
-      <span className="sr-only">{externalLinkNote}</span>
-    </>
-  );
-
   return (
     <NavBar
       className={className}
@@ -62,9 +49,7 @@ export function Nav({
             icon={ArrowUpRight}
             className="tablet:hidden"
           >
-            <a href={ctaHref} {...externalLinkProps}>
-              {label}
-            </a>
+            <JoinTrigger>{ctaLabel}</JoinTrigger>
           </Button>
           <Button
             asChild
@@ -72,17 +57,13 @@ export function Nav({
             icon={ArrowUpRight}
             className="hidden tablet:inline-flex"
           >
-            <a href={ctaHref} {...externalLinkProps}>
-              {label}
-            </a>
+            <JoinTrigger>{ctaLabel}</JoinTrigger>
           </Button>
         </>
       }
       menuCta={
         <Button asChild size="md" fullWidth icon={ArrowUpRight}>
-          <a href={ctaHref} {...externalLinkProps}>
-            {label}
-          </a>
+          <JoinTrigger>{ctaLabel}</JoinTrigger>
         </Button>
       }
     />

@@ -18,9 +18,9 @@ import { cn } from "@/lib/utils";
  * 中間段は置いてよい。768px の 2 列はセル内容 ≈320px = 22 字で閾値を満たす。
  * 設計どおりの列数（bento 4 / persona・staff 3 / leader 2 / partner 6）は desktop から。
  *
- * 例外は partner の 6 列。3:2 のロゴタイル（L-32）は文字を運ばないので、和文の最小行長の
- * 制約を受けない。Mobile で 1 列にすると 342 × 228 のタイルが 6 枚縦に積まれるため、
- * ここだけ Mobile 2 列 / tablet 3 列に開く（DECISION L-31）。DOM 順は保たれる。
+ * 6 列は partner のロゴタイル（L-31 / L-32）のために置いた段で、U-43 でタイルをやめて
+ * からページでは使っていない（ライブラリに残置）。1 列は「外枠だけ」の使い方 — 内側の罫を
+ * 持たない 1 セルの面（Partners のロゴ行、U-43）を、同じ 2px の frame で囲むためにある。
  */
 const ruledGrid = cva(
   [
@@ -30,8 +30,9 @@ const ruledGrid = cva(
   ],
   {
     variants: {
-      /** Desktop の列数。tablet 未満は 1 列（DOM 順、span は列方向にだけ効く）。6 だけ Mobile 2 / tablet 3（L-31） */
+      /** Desktop の列数。tablet 未満は 1 列（DOM 順、span は列方向にだけ効く）。6 だけ Mobile 2 / tablet 3（L-31）。1 = 外枠だけ（U-43） */
       columns: {
+        1: "grid-cols-1",
         2: "grid-cols-1 tablet:grid-cols-2",
         3: "grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-3",
         4: "grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-4",
@@ -56,8 +57,8 @@ const ruledGrid = cva(
 export interface RuledGridProps
   extends ComponentProps<"div">,
     Omit<VariantProps<typeof ruledGrid>, "columns"> {
-  /** Desktop の列数。bento 4 / persona・staff 3 / leader 2 / partner 6（3:2 のロゴタイル） */
-  columns: 2 | 3 | 4 | 6;
+  /** Desktop の列数。bento 4 / persona・staff 3 / leader 2 / 1 = 外枠だけ（partner のロゴ行、U-43）。6 はライブラリ */
+  columns: 1 | 2 | 3 | 4 | 6;
   /** <ul> や <section> として組みたいときに、子要素へスタイルを委譲する */
   asChild?: boolean;
 }

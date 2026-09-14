@@ -5,7 +5,7 @@
  * 構成
  *   1. Tailwind
  *   2. Primitives（:root の素の custom property。@theme に入れずユーティリティを生やさない）
- *   3. Semantic roles（Lime accent = 既定モード）
+ *   3. Semantic roles（Green accent = 既定モード）
  *   4. レスポンシブなスカラー（Mobile が基底、Desktop は 1 本のメディアクエリで上書き）
  *   5. @theme inline（Tailwind の名前空間への写像）
  *   6. @layer base
@@ -42,20 +42,30 @@
   --neutral-800: #444141; /* Y 0.054 — インク色ボタンのホバー */
   --neutral-900: #2d2b2b; /* Y 0.025 — ヒーロー格子線（inverse/hairline） */
   --neutral-950: #201e1d; /* Y 0.013 — ink、インク面、ポスター面（Mono）、backdrop / shadow の基底 */
+  --neutral-1000: #000000; /* Y 0.000 — 真っ黒。Hero の板（hero/plate）の基底だけ（U-50） */
 
-  /* lime — アクセントは二極性を持つ（DECISION C-25 / C-26）。
-     明るい地の上では暗い段（700 図形 / 800 文字 / 900 小さな文字）が働き、
-     インク面とポスター面では lime-400 が面・印として働く。同じ段を両極に使えない。 */
-  --lime-200: #d8f999; /* accent-subtle（淡い塗り、ライブラリ） */
-  --lime-300: #bbf451; /* インク面のフォーカスリング */
-  --lime-400: #9ae600; /* accent 基底。明るい地では 1.37 で文字にも輪郭にも使えない */
-  --lime-500: #7ccf00; /* accent ホバー（面） */
-  --lime-600: #5ea500; /* accent プレス（面） */
-  --lime-700: #497d00; /* 地の上の図形専用（3:1 ✓ / 4.5 ✗） */
-  --lime-800: #3c6300; /* 地の上のアクセント文字の基底 */
-  --lime-900: #35530e; /* 12px 以下のアクセント文字、淡い塗り・ポスター面の上 */
+  /* green — GitHub Primer green（DECISION C-29、2026-09-12。ライムから置換）。
+     アクセントは二極性を持つ（C-25 / C-26）: 明るい地の上では暗い段
+     （700 図形 / 800 文字 / 900 小さな文字）が働き、インク面とポスター面では
+     green-400 が面・印として働く。同じ段を両極に使えない。値は §1.2.2 の実測。 */
+  --green-200: #aceebb; /* accent-subtle（淡い塗り、ライブラリ。ground 1.20） */
+  --green-300: #56d364; /* インク面のフォーカスリング（ink 8.62） */
+  --green-400: #3fb950; /* accent 基底（ink 6.54）。明るい地では 2.27 で文字にも輪郭にも使えない */
+  --green-500: #2ea043; /* accent ホバー（面。上の ink 4.92） */
+  --green-600: #238636; /* accent プレス（面。上の ink 3.59 — N 不合格、ライブラリのみ） */
+  --green-700: #1a7f37; /* 地の上の図形専用（3:1 ✓ 4.55。文字は hover-tint 上 4.04 で割る） */
+  --green-800: #116329; /* 地の上のアクセント文字の基底（ground 6.62） */
+  --green-900: #044f1e; /* 12px 以下のアクセント文字（8.77）、淡い塗り・ポスター面の上 */
 
-  /* alpha — 11 個（ink 5 / ground 5 / lime-400 1）。
+  /* blurple — Discord のブランド色 Blurple（DECISION C-31、2026-09-12）。本システムの色相
+     ではなく第三者の識別色で、Discord へ出るボタンの面にだけ置く（ロゴと同じ「引用」、U-21）。
+     500 は discord.com/branding の公開値、530 / 560 は Discord のアプリの brand スケールと同値
+     （同色相で暗い方へ 1 段ずつ。明るい方 brand-400 #7983f5 は白が 3.29 で割る）。 */
+  --blurple-500: #5865f2; /* Y 0.178 — discord-fill。白 4.61、ground 上 4.12 / ink 上 3.60 */
+  --blurple-530: #505cdc; /* Y 0.145 — ホバー。白 5.38、ground 上 4.81 / ink 上 3.09 */
+  --blurple-560: #4752c4; /* Y 0.114 — プレス。白 6.42、ink 上 2.59 は押下の瞬間 */
+
+  /* alpha — 12 個（ink 5 / ground 5 / green-400 1 / black 1、black だけ尺度外の 64）。
      6 → 12 → 24 → 48 は倍々（ティント・影・幕・無効）、72 = 3 × 24（tertiary 文字）、
      88 は secondary 文字。合成 hex をハードコードせず color-mix で持つ
      （固定値が要る prefers-reduced-transparency だけ §1.2.3 の合成 hex を使う）。 */
@@ -69,11 +79,13 @@
   --alpha-ground-48: color-mix(in srgb, var(--neutral-100) 48%, transparent);
   --alpha-ground-72: color-mix(in srgb, var(--neutral-100) 72%, transparent);
   --alpha-ground-88: color-mix(in srgb, var(--neutral-100) 88%, transparent);
-  --alpha-lime-400-24: color-mix(in srgb, var(--lime-400) 24%, transparent);
+  --alpha-green-400-24: color-mix(in srgb, var(--green-400) 24%, transparent);
+  /* 64 は尺度の外（見た目で決めた値、U-50）: 48 は薄く、72 は不透明に見えた */
+  --alpha-black-64: color-mix(in srgb, var(--neutral-1000) 64%, transparent);
 }
 
 /* =============================================================================
- * 3. Semantic roles — 62 行（Figma: Color コレクション / 既定モード Lime accent）
+ * 3. Semantic roles — 68 行（Figma: Color コレクション / 既定モード Green accent）
  *
  * ページで色を触るときはここだけを参照する。primitive を直接使わない。
  * 行末のコメントは対比比（vs ground / vs ink）。理由は各グループの見出しに書く。
@@ -83,15 +95,18 @@
    * ground = 基準面（ページ、ナビ、マーキー帯、フッター）。
    * surface は ground との比 1.10 = 罫線なしに輪郭が読める最小段。
    * inverse/ground はインクを塗りに転用したもの（ヒーロー、統計セル、CTA セル）。
-   * poster/ground は Join セクションだけの唯一のアクセント面で、Mono では暗い面、
-   * Lime では明るい面に反転するため専用ロール群を持つ（DECISION C-28）。
+   * poster/ground は Join セクションの面。C-30（2026-09-12）でインク面に戻した — green-400 の
+   * 面に墨の文字を載せると読みにくい。アクセントは面ではなく見出し（poster/display）で現れ、
+   * CTA は Discord の Blurple（C-31、1.3.9）。poster/* のエイリアスは C-28 の名残で、値は inverse/* と同じ。
    * ---------------------------------------------------------------------- */
   --ground: var(--neutral-100);
   --surface: var(--neutral-200); /* ground 1.10 */
   /* ロゴの地。パートナーのタイルとマーキー帯だけ。白背景のロゴ素材と同じ面にする（DECISION U-33） */
   --logo-ground: var(--neutral-0); /* ground 1.12 */
   --inverse-ground: var(--neutral-950);
-  --poster-ground: var(--lime-400); /* 上の ink 10.83 */
+  --poster-ground: var(
+    --neutral-950
+  ); /* インク面（C-30。green-400 の面に墨の文字は読みにくい） */
 
   /* --- 1.3.2 明るい面のテキスト --------------------------------------------
    * ink-secondary は明るい面の小さな補助文字すべて。
@@ -112,8 +127,8 @@
   --inverse-ink-secondary: var(--alpha-ground-88); /* ink 11.78 */
   --inverse-ink-tertiary: var(--alpha-ground-72); /* ink 8.29 */
   --inverse-ink-quaternary: var(--alpha-ground-48); /* ink 4.45 */
-  --poster-ink: var(--neutral-950); /* Lime 10.83 */
-  --poster-ink-secondary: var(--alpha-ink-88); /* Lime 8.23 */
+  --poster-ink: var(--inverse-ink); /* ink 14.86 */
+  --poster-ink-secondary: var(--inverse-ink-secondary); /* ink 11.78 */
   --inverse-hairline: var(--neutral-900); /* ink 1.18 */
 
   /* --- 1.3.4 罫線と枠 ------------------------------------------------------
@@ -132,31 +147,43 @@
   --inverse-outline: var(--inverse-ink); /* ink 14.86 */
 
   /* --- 1.3.5 アクセント ----------------------------------------------------
-   * accent（lime-400）は明るい地の上では面としても文字としても使えない（1.37、C-25）。
+   * accent（green-400）は明るい地の上では面としても文字としても使えない（2.27、C-25）。
+   * 文字を載せる面は accent-fill（green-600）+ 白（on-accent）: 自分側バブルだけ（C-30。
+   * 参加 CTA は C-31 で Discord の Blurple = 1.3.9 へ）。
    * 地の上では暗い段が働く: 700 図形のみ / 800 文字 / 900 は 12px 以下の文字。
    * accent-hover / -pressed / -subtle はライブラリのみ（ポスター面と競合させない）。
    * pop/*・hero/word・poster/* はモードで値が変わる 10 行に含まれる。
    * ---------------------------------------------------------------------- */
-  --accent: var(--lime-400); /* ink 10.83 */
-  --on-accent: var(--neutral-950); /* accent 10.83 */
-  --accent-hover: var(--lime-500); /* ラベル 8.52 */
-  --accent-pressed: var(--lime-600); /* ラベル 5.42 */
-  --accent-subtle: var(--lime-200); /* ground 1.05 */
-  --on-accent-subtle: var(--lime-900); /* 淡い塗り 7.49 */
-  --accent-text: var(--lime-800); /* ground 6.31 */
-  --accent-text-small: var(--lime-900); /* ground 7.85 */
-  --accent-on-ink: var(--lime-400); /* ink 面の印 */
-  --pop-separator: var(--lime-700); /* ground 4.46 */
-  --pop-badge: var(--lime-800); /* ground 6.31 */
-  --hero-word: var(--lime-400); /* ink 10.83 */
-  --poster-selection: var(--alpha-ink-12); /* Lime #8bce03 */
-  --poster-action-fill: var(--neutral-950); /* Lime 10.83 */
-  /* 面側の 1 段（§1.3.7）。汎用 action/fill-hover を直接引くと Mono で反転しないので、
-     ポスター専用ロールとして持つ（C-28 の原則をホバー・プレスにも通す） */
-  --poster-action-fill-hover: var(--neutral-800); /* ポスター上 7.61 */
-  --poster-action-fill-pressed: var(--neutral-700); /* ポスター上 5.29 */
-  --poster-action-ink: var(--neutral-100); /* 上の面 14.86 */
-  --poster-focus-ring: var(--lime-900); /* lime-400 5.72 */
+  --accent: var(--green-400); /* 印の基底（ink 6.54）。面には使わない（C-30） */
+  /* 文字を載せる緑の面。ページではチャット自分側バブルだけ（ground 上 4.14）。
+     参加 CTA は C-31 で Discord の Blurple（--discord-fill）に移り、緑の面ではなくなった */
+  --accent-fill: var(--green-600);
+  --on-accent: var(--neutral-0); /* accent-fill 上 4.62（ground だと 4.14） */
+  /* ホバー・プレスは暗い方へ 1 段ずつ（白 5.07 / 7.40）。Accent ボタンはライブラリのみ（K-5） */
+  --accent-hover: var(--green-700);
+  --accent-pressed: var(--green-800);
+  --accent-subtle: var(--green-200); /* ground 1.20 */
+  --on-accent-subtle: var(--green-900); /* 淡い塗り 7.33 */
+  --accent-text: var(--green-800); /* ground 6.62 */
+  --accent-text-small: var(--green-900); /* ground 8.77 */
+  --accent-on-ink: var(--green-400); /* ink 面の印（6.54） */
+  --pop-separator: var(--green-700); /* ground 4.55 */
+  --pop-badge: var(--green-800); /* ground 6.62 */
+  --hero-word: var(--green-400); /* ink 6.54 */
+  /* h1 の板（U-50）: 写真の上に 64% の真っ黒 — 板越しに写真がうっすら透ける。
+     最も明るい画素の上でも白 17.2 / 句点 6.77（48 は薄く、72 は不透明に見えた） */
+  --hero-plate: var(--alpha-black-64);
+  --poster-display: var(
+    --green-400
+  ); /* ポスター見出し（Display L）。ink 面上 6.54 */
+  --poster-selection: var(--inverse-selection); /* 上の ground 9.78 */
+  /* ポスター CTA の面と文字 — ライブラリ（Mono 検証用: ground の塗り / Green: accent-fill 系）。
+     Poster の参加 CTA は C-31 で Discord の Blurple（--discord-fill、モード非依存）に移った */
+  --poster-action-fill: var(--accent-fill);
+  --poster-action-fill-hover: var(--accent-hover);
+  --poster-action-fill-pressed: var(--accent-pressed);
+  --poster-action-ink: var(--on-accent);
+  --poster-focus-ring: var(--focus-ring-inverse); /* ink 面 8.62 */
 
   /* --- 1.3.6 状態 ----------------------------------------------------------
    * ティントの上にアクセント文字を置かない（バッジのみ例外、900 で 6.22）。
@@ -168,14 +195,14 @@
   --state-pressed-tint: var(--alpha-ink-12); /* 上の ink 11.78 */
   --inverse-state-hover-tint: var(--alpha-ground-12); /* ground 10.58 */
   --inverse-state-pressed-tint: var(--alpha-ground-24); /* ground 7.06 */
-  --focus-ring: var(--lime-700); /* 明るい面 4.46 */
-  --focus-ring-inverse: var(--lime-300); /* ink 面 12.79 */
-  --selection: var(--alpha-lime-400-24); /* 上の ink 13.55 */
-  --inverse-selection: var(--alpha-lime-400-24); /* 上の ground 8.17 */
-  --link-hover: var(--accent-text); /* 2px 下線 6.31 */
-  --link-pressed: var(--accent-text-small); /* 文字 7.85 */
+  --focus-ring: var(--green-700); /* 明るい面 4.55 */
+  --focus-ring-inverse: var(--green-300); /* ink 面 8.62 */
+  --selection: var(--alpha-green-400-24); /* 上の ink 12.19 */
+  --inverse-selection: var(--alpha-green-400-24); /* 上の ground 9.78 */
+  --link-hover: var(--accent-text); /* 2px 下線 6.62 */
+  --link-pressed: var(--accent-text-small); /* 文字 8.77 */
   --link-current: var(--ink); /* 2px 下線 14.86 */
-  /* 表記上は Mono → inverse/ink、Lime → neutral-950 だが、ソーシャルリンクは
+  /* 表記上は Mono → inverse/ink、Green → neutral-950 だが、ソーシャルリンクは
      ポスター面上にあるので実質 poster/ink に追従する行（§11 の 10 行には非該当）。
      poster/ink のエイリアスにすることで両モードで正しい値になる。 */
   --inverse-link-hover: var(--poster-ink);
@@ -196,7 +223,7 @@
 
   /* --- 1.3.8 部品固有 ------------------------------------------------------
    * 影はページに存在しない。段差は幾何だけで作り、色は 1 濃度に固定する（§4.4）。
-   * backdrop はダイアログの幕（ライブラリ）。
+   * backdrop は参加ダイアログの幕（U-49）。
    * ---------------------------------------------------------------------- */
   --chip-ink: var(--ink-secondary); /* chip/fill 5.30 */
   --inverse-chip-ink: var(
@@ -208,6 +235,25 @@
   --shadow: var(--alpha-ink-24); /* shadow/sm md lg */
   --backdrop: var(--alpha-ink-48); /* 幕 */
 
+  /* --- 1.3.9 ブランド色（第三者、C-31） ---------------------------------------
+   * Discord の Blurple。本システムのアクセントではなく、ロゴと同じ「引用」（U-21 の延長）。
+   * 現れるのは Discord へ出るボタン（Hero 主・Poster）の面だけで、文字・罫・印には使わない。
+   * 極性を持たない（ground 上 4.12 / ink 上 3.60）。状態は暗い方へ 1 段ずつ —
+   * 明るい方は白が 3.29 で割る。リングは面の規則どおり緑（C-8）。
+   * ---------------------------------------------------------------------- */
+  --discord-fill: var(--blurple-500); /* 白 4.61。ground 4.12 / ink 3.60 */
+  --on-discord: var(--neutral-0); /* ラベル・Discord マーク・矢印 */
+  --discord-hover: var(--blurple-530); /* 白 5.38。ground 4.81 / ink 3.09 */
+  --discord-pressed: var(--blurple-560); /* 白 6.42。ink 上 2.59 は押下の瞬間 */
+
+  /* --- 1.3.10 図の円（Bento Figure、C-32） --------------------------------
+   * About のベントの図（緑の円 + 白い Tabler 32）だけが使う 2 行。チャットの自分側バブルと
+   * 同じ accent-fill + on-accent のエイリアス — 「周りと同じ緑」（クライアント判断。淡い
+   * 緑 + 濃い緑の図は「キモい」、4 色相は「浮きすぎ」で撤回）。図は装飾なので語は添えない。
+   * ---------------------------------------------------------------------- */
+  --figure-fill: var(--accent-fill); /* green-600。ground 4.14 */
+  --figure-ink: var(--on-accent); /* 白。green-600 上 4.63 */
+
   /* 専用ロールを置かないもの:
      typing dot / placeholder アイコン → --ink-tertiary に直接 bind（3.85 / 3.50）
      すべての Tabler アイコン           → currentColor（行のテキスト色を継ぐ）
@@ -217,7 +263,7 @@
 /* -----------------------------------------------------------------------------
  * Mono モード（検証用）— 値が変わるのは正確に 10 行（§11）
  * 「4 つの出現」（マーキー区切り・活動バッジ・ヒーロー下線・ポスター面）＋
- * ポスター面の明度反転に伴う 6 行。他はすべて Mono = Lime。
+ * ポスター面の明度反転に伴う 6 行。他はすべて Mono = Green。
  * 実行時の切替は設計上おこなわない（デザインモードのみ）ので既定では無効。
  * 検証したくなったら次のブロックを有効にして <html data-color-mode="mono"> を付ける。
  * （--inverse-link-hover は --poster-ink のエイリアスなので自動で追従する）
@@ -469,15 +515,30 @@
   --size-cell-min: 7.5rem; /* 120 = 24 × 5。床であって目標ではない */
   --size-avatar: 1.5rem; /* 24 — チャットアバター（円）。= icon/lg */
   --size-dot: 0.4375rem; /* 7 — 入力中ドット（円）。3 点 + gap 5 = 31 幅（U-1 で 4 → 7） */
-  --size-illustration: 6rem; /* 96 — ペルソナイラスト（円） */
+  --size-illustration: 5rem; /* 80 — ペルソナイラスト（円）。96 → 80（U-42: 題の横に置くので、Headline 2 行 48 を中に収める最小の径） */
+  /* ペルソナカードの 2 つの箱（U-53）。床ではなく目標: 引用が 1 行でも 2 行ぶん、次の一歩も 2 行ぶん
+     取ることで、6 枚のカードが行を跨いで同じ高さになる（§9.3 の字数上限が前提） */
+  --size-persona-quote: calc(
+    2 *
+    var(--callout-leading)
+  ); /* 44 — Callout 2 行 */
+  --size-persona-rec: calc(
+    2 *
+    var(--footnote-bold-leading) +
+    2 *
+    var(--inset-sm)
+  ); /* 64 — Footnote/Bold 2 行 + inset/sm × 2 */
   --size-mark-nav: 1.5rem; /* 24 — ナビのロゴマーク（icons/mark.svg、図の外接矩形）。Title 3 19 に対し比 1.26（L-30） */
   --size-mark-footer: 1.25rem; /* 20 — フッターのロゴマーク。Headline 17 に対し比 1.18 */
   --size-rule-v: 0.75rem; /* 12 — 縦 hairline の高さ。隣接する文字サイズと等しい（L-16） */
+  --size-dialog: 30rem; /* 480 — 参加ダイアログの最大幅（= 4 × cell-min、U-49）。Mobile は container 幅 */
+  --size-figure: 4rem; /* 64 — ベントの図の円（md、= 2 × icon/xl）。lg は size/illustration 80（U-52） */
 
   /* --- 5.3 アイコン（Tabler outline、24 グリッド、stroke 2、round cap/join） -- */
   --icon-sm: 1rem; /* 16 — 12〜14px の文字の横、36px コントロールのラベル横 */
   --icon-md: 1.25rem; /* 20 — 15〜19px の文字の横、44px コントロールのラベル横、icon-only 36 */
   --icon-lg: 1.5rem; /* 24 — icon-only 44、placeholder の写真アイコン。Tabler のネイティブ */
+  --icon-xl: 2rem; /* 32 — ベントのビジュアル（About のセル、stroke 1.5）。§5.2 / U-40 */
 
   /* --- 3.10 measure --------------------------------------------------------
    * Desktop 588 = 12 列のうち 6 列（6×78 + 5×24）、Mobile 342 = container 幅そのもの。
@@ -500,8 +561,8 @@
   --focus-offset-inset: -2px; /* full-bleed の行は inset にして隣接罫線と交差させない（K-7） */
 
   /* --- 7. モーション -------------------------------------------------------
-   * 動くものはページ全体で 6 つだけ: reveal・回転語・マーキー・入力中ドット・Mobile メニュー・
-   * Hero の背景写真。
+   * 動くものはページ全体で 5 つだけ: reveal・マーキー・入力中ドット・Mobile メニュー・
+   * 参加ダイアログ（U-49。回転語は U-37、背景写真の漂いは U-50 で撤去）。
    * アニメーションできるのは transform と opacity のみ。scale() は使わない（M-6）。
    * -------------------------------------------------------------------------- */
   --dur-0: 0ms; /* 押下、フォーカスリング、アイコン差し替え、マーキーの一時停止・再開 */
@@ -512,7 +573,7 @@
   /* 減衰比 1.0 / response 0.40 s。reveal、回転語の入り、パネル展開。
      --ease-spring / --ease-color は下の @theme（非 inline）で :root に出る。 */
   --spring-default: 420ms var(--ease-spring);
-  /* 減衰比 1.0 / response 0.30 s。回転語の退出、Mobile メニュー */
+  /* 減衰比 1.0 / response 0.30 s。Mobile メニュー、参加ダイアログの開閉 */
   --spring-quick: 320ms var(--ease-spring);
 
   --stagger: 60ms; /* 80 / 60 — reveal の兄弟間ディレイ。Mobile は縦に密なので短く */
@@ -522,13 +583,11 @@
   --dots-stagger: 200ms; /* ドット間ディレイ */
   --marquee-speed: 40; /* px/s。duration = グループ幅 ÷ 40 を ResizeObserver で書き込む */
 
-  /* Hero の背景写真（DECISION U-20）。動く 6 つ目で、唯一 1 分近い周期を持つ。
-     速いものは「起きたこと」を伝えるが、これは「そこに在る」だけの層なので、
-     1 フレームぶんの変化が知覚の閾値を下回る速さでしか動かしてはいけない。 */
+  /* Hero の背景写真（DECISION U-20 → U-50）。静止画。U-20 の漂い（48s 周期）は
+     クライアント判断で撤去し、代わりに軽くぼかす。ぼかしは静的な filter で動きではない。 */
   --hero-backdrop-opacity: 0.2; /* 実測上限（§6.8.1）。素材を替えたら測り直す */
-  --hero-backdrop-scale: 1.12; /* 移動の余白。静的な拡大でアニメーションではない */
-  --hero-backdrop-drift: 2%; /* 片道の移動量。scale の余白 6% の 1/3 で縁を出さない */
-  --hero-backdrop-period: 48s; /* 片道。往復 96s ≈ 0.4 px/s で、追える速さの 1/100 */
+  --hero-backdrop-blur: 4px; /* 若干のぼかし。文字の背後の明部の粒を潰す（U-50） */
+  --hero-backdrop-scale: 1.04; /* ぼかしで透ける縁を Hero の外へ出す余白。静的 */
 }
 
 /* -----------------------------------------------------------------------------
@@ -607,6 +666,7 @@
   --color-inverse-outline: var(--inverse-outline);
   /* アクセント */
   --color-accent: var(--accent);
+  --color-accent-fill: var(--accent-fill);
   --color-on-accent: var(--on-accent);
   --color-accent-hover: var(--accent-hover);
   --color-accent-pressed: var(--accent-pressed);
@@ -618,12 +678,22 @@
   --color-pop-separator: var(--pop-separator);
   --color-pop-badge: var(--pop-badge);
   --color-hero-word: var(--hero-word);
+  --color-hero-plate: var(--hero-plate);
+  --color-poster-display: var(--poster-display);
   --color-poster-selection: var(--poster-selection);
   --color-poster-action-fill: var(--poster-action-fill);
   --color-poster-action-fill-hover: var(--poster-action-fill-hover);
   --color-poster-action-fill-pressed: var(--poster-action-fill-pressed);
   --color-poster-action-ink: var(--poster-action-ink);
   --color-poster-focus-ring: var(--poster-focus-ring);
+  /* ブランド色（C-31） */
+  --color-discord-fill: var(--discord-fill);
+  --color-on-discord: var(--on-discord);
+  --color-discord-hover: var(--discord-hover);
+  --color-discord-pressed: var(--discord-pressed);
+  /* 図のティント（C-32） */
+  --color-figure-fill: var(--figure-fill);
+  --color-figure-ink: var(--figure-ink);
   /* 状態 */
   --color-state-hover-tint: var(--state-hover-tint);
   --color-state-pressed-tint: var(--state-pressed-tint);
@@ -818,6 +888,9 @@
   --spacing-avatar: var(--size-avatar);
   --spacing-dot: var(--size-dot);
   --spacing-illustration: var(--size-illustration);
+  --spacing-persona-quote: var(--size-persona-quote);
+  --spacing-persona-rec: var(--size-persona-rec);
+  --spacing-figure: var(--size-figure);
   --spacing-mark-nav: var(--size-mark-nav);
   --spacing-mark-footer: var(--size-mark-footer);
   --spacing-rule-v: var(--size-rule-v);
@@ -826,6 +899,7 @@
   --spacing-icon-sm: var(--icon-sm);
   --spacing-icon-md: var(--icon-md);
   --spacing-icon-lg: var(--icon-lg);
+  --spacing-icon-xl: var(--icon-xl);
 
   /* --- spacing（線の太さ。罫線グリッドは gap / padding で描くので spacing 扱い）-- */
   --spacing-hair: var(--stroke-hair);
@@ -833,6 +907,7 @@
 
   /* --- container（可変なので inline 側）------------------------------------ */
   --container-measure: var(--measure-paragraph); /* 588 / 342 */
+  --container-dialog: var(--size-dialog); /* 480 — max-w-dialog（U-49） */
 
   /* --- elevation（ページ上の要素はどれも影を持たない。ライブラリ用）-------
      y と blur は段ごとに倍、色は ink@24 の 1 濃度に固定し段差は幾何だけで作る。 */
@@ -942,9 +1017,11 @@
        Latin の送りが変わって Figma と CSS の折返しがずれる）。 */
   }
 
-  /* 段落は 1〜2 文字の孤立行を作らない */
+  /* 段落は 1〜2 文字の孤立行を作らない。折返しは文節境界（auto-phrase、対応ブラウザのみ）:
+     pretty だけでは「最初の一 / 歩」のように語中で折れる（U-48） */
   p {
     text-wrap: pretty;
+    word-break: auto-phrase;
   }
 
   /*
@@ -967,6 +1044,15 @@
   /* 全セクションが sticky nav 分だけアンカー位置をずらす */
   section {
     scroll-margin-top: var(--size-nav);
+  }
+
+  /*
+   * モーダル（参加ダイアログ、U-49）の間は背後のスクロールを止める。
+   * スクロールバーの溝は stable で残し、幕の裏でレイアウトが動かないようにする。
+   */
+  html:has(dialog:modal) {
+    overflow: hidden;
+    scrollbar-gutter: stable;
   }
 
   /*
@@ -1007,7 +1093,7 @@
 
   /*
    * フォーカス: 2px、offset 2、角丸ゼロ。地ごとにリング色を切り替える。
-   * Mono モードでもリングはライム。リングは duration/0 = 即時 — outline は
+   * Mono モードでもリングはグリーン。リングは duration/0 = 即時 — outline は
    * 既定でトランジションしないので、outline-* を transition-property に含めないこと。
    * full-bleed の行（activity row、Menu row）は
    * --focus-offset-inset（−2）を当てて隣接罫線と交差させない（DECISION K-7）。
@@ -1097,19 +1183,28 @@
   }
 
   /*
-   * ループする動き（マーキー・入力中ドット・背景写真）は低減設定で止める。
+   * ループする動き（マーキー・入力中ドット）は低減設定で止める。
    * かつてはページ内スイッチ（html[data-motion="playing"]）でオプトインできたが、
    * DECISION U-31 でスイッチごと撤去したので無条件に掛ける。
    */
   .marquee__track,
-  .typing__dot,
-  .hero__backdrop {
+  .typing__dot {
     animation: none;
   }
 
   .menu__panel {
     transition: opacity var(--dur-2) var(--ease-color);
     transform: none;
+  }
+
+  /* 参加ダイアログ（U-49）: 移動を消し、幕と一緒に duration/2 のクロスフェードだけ残す */
+  .join-dialog,
+  .join-dialog::backdrop {
+    transform: none;
+    transition:
+      opacity var(--dur-2) var(--ease-color),
+      display var(--dur-2) allow-discrete,
+      overlay var(--dur-2) allow-discrete;
   }
 }
 
@@ -1126,9 +1221,9 @@
     --inverse-ink-secondary: var(--neutral-100); /* 88% → 100% */
     --inverse-ink-tertiary: var(--neutral-100); /* 72% → 100% */
     --inverse-ink-quaternary: var(--neutral-100); /* 48% → 100% */
-    --accent-text: var(--lime-900); /* 6.31 → 7.85 */
-    --accent-text-small: var(--lime-900);
-    --pop-badge: var(--lime-900);
+    --accent-text: var(--green-900); /* 6.62 → 8.77 */
+    --accent-text-small: var(--green-900);
+    --pop-badge: var(--green-900);
     --state-hover-tint: var(--alpha-ink-12); /* 6 → 12（上の ink 11.78） */
     --state-pressed-tint: var(--alpha-ink-24); /* 12 → 24（9.05） */
     --backdrop: var(--alpha-ink-88); /* 48 → 88 */
@@ -1154,10 +1249,10 @@
     --inverse-state-pressed-tint: #535150; /* ground@24 over ink */
     --state-hover-tint: #e6e5e5; /* ink@6 over ground */
     --state-pressed-tint: #dad9d8; /* ink@12 over ground */
-    --selection: #deefb8; /* lime-400@24 over ground */
-    --inverse-selection: #3d4e16; /* lime-400@24 over ink */
-    --poster-ink-secondary: #2f361a; /* ink@88 over lime-400 */
-    --poster-selection: #8bce03; /* ink@12 over lime-400 */
+    --selection: #c8e4cb; /* green-400@24 over ground */
+    --inverse-selection: #274329; /* green-400@24 over ink */
+    --poster-ink-secondary: #dad9d8; /* ground@88 over ink（ポスターはインク面、C-30） */
+    --poster-selection: #274329; /* green-400@24 over ink */
     /* 幕だけは 88% に上げる（§1.5.5 の高コントラストと同値） */
     --backdrop: var(--alpha-ink-88);
     /* Hero の背景写真は合成そのもの（ink 面に α で重ねた層）なので、
@@ -1165,6 +1260,8 @@
        これは階層の再計算も要らない — 上の 3 行が前提にしている「ink 面の上」に
        文字が戻るので、#dad9d8 / #b8b7b6 の比が spec の値どおりになる（U-20） */
     --hero-backdrop-opacity: 0;
+    /* 板も実色に。写真が消えるので透ける相手が無く、真っ黒の実色と見えは同じ（U-50） */
+    --hero-plate: var(--neutral-1000);
   }
 }
 

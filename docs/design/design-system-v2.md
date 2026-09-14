@@ -2,23 +2,42 @@
 > Figma: https://www.figma.com/design/CPqI3iL7yOiR8AqUG7YC1L （実装は本書から生成。値はすべて Variables / テキストスタイル経由）
 >
 > 実装との既知の差分（2026-08-31 時点）:
-> - Color は 59 行 + Lime 検討で `poster/action/fill` `poster/action/ink` `poster/focus/ring` を追加（面の明度反転に備えたポスター専用ロール）
-> - 既定モードは **Lime accent**（2026-09-01 クライアント確定）。Mono は検証モード、Indigo accent は決定過程の記録として残置（付録 C）
+> - Color は 59 行 + Green 検討で `poster/action/fill` `poster/action/ink` `poster/focus/ring` を追加（面の明度反転に備えたポスター専用ロール）
+> - 既定モードは **Green accent**（2026-09-12 クライアント確定、**DECISION C-29**。2026-09-01 の Lime accent を置換）。Mono は検証モード、Indigo / Lime accent は決定過程の記録として残置（付録 C）
 > - Icon は必須 8（U-31 で player-pause / play を撤去）+ 任意 3 + ライブラリ予備 6 の **19 セット**（Size 16 / 20 / 24 variant)
 > - `opacity/disabled` は Figma 上 **48**（Figma の opacity バインドは 0–100 解釈。CSS は 0.48）
-> - アクセントは **アシッドライム（Tailwind v4 lime）に確定**。本文の数値はすべて Lime モードの実測値。比較の経緯と Indigo の数値は付録 C
-> - Color コレクションは 3 モード（Mono / Indigo accent / Lime accent）・62 行、Shape 10 行、Spacing 64 行
+> - アクセントは **GitHub Primer green（基底 `#3fb950`）に確定**（2026-09-12、C-29。アシッドライムは「雰囲気に合わない」、Tailwind v4 green は「目にきつい」で却下）。本文の数値はすべて Green モードの実測値。比較の経緯と Indigo / Lime の数値は付録 C
+> - Color コレクションは 3 モード（Mono / Indigo accent / Lime accent → **Green accent に改名・値の差し替えは Figma 未反映**）・62 行、Shape 10 行、Spacing 64 行
 > - **2026-09-01 の実装レビューを反映**（付録 A.8 / U-1〜U-14）: 角丸はチャットのみ例外（Messages 風）、リンク下線 2 / 3px、ヒーロー回転語はアクセント文字（下線廃止）、セクション見出しの連番廃止・和文の題が先、活動内容はベント 4 セル（Hackathon 追加）、用語は「パートナー」に統一、Member カードに SNS リンク
 > - **2026-09-07**: Members の Staff（運営 3 名）は写真が揃うまで**写真枠ごと暫定非表示**（`showStaffPhotos` false。パスと素材は残置、§6.15 の写真つきが到達点）。Partner の Placeholder から「パートナーになる」（mailto）を撤去し、セルは `YOUR LOGO HERE` のみ（§6.16）。Partner セルは**正方形タイル**に変更（Desktop 6 列 197.67 / tablet 3 列 237.33 / Mobile 2 列 168、DECISION L-31）。マーキーの団体は partners.ts から生成し、**団体名ではなくロゴ**（80 角 `size/marquee-logo`。帯 `size/band-marquee` は 56 → **120**、項目間 `inline/2xl` 48、DECISION U-30）で出す。「パートナー募集中」の Ghost は撤去。複製数は viewport から自動計算し継ぎ目なく回す。停止 / 再生ボタンとページ内モーションスイッチ（旧 M8）は**撤去**（DECISION U-31、クライアント判断）。自動の動きは `prefers-reduced-motion` と画面外でのみ止まり、WCAG 2.2.2 の「ページ内の停止手段」は**未達**として §8 に記録。マーキーの ✳ は Label の両脇だけ（U-32）
 > - **2026-09-10**: パートナーの公式ロゴ 5 枚を受領。素材は白背景 jpg / 透過 png / 4:1 超のワードマークが混在し、ground の上では白背景の素材が板として浮き、正方形タイルではワードマークが細い帯になった。→ タイルとマーキー帯の面を **`color/logo-ground`（neutral-0、白）** に（**DECISION U-33**）。Partner タイルは正方形 → **3:2**（Desktop 6 列 197.67 × 131.78 / tablet 3 列 / Mobile 2 列は床 120。列数は L-31 のまま、**DECISION L-32**）。マーキーのロゴ枠も 3:2 で高さ `size/marquee-logo` **96**（幅 144）。素材は `scripts/normalize-partner-logos.mjs` が 3:2 の白キャンバス（600 × 400）に正規化し、セルは inset 0 で縁まで敷く。Image slot に比率 3:2 を追加。募集セル「YOUR LOGO HERE」は撤去し、行の端数は無地の白タイル（aria-hidden）で埋める（**DECISION U-34**）
 > - **2026-09-12**: Hero の h1 を回転語「仲間と、学ぶ。創る。話す。」からタグライン **`Hack Your Limits.`** の 1 行に置き換える（**DECISION U-37**。3 語は About の CULTURE セルへ）。動詞 `Hack` を `color/hero/word`、目的語を `inverse/ink` で塗り、U-3 の 2 色対比を語順を入れ替えて引き継ぐ。`lang="en"`。**Display/XL の上限を 124 → 116**（129 行送り）に下げる — 124 では 1 行 ≈ 1209 で container 1200 を 9px 超え、1280 幅では入るのに 1440 幅で折れる揺れが出た。116 なら ≈ 1131 で 69px の余裕。Mobile は「Hack Your」/「Limits.」の自然折返し（`\n` なし）。回転語の仕組み（`Hero / Rotating Word`、`motion/word/*`、`--word-*`、`.hero__word`、§7.4.3）は撤去。Hero の `min-height` は **nav に加えて Marquee 帯も引く**（`min(100svh − size/nav − size/band-marquee, size/hero-max)`、**DECISION L-33**、L-7 改）— ファーストビューの下端にパートナーの帯が乗る。1440 × 900 で Hero 718 + 帯 120、Mobile 390 × 844 で Hero 662 + 帯。1280 × 720 は内容 582 が下限 538 を超えるので帯は 74px だけ見える
+> - **2026-09-12（2）**: SNS / Discord のブランドマークを Tabler の `brand-*` から**各社の公式素材**を写したインライン SVG（`brand-marks.tsx`、原本 `assets/brand/`）に置き換える（**DECISION U-38**、U-23 撤回）。Tabler の再描画は X / GitHub / Discord / Instagram の各規約（改変不可・公式素材のみ）に抵触していた。色は `currentColor` の黒 / 白、幾何は不変
+> - **2026-09-12（3）**: Hero の meta strip を撤去し、h1 `Hack Your Limits.` を**墨の板**に載せて句点だけアクセント（**DECISION U-39**。U-13 撤回、U-37 の「動詞だけアクセント」撤回）。設立と公認 / 公式パートナーは About のセルへ
+> - **2026-09-12（4）**: About のベントを 3 行 7 セルに組み直す（**DECISION U-40**）。Discord CTA セル撤去、写真セルは Activities へ（U-18 廃止、`motion/photo/step` 撤去）、SINCE セル新設、文字セルに Tabler 32 の図（`icon/xl` 新設）、OFFICIAL は 2×1 の 2 行
+> - **2026-09-12（5）**: 活動内容を均等な 2×2 の写真セルに（**DECISION U-41**、U-8 の Feature / Compact 撤回）。写真は `public/images/activities/`（About から移動）、Project は Hero の集合写真の複製で仮置き
+> - **2026-09-12（6）**: Persona card を 3 行の subgrid に（**DECISION U-42**）: イラスト 80 を題の横、引用は墨の板、次の一歩は surface の板で隙間なし。`size/illustration` 96 → 80
+> - **2026-09-12（7）**: Partners を外枠だけの白い面 + ロゴを団体数で等分した 1 行に（**DECISION U-43**、L-31 / L-32 のタイルと U-34 の埋め草を撤去）
+> - **2026-09-12（8）**: チャット再生を 1 手 600 ms / 一巡後 2,000 ms に速め、畳む先を 1 行目を残した状態に（**DECISION U-44**。空のスレッドを見せない）
+> - **2026-09-12（9）**: アクセントを Lime → **Green（GitHub Primer green）** に（**DECISION C-29**）。プリミティブ `green/200–900` + `alpha/green-400/24`、CSS は `--green-*`。§1 の実測値をすべて再計算（付録 C.5）。極性（面・印は 400、地の上の文字は 800 / 900、図形は 700）は不変。Figma の Color モードは未反映
+> - **2026-09-12（10）**: 画像を next/image の `fill` に移行（**DECISION U-45**。Hero 背景と先頭の活動写真は `priority`、AVIF / WebP 配信）。§5.7.2 のスロット表を U-41 / U-42 / U-43 に合わせて更新
+> - **2026-09-12（11）**: ポスター面を**インク面に戻し**、緑は見出し（`poster/display` = green-400）と**参加 CTA・チャット自分側バブルの面**（`accent-fill` = green-600 + 白）で出す（**DECISION C-30**。クライアント所見「緑の上に黒文字は見にくい」）。Hero 主 CTA も accent-fill。C-27 の上端罫は撤去、C-18 / K-5 の「accent ボタンはページに置かない」は撤回
+> - **2026-09-12（12）**: 釣り合いの調整（**DECISION U-46**）: Member の Socials をカードの底に、Activities の見出し余白を他節と同じ 32 / 24 に、About の CULTURE を Display/M・1×1 文字セルを Title/3 に
+> - **2026-09-12（13）**: Discord マークを持つ参加ボタン（Hero 主・Poster）の面を緑の `accent-fill` から **Discord のブランド色 Blurple**（`discord/fill` = `#5865f2` + 白 `on-discord`、hover `#505cdc` / pressed `#4752c4`、**DECISION C-31**）に。プリミティブ `blurple/500 / 530 / 560`、ロール `discord/*` 4 行（§1.2.4 / §1.3.9 / §1.4.5）。緑の面はチャット自分側バブルだけになり、Accent ボタンはどの地でもライブラリ、`poster/action/*` もライブラリ
+> - **2026-09-12（14）**: 参加の導線（Nav・Menu・Hero 主・Poster の 4 本）は Discord へ直接出ず、**参加ダイアログ**で約束に同意してから新しいタブで出る（**DECISION U-49**、§6.21）。素の `<dialog>` + `showModal()`、ground の面 480 × inset/cell、幕 `backdrop` ink@48 + `shadow/lg`（§4.4 で dialog 用に予約していた唯一の影）。主「同意して参加する」= Discord（外部リンク）、副「閉じる」= Ground / Outline（K-5 の帯の外での初出）。トリガーは `<button aria-haspopup="dialog">`、動きは reveal と同じ opacity + y 16 の `spring/quick`。約束の文言は草案（`src/content/join.ts`）
+> - **2026-09-14**: Hero の h1 の板を実色の ink から**真っ黒 64%**（`hero/plate` = `alpha/black/64`、プリミティブ `neutral/1000`。板越しに写真がうっすら透ける）に、背景写真は **`blur(4px)`** で軽くぼかし、U-20 の漂い（48 s の translate）を**撤去**して静止画に（**DECISION U-50**）。動くものは 5 つ（reveal・マーキー・入力中ドット・Mobile メニュー・参加ダイアログ）
+> - **2026-09-14（2）**: Poster の見出し「Hack Your Limits.」を全文 green-400 から**文は白・句点だけ green-400**（`poster/display`）に（**DECISION U-51**）。Hero の h1 と同じ印
+> - **2026-09-14（3）**: About のベントの図を **Bento / Figure**（淡い緑の円 64 の中の Tabler 32、語なし）にし、解剖を全セル「kicker（天）／題 → 図（地）」に統一（**DECISION U-52**）。SINCE は Title/1 の日付 + 旗の図、OFFICIAL は 2×1 の中を **2 列**に。円の色は自分側バブルと同じ `accent-fill`（green-600）+ 白（**DECISION C-32**、§1.2.5 / §1.3.10）。2026-09-15 改: 初版の 4 色相 + 語つきの図は「配色が浮きすぎ、説明書きは不要」、改 1 の淡い緑 + 濃い緑の図は「キモい、周りと同じ緑で」で撤回
+> - **2026-09-14（4）**: Persona card の引用から**墨の板を外し**、地の上の Callout に。引用 `size/persona-quote` 44（2 行ぶん）と次の一歩 `size/persona-rec` 64（2 行 + inset）の**目標高**で、6 枚が上下 2 段とも同じ高さ（Desktop 268 / Mobile 260）になる（**DECISION U-53**）。§9.3 の上限を 引用 42 / 推薦 36 に締める
+> - **2026-09-14（5）**: 参加ダイアログの中身を「約束 3 つに同意」から**「学生ですか？」の 1 問**に（**DECISION U-54**）。導入「ChoTechは学生向けのテックコミュニティです。大学・学部・学科は問いません。」（文節の塊を nowrap で）、主「学生として参加する」（Discord）、副「閉じる」。約束の行と hairline は撤去。学生の前提（大学・大学院・高専・専門学校、高校生は対象外）は `src/content/join.ts` に集約
+> - **Figma v2 への反映は未実施**（2026-09-12 時点）。反映すべき変更の一覧と手順は [figma-sync-2026-09-12.md](./figma-sync-2026-09-12.md)
 > - **2026-09-11**: Cell Stat の所属バッジ（U-29）を**撤回**し、セルは `50+` の数字だけに戻す（**DECISION U-36**）。Chip の Inverse トーンは Accent と同じくライブラリのみ（ページに出さない）。About の CULTURE セルは本文を落として題だけ（「仲間と、学ぶ。創る。話す。」— Hero の h1 を `Hack Your Limits.` に差し替える予定に合わせ、3 語を Culture に降ろす）
 > - **2026-09-10（2）**: 外部リンクは**すべて新しいタブ**で開く（`target="_blank" rel="noopener noreferrer"`、vh「（外部、新しいタブで開く）」、**DECISION M-21**。M-15 は撤回）。Partner の Logo タイルは `href` があれば**タイル全体が団体サイトへのリンク**（**DECISION U-35**。hover / pressed の表現なし、フォーカスリングは内側）
 - **2026-09-05 の実装レビューを反映**（U-21〜U-29 / L-30）: 写真・イラスト・ロゴは原色（B/W 撤回）、Hero の格子線撤去、Discord マークは filled、Stat の数字は白の Display/L + 所属の内訳、全発言にリアクション（実際の絵文字、数字が巻き上がる）、ペルソナとチャットのアバターは Humation（女 3・男 3）、Poster の Social はマークのみ、ロゴマークは外接矩形の mark.svg を 24 / 20（U-27 の Nav CTA マークは同日撤回）
 
 # ChoTech Design Guidelines
 
-長崎大学公認の学生技術コミュニティ ChoTech のワンページサイト刷新（コンセプト「ポスター×ベント」、Modernist 方向）のためのデザインシステム規範。Desktop 1440（container 1200）/ Mobile 390（container 342）。書体は LINE Seed JP のみ（400 / 700 / 800）、アイコンは Tabler Icons outline のみ、アクセントはアシッドライム 1 色。
+長崎大学公認の学生技術コミュニティ ChoTech のワンページサイト刷新（コンセプト「ポスター×ベント」、Modernist 方向）のためのデザインシステム規範。Desktop 1440（container 1200）/ Mobile 390（container 342）。書体は LINE Seed JP のみ（400 / 700 / 800）、アイコンは Tabler Icons outline のみ、アクセントはアシッドグリーン 1 色。
 
 本書は Color / Typography / Layout / Components / Motion・A11y・Content の 5 分冊を統合したもの。分冊間の食い違いは §0.4 で解決し、以降の本文はすべて解決後の値で書く。値の所有者: 色 → §1、文字 → §2、余白・寸法 → §3、線・角・影 → §4、アイコン・画像 → §5、部品 → §6、動き → §7、支援技術 → §8、コピー → §9。**DECISION** はコンセプトから導出できず本書で決めた項目（1 行根拠つき、一覧は付録 A）。
 
@@ -35,7 +54,7 @@
 | **Purpose（目的）** | ページの仕事は「ChoTech を知り、Discord に来てもらう」の 1 つ。要素はこの仕事に寄与するときだけ置く | 主 CTA は 1 画面 1 つ。装飾のためだけの動き・色・影を足さない（M9）。落としたもの: チャット再生ループ、浮遊バブル、編集ヒント、accent-2、絵文字 |
 | **Clarity（明快）** | 読めることが最初。インク・オン・グラウンド（14.86:1）で成立させ、色は構造を補わない | 明るい面の文字は ink / ink-secondary の 2 段、暗い面は ground のアルファ 100 / 88 / 72 / 48。全ペアを計算し AA を満たす。12px 未満の文字はない |
 | **Hierarchy（階層）** | 階層は「ウェイト × サイズ × 行送り」の組と、罫線の太さ（1 / 2 / 4px）と余白の段（4px モジュール）で作る。色で作らない | Display 800 −2%、見出し 800、声 700、本文 400。2px rule = 区画、1px hairline = 行、4px = ポスターの下線。罫線の上 80 ≥ 下 64 |
-| **Restraint（抑制）** | 一書体、一色相、角丸ゼロ、影ゼロ、中央揃えなし。Mono モードで成立しない設計は Lime でも不可 | アクセントの出現は Lime で 4 箇所（マーキー区切り、活動バッジ、ポスター面、ヒーロー下線）+ 状態 4 種（hover 下線 / pressed 文字 / focus / selection）だけ。写真・イラスト・ロゴは原色（U-21） |
+| **Restraint（抑制）** | 一書体、一色相、角丸ゼロ、影ゼロ、中央揃えなし。Mono モードで成立しない設計は Green でも不可。第三者の識別色（パートナーロゴの原色、Discord ボタンの Blurple）は「引用」で、色相には数えない（U-21 / C-31）。ベントの図の円は自分側バブルと同じ緑の面（accent-fill、C-32） | アクセントの出現は Green で 5 種（マーキー区切り、活動バッジ、Hero と Poster の句点、チャット自分側バブルとベントの図の円の accent-fill）+ 状態 4 種（hover 下線 / pressed 文字 / focus / selection）だけ。参加ボタンは Discord の Blurple（C-31）。写真・イラスト・ロゴは原色（U-21） |
 | **Craft（精度）** | すべての値が梯子の段であり、根拠を言える。Figma と CSS が同じ構造で同じ数を持つ | 4px モジュール、整数 px の行送り、高さ駆動のコントロール（36 / 44）、fill + gap で描く罫線グリッド、`n 文字 = n em` の和文組版、compositor プロパティだけの動き |
 
 Familiarity（慣れ）・Agency（主体性）・Flexibility（柔軟）・Responsibility（責任）は個別規則に溶かした: 矢印の意味を 2 種に固定する（§5）、外部リンクは新しいタブで開く（§8、M-21 で M-15 を撤回）、ループはページ内スイッチで止められる（§7）、Mobile は 1 列で DOM 順（§3）、200% 拡大とリフローで壊れない（§8）。
@@ -45,14 +64,14 @@ Familiarity（慣れ）・Agency（主体性）・Flexibility（柔軟）・Resp
 | 制約 | 本書での扱い |
 |---|---|
 | LINE Seed JP のみ（400 / 700 / 800、Thin 不使用） | §2。`sans-serif` は読み込み中の代替のみで設計には現れない |
-| アクセント = アシッドライム、Tailwind v4 lime のランプ（基底 lime-400 `#9ae600`） | §1.2.2。段の変更なし。**極性が二つ**: 面・印は 400、明るい地の上の文字は 800、12px 以下は 900（§1.4.5） |
+| アクセント = GitHub Primer green のランプ（基底 green-400 `#3fb950`、2026-09-12 C-29。旧アシッドライムは付録 C） | §1.2.2。**極性が二つ**: 面・印は 400、明るい地の上の文字は 800、12px 以下は 900（§1.4.5） |
 | 絵文字・記号文字をアイコンにしない。Tabler outline 24 grid stroke 2 | §5。矢印は `arrow-right`（サイト内）/ `arrow-up-right`（外部）の 2 つ |
 | コンセプトは方向のみ。ピクセル値は権威ではない | §10 に概念値 → システム値の対応表 |
-| Figma Variables: Color（Mono / Lime accent、+ Indigo accent は記録用）、Spacing / Typography（Desktop / Mobile） | §11。Mono ではアクセントは状態にしか現れない |
+| Figma Variables: Color（Mono / Green accent、+ Indigo accent は記録用）、Spacing / Typography（Desktop / Mobile） | §11。Mono ではアクセントは状態にしか現れない |
 
 ### 0.3 ページの骨格（コンセプトの認識可能な部分）
 
-Nav（sticky、2px 下罫）→ Hero（インク面、背景写真、回転語をアクセントで塗る）→ Marquee 帯（2px 上下罫、白の面、パートナーロゴ 3:2 高さ 96、asterisk は PARTNERS の両脇のみ。停止ボタンは U-31 で撤去）→ About（ベント 4 列罫線グリッド: テキスト / 統計 / チャット / 写真 / CTA）→ Activities（ベント 4 セル: Feature 1 + Compact 3）→ For You（ペルソナカード 3 × 2）→ Members（リーダー 2 列 + スタッフ 3 列）→ Partners（白の 3:2 ロゴタイル 6 列。募集セルは U-34 で撤去）→ Poster（クロージング CTA、唯一のアクセント面）→ Footer。全要素左揃え。
+Nav（sticky、2px 下罫）→ Hero（インク面、ぼかした背景写真、真っ黒 64% の板の h1 と Discord 色の参加ボタン）→ Marquee 帯（2px 上下罫、白の面、パートナーロゴ 3:2 高さ 96、asterisk は PARTNERS の両脇のみ。停止ボタンは U-31 で撤去）→ About（ベント 3 行 7 セル: 文化 / 統計 / 設立 / チャット / 公認 / 場 / 対象、U-40。文字セルは題 + 色の円の図、U-52）→ Activities（均等 2×2 の写真セル、U-41）→ For You（ペルソナカード 3 × 2）→ Members（リーダー 2 列 + スタッフ 3 列）→ Partners（外枠だけの白い面にロゴを等分の 1 行、U-43）→ Poster（クロージング CTA。インク面に白の見出し + 緑の句点と Discord 色の参加ボタン、C-30 / C-31 / U-51）→ Footer。参加の導線 4 本はすべて参加ダイアログ（U-49）を経て Discord へ。全要素左揃え。
 
 ### 0.4 分冊間の矛盾と解決
 
@@ -63,8 +82,8 @@ Nav（sticky、2px 下罫）→ Hero（インク面、背景写真、回転語�
 | R1 | neutral-600 の値と `ink-tertiary` の役割 | `#7d7979`（概念値）を保持し、**大きな文字と図形専用**。12–15px の補助文字（キッカー、肩書、タグライン、©、サブタイトル、Mono バッジ）は **すべて `ink-secondary`（n700、5.83）** | Typography / Layout / Components / Motion が計算に使った再調整値 `#6b6767`（5.00） | Color の最終判断: `#6b6767` は hover-tint 上 4.44 / pressed-tint 上 3.96 で AA を割り、700 との差 1.17 は知覚できず、ランプの等比も壊す。小さな文字の階層は size / weight / case が担う（Components D-1、Motion D10 と同じ結論） |
 | R2 | タグとリアクションチップの構造 | **塗り `color/chip/fill`（= surface n200）、枠なし**、文字 `chip/ink`（= ink-secondary、n200 上 5.30） | Color D11 の「塗りなし + 1px hairline 枠」 | 1px hairline は「行・語の仕切り」の語彙であり、2.59 の線を唯一の輪郭にしない（Layout D17 最終版、Components §4）。n200 は ground 比 1.10 で罫線なしに輪郭が読める最小段（Color §3.1 の surface 定義と同じ根拠）。文字は Color 原則 3 に従い n800 ではなく ink-secondary |
 | R3 | インク面のアウトラインボタン枠 | **`inverse/outline` = inverse/ink 100% の 1 種**（14.86） | Components の Soft（ground@72）/ Strong（100%）2 種 | 部品境界は 3:1 が要り、1 トークンで済む。主副の差は「塗り vs 枠」で十分に出る（Restraint）。variant 数も減る |
-| R4 | リンクの状態モデル | ホバーで **文字色を変えず下線で示す**: ナビ・ワードマーク 2px アクセント下線、フッター・ソーシャルは 1px currentColor 下線（フッターは同時に文字 ink-secondary → ink）、インラインは常時 1px → 2px。プレスは文字 `link/pressed`（lime-900、7.85）。現在地は 2px ink 下線 | Components §3.1 の「ホバーで文字を有彩色に変える + 1px 下線」 | Color D16 と Motion D9 が一致。Mono 原則「アクセントは一時的状態のみ、ホバーは下線」。1.4.1 の色以外の手がかり |
-| R5 | ソーシャルリンク（ポスター上）のプレス | **ホバーと同じ**（`poster/ink` + 1px 下線） | 全スタイル共通の `link/pressed` | lime-900 はポスター面（lime-400）上 1.89 で不可、lime-400 は同色 1.00。ポスター面にアクセント文字は置けない |
+| R4 | リンクの状態モデル | ホバーで **文字色を変えず下線で示す**: ナビ・ワードマーク 2px アクセント下線、フッター・ソーシャルは 1px currentColor 下線（フッターは同時に文字 ink-secondary → ink）、インラインは常時 1px → 2px。プレスは文字 `link/pressed`（green-900、8.77）。現在地は 2px ink 下線 | Components §3.1 の「ホバーで文字を有彩色に変える + 1px 下線」 | Color D16 と Motion D9 が一致。Mono 原則「アクセントは一時的状態のみ、ホバーは下線」。1.4.1 の色以外の手がかり |
+| R5 | ソーシャルリンク（ポスター上）のプレス | **ホバーと同じ**（`poster/ink` + 1px 下線） | 全スタイル共通の `link/pressed` | green-900 はポスター面（green-400）上 3.86 で文字（4.5）不可、green-400 は同色 1.00。ポスター面にアクセント文字は置けない |
 | R6 | マーキー帯の高さ | **`size/band-marquee` 56**（高さ駆動、行ボックス 26 を中央、上下 2px 罫を含む）。停止セルは 44 × 52。**2026-09-07 U-30 で 120 に改定**（内側 116 にロゴ 80、停止セルは U-31 で撤去。2026-09-10 L-32 でロゴ枠は 3:2 の高さ 96 × 幅 144） | Typography の導出値 54、Components の 53.65 | 帯は Layout 原則 6「高さで決める」に従う。内側 52 = 4 × 13 で 4px モジュールに乗り、停止セルの高さも 4 の倍数。`band/pad-y` 12 は最小値（実効 13） |
 | R7 | マーキー区切りアイコンの径 | **20**（`icon/md`） | Components の 16 | Layout §5.2 の判定「15–19px の文字の横は 20」。Title 3 Caps 19 の cap 高 ≈ 15 に釣り合う |
 | R8 | 停止ボタンのアクセシブルネーム | **固定「ページの動きを止める」+ `aria-pressed`** | ラベルを「止める / 再開する」で切り替える | トグルボタンは名前を変えず状態で伝える（ARIA APG）。Motion が支援技術の所有者。**2026-09-07 U-31 で停止ボタンごと撤去** |
@@ -88,18 +107,18 @@ Nav（sticky、2px 下罫）→ Hero（インク面、背景写真、回転語�
 ---
 ## 1. Color
 
-Figma: コレクション `Primitives`（単一モード）と `Color`（モード `Mono` / `Lime accent`、記録用に `Indigo accent`）。`Color` の全行はエイリアス。Scopes 略号: **FF** FRAME_FILL / **SF** SHAPE_FILL / **TF** TEXT_FILL / **SC** STROKE_COLOR / **OP** OPACITY。サイズは §2 のロール名で引用する。
+Figma: コレクション `Primitives`（単一モード）と `Color`（モード `Mono` / `Green accent`、記録用に `Indigo accent`）。`Color` の全行はエイリアス。Scopes 略号: **FF** FRAME_FILL / **SF** SHAPE_FILL / **TF** TEXT_FILL / **SC** STROKE_COLOR / **OP** OPACITY。サイズは §2 のロール名で引用する。
 
 ### 1.1 原則
 
 | # | 原則 | 内容と根拠 |
 |---|---|---|
 | 1 | **インク・オン・グラウンドが先** | ページはウォームグラウンド `#f3f2f2` の上のインク `#201e1d`（14.86:1）で成立させる。構造は罫線と余白が担い、色は構造を補わない。色を抜いても崩れない設計だけを許可する |
-| 2 | **アクセントは一色、面は一つ** | 色相はアシッドライム 1 系統。塗り面として現れるのはポスター（クロージング CTA）だけ。それ以外は「印」（下線、バッジ文字、区切りアイコン、フォーカスリング）に限る。競合する強調がないから、一つの面が「声」になる |
+| 2 | **アクセントは一色、面は一つ** | 色相はグリーン 1 系統（GitHub Primer green）。塗り面として現れるのは**文字を載せる小さな面**（チャット自分側バブル = `accent-fill`）だけで、大面は持たない（C-30）。参加 CTA の面は Discord の Blurple — 本システムの色相ではなく、パートナーロゴと同じ第三者の識別色の引用（C-31 / U-21）。それ以外は「印」（Hero と Poster の句点、バッジ文字、区切りアイコン、フォーカスリング）に限る。競合する強調がないから、参加の動線が「声」になる |
 | 3 | **小さな文字の階層は色で作らない** | グラウンド（Y 0.890）で 4.5:1 を満たす文字色の上限は Y 0.159。neutral-700（Y 0.111）より明るく AA を保てる段は 700 との差が最大 1.30:1 で、階層として知覚できない。よって明るい面の文字色は **primary（ink）/ secondary（neutral-700）の 2 段** とし、tertiary（neutral-600、3.85）は大テキストと非テキスト専用にする。小さな文字の階層は size / weight / case が担う（Apple「Build hierarchy from weight + size + leading」） |
-| 4 | **反転面は同じ梯子を逆から読む** | 面のテキストは「**反対極の色 × 不透明度**」で定義する。暗い面（インク）はグラウンド × α、明るいポスター面（lime-400）はインク × α。色を固定せず不透明度にすることで、ティントが面の色を継承し、一つの梯子がどちらの極でも成立する |
+| 4 | **反転面は同じ梯子を逆から読む** | 面のテキストは「**反対極の色 × 不透明度**」で定義する。暗い面（インク、ポスター）はグラウンド × α（ポスターが明るい緑面だった時期の「インク × α」は C-30 で不要に）。色を固定せず不透明度にすることで、ティントが面の色を継承し、一つの梯子がどちらの極でも成立する |
 | 5 | **状態は反対の極の不透明度で表す** | 明るい面のホバー/プレスはインクのアルファ、暗い面はグラウンドのアルファ。どの面でも同じ規則で、色を増やさない。フォーカスは常にアクセント（面ごとに段を変える: 明るい面 700 / インク面 300 / ポスター面 900） |
-| 6 | **モードは「抑制の度合い」** | `Mono` はアクセントが状態（フォーカス／選択／ホバー下線／プレス文字）にしか現れない状態で、アクセントが情報を担っていないことの証明として機能する。`Lime accent` はそこに正確に 4 つの出現（マーキー区切り、活動バッジ、ポスター面、ヒーロー下線）を加える。Mono で成立しない設計は Lime でも不可 |
+| 6 | **モードは「抑制の度合い」** | `Mono` はアクセントが状態（フォーカス／選択／ホバー下線／プレス文字）にしか現れない状態で、アクセントが情報を担っていないことの証明として機能する。`Green accent` はそこに正確に 5 種の出現（マーキー区切り、活動バッジ、Hero と Poster の句点、チャット自分側バブルの accent-fill）を加える。Discord ボタンの Blurple は両モードで同じ（アクセントではない、C-31）。Mono で成立しない設計は Green でも不可 |
 | 7 | **色だけに頼らない（WCAG 1.4.1）** | リンクは下線で示す（インライン常時 1px、ナビ・ワードマークはホバーで 2px、フッター・ソーシャルはホバーで 1px）。現在地は 2px インク下線。バッジは文字を持つ。フォーカスは 2px オフセットのリング。モード切替で情報が失われないことがその検証になる |
 | 8 | **写真とロゴは原色のまま** | 画像に処理を掛けない（grayscale・tint・duotone を使わない、**DECISION U-21**）。実写と Humation のイラストの色は「コミュニティの実像」を運ぶ情報で、モノクロ化はそれを削っていた。当初の「彩度をアクセント一色に集約する」規則は撤回。パートナーロゴもブランド規定の色のまま |
 
@@ -122,44 +141,70 @@ Figma: コレクション `Primitives`（単一モード）と `Color`（モー�
 | 800 | `#444141` | 0.054 | 9.04 | 1.64 | インク色ボタンのホバー |
 | 900 | `#2d2b2b` | 0.025 | 12.60 | 1.18 | ヒーロー格子線 |
 | 950 | `#201e1d` | 0.013 | 14.86 | 1.00 | **ink**、インク面、ポスター面（Mono）、backdrop / shadow の基底 |
+| 1000 | `#000000` | 0.000 | 18.80 | 1.26 | 真っ黒。Hero の h1 の板 `hero/plate`（64%、**U-50**）の基底だけ。文字・面には使わない |
 
 **600 を再調整しない根拠**（DECISION C-1）: グラウンド上で AA を満たす最も明るい段は 700（5.83）。600 を Y 0.159 以下に暗くして AA 化しても（例 `#6b6767` 5.00）、700 との差は 1.17:1 で知覚できず、ランプの等比（×1.5）も壊れる（500→600 が ×2.27、600→700 が ×1.24）。さらにその値はホバー面 4.44 / プレス面 3.96 で活動セルの副題が AA を割る。600 は概念値のまま、役割を「大テキスト・図形専用」に限定する方が一貫する。
 
-#### 1.2.2 Lime（200–900）
+#### 1.2.2 Green（200–900）
 
-Tailwind v4 lime をそのまま採用。段の変更なし。**インディゴと極性が逆**であることがこのランプの設計を決めている: 明るい段（400）は墨地の上と大面で強く、明るい地の上では文字にも輪郭にも使えない。地の上のアクセントは 700 以降の暗い段が担う。
+GitHub Primer の green をそのまま採用（**DECISION C-29**、2026-09-12。200 と 700–900 は light スケール、300–600 は dark スケールから取り、段の並びは輝度の単調減少で組む）。ライムと同じく**インディゴと極性が逆**: 明るい段（400）は墨地の上と大面で強く、明るい地の上では文字にも輪郭にも使えない（2.27）。地の上のアクセントは 700 以降の暗い段が担う。ライムより彩度が低く、400 の輝度が 0.635 → 0.363 に下がったぶん墨地の上の比は 10.83 → 6.54 に、地の上の暗い段（800 / 900）は 6.31 / 7.85 → 6.62 / 8.77 に上がった。
 
 | Step | Hex | Y | vs ground | vs surface `#eae7e7` | vs ink | 役割 |
 |---|---|---|---|---|---|---|
-| 200 | `#d8f999` | 0.847 | 1.05 | 1.05 | 14.18 | accent-subtle（淡い塗り、ライブラリ） |
-| 300 | `#bbf451` | 0.759 | 1.16 | 1.06 | 12.79 | インク面のフォーカスリング |
-| 400 | `#9ae600` | 0.635 | 1.37 | 1.25 | **10.83** | **accent 基底**: ポスター面、インク面上の印（ヒーロー下線・選択）。**明るい地の上では文字にも面の輪郭にも使えない**（1.37、C-25） |
-| 500 | `#7ccf00` | 0.489 | 1.74 | 1.58 | 8.52 | accent ホバー（面。上のインク文字 8.52） |
-| 600 | `#5ea500` | 0.293 | 2.74 | 2.49 | 5.42 | accent プレス（面。上のインク文字 5.42） |
-| 700 | `#497d00` | 0.161 | 4.46 | 4.05 | 3.33 | 地の上の**図形**専用: フォーカスリング、マーキー区切り（3:1 ✓、4.5 ✗） |
-| 800 | `#3c6300` | 0.099 | **6.31** | 5.74 | 2.35 | 地の上の**アクセント文字**の基底: リンク文字、活動バッジ |
-| 900 | `#35530e` | 0.070 | 7.85 | 7.13 | 1.89 | 12px 以下のアクセント文字、淡い塗り上の文字（lime-200 上 7.49）、ポスター面上のリング（5.72）、高コントラスト時のアクセント文字 |
+| 200 | `#aceebb` | 0.735 | 1.20 | 1.09 | 12.41 | accent-subtle（淡い塗り、ライブラリ） |
+| 300 | `#56d364` | 0.495 | 1.72 | 1.57 | 8.62 | インク面のフォーカスリング |
+| 400 | `#3fb950` | 0.363 | 2.27 | 2.07 | **6.54** | **accent 基底（印）**: インク面上の印（Hero の h1 と Poster の h2 の句点、選択）。**面には使わない**（C-30: 上に墨の文字を載せると読みにくい。明るい地の上では 2.27 で輪郭も読めない、C-25） |
+| 500 | `#2ea043` | 0.261 | 3.02 | 2.74 | 4.92 | ライブラリ予備（accent-fill のホバーは 700） |
+| 600 | `#238636` | 0.177 | 4.14 | 3.77 | 3.59 | **accent-fill**: 文字を載せる緑の面（チャット自分側バブル、C-30。参加 CTA は C-31 で Blurple へ）。白 `neutral-0` の文字 4.63、面は ground 上 4.14（ink 上 3.59 はライブラリ） |
+| 700 | `#1a7f37` | 0.157 | 4.55 | 4.13 | 3.27 | 地の上の**図形**専用: フォーカスリング、マーキー区切り（3:1 ✓。4.5 は 0.05 の余裕しかなく hover-tint 上 4.04 で割るので文字には使わない）。accent-fill のホバー（ライブラリ。白 5.08、ink 上 3.27） |
+| 800 | `#116329` | 0.092 | **6.62** | 6.01 | 2.25 | 地の上の**アクセント文字**の基底: リンク文字、活動バッジ。accent-fill のプレス（ライブラリ。白 7.39） |
+| 900 | `#044f1e` | 0.057 | 8.77 | 7.97 | 1.69 | 12px 以下のアクセント文字、淡い塗り上の文字（green-200 上 7.33）、ポスター面上のリング（3.86）、高コントラスト時のアクセント文字 |
 
-コンセプトの赤 `#ec3013` はグラウンド上約 3:1 で本文不可。lime-400 は墨地の上で 10.83:1 と極めて強いが、地の上では 1.37 で文字・輪郭ともに不可のため、**地の上のアクセントは 800（6.31）に切り替える**。lime-700（4.46）は AA を 0.04 下回るので文字には使わず、3:1 で足りる図形（リング・区切り）に限る。（DECISION C-25、C-26）
+コンセプトの赤 `#ec3013` はグラウンド上約 3:1 で本文不可。green-400 は墨地の上で 6.54 と十分に強いが、地の上では 2.27 で文字・輪郭ともに不可のため、**地の上のアクセントは 800（6.62）に切り替える**。green-700（4.55）は AA を数値上は通るが hover-tint 上で 4.04 に落ちるので文字には使わず、3:1 で足りる図形（リング・区切り）に限る。（DECISION C-25、C-26、C-29）
+
+ライムのランプ（200–900）は Primitives に残置しない。記録は付録 C.4 / C.5 の hex 一覧が担う（Figma の `Lime accent` モードは Green に改名して値を差し替える。未反映）。
 
 インディゴのランプ（100–900）は `Primitives` に残置する。Indigo accent モードを比較・記録用に保持しているため（付録 C）。新規のロールをインディゴに割り当てないこと。
 
 #### 1.2.3 Alpha scale
 
-不透明度は 6 段。**6 → 12 → 24 → 48 は倍々**（ティント・影・幕・無効）。**72 = 3 × 24**（tertiary 文字）。**88** は secondary 文字（インク面 11.78 / ライムのポスター面 8.23）。48 は ink 上で大テキスト 3:1 を満たす（4.45）が通常テキスト 4.5 には届かないため、ディスプレイサイズ専用。（DECISION C-5）
+不透明度は 6 段。**6 → 12 → 24 → 48 は倍々**（ティント・影・幕・無効）。**72 = 3 × 24**（tertiary 文字）。**88** は secondary 文字（インク面 11.78。ポスターもインク面、C-30）。48 は ink 上で大テキスト 3:1 を満たす（4.45）が通常テキスト 4.5 には届かないため、ディスプレイサイズ専用。（DECISION C-5）
 
-ライムのポスター面は**明るい面**なので、そこだけテキストは「グラウンド × α」ではなく「**インク × α**」で組む。合成後の比は 88 % → 8.23、72 % → 5.32、48 % → 2.79。72 % が N を満たすため、ポスターは原理上 3 段の階層を持てる（インディゴ面では 3.70 で不可だった）。ただし §1.5 の抑制原則により **運用は 2 段に留める**（C-14 は制約ではなく選択に変わった）。
+ポスター面は C-30（2026-09-12）で**インク面に戻った**。反転面のテキストはすべて「グラウンド × α」で組み、ポスターの階層は primary / secondary の 2 段（C-14）。明るい緑面だった時期の合成値（ink@88 5.37 / 72 3.97 / 48 2.39）は付録 C.5 に記録として残す。
 
 | α | インク over 明るい面（ground / ポスター面） | グラウンド over 暗い面（インク面） | アクセント | 根拠 |
 |---|---|---|---|---|
 | 6 % | `alpha/ink/6` → `state/hover-tint`（vs ground 1.13） | — | — | 知覚できる最小のティント |
-| 12 % | `alpha/ink/12` → `state/pressed-tint`（1.26）、ポスター面の `poster/selection`（`#8bce03`、上のインク文字 8.64） | `alpha/ground/12` → `inverse/state/hover-tint`（vs ink 1.40） | — | ホバーの 2 倍 |
-| 24 % | `alpha/ink/24` → `shadow`（1.64） | `alpha/ground/24` → `inverse/state/pressed-tint`（2.10） | `alpha/lime-400/24` → `selection`（地の上 `#deefb8`）+ `inverse/selection`（インク面 `#3d4e16`） | ティントの上限。選択上のインク文字 13.55、インク面の選択上のグラウンド文字 8.17 |
+| 12 % | `alpha/ink/12` → `state/pressed-tint`（1.26） | `alpha/ground/12` → `inverse/state/hover-tint`（vs ink 1.40） | — | ホバーの 2 倍 |
+| 24 % | `alpha/ink/24` → `shadow`（1.64） | `alpha/ground/24` → `inverse/state/pressed-tint`（2.10） | `alpha/green-400/24` → `selection`（地の上 `#c8e4cb`）+ `inverse/selection`（インク面 `#274329`） | ティントの上限。選択上のインク文字 12.19、インク面の選択上のグラウンド文字 9.78 |
 | 48 % | `alpha/ink/48` → `backdrop`（2.99）、`opacity/disabled` | `alpha/ground/48` → `inverse/ink-quaternary`（ink 4.45） | — | 幕として面を半分に落とす。ディスプレイ文字は L 合格 |
-| 72 % | ポスター面の tertiary（lime-400 上 5.32、`#425615`）。運用では使わない | `alpha/ground/72` → `inverse/ink-tertiary`（ink 8.29） | — | 3 × 24。インク面・ライムのポスター面ともに N |
-| 88 % | `alpha/ink/88` → ポスター面の `poster/ink-secondary`（lime-400 上 8.23、`#2f361a`） | `alpha/ground/88` → `inverse/ink-secondary`（ink 11.78） | — | どちらの面でも secondary を N で通す。低透明・高コントラスト時の backdrop |
+| 72 % | — | `alpha/ground/72` → `inverse/ink-tertiary`（ink 8.29） | — | 3 × 24。インク面・グリーンのポスター面ともに N |
+| 88 % | `alpha/ink/88` → 高コントラスト時の `backdrop`（ポスターの secondary は C-30 で `inverse/ink-secondary` に） | `alpha/ground/88` → `inverse/ink-secondary`（ink 11.78） | — | どちらの面でも secondary を N で通す。低透明・高コントラスト時の backdrop |
 
-アルファは 13 個（ink 5、ground 5、indigo 2〈Indigo モードの記録用〉、lime 1）。Figma では `Primitives` に RGBA リテラルとして置く（エイリアスはアルファを付与できない）。合成値: ground@88 / 72 / 48 over ink = `#dad9d8` / `#b8b7b6` / `#858483`。ink@6 / 12 / 24 / 48 over ground = `#e6e5e5` / `#dad9d8` / `#c0bfbf` / `#8e8c8c`。ink@88 / 72 / 48 over lime-400 = `#2f361a` / `#425615` / `#5f860e`、ink@12 / 24 over lime-400 = `#8bce03` / `#7db607`。ground@12 / 24 over ink = `#393737` / `#535150`。lime-400@24 over ground = `#deefb8`、over ink = `#3d4e16`。
+尺度の外に 2 つ: `hero/backdrop-opacity` 0.2（U-20）と `hero/plate` = `alpha/black/64`（neutral-1000 の 64%、U-50）。どちらも見た目から測って決めた値で、階梯の段ではない（板は 48 では薄く、72 では不透明に見えた — クライアント所見。写真層が 20% しか無いので、透け方は (1 − α) × 0.2 で決まる）。
+
+アルファは 13 個（ink 5、ground 5、indigo 2〈Indigo モードの記録用〉、green 1）。Figma では `Primitives` に RGBA リテラルとして置く（エイリアスはアルファを付与できない）。合成値: ground@88 / 72 / 48 over ink = `#dad9d8` / `#b8b7b6` / `#858483`。ink@6 / 12 / 24 / 48 over ground = `#e6e5e5` / `#dad9d8` / `#c0bfbf` / `#8e8c8c`。ink@88 / 72 / 48 over green-400 = `#243123` / `#29492b` / `#306f38`、ink@12 / 24 over green-400 = `#3ba64a` / `#389444`。ground@12 / 24 over ink = `#393737` / `#535150`。green-400@24 over ground = `#c8e4cb`、over ink = `#274329`。
+
+#### 1.2.4 Blurple（Discord ブランド色、500 / 530 / 560）
+
+Discord の公開ブランドカラー **Blurple `#5865F2`**（discord.com/branding）を、Discord へ出るボタンの面にだけ置く（**DECISION C-31**、2026-09-12、クライアント判断）。本システムの色相（Green）ではなく、パートナーロゴを原色で置くのと同じ**第三者の識別色の引用**（U-21）。Discord のガイドラインはロゴの「編集・変更・歪曲・再配色・再構成」を禁じ、Blurple の面に白いロゴを標準の組み合わせとして配布している — 緑の面に白ロゴを置いた C-30 の形は規約上は可でも、クライアントの所見どおり「Discord らしくない」。ホバー・プレスは同色相の暗い段（Discord のアプリの brand-530 / brand-560 と同値）。明るい方（brand-400 `#7983f5`）は白が 3.29 で割るので使わない。
+
+| Step | Hex | Y | vs ground | vs surface | vs ink | 白（on-discord） | 役割 |
+|---|---|---|---|---|---|---|---|
+| 500 | `#5865f2` | 0.178 | 4.12 | 3.75 | 3.60 | **4.61** | **discord/fill**: Discord へ出るボタンの面（Hero 主・Poster）。輪郭は ground / ink のどちらでも 3:1 ✓（極性を持たない） |
+| 530 | `#505cdc` | 0.145 | 4.81 | 4.37 | 3.09 | 5.38 | discord/hover。ink 上でも輪郭 3:1 を保つ唯一の暗い段 |
+| 560 | `#4752c4` | 0.114 | 5.74 | 5.22 | 2.59 | 6.42 | discord/pressed。ink 上 2.59 は押下の瞬間（duration/0）で、ラベル 6.42 が識別を担う |
+
+Blurple を文字・罫・印・大面に使わない。Discord 以外のサービス（X / Instagram / GitHub）のボタンは存在せず、マークは `currentColor` の黒 / 白のまま（U-38）。
+
+#### 1.2.5 ベントの図の色（C-32）
+
+About のベントの図（Bento / Figure、§6.11.2）の円は **チャットの自分側バブルと同じ緑**で塗る: `figure/fill` = `accent-fill`（green-600 `#238636`、ground 4.14）、図 `figure/ink` = `on-accent`（neutral-0、塗り上 **4.63**）。新しいプリミティブもロールの値も無い（**DECISION C-32**、2026-09-14 → 2026-09-15 改 2）。
+
+経緯: 初版は GitHub Primer light の段 2 / 7 を 4 色相で写し意味で使い分けた → 「配色が浮きすぎ。アクセントのグリーン系で統一」で撤回。改 1 は accent-subtle（green-200）+ green-900 の図 → 「色がキモい。周りと同じ緑でいい」で撤回。周りの緑 = 同じ About の中の自分側バブル（accent-fill + 白）なので、その対をそのまま使う。緑の面はこれで「文字を載せる小さな面」（C-30）に図の円が加わる — 64 の円は小さな面で、大面ではない。
+
+- `prefers-contrast: more`: 白のまま（ink は green-600 上 3.59 で白より弱い）。`forced-colors`: 塗りが消えるので円に 1px の枠。
+- §1.5.1 のアクセントの出現: 「チャット自分側バブルとベントの図の円の面」として 1 種に数える。
 
 ### 1.3 セマンティックロール
 
@@ -167,17 +212,17 @@ Tailwind v4 lime をそのまま採用。段の変更なし。**インディゴ�
 
 #### 1.3.1 面
 
-| ロール | Mono | Lime accent | Scopes | 使用箇所 | 根拠 |
+| ロール | Mono | Green accent | Scopes | 使用箇所 | 根拠 |
 |---|---|---|---|---|---|
 | `color/ground` | neutral-100 | = | FF SF | ページ、ナビ、明るいセル、フッター、画像スロット背後、Mobile メニューパネル | 基準面 |
-| `color/surface` | neutral-200 | = | FF SF | チャット相手側バブル、ペルソナ引用枠、画像プレースホルダ、チップの塗り（`chip/fill`） | グラウンドとの比 1.10 で罫線なしに輪郭が読める最小段 |
+| `color/surface` | neutral-200 | = | FF SF | チャット相手側バブル、ペルソナ次の一歩の板（U-53）、画像プレースホルダ、チップの塗り（`chip/fill`） | グラウンドとの比 1.10 で罫線なしに輪郭が読める最小段 |
 | `color/logo-ground` | neutral-0（白） | = | FF | パートナーのロゴタイル（行を埋める空タイル含む）とマーキー帯**のみ** | 白背景のロゴ素材（jpg / png）と同じ面にして板として浮かせない（**U-33**）。ground との比 1.12。文字を置かない（旧 Placeholder の Overline は U-34 で撤去） |
 | `color/inverse/ground` | neutral-950 | = | FF | ヒーロー、ベント統計セル、ベント CTA セル、チャット自分側バブル | インクを塗りに転用 |
-| `color/poster/ground` | neutral-950 | **lime-400** | FF | ポスター（Join）セクションのみ | 唯一のアクセント面。Mono では暗い面、Lime では**明るい面**（上のインク文字 10.83）。極性が反転するため専用ロール群を持つ（C-28） |
+| `color/poster/ground` | neutral-950 | **= neutral-950**（C-30） | FF | ポスター（Join）セクションのみ | Mono と同じ暗い面。2026-09-12 の一時期 green-400 の明るい面にしたが、上の墨の文字が読みにくく撤回。アクセントは面ではなく見出し（`poster/display`）で現れ、CTA は Discord の Blurple（C-31、§1.3.9）。専用ロール群は C-28 の名残として残す |
 
 #### 1.3.2 明るい面のテキスト
 
-| ロール | Mono | Lime | Scopes | 使用箇所 | 比 (ground / surface / hover-tint / pressed-tint) |
+| ロール | Mono | Green | Scopes | 使用箇所 | 比 (ground / surface / hover-tint / pressed-tint) |
 |---|---|---|---|---|---|
 | `color/ink` | neutral-950 | = | TF SF SC | h2（Title 1）、セル見出し（Title 2 / 3 / Headline）、活動タイトル（Display M）、氏名、ナビ（Label Nav）、マーキー JP 項目（Title 3 Caps）、バブル・引用（Callout）、アバター頭文字とチップ数値（Caption B）、インラインリンク、ボタンラベル（アウトライン・ゴースト） | 14.86 / 13.51 / 13.21 / 11.78 |
 | `color/ink-secondary` | neutral-700 | = | TF SF | **明るい面の小さな補助文字すべて**: 段落（Body S / M）、フッターリンク静止（Footnote）、紹介文・スキル行（Footnote / Caption）、推薦文（Footnote B）、画像キャプション（Caption）、©、入力中ラベル、タグ文字（`chip/ink`）、タグライン（Caption B）、セクション番号・キッカー・肩書・マーキーラベル（Overline）、活動サブタイトル（Subheadline）、活動バッジ（Mono、Overline JP）、チップのアイコン | 5.83 / 5.30 / 5.19 / 4.62 |
@@ -187,24 +232,25 @@ Tailwind v4 lime をそのまま採用。段の変更なし。**インディゴ�
 
 #### 1.3.3 反転面のテキスト（インク面・ポスター面）
 
-インク面は常に暗い面。ポスター面は Mono では暗い面、Lime では**明るい面**になるため、`inverse/*`（グラウンド × α）と `poster/*` を別系統に分ける。比の列はインク面の値、ポスターは Lime の lime-400 面の値。
+インク面は常に暗い面。ポスター面は Mono では暗い面、Green では**明るい面**になるため、`inverse/*`（グラウンド × α）と `poster/*` を別系統に分ける。比の列はインク面の値。ポスター面も C-30 でインク面に戻ったので同じ値。
 |---|---|---|---|---|---|
 
-| ロール | Mono | Lime | Scopes | 使用箇所 | 比 |
+| ロール | Mono | Green | Scopes | 使用箇所 | 比 |
 |---|---|---|---|---|---|
-| `color/inverse/ink` | neutral-100 | = | TF SF SC | h1 目的語 `Your Limits.`（Display XL）、リード（Title 3）、統計値（Display M）、自分側バブル（Callout）、CTA 見出し（Title 3）、アウトラインボタンのラベルと枠 | ink 14.86 |
+| `color/inverse/ink` | neutral-100 | = | TF SF SC | h1 `Hack Your Limits`（Display XL、墨の板の上）、リード（Title 3）、統計値（Display M）、自分側バブル（Callout）、CTA 見出し（Title 3）、アウトラインボタンのラベルと枠 | ink 14.86 |
 | `color/inverse/ink-secondary` | `alpha/ground/88` | = | TF | ヒーロー段落（Body L）、CTA サブ（Footnote） | ink 11.78 |
 | `color/inverse/ink-tertiary` | `alpha/ground/72` | = | TF | ヒーローメタ行（Overline）、統計セルキッカー（Overline）。**インク面のみ** | ink 8.29 |
-| `color/inverse/ink-quaternary` | `alpha/ground/48` | = | TF | h1 導入句「仲間と、」（Display XL）。**インク面・ディスプレイサイズのみ** | ink 4.45（L） |
-| `color/poster/ink` | → inverse/ink | **neutral-950** | TF SF SC | ポスター見出し（Display L）、ソーシャルリンクのホバー | Mono 14.86 / Lime 10.83 |
-| `color/poster/ink-secondary` | → inverse/ink-secondary | **`alpha/ink/88`** | TF | ポスターキッカー「Join us」、段落（Body M）、ソーシャルリンク静止（Overline） | Mono 11.78 / Lime 8.23（`#2f361a`） |
+| `color/inverse/ink-quaternary` | `alpha/ground/48` | = | TF | （U-37 / U-39 で h1 導入句の用途を失った。ライブラリのディスプレイ文字のみ）**インク面・ディスプレイサイズのみ** | ink 4.45（L） |
+| `color/poster/ink` | → inverse/ink | = | TF SF SC | ポスターの primary 文字、ソーシャルリンクのホバー | 14.86 |
+| `color/poster/display` | → inverse/ink | **green-400** | TF | ポスター見出し「Hack Your Limits.」の**句点**（Display L）。文は `poster/ink`。Hero の h1 と同じ印（C-30 → **U-51**） | 14.86 / 6.54 |
+| `color/poster/ink-secondary` | → inverse/ink-secondary | = | TF | ポスターキッカー「Join us」、段落（Body M）、ソーシャルリンク静止（Overline） | 11.78 |
 | `color/inverse/hairline` | neutral-900 | = | SF SC | ヒーロー格子線（1px × 4） | 1.18（テクスチャ、対象外） |
 
-ポスター専用エイリアスを置くのは、モードがポスターの面だけを差し替え、ベントのインクセルに波及しないため。Lime ではさらに面の**明度が反転**するので、`poster/*` は `inverse/*` のエイリアスではなく独立した値を持つ。ポスターの階層は primary / secondary の 2 段に限定する（Lime では tertiary = ink@72 が 5.32 で N を満たすが、抑制原則により使わない。C-14 は制約から選択に変わった）。（DECISION C-4、C-14、C-28）
+ポスター専用エイリアスは C-28（ポスター面が明るい緑面だった設計）の名残で、C-30 以降は Mono / Green ともに `inverse/*` と同値。残すのは、ポスターの面を将来変えるときに部品を触らずトークンだけで済ませるため。ポスターの階層は primary / secondary の 2 段に限定する（C-14）。（DECISION C-4、C-14、C-28、C-30）
 
 #### 1.3.4 罫線と枠
 
-| ロール | Mono | Lime | Scopes | 使用箇所 | 根拠 |
+| ロール | Mono | Green | Scopes | 使用箇所 | 根拠 |
 |---|---|---|---|---|---|
 | `color/divider` | neutral-500 | = | SC SF FF | 2px: ナビ下、マーキー上下、セクション上、フッター上、格子フレームの塗り＋ gap | 一つの色、二つの太さ。強弱は太さで出す。装飾（1.4.11 対象外、2.59） |
 | `color/divider-hairline` | → divider | = | SC SF | 1px: 活動セル、締めの罫、タグライン左罫、Mobile メニュー行間（明るい面のみ）。インク面の縦罫（ヒーローメタ行）は currentColor = `inverse/ink-tertiary` | 同上。インク面に divider（n500）を置かない |
@@ -216,77 +262,82 @@ Tailwind v4 lime をそのまま採用。段の変更なし。**インディゴ�
 
 #### 1.3.5 アクセント
 
-アクセントは **2 極** で使う。**明るい地の上**では暗い段（700 / 800 / 900）が文字・線として働き、**インク面とポスター面**では lime-400 が面・印として働く。同じ段を両方に使うことはできない（lime-400 は地の上 1.37、lime-800 はインク面 2.35）。
+アクセントは **2 極** で使う。**明るい地の上**では暗い段（700 / 800 / 900）が文字・線として働き、**インク面とポスター面**では green-400 が面・印として働く。同じ段を両方に使うことはできない（green-400 は地の上 2.27、green-800 はインク面 2.25）。**文字を載せる面**は 600（`accent-fill`）+ 白（`on-accent` = neutral-0、4.63）で、400 の面に墨の文字は載せない（C-30）。参加 CTA の面は C-31 で Discord の Blurple（§1.2.4 / §1.3.9）に移り、緑の面はチャット自分側バブルだけ。
 
-| ロール | Mono | Lime | Scopes | 使用箇所 | 比 |
+| ロール | Mono | Green | Scopes | 使用箇所 | 比 |
 |---|---|---|---|---|---|
-| `color/accent` | lime-400 | = | FF SF | 基底。ポスター面、インク面上の印。**明るい地の上で面として使わない**（C-25） | ink 10.83 / ground 1.37（不可） |
-| `color/on-accent` | neutral-950 | = | TF SF | アクセント塗り上の文字・アイコン | 10.83 |
-| `color/accent-hover` | lime-500 | = | FF | アクセント塗りボタンのホバー（ライブラリ） | on-accent 8.52 |
-| `color/accent-pressed` | lime-600 | = | FF | 同プレス | on-accent 5.42 |
-| `color/accent-subtle` | lime-200 | = | FF SF | 淡い強調塗り（ライブラリの強調セル・チップ） | ground との差 1.05 |
-| `color/on-accent-subtle` | lime-900 | = | TF | 淡い塗り上の文字 | 7.49 |
-| `color/accent-text` | lime-800 | = | TF | 13px 以上のアクセント文字: リンクのホバー下線・プレス文字（Label Nav / Footnote / Title 3） | 6.31（ground）/ 5.74（surface） |
-| `color/accent-text-small` | lime-900 | = | TF | 12px 以下のアクセント文字: 活動バッジ（Overline JP） | 7.85 / hover-tint 6.97 / pressed-tint 6.22 |
-| `color/accent-on-ink` | lime-400 | = | SF SC | インク面上の印（ヒーロー下線、インク面の選択基底）。**文字には使わない**（抑制。数値上は 10.83 で N 合格） | ink 10.83 |
+| `color/accent` | green-400 | = | FF SF | 基底。ポスター面、インク面上の印。**明るい地の上で面として使わない**（C-25） | ink 6.54 / ground 2.27（不可） |
+| `color/accent-fill` | green-600 | = | FF | **文字を載せる緑の面**: チャット自分側バブル（C-30。参加 CTA は C-31 で `discord/fill` へ） | 面 vs ground 4.14（vs ink 3.59 はライブラリ） |
+| `color/on-accent` | neutral-0 | = | TF SF | accent-fill 上の文字・アイコン（白。ground `#f3f2f2` だと 4.14 で N を割る） | 4.63 |
+| `color/accent-hover` | green-700 | = | FF | accent-fill のホバー（ライブラリの Accent ボタン。暗い方へ 1 段 — 明るい方へ動かすと白が 4.5 を割る） | on-accent 5.08、面 vs ink 3.27 |
+| `color/accent-pressed` | green-800 | = | FF | 同プレス（ライブラリ） | on-accent 7.39、面 vs ink 2.25（押下の瞬間） |
+| `color/accent-subtle` | green-200 | = | FF SF | 淡い強調塗り（ライブラリの強調セル・チップ） | ground との差 1.20 |
+| `color/on-accent-subtle` | green-900 | = | TF | 淡い塗り上の文字 | 7.33 |
+| `color/accent-text` | green-800 | = | TF | 13px 以上のアクセント文字: リンクのホバー下線・プレス文字（Label Nav / Footnote / Title 3） | 6.62（ground）/ 6.01（surface） |
+| `color/accent-text-small` | green-900 | = | TF | 12px 以下のアクセント文字: 活動バッジ（Overline JP） | 8.77 / hover-tint 7.80 / pressed-tint 6.95 |
+| `color/accent-on-ink` | green-400 | = | SF SC | インク面上の印（ヒーロー h1 の句点、インク面の選択基底）。**文字には使わない**（抑制。数値上は 6.54 で N 合格） | ink 6.54 |
 
-`accent-text` に lime-700 を使わない根拠（DECISION C-26）: lime-700 はグラウンド上 **4.46** で AA（4.5）を 0.04 下回る。3:1 で足りる図形（フォーカスリング、マーキー区切り）にだけ 700 を使い、文字は 800 を床にする。`accent-text-small` の根拠: 高彩度の有彩色は同じ輝度比でも細字が痩せて見えるため、12px 以下は 1 段深い 900 を使う。この補正は有彩色固有で、無彩色（ink-secondary 5.83）には適用しない。
+`accent-text` に green-700 を使わない根拠（DECISION C-26 改、C-29）: green-700 はグラウンド上 **4.55** で AA（4.5）を 0.05 しか超えず、hover-tint 上では 4.04 に落ちる。3:1 で足りる図形（フォーカスリング、マーキー区切り）にだけ 700 を使い、文字は 800 を床にする。`accent-text-small` の根拠: 高彩度の有彩色は同じ輝度比でも細字が痩せて見えるため、12px 以下は 1 段深い 900 を使う。この補正は有彩色固有で、無彩色（ink-secondary 5.83）には適用しない。
 
-モード依存の 10 行。Mono と Lime の差は「4 つの出現」（マーキー区切り、活動バッジ、ヒーロー下線、ポスター面）と、**ポスター面の明度反転に伴う 6 行**:
+モード依存は 4 行（C-31 後）。Mono と Green の差は「4 つの出現」（マーキー区切り、活動バッジ、Hero と Poster の句点）だけ — ポスター CTA の面・文字の 2 行（`poster/action/*`）は C-31 で Discord の Blurple（モード非依存）に置き換わり、ライブラリに残る。ポスター面の明度反転（C-28 の 6 行）は C-30 で無くなり、`poster/ground` `poster/ink` `poster/ink-secondary` `poster/selection` `poster/focus/ring` は両モードで同値:
 
-| ロール | Mono | Lime accent | Scopes | 使用箇所 | 比 |
+| ロール | Mono | Green accent | Scopes | 使用箇所 | 比 |
 |---|---|---|---|---|---|
-| `color/pop/separator` | → ink-tertiary (neutral-600) | lime-700 | SF | マーキー区切りアイコン（Tabler `asterisk` 20） | 3.85 / 4.46 |
-| `color/pop/badge` | → ink-secondary (neutral-700) | lime-800 | TF SF | 活動バッジ（Overline JP 12 B）+ `arrow-right` 16 | 5.83 / 6.31（hover-tint 5.19 / 5.61、pressed-tint 4.62 / 5.00） |
-| `color/hero/word` | → inverse/ink | lime-400 | TF | 回転語の**文字色**。インク面上（下線は持たない、DECISION U-3） | 14.86 / 10.83 |
-| `color/poster/ground` | neutral-950 | lime-400 | FF | ポスター面 | — |
-| `color/poster/ink` | → inverse/ink | neutral-950 | TF SF SC | ポスターの primary 文字 | 14.86 / 10.83 |
-| `color/poster/ink-secondary` | → inverse/ink-secondary | `alpha/ink/88` | TF | ポスターの secondary 文字 | 11.78 / 8.23 |
-| `color/poster/selection` | → inverse/selection | `alpha/ink/12` | FF | ポスター面の `::selection` | 上の primary 10.28 / 8.64 |
-| `color/poster/action/fill` | → inverse/action/fill (neutral-100) | neutral-950 | FF | ポスター CTA の面 | 面 vs ポスター 14.86 / 10.83 |
-| `color/poster/action/ink` | → inverse/action/ink (neutral-950) | neutral-100 | TF SF | 同ラベル・アイコン | 14.86 / 14.86 |
-| `color/poster/focus/ring` | → focus/ring-inverse (lime-300) | lime-900 | SC | ポスター面上のリング | 12.79 / 5.72 |
+| `color/pop/separator` | → ink-tertiary (neutral-600) | green-700 | SF | マーキー区切りアイコン（Tabler `asterisk` 20） | 3.85 / 4.55 |
+| `color/pop/badge` | → ink-secondary (neutral-700) | green-800 | TF SF | 活動バッジ（Overline JP 12 B）+ `arrow-right` 16 | 5.83 / 6.62（hover-tint 5.19 / 5.88、pressed-tint 4.62 / 5.24） |
+| `color/hero/word` | → inverse/ink | green-400 | TF | h1 `Hack Your Limits.` の**句点**の文字色（U-39。回転語の下線 U-3 → 動詞 U-37 → 句点）。板の上 | 14.86 / 6.54 |
+| `color/hero/plate` | alpha/black/64 | = | FF | h1 の板（U-50）: 写真の上の 64% の真っ黒（板越しに写真がうっすら透ける。48 は薄く、72 は不透明に見えた）。`prefers-reduced-transparency` では neutral-1000 の実色 | 上の inverse/ink 17.2・句点 6.77（写真の最も明るい画素の上、合成 `#1c1b1b`） |
+| `color/poster/ground` | neutral-950 | = | FF | ポスター面（インク面、C-30） | — |
+| `color/poster/display` | → inverse/ink | green-400 | TF | ポスター見出しの句点（U-51） | 14.86 / 6.54 |
+| `color/poster/ink` | → inverse/ink | = | TF SF SC | ポスターの primary 文字 | 14.86 |
+| `color/poster/ink-secondary` | → inverse/ink-secondary | = | TF | ポスターの secondary 文字 | 11.78 |
+| `color/poster/selection` | → inverse/selection | = | FF | ポスター面の `::selection` | 上の primary 9.78 |
+| `color/poster/action/fill` | → inverse/action/fill (neutral-100) | **→ accent-fill (green-600)** | FF | ライブラリ（C-30 のポスター CTA の面。C-31 で `discord/fill` に置換） | 面 vs ポスター 14.86 / 3.59 |
+| `color/poster/action/ink` | → inverse/action/ink (neutral-950) | **→ on-accent (neutral-0)** | TF SF | 同ラベル・アイコン（ライブラリ） | 14.86 / 4.63 |
+| `color/poster/focus/ring` | → focus/ring-inverse (green-300) | = | SC | ポスター面上のリング | 8.62 |
 
-ポスター専用の `action` と `focus` を切るのは、ポスター面の明度が Mono（暗い面）と Lime（明るい面）で反転し、汎用 `inverse/action/*`・`focus/ring-inverse` では両立しないため。Lime の lime-400 面に lime-300 のリングを置くと 1.18 で消える。（DECISION C-28）
+ポスター専用の `action` と `focus` を切ったのは、ポスター面の明度が Mono と Green で反転する設計（C-28）のため。C-30 で反転は無くなり、C-31 でポスター CTA は Discord の Blurple（モードに依らない `discord/*`）になったので、`poster/action/*` は Mono 検証用のライブラリとして残すだけ。（DECISION C-28、C-30、C-31）
 
 #### 1.3.6 状態
 
-| ロール | Mono | Lime | Scopes | 使用箇所 | 比・根拠 |
+| ロール | Mono | Green | Scopes | 使用箇所 | 比・根拠 |
 |---|---|---|---|---|---|
-| `color/state/hover-tint` | `alpha/ink/6` | = | FF | 活動セルホバー、Mobile メニュー行ホバー、アウトライン／ゴースト／アイコンボタンのホバー、**Lime のポスター面上の状態** | 上の ink 13.21、ink-secondary 5.19、accent-text-small 6.97 |
-| `color/state/pressed-tint` | `alpha/ink/12` | = | FF | 同プレス | 11.78 / 4.62 / 6.22 |
+| `color/state/hover-tint` | `alpha/ink/6` | = | FF | 活動セルホバー、Mobile メニュー行ホバー、アウトライン／ゴースト／アイコンボタンのホバー、**Green のポスター面上の状態** | 上の ink 13.21、ink-secondary 5.19、accent-text-small 7.80 |
+| `color/state/pressed-tint` | `alpha/ink/12` | = | FF | 同プレス | 11.78 / 4.62 / 6.95 |
 | `color/inverse/state/hover-tint` | `alpha/ground/12` | = | FF | インク面アウトライン／アイコンボタンのホバー | 上の ground 10.58 |
-| `color/inverse/state/pressed-tint` | `alpha/ground/24` | = | FF | 同プレス | 7.06（**インク面のみ**。Lime のポスター面は明るい面なので `state/*`〈ink アルファ〉側を使う） |
-| `color/focus/ring` | lime-700 | = | SC | 明るい面上の `:focus-visible` リング（2px、offset 2） | ground 4.46、surface 4.05、hover-tint 3.96、pressed-tint 3.53（すべて U 3:1 ✓） |
-| `color/focus/ring-inverse` | lime-300 | = | SC | **インク面**上の同リング（ポスター面は `poster/focus/ring`） | ink 12.79、inverse hover-tint 9.11 |
-| `color/selection` | `alpha/lime-400/24` | = | FF | 明るい面の `::selection` 塗り（`#deefb8`）。**文字は `ink` を強制** | 上の ink 13.55（ink-secondary も 5.32 で N） |
-| `color/inverse/selection` | `alpha/lime-400/24` | = | FF | インク面の `::selection` 塗り（`#3d4e16`）。文字は `inverse/ink` を強制 | 上の ground 8.17 |
-| `color/poster/selection` | → inverse/selection | `alpha/ink/12` | FF | ポスター面の `::selection` 塗り（Lime `#8bce03`）。文字は `poster/ink` を強制 | 上の primary 10.28 / 8.64 |
+| `color/inverse/state/pressed-tint` | `alpha/ground/24` | = | FF | 同プレス | 7.06（**インク面のみ**。Green のポスター面は明るい面なので `state/*`〈ink アルファ〉側を使う） |
+| `color/focus/ring` | green-700 | = | SC | 明るい面上の `:focus-visible` リング（2px、offset 2） | ground 4.55、surface 4.13、hover-tint 4.04、pressed-tint 3.60（すべて U 3:1 ✓） |
+| `color/focus/ring-inverse` | green-300 | = | SC | **インク面**上の同リング（ポスター面は `poster/focus/ring`） | ink 8.62、inverse hover-tint 6.14 |
+| `color/selection` | `alpha/green-400/24` | = | FF | 明るい面の `::selection` 塗り（`#c8e4cb`）。**文字は `ink` を強制** | 上の ink 12.19（ink-secondary は 4.79） |
+| `color/inverse/selection` | `alpha/green-400/24` | = | FF | インク面の `::selection` 塗り（`#274329`）。文字は `inverse/ink` を強制 | 上の ground 9.78 |
+| `color/poster/selection` | → inverse/selection | = | FF | ポスター面の `::selection` 塗り（`#274329`）。文字は `poster/ink` を強制 | 上の primary 9.78 |
 | `opacity/disabled` | 0.48 | = | OP | 無効ボタン（ノード全体、ライブラリのみ） | アルファ尺度の 48。1.4.3 適用除外 |
-| `color/link/hover` | → accent-text (lime-800) | = | SF SC | ナビリンク・ワードマークのホバー下線（2px） | 6.31（U）。**lime-400 は 1.37 で不可** |
-| `color/link/pressed` | → accent-text-small (lime-900) | = | TF | ナビ・フッター・インラインリンクのプレス文字 | 7.85 |
+| `color/link/hover` | → accent-text (green-800) | = | SF SC | ナビリンク・ワードマークのホバー下線（2px） | 6.62（U）。**green-400 は 2.27 で不可** |
+| `color/link/pressed` | → accent-text-small (green-900) | = | TF | ナビ・フッター・インラインリンクのプレス文字 | 8.77 |
 | `color/link/current` | → ink | = | SF | `aria-current` の 2px 下線（ナビ）、Mobile メニュー行のラベル下 2px | 持続状態にアクセントを使わない |
-| `color/inverse/link/hover` | → inverse/ink | **neutral-950**（ポスター面） | TF SF | ソーシャルリンクのホバーとプレス（secondary → primary、+ 1px 下線） | 14.86 / 10.83 |
+| `color/inverse/link/hover` | → inverse/ink | = | TF SF | ソーシャルリンクのホバーとプレス（secondary → primary、+ 1px 下線） | 14.86 |
 
-リンクの状態モデル（DECISION C-16）: 文字色はホバーで変えない。ホバーは **下線** で示し、ナビ・ワードマークは `link/hover`（lime-800 の 2px）、フッター・ソーシャルは `link-underline`（currentColor 1px、フッターは同時に文字を ink-secondary → ink）、インラインは常時 1px → ホバー 2px。プレスは `link/pressed`（lime-900。ソーシャルはホバーと同じ、R5）。現在地は `link/current`。Mono でアクセントが現れるのはホバー下線・プレス文字・フォーカス・選択の 4 状態だけで、いずれも一時的。
+リンクの状態モデル（DECISION C-16）: 文字色はホバーで変えない。ホバーは **下線** で示し、ナビ・ワードマークは `link/hover`（green-800 の 2px）、フッター・ソーシャルは `link-underline`（currentColor 1px、フッターは同時に文字を ink-secondary → ink）、インラインは常時 1px → ホバー 2px。プレスは `link/pressed`（green-900。ソーシャルはホバーと同じ、R5）。現在地は `link/current`。Mono でアクセントが現れるのはホバー下線・プレス文字・フォーカス・選択の 4 状態だけで、いずれも一時的。
 
-選択範囲で文字色を強制する理由（DECISION C-9）: ライムの `selection`（lime-400@24）上では ink-secondary も 5.32 で AA を満たすため数値上の強制は不要になったが、規則は残す。選択中に階層が見えると選択の境界が読みにくく、面によって挙動が変わるのを避けるため、`::selection { background; color }` を対で書き、選択中の文字は面の primary にする（明るい面 13.55 / インク面 8.17 / ポスター面 8.64）。
+選択範囲で文字色を強制する理由（DECISION C-9）: グリーンの `selection`（green-400@24）上では ink-secondary は 4.79 で AA を満たす（数値上は強制不要）が、規則は残す。選択中に階層が見えると選択の境界が読みにくく、面によって挙動が変わるのを避けるため、`::selection { background; color }` を対で書き、選択中の文字は面の primary にする（明るい面 12.19 / インク面・ポスター面 9.78）。
 
-リングを面ごとに 3 トークンに分けるのは（DECISION C-8 改）、ライムではポスター面の明度が反転するため。明るい面は `focus/ring` lime-700（4.46）、インク面は `focus/ring-inverse` lime-300（12.79）、ポスター面（lime-400）は `poster/focus/ring` lime-900（5.72）。lime-300 を lime-400 面に置くと 1.18 で消え、lime-700 でも 3.25 と余裕がない。
+リングを面ごとに 3 トークンに分けるのは（DECISION C-8 改）、グリーンではポスター面の明度が反転するため。明るい面は `focus/ring` green-700（4.55）、インク面は `focus/ring-inverse` green-300（8.62）、ポスター面は C-30 でインク面に戻ったので `poster/focus/ring` = `focus/ring-inverse`（8.62）。（明るい緑面だった時期は green-900 3.86。green-300 は 1.32 で消えた）
 
 #### 1.3.7 アクション（ボタン）
 
-ページの主要アクションはインク色ボタン。アクセント塗りボタンはライブラリのみ（ポスター面と競合させない、DECISION C-18）。
+地の上の主要アクション（Nav CTA）はインク色ボタン。**参加 CTA（Hero 主・Poster）は Discord の Blurple のボタン**（`discord/*`、DECISION C-31。C-30 の accent-fill は同日に置換 — Discord マークを自社の緑に載せると「Discord らしくない」）。
 
 | ロール | 値 | Scopes | 使用箇所 | 比 |
 |---|---|---|---|---|
 | `color/action/fill` / `fill-hover` / `fill-pressed` | neutral-950 / 800 / 700 | FF | ナビ CTA「参加する」、Mobile メニュー CTA、スキップリンク | ラベル 14.86 / 9.04 / 5.83 |
 | `color/action/ink` | neutral-100 | TF SF | 同ラベルとアイコン | — |
 | `color/inverse/action/fill` / `fill-hover` / `fill-pressed` | neutral-100 / 200 / 300 | FF | ヒーロー主ボタン（**インク面のみ**） | ラベル 14.86 / 13.51 / 11.19 |
-| `color/poster/action/fill` | Mono → inverse/action/fill (neutral-100) / Lime neutral-950 | FF | ポスター CTA の面 | 面 vs ポスター 14.86 / 10.83 |
-| `color/poster/action/fill-hover` | Mono → inverse/action/fill-hover (neutral-200) / Lime neutral-800 | FF | 同ホバー。汎用 `action/fill-hover` を直接引くと Mono で反転しないので専用ロールにする（C-28 の原則をホバーにも通す） | 13.51 / 7.61 |
-| `color/poster/action/fill-pressed` | Mono → inverse/action/fill-pressed (neutral-300) / Lime neutral-700 | FF | 同プレス。ホバーの次の 1 段 | 11.19 / 5.29 |
-| `color/poster/action/ink` | Mono → inverse/action/ink (neutral-950) / Lime neutral-100 | TF SF | 同ラベルとアイコン | 14.86 / 14.86 |
+| `color/poster/action/fill` | Mono → inverse/action/fill (neutral-100) / Green → **accent-fill (green-600)** | FF | ライブラリ（C-30 のポスター CTA の面。C-31 で `discord/fill` へ） | 面 vs ポスター 14.86 / 3.59 |
+| `color/poster/action/fill-hover` | Mono → inverse/action/fill-hover (neutral-200) / Green → accent-hover (green-700) | FF | 同ホバー（ライブラリ）。汎用 `action/fill-hover` を直接引くと Mono で反転しないので専用ロールにする | 13.51 / 3.27 |
+| `color/poster/action/fill-pressed` | Mono → inverse/action/fill-pressed (neutral-300) / Green → accent-pressed (green-800) | FF | 同プレス（ライブラリ）。ホバーの次の 1 段 | 11.19 / 2.25（押下の瞬間のみ 3:1 未満。ラベル 7.39） |
+| `color/poster/action/ink` | Mono → inverse/action/ink (neutral-950) / Green → on-accent (neutral-0) | TF SF | 同ラベルとアイコン（ライブラリ） | 14.86 / 4.63（hover 5.08 / pressed 7.39） |
+| `color/discord/fill` / `hover` / `pressed` | blurple-500 / 530 / 560（モード非依存） | FF | 参加 CTA（Hero 主・Poster）の面（C-31、§1.3.9） | ラベル 4.61 / 5.38 / 6.42、面 vs ink 3.60 / 3.09 / 2.59（プレスは押下の瞬間） |
+| `color/on-discord` | neutral-0 | TF SF | 同ラベル・Discord マーク・矢印 | — |
 | `color/inverse/action/ink` | neutral-950 | TF SF | 同ラベルとアイコン | — |
 
 規則（DECISION C-10）: ホバーは基底から中間調へ 1 段（950 → 800。900 は 950 との差 1.18 で区別できないため飛ばす）、プレスはさらに 1 段（700、800 との差 1.55）。Apple の「押下は即時、ホバーより強く」に従い、プレスがホバーの手前に戻ることはない。アウトライン・ゴースト・アイコンボタンはラベルを ink（インク面は inverse/ink）に固定し、状態は `state/*` のティントだけで示す。ティント上にアクセント文字を置かない（DECISION C-24: 600 は pressed-tint 上 4.59 で余裕がない）。マーキー停止／再生ボタンとスキップリンクは上記と `divider` / `focus/ring` で足り、専用ロールを置かない。
@@ -302,8 +353,28 @@ Tailwind v4 lime をそのまま採用。段の変更なし。**インディゴ�
 | typing dot | → ink-tertiary | SF | 入力中インジケータの 3 点 | 図形 3.85 ≥ 3:1（`ink-tertiary` に直接バインド、専用ロールなし） |
 | placeholder アイコン | → ink-tertiary | SF SC | `Icon/Photo` | surface 上 3.50 |
 | `color/shadow` | `alpha/ink/24` | — | `shadow/sm` / `md` / `lg` の色（ライブラリ。ページに影はない） | 影は 1 濃度、段差は幾何（§4.4） |
-| `color/backdrop` | `alpha/ink/48` | FF | ダイアログの幕（ライブラリ）。`prefers-reduced-transparency` / `prefers-contrast: more` では `alpha/ink/88` | 幕は面を半分に落とす |
+| `color/backdrop` | `alpha/ink/48` | FF | 参加ダイアログの幕（U-49）。`prefers-reduced-transparency` / `prefers-contrast: more` では `alpha/ink/88` | 幕は面を半分に落とす |
 | アイコン | currentColor | — | すべての Tabler アイコン | 行のテキスト色を継ぐ。アイコン専用トークンは置かない。最薄値は ink-tertiary |
+
+#### 1.3.9 ブランド色（第三者、C-31）
+
+| ロール | 値 | Scopes | 使用箇所 | 比 |
+|---|---|---|---|---|
+| `color/discord/fill` | blurple-500 `#5865f2` | FF | Discord へ出るボタンの面（Hero 主・Poster、参加ダイアログの同意 U-49）。Mono / Green で不変 | 面 vs ink 3.60 / vs ground 4.12 |
+| `color/on-discord` | neutral-0 | TF SF | 同ラベル（Label/M 15 B）、Discord マーク、矢印 | 4.61（hover 5.38 / pressed 6.42） |
+| `color/discord/hover` | blurple-530 `#505cdc` | FF | 同ホバー（暗い方へ 1 段） | 面 vs ink 3.09 / vs ground 4.81 |
+| `color/discord/pressed` | blurple-560 `#4752c4` | FF | 同プレス | 面 vs ink 2.59（押下の瞬間）/ vs ground 5.74 |
+
+アクセント（§1.3.5）の規則は適用しない — これは本システムの色ではなく、行き先の識別子。だから (1) ボタン以外（文字・罫・印・面）に置かない、(2) 地の上でも同じ値（Blurple は ground 上 4.12 で輪郭 3:1 を満たし、極性を持たない）、(3) フォーカスリングは面の規則どおり（ground `focus/ring`、ink `focus/ring-inverse`）で Blurple にしない。
+
+#### 1.3.10 図の円（Bento Figure、C-32）
+
+| ロール | 値 | Scopes | 使用箇所 | 比 |
+|---|---|---|---|---|
+| `color/figure/fill` | → accent-fill（green-600） | FF | ベントの図の円（64） | vs ground 4.14 |
+| `color/figure/ink` | → on-accent（neutral-0） | SF | 円の中の Tabler 32 | 塗り上 4.63 |
+
+Bento / Figure 以外がこのロールを引いてはならない。Mono では accent-fill の行き先（緑）がそのまま残る（自分側バブルと同じ扱い）。`prefers-contrast: more` でも白のまま、`forced-colors` では塗りが消えるので円に 1px の枠（Cell と同じ）。
 
 ### 1.4 コントラストマトリクス
 
@@ -317,31 +388,33 @@ Tailwind v4 lime をそのまま採用。段の変更なし。**インディゴ�
 | ink-secondary | Body S / M 14–15 R、Footnote 13 R / B、Caption 12 R / B、Overline 12 B、Subheadline 15 B、Overline JP 12 B（Mono バッジ） | N | 5.83 | PASS | コンセプト n600 3.85 / n500 2.59 / ink@55 3.66 → FAIL。すべて 700 に統一 |
 | ink-tertiary | マーキーゴースト Title 3 Caps 19 EB | L | 3.85 | PASS | コンセプト ink@40 2.41 → 大テキストでも FAIL |
 | ink-tertiary | Mono 区切り `asterisk`、typing dot、placeholder アイコン | U | 3.85 | PASS | コンセプト n400 1.80 / n500 2.59 → FAIL |
-| accent-text | リンクプレス Label Nav 14 R、Footnote 13、Title 3 19 EB | N | 5.79 | PASS | — |
-| accent-text-small | 活動バッジ Overline JP 12 B | N | 7.85 | PASS | コンセプト赤 3.76 → FAIL。lime-900 を採用（lime-700 は 4.46 で不足） |
-| link/hover | ナビ・ワードマークのホバー下線 2px | U | 5.79 | PASS | — |
+| accent-text | リンクプレス Label Nav 14 R、Footnote 13、Title 3 19 EB | N | 6.62 | PASS | — |
+| accent-text-small | 活動バッジ Overline JP 12 B | N | 8.77 | PASS | コンセプト赤 3.76 → FAIL。green-900 を採用（green-700 は 4.55 で余裕なし） |
+| link/hover | ナビ・ワードマークのホバー下線 2px | U | 6.62 | PASS | — |
 | link/current | 現在地の下線 2px（ink） | U | 14.86 | PASS | — |
-| pop/separator (lime-700) | マーキー区切りアイコン | U | 4.46 | PASS | 図形なので 3:1。文字には使わない |
-| focus/ring | 2px リング | U | 5.79 | PASS | — |
+| pop/separator (green-700) | マーキー区切りアイコン | U | 4.55 | PASS | 図形なので 3:1。文字には使わない |
+| focus/ring | 2px リング | U | 4.55 | PASS | — |
 | divider | 2px / 1px 罫線 | — | 2.59 | n/a | 装飾。3:1 が必要になれば ink-tertiary（3.85） |
 
 #### 1.4.2 サーフェス、ティント、塗り
 
 | ロール | 下地 | 代表用途 | 区分 | 比 | 判定 |
 |---|---|---|---|---|---|
-| ink | surface | Callout 14 B（相手側バブル、ペルソナ引用）、チップ数値 Caption 12 B | N | 13.51 | PASS |
+| figure/ink (neutral-0) | figure/fill (green-600) | ベントの図の Tabler 32（C-32） | U | 4.63 | PASS |
+| figure/fill (green-600) | ground | 図の円の輪郭 | U | 4.14 | PASS |
+| ink | surface | Callout 14 B（相手側バブル）、Footnote/Bold 13（ペルソナ次の一歩、U-53）、チップ数値 Caption 12 B | N | 13.51 | PASS |
 | ink-secondary | surface / chip/fill | Caption 12 R（画像キャプション、タグ文字）、チップアイコン | N / U | 5.30 | PASS |
 | ink-tertiary | surface | placeholder アイコン | U | 3.50 | PASS |
 | chip/fill | ground / hover-tint / pressed-tint | チップの面 | — | 1.10 / 1.03 / 1.15 | 装飾（面の差で読む） |
 | ink | hover-tint / pressed-tint | 活動セルタイトル Display M、Mobile メニュー行 Label Nav、ボタンラベル | N | 13.21 / 11.78 | PASS |
 | ink-secondary | hover-tint / pressed-tint | 活動セルの Subheadline 15 B、Body S 14 R、Mono バッジ Overline JP 12 B | N | 5.19 / 4.62 | PASS |
-| accent-text-small | hover-tint / pressed-tint | 活動バッジ Overline JP 12 B | N | 6.97 / 6.22 | PASS |
-| ink | selection | 選択テキスト（文字色を ink に強制） | N | 10.23 | PASS（ink-secondary のままなら 4.02 で FAIL） |
+| accent-text-small | hover-tint / pressed-tint | 活動バッジ Overline JP 12 B | N | 7.80 / 6.95 | PASS |
+| ink | selection | 選択テキスト（文字色を ink に強制） | N | 12.19 | PASS（ink-secondary のままでも 4.79） |
 | ink | avatar (300) | 頭文字 Caption 12 B | N | 11.19 | PASS |
 | action/ink | action/fill / -hover / -pressed | ナビ CTA Label S 14 B | N | 14.86 / 9.04 / 5.83 | PASS |
-| on-accent-subtle | accent-subtle | ライブラリ強調セル | N | 8.06 | PASS |
-| on-accent | accent / -hover / -pressed | ライブラリ主ボタン | N | 5.79 / 7.24 / 8.89 | PASS |
-| focus/ring | surface / hover-tint / pressed-tint | リング | U | 5.26 / 5.14 / 4.59 | PASS |
+| on-accent-subtle | accent-subtle | ライブラリ強調セル | N | 7.33 | PASS |
+| on-accent | accent / -hover / -pressed | ライブラリ主ボタン | N | 6.54 / 4.92 / 3.59 | pressed **FAIL**（ライブラリのみ。ページに accent ボタンは無い、C-18） |
+| focus/ring | surface / hover-tint / pressed-tint | リング | U | 4.13 / 4.04 / 3.60 | PASS |
 
 #### 1.4.3 インク面 `#201e1d`（ヒーロー、ベントのインクセル、Mono ポスター）
 
@@ -354,31 +427,43 @@ Tailwind v4 lime をそのまま採用。段の変更なし。**インディゴ�
 | inverse/outline (100 %) | 副ボタンの 1px 枠 | U | 14.86 | PASS | コンセプト ground@55 5.41 / 100 を 1 種に統合 |
 | inverse/ink | inverse hover-tint / pressed-tint 上 | N | 10.58 / 7.06 | PASS | — |
 | inverse/action/ink | inverse/action fill / -hover / -pressed | N | 14.86 / 13.51 / 11.19 | PASS | — |
-| accent-on-ink (lime-400) | ヒーロー下線 | U | 10.83 | PASS | — |
-| focus/ring-inverse (lime-300) | リング（ink / inverse hover-tint 上） | U | 12.79 / 9.11 | PASS | — |
-| inverse/ink | inverse/selection 上（lime-400@24） | N | 8.17 | PASS | — |
+| accent-on-ink (green-400) | ヒーロー h1 の句点 | U | 6.54 | PASS | — |
+| inverse/ink on hero/plate | h1 Display XL 116 EB（真っ黒 64% の板の上、U-50） | N | ≥ 17.2 | PASS | 板 = 黒 64% + 写真 20%（最明部 `#4d4b4a`）の合成 `#1c1b1b` で測る。写真が無い所は `#0c0b0a` で 19.7 |
+| hero/word (green-400) on hero/plate | 句点 | U | ≥ 6.77 | PASS | 写真が無い所は 7.75 |
+| focus/ring-inverse (green-300) | リング（ink / inverse hover-tint 上） | U | 8.62 / 6.14 | PASS | — |
+| inverse/ink | inverse/selection 上（green-400@24） | N | 9.78 | PASS | — |
 | inverse/hairline (900) | 格子線 | — | 1.18 | n/a | テクスチャ |
 
-#### 1.4.4 アクセント面 `#9ae600`（Lime のポスターのみ。**明るい面**）
+#### 1.4.4 アクセントの面 `accent-fill` `#238636`（チャット自分側バブル。C-30 / C-31）
 
-ポスター面は Lime では明るい面になるため、テキストは `inverse/*`（グラウンド × α）ではなく **インク × α** の梯子で組む。
+ポスター面は C-30 でインク面に戻った（§1.4.3 の値）。緑が面として現れるのは文字を載せる小さな面 1 つ（チャット自分側バブル）だけで、文字は白（`on-accent` = neutral-0）。参加 CTA の面は C-31 で Discord の Blurple になった（§1.4.5）。
 
 | ロール | 代表用途 | 区分 | 比 | 判定 | 修正 |
 |---|---|---|---|---|---|
-| poster/ink (neutral-950) | 見出し Display L 96 EB、ソーシャルホバー Overline 12 B | N | 10.83 | PASS | — |
-| poster/ink-secondary (ink@88) | キッカー Overline 12 B、段落 Body M 15 R、ソーシャル静止 Overline 12 B | N | 8.23 | PASS | 面が反転したため ground@88 → ink@88 に差し替え |
-| （参考）ink@72 | — | N | 5.32 | PASS | 数値上は使えるが抑制原則で使わない（階層は 2 段） |
-| （参考）ink@48 | — | N | 2.79 | FAIL | アクセント面で禁止 |
-| poster/action/fill (neutral-950) / hover (neutral-800) | インク色 CTA ボタンの面 | U | 10.83 / 7.61 | PASS | ラベルはグラウンド 14.86 / 10.45 |
-| poster/focus/ring (lime-900) | リング | U | 5.72 | PASS | lime-300 なら 1.18、lime-700 でも 3.25 で余裕なし |
-| poster/ink | poster/selection (ink@12) 上 | N | 8.64 | PASS | secondary も 6.57 で N |
-| ground 系のアウトラインボタン | アウトラインボタン | U | 1.53 | FAIL | アクセント面ではアウトラインボタンを使わない（塗りボタンのみ） |
+| on-accent (neutral-0) | 自分側バブル Callout 14 B | N | 4.63 | PASS | ground `#f3f2f2` だと 4.14 で FAIL → 白 |
+| accent-fill (600) | 面の輪郭 vs ground / surface（チャット自分側バブル） | U | 4.14 / 3.77 | PASS | — |
+| on-accent / accent-hover (700)・accent-pressed (800) | ライブラリ（Accent ボタン、K-5）。面 vs ink 3.59 / 3.27 / 2.25 | N | 5.08 / 7.39 | PASS | — |
+| poster/display (green-400) | ポスター見出しの句点 Display L 96 EB（インク面上、U-51） | L | 6.54 | PASS | 文は inverse/ink 14.86 |
+| （旧）poster/ink on green-400 | 明るい緑面だった時期（2026-09-12 の一時期） | N | 6.54 | PASS だが読みにくい | クライアント所見で撤回（C-30）。数値は付録 C.5 |
+
+#### 1.4.5 Discord の面 `discord/fill` `#5865f2`（参加 CTA ×2 と参加ダイアログの同意。C-31 / U-49）
+
+| ロール | 代表用途 | 区分 | 比 | 判定 | 修正 |
+|---|---|---|---|---|---|
+| on-discord (neutral-0) | CTA ラベル Label/M 15 B、Discord マーク 20、矢印 20 | N | 4.61 | PASS | — |
+| on-discord | discord/hover (530) / discord/pressed (560) 上 | N | 5.38 / 6.42 | PASS | — |
+| discord/fill (500) | 面の輪郭 vs ink（Hero・Poster の CTA） | U | 3.60 | PASS | — |
+| discord/fill (500) | 面の輪郭 vs ground（参加ダイアログの「学生として参加する」、U-49 / U-54）/ surface | U | 4.12 / 3.75 | PASS | — |
+| discord/hover (530) / discord/pressed (560) | 面の輪郭 vs ground（同） | U | 4.81 / 5.74 | PASS | — |
+| focus/ring (green-700) | 同意ボタンのリング（offset 2 で ground の上） | U | 4.55 | PASS | — |
+| discord/hover (530) / discord/pressed (560) | 面の輪郭 vs ink | U | 3.09 / 2.59 | hover PASS / pressed **FAIL** | 押下は duration/0 の瞬間。ラベル 6.42 が識別を担う（accent-pressed 2.25 と同じ扱い） |
+| focus/ring-inverse (green-300) | CTA のリング（offset 2 でインク面の上） | U | 8.62 | PASS | リングは面の規則。Blurple の隣でも緑のまま（C-8） |
 
 ### 1.5 ルール
 
 #### 1.5.1 アクセントの出現場所
 
-| 出現 | Mono | Lime accent | 値 |
+| 出現 | Mono | Green accent | 値 |
 |---|---|---|---|
 | フォーカスリング | ○ | ○ | 700（明るい面）/ 300（インク面）/ 900（ポスター面） |
 | 選択範囲 | ○ | ○ | 400@24（明るい面・インク面）/ ink@12（ポスター面） |
@@ -386,24 +471,27 @@ Tailwind v4 lime をそのまま採用。段の変更なし。**インディゴ�
 | テキストリンクのプレス文字 | ○ | ○ | 900 |
 | マーキー区切りアイコン | — | ○ | 700 |
 | 活動バッジ文字 | — | ○ | 800 |
-| ポスター面 | — | ○ | 400 |
-| ヒーロー回転語の下線 | — | ○ | 400（インク面上） |
+| ポスター見出しの句点（Display L、U-51） | — | ○ | 400（インク面上） |
+| チャット自分側バブルの面 | — | ○ | 600（accent-fill、白文字） |
+| ヒーロー h1 の句点（U-39） | — | ○ | 400（墨の板の上） |
+| ベントの図の円（C-32） | — | ○ | 600（accent-fill、白い図）— 自分側バブルと同じ面 |
 | 上記以外（見出し、アイコン、ボタン塗り、罫線、写真の着色、ホバー中の文字色） | × | × | — |
 
 - Mono の 4 出現はすべて一時的状態（hover / pressed / focus / selection）。持続状態（`aria-current`、静止テキスト）にアクセントを使わない。
 - **段は面で決まる**。明るい地の上では 700（図形のみ）/ 800（文字）/ 900（12px 以下の文字）。インク面とポスター面では 400（面・印）。この二極を混ぜない。
-- アクセントを文字に使うときの下限: 13px 以上は 800（6.31）、12px 以下は 900（7.85）。lime-700 は 4.46 で AA を割るため文字に使わない。ティント面にはアクセント文字を置かない（バッジのみ例外、900 で 6.22）。
-- インク面のアクセントは印（下線・選択）だけで、値は 400。数値上は 10.83 で文字も通るが、抑制原則により文字には使わない。
-- 明るい地の上で lime-400 を**面**として使わない（1.37。C-25）。地の上のアクションは `action/fill`（インク）で、ライムは大面・印・状態に限る。
-- アクセント塗りは面積の大きい順に「ポスター > 何もない」。2 つ目のアクセント面を足したくなったら、それはアクセントではなく新しいセクション色であり、本システムの外。
-- 既定モードは **Lime accent**、Mono は検証モード（DECISION C-17、2026-09-01 クライアント確定）。
+- アクセントを文字に使うときの下限: 13px 以上は 800（6.62）、12px 以下は 900（8.77）。green-700 は 4.55 で余裕がなく hover-tint 上で割るため文字に使わない。ティント面にはアクセント文字を置かない（バッジのみ例外、900 で 6.95）。
+- インク面のアクセントは印（Hero と Poster の句点、選択）で、値は 400。本文サイズの文字には使わない。
+- 明るい地の上で green-400 を**面**として使わない（2.27。C-25）。地の上のアクションは `action/fill`（インク）で、グリーンは大面・印・状態に限る。
+- 参加 CTA（Hero 主 / Poster）の面は Discord の Blurple（`discord/fill`、C-31）。アクセントの出現に数えない — 第三者の識別色の引用（U-21）で、Mono でも変わらない。
+- アクセント塗り（accent-fill 600）は**文字を載せる小さな面**（自分側バブル）だけ。セクション背景のような大面には使わない — 400 に墨の文字を載せると読みにくく、600 に白を載せた大面は重い（C-30）。2 つ目のアクセント面を足したくなったら、それはアクセントではなく新しいセクション色であり、本システムの外。
+- 既定モードは **Green accent**（DECISION C-29、2026-09-12 クライアント確定。C-17 の Lime accent を置換）、Mono は検証モード。
 
 #### 1.5.2 暗い面
 
 - テキストは `inverse/*` の梯子だけを使い、実色のニュートラルを置かない（ティントが面の色相を継がなくなる）。
 - インク面: primary / secondary / tertiary を使用可、quaternary はディスプレイサイズのみ。
-- アクセント面（Lime のポスター）: primary / secondary のみ。**明るい面**なのでテキストはインク × α、状態は `state/*`（インクのアルファ）を使う。ボタンはインク塗りのみ、アウトライン不可。リングは `poster/focus/ring`（900）。
-- ヒーロー・ベントのインクセルはモードで変わらない。モードが差し替えるのはポスターの面とヒーロー下線だけ。
+- ポスター面はインク面と同じ規則（C-30）: primary / secondary のみ、状態は `inverse/state/*`。CTA は Discord の Blurple（`discord/fill`、白ラベル、C-31）、副次があれば Outline。リングは `focus/ring-inverse`。
+- ヒーロー・ベントのインクセルはモードで変わらない。モードが差し替えるのはポスターの見出しと CTA、ヒーロー句点、マーキー区切り、活動バッジだけ。
 
 #### 1.5.3 Do / Don't
 
@@ -415,16 +503,16 @@ Tailwind v4 lime をそのまま採用。段の変更なし。**インディゴ�
 | 暗い面ではグラウンドのアルファで階層を組む | 暗い面に n300 / n400 を実色で置く |
 | リンクは下線で示し、ホバーは下線（ナビは 2px アクセント）、プレスは文字を 600 | ホバーで文字色だけを変える。持続状態にアクセントを使う |
 | ホバー／プレスは反対の極のアルファ | ホバーにアクセント塗りを使う（フォーカスと区別がつかない） |
-| 写真・ロゴは原色のまま（U-21） | 写真をライムでデュオトーンにする、セピアにする、白黒にする |
+| 写真・ロゴは原色のまま（U-21） | 写真をグリーンでデュオトーンにする、セピアにする、白黒にする |
 | 新しい色が要るときは既存の段から選び、比を再計算する | 段の間の値を作る（ランプが「値の袋」に戻る） |
-| Mono で先に検証する | Lime でしか読めない設計 |
+| Mono で先に検証する | Green でしか読めない設計 |
 
 #### 1.5.4 日本語固有
 
 - 12px 以下の和文補助文字（Overline JP、Caption）は ink-secondary（5.83）が床。画数の多いグリフは同じ比でも細く見えるため、これらは Bold 700 で組む（§2.2.4）。
 - 和欧混植の 1 行は 1 つの色トークンで組む。英字部分だけを別色にしない。
 - 段落は ink-secondary で 14px 以上。ティント面（surface、hover-tint、pressed-tint）に日本語段落が乗る場合も同じトークンで 4.62 以上を保証済み。
-- 明るい面の文字にアルファを使わない。アルファ文字は平坦でない地（写真・ティント・モード切替）で合成結果を検証できず、Figma でエイリアスにもできない。反転面で例外的に許すのは、面が 2 色（ink / lime-400）に限定され、両方を §1.4.3 / §1.4.4 で検算済みだから。
+- 明るい面の文字にアルファを使わない。アルファ文字は平坦でない地（写真・ティント・モード切替）で合成結果を検証できず、Figma でエイリアスにもできない。反転面で例外的に許すのは、面が 2 色（ink / green-400）に限定され、両方を §1.4.3 / §1.4.4 で検算済みだから。
 - 選択範囲では文字色を面の primary に強制する（§1.3.6）。ink-secondary の和文は選択上 4.02 で AA を割る。
 
 #### 1.5.5 高コントラスト（`prefers-contrast: more`）
@@ -437,7 +525,7 @@ Tailwind v4 lime をそのまま採用。段の変更なし。**インディゴ�
 | `ink-tertiary` (600): ゴースト文字、アイコン、点 | → `ink-secondary` | 5.83 |
 | `divider` / `divider-hairline` (500) | → neutral-700 | 5.83（線が 3:1 を超える） |
 | `inverse/ink-secondary` / `-tertiary` / `-quaternary` | → `inverse/ink` 100 % | 14.86 / 5.79 |
-| `accent-text` / `accent-text-small` / `pop/badge` | → lime-900 | 7.85 |
+| `accent-text` / `accent-text-small` / `pop/badge` | → green-900 | 8.77 |
 | `state/hover-tint` 6 → 12、`state/pressed-tint` 12 → 24 | — | ink 11.78 / 9.05 |
 | `inverse/state/*` | 変更なし | ラベルは inverse/ink 100 % で 10.58 / 7.06。48 % に上げると ground ラベルが約 3.4 で N 不合格 |
 | `inverse/hairline` | 変更なし（テクスチャ） | — |
@@ -546,12 +634,12 @@ CSS 変数名は Figma 名の `/` を `-` に置換する（例 `--color-inverse
 | Title/3 Caps | 19 | 800 | 26 | +3% | UPPER | 1 行 | `color/ink`、ゴーストは `color/ink-tertiary` | マーキー項目 |
 | **Headline** | 17 | 800 | 24（1.41） | 0 | — | ≤ 3 行 | `color/ink` | ベント 1×1（小）見出し、ペルソナ見出し、スタッフ名、フッターのワードマーク |
 | **Subheadline** | 15 | 700 | 24（1.60） | 0 | — | ≤ 2 行 | `color/ink-secondary` | 活動サブタイトル（Display M とベースライン揃え） |
-| **Callout** | 14 | 700 | 22（1.57） | 0 | — | ≤ 3 行 | `color/ink`（surface 上）/ `color/inverse/ink` | チャット吹き出し、ペルソナ引用 |
+| **Callout** | 14 | 700 | 22（1.57） | 0 | — | ≤ 3 行 | `color/ink`（ground / surface 上）/ `color/inverse/ink` | チャット吹き出し、ペルソナ引用（地の上、板なし。U-53） |
 | **Body/L** | 16 | 400 | 28（1.75） | 0 | — | 35–45 全角（§2.6.3） | `color/inverse/ink-secondary` | ヒーロー段落（反転地の長文は行送りを最大に） |
 | **Body/M** | 15 | 400 | 26（1.73） | 0 | — | 35–45 全角 | `color/poster/ink-secondary` | ポスター段落 |
 | **Body/S** | 14 | 400 | 24（1.71） | 0 | — | 35–45 全角 | `color/ink-secondary` | 活動説明、パートナー導入、ベント本文。段落として許す最小サイズ |
 | **Footnote/Regular** | 13 | 400 | 20（1.54） | 0 | — | ≤ 2 行 | `color/ink-secondary` / `color/inverse/ink-secondary` | フッターリンク、リーダー紹介、CTA セル副文 |
-| Footnote/Bold | 13 | 700 | 20 | 0 | — | ≤ 2 行 | `color/ink-secondary`、インラインリンクは `color/ink` | ペルソナ推薦、パートナー申込リンク |
+| Footnote/Bold | 13 | 700 | 20 | 0 | — | ≤ 2 行 | `color/ink-secondary`。ペルソナ推薦（surface の板、U-42 → U-53）とインラインリンクは `color/ink` | ペルソナ推薦、パートナー申込リンク |
 | **Caption/Regular** | 12 | 400 | 18（1.50） | 0 | — | ≤ 2 行 | `color/ink-secondary`、タグは `color/chip/ink` | ©、入力中…、チャット注記、タグ、画像キャプション、スタッフ紹介 |
 | Caption/Bold | 12 | 700 | 18 | 0 | — | 1 行 | `color/ink-secondary`（タグライン）、`color/ink`（頭文字・数） | Hack Your Limits.、アバター頭文字、リアクション数 |
 | **Label/M** | 15 | 700 | 20（1.33） | 0 | — | 1 行 ≤ 12 全角、折返し禁止 | ボタンの ink トークン（§6.2） | 44px コントロール（`size/control/md`）: ヒーロー・ポスター・ベント CTA、Mobile ナビ CTA・スキップリンク |
@@ -574,9 +662,9 @@ CSS 変数名は Figma 名の `/` を `-` に置換する（例 `--color-inverse
 | Nav | CTA 参加する（36） | 14 EB | Label/S（14 / 20） | §6.2 | 800 → 700 |
 | Nav | Mobile CTA（44）、メニュー行 | — | Label/M / Label/Nav | §6.2 | 新設部品 |
 | Nav | スキップリンク | — | Label/S（D）/ Label/M（M） | §6.2 | 新設 |
-| Hero | メタ SINCE 2025 · 長崎大学公認 学生団体 · サポーターズ 技育プロジェクト 学生団体公式パートナー · MEMBERS 50+ | 12 / +14% · +6% | Overline/Latin + Overline/JP（12 / 16、range） | `color/inverse/ink-tertiary` | +14 → +12。区切りは 1×12 hairline（§4.3）。折返しあり（DECISION U-13） |
-| Hero | h1 動詞 `Hack` | 124 / 104% / −2% | Display/XL **116** / 129 | `color/hero/word`（Mono inverse/ink 14.86 / Lime lime-400 10.83） | 回転語「学ぶ。」→ タグラインの動詞（U-37）。上限 124 → 116（1 行に収めるため） |
-| Hero | h1 目的語 `Your Limits.` | 同 | Display/XL | `color/inverse/ink` | 導入句「仲間と、」→ 目的語。quaternary → ink は U-3 のまま |
+| Hero | ~~メタ SINCE 2025 · 長崎大学公認 学生団体 · サポーターズ 技育プロジェクト 学生団体公式パートナー · MEMBERS 50+~~ | — | — | — | **U-39 で撤去**。事実は About の SINCE / OFFICIAL セルへ |
+| Hero | h1 `Hack Your Limits` | 124 / 104% / −2% | Display/XL **116** / 129 | `color/inverse/ink`、墨の板（`inverse/ground`）の上 | 回転語 → タグライン（U-37）。上限 124 → 116（1 行に収めるため）。U-39 で文は白、板に載せる |
+| Hero | h1 句点 `.` | 同 | Display/XL | `color/hero/word`（Mono inverse/ink / accent 400） | U-39: 色の強調は句点 1 か所。U-3 の「白 × アクセント」の対比は語ではなく句点で引き継ぐ |
 | Hero | リード 長崎にテック好きのためのハブを。 | 18 EB | Title/1 | `color/inverse/ink` | 18 → 32（DECISION U-5） |
 | Hero | 段落 | 16 / 175%、36em | Body/L（16 / 28） | `color/inverse/ink-secondary` | 行長は `measure/paragraph` |
 | Hero | ボタン ×2（44） | 15 EB | Label/M | §6.2 | 800 → 700 |
@@ -587,7 +675,7 @@ CSS 変数名は Figma 名の `/` を `-` に置換する（例 `--color-inverse
 | Section | h2 | 34 / 112% / −1.5% | Title/1（32 / 40、M 26 / 32） | `color/ink` | 34 → 32、−1% |
 | Bento | キッカー CULTURE … | 10 / +14% | Overline/Latin | `color/ink-secondary`、統計セルは `color/inverse/ink-tertiary` | 10 → 12 |
 | Bento | 2×1 見出し | 24 | Title/2（22 / 28） | `color/ink` | 24 → 22 |
-| Bento | 1×1 中 / 小 見出し | 19 / 17 | Title/3 / Headline | `color/ink` | — |
+| Bento | 1×1 大 / 中 / 小 見出し | — / 19 / 17 | Title/1 / Title/3 / Headline | `color/ink` | 大は SINCE の日付「2025年4月」だけ（U-52） |
 | Bento | 本文 | 13.5 / 170% | Body/S（14 / 24） | `color/ink-secondary` | 13.5 → 14 |
 | Bento | 統計 50 + | 56 + 34 | Display/M + Title/1（range、ベースライン揃え） | `color/inverse/ink` | 34 → 32。`tabular-nums` 不要 |
 | Bento | チャット見出し #general — いつものChoTech | 10 UPPER | Overline/JP（ORIGINAL） | `color/ink-secondary` | ブランド名を大文字化しない |
@@ -602,7 +690,7 @@ CSS 変数名は Figma 名の `/` を `-` に置換する（例 `--color-inverse
 | Activities | バッジ 月1〜2回 | 12 / +10% | Overline/JP + `arrow-right` | `color/pop/badge` | +6% |
 | Activities | 説明 | 14 / 170%、46em | Body/S | `color/ink-secondary` | 行長は `measure/paragraph`（42 全角） |
 | Activities | タグ | 11 / +2% | Caption/Regular | `color/chip/ink` | 11 → 12、LS 0 |
-| For You | CASE 01 / 見出し / 引用 / 推薦 | 10 / 17 / 13.5 B / 12.5 B | Overline/Latin / Headline / Callout / Footnote/Bold | `color/ink-secondary` / `color/ink` / `color/ink` / `color/ink-secondary` | 10 → 12、13.5 → 14、12.5 → 13 |
+| For You | CASE 01 / 見出し / 引用 / 推薦 | 10 / 17 / 13.5 B / 12.5 B | Overline/Latin / Headline / Callout / Footnote/Bold | `color/ink-secondary` / `color/ink` / `color/ink`（地の上、U-53）/ `color/ink`（surface の板、U-42） | 10 → 12、13.5 → 14、12.5 → 13 |
 | Members | 役職 代表 / TECH LEAD | 11 / +12% · 10 | Overline/JP / Overline/Latin | `color/ink-secondary` | 12 に統一 |
 | Members | リーダー名 / スタッフ名 | 22 / 17 | Title/2 / Headline | `color/ink` | — |
 | Members | 紹介（skills） | 13 / 150% · 12 | Footnote/Regular（リーダー）/ Caption/Regular（スタッフ） | `color/ink-secondary` | 行送り 20 / 18 |
@@ -632,8 +720,8 @@ CSS 変数名は Figma 名の `/` を `-` に置換する（例 `--color-inverse
 | `color/ink-secondary`（n700） | Body S、Footnote、Caption、Overline、Subheadline、Caption/Bold タグライン、© | 5.83 | 5.30 | PASS |
 | `color/chip/ink`（→ n700）on `color/chip/fill`（n200） | Caption タグ、チップアイコン | — | 5.30 | PASS |
 | `color/ink-tertiary`（n600） | Title 3 Caps ゴースト（L） | 3.85 | — | PASS（L のみ。12–17px には使わない） |
-| `color/pop/badge`（Mono: ink-secondary / Lime: lime-800） | Overline/JP 活動バッジ | 5.83 / 6.31 | — | PASS |
-| `color/accent-text`（lime-800） | リンクホバー下線・プレス（13px 以上） | 6.31 | 5.74 | PASS |
+| `color/pop/badge`（Mono: ink-secondary / Green: green-800） | Overline/JP 活動バッジ | 5.83 / 6.62 | — | PASS |
+| `color/accent-text`（green-800） | リンクホバー下線・プレス（13px 以上） | 6.62 | 6.01 | PASS |
 | 概念 n600 `#7d7979` を小文字に | キッカー・役職・タグライン | 3.85 | — | **FAIL** → ink-secondary |
 | 概念 n500 `#9b9797` | キッカー・© | 2.59 | — | **FAIL** → ink-secondary |
 | 概念 ink@40 | マーキーゴースト | 2.41 | — | **FAIL** → ink-tertiary（L） |
@@ -646,17 +734,19 @@ CSS 変数名は Figma 名の `/` を `-` に置換する（例 `--color-inverse
 | `color/inverse/ink-secondary`（ground@88） | Body L、Footnote CTA 副文 | 11.78 | PASS |
 | `color/inverse/ink-tertiary`（ground@72） | Overline ヒーローメタ・統計キッカー | 8.29 | PASS |
 | `color/inverse/ink-quaternary`（ground@48） | Display XL 導入句のみ | 4.45 | PASS（大きな文字 3:1。12–17px には **使わない**） |
-| lime-800（明るい地の文字色をそのまま持ち込む） | — | 2.35 | FAIL → インク面のアクセントは印のみ（`color/accent-on-ink` = lime-400。抑制により文字には使わない） |
+| green-800（明るい地の文字色をそのまま持ち込む） | — | 2.25 | FAIL → インク面のアクセントは印のみ（`color/accent-on-ink` = green-400。抑制により文字には使わない） |
 
-#### 2.4.3 アクセント面（Lime モードのポスター、lime-400。**明るい面**）
+#### 2.4.3 アクセントの面（`accent-fill` green-600、チャット自分側バブル。C-30 / C-31）と Discord の面（`discord/fill`、参加 CTA。C-31）
 
 | 色トークン | 使うロール | 比 | 判定 |
 |---|---|---|---|
-| `color/poster/ink`（neutral-950） | Display L | 10.83 | PASS |
-| `color/poster/ink-secondary`（ink@88） | Overline JOIN US・ソーシャル（12 Bold）、Body M | 8.23 | PASS |
-| （参考）ink@72 | — | 5.32 | 数値上は N。抑制原則によりポスターでは使わない |
-| （参考）ink@48 | — | 2.79 | FAIL → ポスターで禁止 |
-| グラウンド系の文字（ground / ground@88） | — | 1.53 / 1.45 | **FAIL** → 明るい面にグラウンド色の文字を置かない |
+| `color/on-accent`（neutral-0） | Callout 14 B（自分側バブル） | 4.63 | PASS |
+| `color/on-accent` on accent-hover / accent-pressed | 同（ライブラリ） | 5.08 / 7.39 | PASS |
+| `color/on-discord`（neutral-0）on `discord/fill` | Label/M 15 B（参加 CTA: Hero 主・Poster）、Discord マーク、矢印 | 4.61 | PASS |
+| `color/on-discord` on discord/hover / discord/pressed | 同 | 5.38 / 6.42 | PASS |
+| `color/poster/display`（green-400）on ink | Display L（ポスター見出しの句点、U-51） | 6.54 | PASS（L） |
+| ground `#f3f2f2` on accent-fill | — | 4.14 | **FAIL** → ラベルは neutral-0 |
+| ink on green-400（旧ポスター面） | — | 6.54 | PASS だが読みにくい → C-30 で面をインクに |
 
 ポスターの階層は primary / secondary の 2 段（Display L と Overline / Body M）。3 段目が要るコピーはポスターに置かない。
 
@@ -664,7 +754,7 @@ CSS 変数名は Figma 名の `/` を `-` に置換する（例 `--color-inverse
 
 | 組み合わせ | 比 | 判定 |
 |---|---|---|
-| `color/link/pressed`（accent-text）on ground / surface | 5.79 / 5.26 | PASS |
+| `color/link/pressed`（accent-text-small、green-900）on ground / surface | 8.77 / 7.97 | PASS |
 | `color/action/ink` on `color/action/fill-hover`（n800）/ `-pressed`（n700） | 9.04 / 5.83 | PASS |
 | `color/inverse/action/ink` on `color/inverse/action/fill-hover`（n200）/ `-pressed`（n300） | 13.51 / 11.19 | PASS |
 | `color/ink` / `color/ink-secondary` on `color/state/hover-tint`（活動セル） | 13.21 / 5.19 | PASS |
@@ -788,7 +878,7 @@ WCAG 1.4.10（320px リフロー）: 上記のとおり横スクロールは発�
 #### 2.6.4 改行・禁則・孤立行
 
 - `line-break: strict; word-break: normal; overflow-wrap: anywhere;`（URL 以外で単語の途中で切れることはない）。Figma の折返しが同じ禁則（行頭の 、。」）ー っ ゃ 禁止）になっているか、Foundations ページで 1 例確認する。
-- 段落末が 1〜2 文字だけの行を作らない。`text-wrap: pretty` を段落に、`text-wrap: balance` を 2 行見出しに適用し、それでも残る場合はコピーを直す。
+- 段落末が 1〜2 文字だけの行を作らない。`text-wrap: pretty` を段落に、`text-wrap: balance` を 2 行見出し（Hero のリード Title/1 を含む）に適用し、それでも残る場合はコピーを直す。段落にも `word-break: auto-phrase` を補助として当てる（**U-48**、2026-09-12: pretty だけでは Poster の段落が「最初の一 / 歩」、Mobile の Hero リードが「ハ / ブを。」と語中で折れた。auto-phrase は Chrome 119+ の段階的強化で、非対応ブラウザは `normal` のまま）。
 - 見出しは文節または読点の直後でだけ改行する。基準は著者の `<br>` / `<wbr>`（Figma も同じ位置で手動改行）。`word-break: auto-phrase` は対応ブラウザでの補助として許す。「ChoTech」「Discord」「Dev Day」などの固有名詞の途中で改行しない（`white-space: nowrap` の span）。
 - 両端揃え禁止（`text-align: justify` を書かない）。中央揃えもページ上に存在しない。
 - ルビ: 対象なし。縦組み: 使わない（水平のルールドグリッドと矛盾する）。
@@ -993,9 +1083,13 @@ Desktop / Mobile が同値の行は Mobile 列を「=」とする。根拠中の
 | `size/cell-min` | 120 | 罫線グリッドの行の最小高、sponsor cell の高さ | 24 × 5。**床であって目標ではない**: kicker（Overline 16）+ `stack/md` 16 + Headline 2 行（48）+ inset 48 = 128 で、kicker + 2 行見出しの 1×1 セルは行ごと 128 に伸びる（stretch）。sponsor cell と 1 行見出しのセル（104）は 120 |
 | `size/avatar` | 24 | chat avatar（矩形） | = `icon/lg`。chat indent = 24 + `inline/xs` 8 = 32 |
 | `size/dot` | 7 | typing dot（円） | 吹き出しの中に置くので、点そのものが見えるサイズが要る。3 点 + gap 5 = 31 幅（DECISION U-1 で 4 → 7） |
-| `size/illustration` | 96 | persona イラスト（円） | `space/96`、24 grid × 4 |
+| `size/illustration` | **80** | persona イラスト（円） | 96 → 80（U-42: 題の横に置くので、Headline 2 行 48 を中に収める最小の径）。`space/80`、24 grid × 10/3 |
 | `size/mark-nav` / `size/mark-footer` | 28 / 24 | logo mark（両 viewport 同値） | 4 の倍数。wordmark Title 3 19 / Headline 17 に対する比 1.47 / 1.41（**DECISION L-21**） |
 | `size/rule-v` | 12 | 縦 hairline の高さ（brand tagline の左、hero meta の区切り） | 隣接文字の font-size（Caption / Overline 12）と同値。行送り 18 だと行を跨いで見え、cap 高 9 だと点に見える（**DECISION L-16**） |
+| `size/dialog` | 480 | 参加ダイアログの `max-width`（U-49）。幅は `calc(100% − 2 × page/inset)` をこれで止める | 4 × `size/cell-min`。Mobile は container と同じ 342。2×1 セル（597）より狭く 1×1（298）より広い「持ち上げた 1 セル」の幅 |
+| `size/figure` | 64 | ベントの図の円（全セル、U-52） | 2 × `icon/xl` 32。3 つ並べて 64 × 3 + 12 × 2 = 216 ≤ 1×1 の内側 249.5 |
+| `size/persona-quote` | 44 | ペルソナ引用の箱の高さ（U-53） | 2 × Callout 行送り 22。**床ではなく目標**（§3.5 の原則の例外、ペルソナカードに閉じる）: 引用が 1 行でも 2 行ぶん取り、6 枚を 2 段とも同じ高さにする。前提は §9.3 の上限 42 字 |
+| `size/persona-rec` | 64 | ペルソナ次の一歩の板の高さ（U-53） | 2 × Footnote/Bold 行送り 20 + `inset/sm` 12 × 2。同上。前提は上限 36 字 |
 | `measure/paragraph` | 588 / 342 | 段落の `max-width` | §3.10 |
 
 CSS: `--size-nav: 3.875rem; --size-hero-max: 60rem; --size-cell-min: 7.5rem; --size-control-md: 2.75rem`。固定値ではなく `min-height` に渡す。
@@ -1025,7 +1119,7 @@ CSS: `.container { width: min(100% - 2 * var(--page-inset), 75rem); margin-inlin
 |---|---|---|
 | ナビを横並びに開く | 768px = 48rem | 英語 1 語のリンク 4 本 + CTA sm は 768 に余裕をもって収まる。ここでハンバーガーを維持するのは、タイプスケールの忠実さより明らかに悪い体験 |
 | 罫線グリッドを 2 列に開く | 768px = 48rem | L-10 が退けたのは列数ではなく「セル内容 128px（Body S で 9 字）」。768 の 2 列はセル内容 ≈ 320px（22 字）で閾値を満たす |
-| 罫線グリッドを設計どおりの列数（bento 4、persona / staff 3、partner 6）に開く | 1248px = 78rem | トークンのモードと一致させ、Figma の Desktop フレームと同一幾何にする |
+| 罫線グリッドを設計どおりの列数（bento 4、persona / staff 3。partner は U-43 で外枠 1 セル + 団体数で等分）に開く | 1248px = 78rem | トークンのモードと一致させ、Figma の Desktop フレームと同一幾何にする |
 
 タイポグラフィを中間帯で流体補間（`clamp()`）しない: §2 の行長計算は「n 文字 = n em」の離散値に依存しており、補間した中間サイズでは §9.3 の文字数上限が検証されていない。CSS では `--breakpoint-tablet` 48rem / `--breakpoint-desktop` 78rem の 2 つだけを持ち、Tailwind の既定階梯は消す。
 
@@ -1133,11 +1227,11 @@ Figma Variables は `Shape`（単一モード）。
 | Token | 値 | 適用 |
 |---|---|---|
 | `radius/none` | 0 | すべて（ボタン、chip、セル、image slot、focus ring） |
-| `radius/full` | 9999 (ELLIPSE) | 例外 3 つ: persona イラスト（`size/illustration` 96 円）、typing dot（`size/dot` 7 円）、チャット avatar（24 円） |
+| `radius/full` | 9999 (ELLIPSE) | 例外 4 つ: persona イラスト（`size/illustration` 80 円）、typing dot（`size/dot` 7 円）、チャット avatar（24 円）、**ベントの図の円**（`size/figure` 64、U-52） |
 | `radius/bubble` | 18 | チャット吹き出しと typing 吹き出し（**DECISION U-1**） |
 | `radius/bubble-tail` | 4 | 吹き出しの**外側の下角のみ**。テールが接する側を締める |
 
-角丸を持つのは「人物の似顔絵」「点」「Messages 風のチャット吹き出し」だけ。
+角丸を持つのは「人物の似顔絵」「点」「Messages 風のチャット吹き出し」「ベントの図の円」（U-52 — 似顔絵と同じ「絵」の族）だけ。
 
 - **DECISION U-1** チャットにだけ角丸を許す。あの部品はサイトの UI コントロールではなく、**実在するアプリ（Messages）の引用**である。引用は元の見えを保つほうが「これはチャットの様子だ」と速く伝わる。ボタン・chip・セル・入力には波及させない — 波及した時点でサイト全体の性格が変わる。トレードオフ: 角丸ゼロの原則に例外が 1 つ増える。例外を 1 つに閉じるため、`radius/bubble` の適用先はチャット部品に限ると明記する。
 
@@ -1182,7 +1276,7 @@ tag / reaction chip に枠はない（塗り `color/chip/fill` が境界、§3.4
 |---|---|---|
 | `shadow/sm` | `0 1px 2px` `color/shadow`（ink @ 24%） | 予備（ページで未使用） |
 | `shadow/md` | `0 4px 8px` `color/shadow` | 予備（menu / popover が将来必要になった場合） |
-| `shadow/lg` | `0 16px 32px` `color/shadow` | **dialog のみ**。必ず幕 `color/backdrop`（ink @ 48%）と併用 |
+| `shadow/lg` | `0 16px 32px` `color/shadow` | **参加ダイアログのみ**（§6.21、U-49）。必ず幕 `color/backdrop`（ink @ 48%）と併用 |
 
 Figma は `shadow/{sm,md,lg}/y` と `shadow/{sm,md,lg}/blur` の FLOAT 2 本（`Shape`）と `color/shadow` で持つ。
 
@@ -1194,11 +1288,11 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 
 | 地 | Token | 値 | 比 | 判定 |
 |---|---|---|---|---|
-| ground `#f3f2f2` / surface `#eae7e7` / hover-tint / pressed-tint（ページ、セル、chip 上も含む） | `color/focus/ring` | lime-700 `#497d00` | 4.46 / 4.05 / 3.96 / 3.53 | ✓ 3:1 |
-| ink `#201e1d`（hero、stat / CTA セル、Mono の poster）、inverse hover-tint | `color/focus/ring-inverse` | lime-300 `#bbf451` | 12.79 / 9.11 | ✓ |
-| lime-400 `#9ae600`（Lime の poster） | `color/poster/focus/ring` | lime-900 `#35530e` | 5.72 | ✓。面が反転するため専用 token |
+| ground `#f3f2f2` / surface `#eae7e7` / hover-tint / pressed-tint（ページ、セル、chip 上も含む） | `color/focus/ring` | green-700 `#1a7f37` | 4.55 / 4.13 / 4.04 / 3.60 | ✓ 3:1 |
+| ink `#201e1d`（hero、stat / CTA セル、Mono の poster）、inverse hover-tint | `color/focus/ring-inverse` | green-300 `#56d364` | 8.62 / 6.14 | ✓ |
+| green-400 `#3fb950`（Green の poster） | `color/poster/focus/ring` | green-900 `#044f1e` | 3.86 | ✓。面が反転するため専用 token |
 
-**DECISION L-14 / C-8 改** リングは面ごとに 3 token。明るい面 `focus/ring` lime-700（4.46）、インク面 `focus/ring-inverse` lime-300（12.79）、ポスター面 `poster/focus/ring` lime-900（5.72）。ライムはポスター面の明度が反転するため、暗い面用の 1 token では賄えない（lime-300 を lime-400 面に置くと 1.18 で消える）。Mono でも focus ring はライム（アクセントが状態表示にだけ現れる規則の一部）。`outline: 2px solid; outline-offset: 2px; border-radius: 0`。full-bleed の行（activity row、Menu row）は inset（offset −2）で隣接罫線と交差させない（DECISION K-7）。
+**DECISION L-14 / C-8 改** リングは面ごとに 3 token。明るい面 `focus/ring` green-700（4.55）、インク面 `focus/ring-inverse` green-300（8.62）、ポスター面 `poster/focus/ring` green-900（3.86）。グリーンはポスター面の明度が反転するため、暗い面用の 1 token では賄えない（green-300 を green-400 面に置くと 1.32 で消える）。Mono でも focus ring はグリーン（アクセントが状態表示にだけ現れる規則の一部）。`outline: 2px solid; outline-offset: 2px; border-radius: 0`。full-bleed の行（activity row、Menu row）は inset（offset −2）で隣接罫線と交差させない（DECISION K-7）。
 
 ---
 
@@ -1206,7 +1300,7 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 
 ### 5.1 セットと描画規則
 
-- Tabler Icons **outline** のみ。24 grid、stroke 2、round cap / round join（Tabler 既定）。filled 版・他セット（lucide、react-icons）は混ぜない。例外は Discord のブランドマークだけ `brand-discord-filled`（**DECISION U-23**: 輪郭版は顔の目が線になって崩れて見える。塗り版は 24 grid のまま stroke を持たない）。
+- Tabler Icons **outline** のみ。24 grid、stroke 2、round cap / round join（Tabler 既定）。filled 版・他セット（lucide、react-icons）は混ぜない。例外は**ブランドマーク**（X / Instagram / GitHub / Discord）で、Tabler の `brand-*` は使わず**各社の公式素材**の path を写したインライン SVG（`src/components/brand-marks.tsx`、原本は `assets/brand/*.svg`）を置く（**DECISION U-38**、2026-09-12。U-23 は撤回）。幾何は不変、色は `currentColor` の黒 / 白のみ、縦横比は素材のまま（呼び出し側の正方形の枠に `xMidYMid meet` で収まる）。各社の規約はどれも第三者の再描画を許さない — X「黒か白。形の完全性を保つ」、GitHub「色・寸法の変更を含め改変不可」、Discord「編集・変更・歪曲・再配色・再構成をしない」、Instagram「Brand Resource Center のロゴのみ」。
 - 絵文字・記号文字（✳ → ↑ 🙌 👀）をアイコン代わりに使わない。矢印は `Icon/ArrowRight`（サイト内へ進む）と `Icon/ArrowUpRight`（外部へ出る: Discord、X、Instagram、GitHub、mailto）の 2 つ。ページ内スクロール（hero「活動を見る」、Nav リンク）はアイコンなし（R9）。例外はチャットのリアクション（§6.4、**DECISION U-25**）: Discord の実際のリアクションを写す絵なので、アイコンではなく実際の絵文字を置く。
 - stroke: 16 / 20 / 24 では **2**（16 では実効 1.33px だが Retina では鮮明、Tabler の意図通り）。**32 以上は 1.5**（そのままだと 2.67px になり太る）。現ページに 32 以上の用途はない。
 
@@ -1217,6 +1311,7 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 | `icon/sm` | 16 | 12〜14px の文字（badge Overline 12、chip Caption 12、persona rec / sponsor link Footnote 13、footer の任意 brand アイコン）、36px コントロールのラベル横 | glyph の実寸は 16 × 20/24 ≈ 13px ≈ 14px 文字の cap 高 + α |
 | `icon/md` | 20 | 15〜19px の文字（marquee Title 3 Caps 19 の区切り）、44px コントロールのラベル横、icon-only 36 | glyph ≈ 17px。19px 大文字の cap 高 ≈ 15px と釣り合う |
 | `icon/lg` | 24 | icon-only 44（menu、x）、placeholder の写真アイコン | Tabler のネイティブサイズ |
+| `icon/xl` | 32 | About ベントの図 — 緑の円（64）の中、題の下（U-40 → U-52） | stroke **1.5**（§5.1: 32 以上は 1.5）。24 grid × 4/3。色は `figure/ink`（白、C-32） |
 
 判定順: コントロール内 → 高さで決める（ラベル横: 36 → 16、44 → 20。icon-only: 36 → 20、44 → 24）。文中 → 文字サイズで決める（≤ 14 → 16、15〜19 → 20）。（DECISION L-27、R7）
 
@@ -1240,9 +1335,9 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 | `color/ink-tertiary` n600 `#7d7979` | ground / surface | 3.85 / 3.50 | ✓ 最も薄い許容値（図形専用。テキストは L のみ） |
 | `color/divider` n500 `#9b9797` | ground / surface | 2.59 / 2.35 | ✗ → **アイコンには使わない** |
 | `color/inverse/ink` / `inverse/ink-tertiary`（ground @ 72%） | ink | 14.86 / 8.29 | ✓ hero kicker 行 |
-| `color/pop/badge` lime-800（Lime）/ ink-secondary（Mono） | ground | 6.31 / 5.83 | ✓ badge の矢印 |
-| `color/pop/separator` lime-700（Lime）/ ink-tertiary（Mono） | ground | 4.46 / 3.85 | ✓（R17: アイコンは形なので 3:1 を床にする） |
-| `color/poster/action/ink` ground | poster CTA の面（Lime: neutral-950） | 14.86 | ✓ |
+| `color/pop/badge` green-800（Green）/ ink-secondary（Mono） | ground | 6.62 / 5.83 | ✓ badge の矢印 |
+| `color/pop/separator` green-700（Green）/ ink-tertiary（Mono） | ground | 4.55 / 3.85 | ✓（R17: アイコンは形なので 3:1 を床にする） |
+| `color/on-discord` neutral-0 | discord/fill（参加 CTA と参加ダイアログの同意の Discord マーク・矢印、C-31 / U-49） | 4.61 | ✓ |
 
 **DECISION L-15** typing dot と placeholder のアイコンは `color/ink-tertiary`（3.85 / 3.50）以上。コンセプトは n500 の `currentColor` だが非テキストとして不足。
 
@@ -1258,9 +1353,10 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 | `Icon/Menu2` | `menu-2` | `IconMenu2` | 24 | Mobile nav の開く | icon button 44 |
 | `Icon/X` | `x` | `IconX` | 24 / 20 | Mobile nav の閉じる（icon button 44 → 24）、library dialog の閉じる（36 → 20） | 中央 |
 | `Icon/Photo` | `photo` | `IconPhoto` | 24 | image placeholder（§5.7.3） | 単独。`color/ink-tertiary` |
-| `Icon/BrandX` / `Icon/BrandInstagram` / `Icon/BrandGithub` | `brand-x` / `brand-instagram` / `brand-github` | `IconBrandX` … | 16 | **footer 任意**（Footnote 13 のリンク先頭）。poster の social はテキストラベルのみ | leading 4 |
+| `Brand/X` / `Brand/Instagram` / `Brand/GitHub` / `Brand/Discord` | —（Tabler ではなく公式素材、U-38） | `BrandX` / `BrandInstagram` / `BrandGithub` / `BrandDiscord`（`brand-marks.tsx`） | 20 | poster の social（マークのみ、U-28）、member card の socials（U-12）、Discord へ出るボタンの先頭（hero / poster、U-19） | social: 単独、hit area 44 / ボタン: leading 8 |
+| `Icon/Book` `Icon/Hammer` `Icon/MessageCircle` `Icon/Code` `Icon/Palette` `Icon/Flask` `Icon/MapPin` `Icon/Messages` `Icon/School` `Icon/HeartHandshake` `Icon/Flag` | `book` `hammer` `message-circle` `code` `palette` `flask` `map-pin` `messages` `school` `heart-handshake` `flag` | `IconBook` … `IconFlag` | **32**（stroke 1.5） | About のベント（§6.11.2 / §6.11.4、U-40）。題の語をひとつずつ図にする | 図同士 `inline/sm` 12、図 → 題 `stack/md` 16、行頭の図 → 題 `inline/md` 16 |
 
-必須 8 種 + 任意 3 種（player-pause / play は U-31 で撤去）。追加するときは「同じ意味に 2 つのアイコンを使わない」— 内部（`ArrowRight`）と外部（`ArrowUpRight`）は別の意味であり、この 2 つ以外の矢印を増やさない。
+必須 8 種 + 任意 3 種（player-pause / play は U-31 で撤去）+ ベントの図 11 種（U-40）+ ブランドマーク 4（公式素材、U-38）。追加するときは「同じ意味に 2 つのアイコンを使わない」— 内部（`ArrowRight`）と外部（`ArrowUpRight`）は別の意味であり、この 2 つ以外の矢印を増やさない。
 
 ### 5.6 命名
 
@@ -1280,16 +1376,16 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 
 | スロット | Desktop | Mobile | 比率 | fit / 焦点 |
 |---|---|---|---|---|
-| bento photo (2×2) | 597 × 行高（≈ 336） | 338 × 190 | **16:9** | cover、`object-position: 50% 40%` |
+| activity photo（U-41。旧 bento photo は About から移動） | 597 × 336 | 338 × 190 | **16:9** | cover、center |
 | leader photo | 597 × 336 | 338 × 190 | 16:9 | cover、`50% 30%`（顔は上 1/3） |
 | staff photo | 397.33 × 298 | 338 × 253.5 | 4:3 | cover、`50% 30%` |
-| persona イラスト | 96 円 | 96 円 | 1:1 | cover |
-| sponsor logo | 197.67 角のセル、内側 149.67 角（inset 24） | 168 角、内側 128 角（inset 20） | 1:1 | contain、セル中央（L-31: タイルは正方形） |
+| persona イラスト | 80 円（U-42） | 80 円 | 1:1 | cover |
+| partner logo（U-43） | 144 × 96（3:2）、団体数で等分した列の中央 | 同（2 列） | 3:2 | contain、中央（L-26） |
 
 **DECISION L-20** bento photo は 16:9 固定。コンセプトの「min 280」は撤廃し、Desktop では chat セルの高さ（≈ 339 ≈ 597 × 9/16 = 336）に stretch、Mobile は 16:9 で高さを決める。
 **DECISION L-26** sponsor ロゴはセル中央（左揃え原則の例外）。ロゴは「ラベル」ではなく「図」で、幅も形も揃わないものを左に寄せると右側の空きが不揃いに見える。placeholder の文言（§5.7.3）は例外ではない。
 
-書き出し: スロット幅の 2 倍（DPR 2）で AVIF / WebP。`loading="lazy"`（Bento 写真は `eager`）、`width` `height` 属性で CLS 防止。alt は §8.6。
+書き出し: next/image の `fill` + `sizes`（**DECISION U-45**、2026-09-12）。スロットの実幅を `sizes` で渡し（member / activity 597、persona 80px、logo 144px、Hero 背景 100vw）、Next が DPR に応じた幅の AVIF / WebP を配信する（`images.formats`）。`priority`（Hero 背景、先頭の活動写真）以外は lazy。`width` / `height` は fill と両立しないので持たず、CLS は枠の aspect-ratio が防ぐ。素材は `public/` の原寸（3〜4MB の jpg）のまま置く — 配信サイズは Next が決める。alt は §8.6。
 
 #### 5.7.3 Placeholder
 
@@ -1324,7 +1420,7 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 | 4 | Rule | Rule | 全セクション境界・行区切り・タグライン・Hero meta |
 | 5 | Brand lockup | Brand / Lockup | Nav・Footer |
 | 6 | Nav bar（Desktop / Mobile）+ Menu panel | Nav / Bar | 上部固定 |
-| 7 | Hero / Meta strip | V2 / Hero / Meta Strip | Hero |
+| 7 | ~~Hero / Meta strip~~（U-39 で撤去） | ~~V2 / Hero / Meta Strip~~ | Hero |
 | 8 | Hero / Rotating word | V2 / Hero / Rotating Word | Hero |
 | 9 | Section / Hero | V2 / Section / Hero | 先頭 |
 | 10 | Marquee band + item + control | Marquee / Band, Item | Hero 直下 |
@@ -1334,10 +1430,11 @@ token は §1.3.6 のもの。地は「outline-offset 2 の外側にある親の
 | 14 | Activity cell | Activity / Cell, Bento | Activities |
 | 15 | Persona card | Persona / Card | For You |
 | 16 | Member card（Leader / Staff） | Member / Card | Members |
-| 17 | Partner cell | Partner / Cell | Partners |
+| 17 | Partner logo（外枠だけの 1 行、U-43） | Partner / Cell → Partner / Logo | Partners |
 | 18 | Poster CTA | Section / Poster | Join |
 | 19 | Footer | Section / Footer | 末尾 |
 | 20 | Image slot | Media / Image Slot | Bento・Persona・Member・Partner |
+| 21 | Join dialog（参加ダイアログ、U-49） | — | Nav・Menu・Hero 主・Poster の参加 CTA が開く |
 
 コンセプトにあって **落とした** もの: Tag `Accent 2` / `Outline`（1 アクセント原則）、テキスト記号アイコン（`→ ↑ ✳ 🙌 👀` → Tabler、§5.5）、Chat 再生ループと Hero 浮遊バブル（§7 M9）、Members 見出しの編集ヒント `写真はドロップで差し替え可`（制作ツールの痕跡）、Section heading の `note`（同）。
 
@@ -1436,6 +1533,8 @@ Apple の `scale(0.97)` は「押し込める物体」の比喩で、影・奥�
 10. Poster: CTA → X / Instagram / GitHub
 11. Footer: Brand → 4 リンク
 
+参加ダイアログ（U-49）: Nav / Menu / Hero 主 / Poster の CTA が開く。開いたら「学生として参加する」（外部リンク）→「閉じる」の順に Tab が巡り、背後は inert。閉じたら押した CTA へ戻る（`<dialog>` の既定）。
+
 Rotating word: 可視部分は `aria-hidden`、`<h1>` の名前は visually-hidden の全文 `仲間と、学ぶ。創る。話す。`（§8.5）。`aria-live` は使わない。アンカー移動後は見出しへフォーカス（`tabindex="-1"`、§7.4.6）。
 
 #### 6.1.8 モーション（§7 のトークンで参照）
@@ -1448,8 +1547,8 @@ Rotating word: 可視部分は `aria-hidden`、`<h1>` の名前は visually-hidd
 | Marquee | `motion/marquee/speed` 40 px/s `linear`。hover / focus-within / pointer-down / control で停止 | 静止（先頭グループを折返し配置） |
 | Rotating word | `motion/word/period` 2.5s、退出 `spring/quick`、入り `spring/default`、**無限ループ**（DECISION U-15） | 静止 `学ぶ。` |
 | Typing dots | `motion/dots/period` 1.2s、セル可視時のみ | 静止（opacity 1） |
-| Chat 再生 | `motion/chat/step` 900ms ごとに 1 手、一巡したら `motion/chat/hold` 2.4s 置いて先頭へ（U-16） | 静止（全行を表示） |
-| Photo 送り | `motion/photo/step` 4s ごとに 1 枚、`spring/default` でスライド（U-18） | 静止（先頭の 1 枚） |
+| Chat 再生 | `motion/chat/step` 600ms ごとに 1 手、一巡したら `motion/chat/hold` 2.0s 置いて 1 行目だけ残して畳む（U-16 / U-44。空のスレッドは見せない） | 静止（全行を表示） |
+| ~~Photo 送り~~ | ~~`motion/photo/step` 4s ごとに 1 枚、`spring/default` でスライド（U-18）~~ **U-40 で撤去**（写真は Activities の静止画へ） | — |
 | Button / Link hover | 色・下線のみ（矢印の移動など装飾の動きは足さない、M9） | 同じ |
 
 Spring は移動にだけ使う（M2）。本章の部品で移動するのは Menu panel と Rotating word のみ。
@@ -1467,8 +1566,9 @@ Spring は移動にだけ使う（M2）。本章の部品で移動するのは M
 | Chat reaction | 実際の絵文字 👍 / 👀（U-25） | 16 相当 | `🙌` → 👍 |
 | Mobile menu 開 / 閉 | `menu-2` / `x` | Icon button md 24（sm なら 20） | — |
 | Image placeholder | `photo` | 24 | — |
-| Discord への導線（ボタン） | `brand-discord`（**先頭**）+ `arrow-up-right`（末尾） | 16 / 20 | — |
-| SNS への導線（X / Instagram / GitHub） | `brand-x` / `brand-instagram` / `brand-github`（**先頭**）+ `arrow-up-right`（末尾） | 16 | — |
+| Discord への導線（ボタン。面は Discord の Blurple、C-31） | 公式マーク `BrandDiscord`（**先頭**、白）+ `arrow-up-right`（末尾） | 16 / 20 | — |
+| 参加ダイアログを開くボタン（Nav・Menu・Hero 主・Poster、U-49） | `arrow-up-right`（末尾。行き先は外部だが、出る前に同意を挟む。ダイアログの同意リンクにも同じ矢印） | 16 / 20 | — |
+| SNS への導線（X / Instagram / GitHub） | 公式ブランドマーク（§5.1、**先頭**）+ `arrow-up-right`（末尾） | 16 | — |
 
 **DECISION U-19** Discord と SNS の導線にはブランドマークを**先頭**に添える。行き先が「外部」であることは `arrow-up-right` が言うが、**どこへ**行くかは文字を読まないと分からない。ロゴは読む前に分かる唯一の記号で、ここだけは §5.1 の「アイコンは装飾、意味は隣の文字が運ぶ」の例外にあたる（マークそのものが固有名詞）。
 
@@ -1483,7 +1583,7 @@ Spring は移動にだけ使う（M2）。本章の部品で移動するのは M
 
 #### 6.2.1 目的と解剖
 
-行動を起こす唯一の「面」。ページの CTA はすべて Discord への導線か、ページ内移動。
+行動を起こす唯一の「面」。ページの CTA はすべて Discord への導線（参加ダイアログを経る、U-49）か、ページ内移動。
 
 ```
 [ inset ][ label ][ inline/xs 8 ][ icon ][ inset ]      高さ = size/control/*（高さ駆動、ラベルは垂直中央）
@@ -1518,17 +1618,20 @@ Focus-visible は全スタイル共通で **リング 2px offset 2**、色は地
 | **Ink solid** | Default | `action/fill` 950 | `action/ink` ground（14.86） | — | Ground / Ink（H:28） |
 | | Hover | `action/fill-hover` 800 | ground（9.04） | — | |
 | | Pressed | `action/fill-pressed` 700 | ground（5.83） | — | |
-| **Accent primary**（ライブラリ） | Default | `accent` lime-400 | `on-accent` ink（10.83） | — | Ground / Primary（S:81） |
-| | Hover | `accent-hover` lime-500 | ink（8.52） | — | |
-| | Pressed | `accent-pressed` lime-600 | ink（5.42） | — | |
-| **Outline**（ライブラリ） | Default | なし | `ink` | currentColor（ink） | Ground / Secondary（S:84） |
+| **Discord**（参加ダイアログの同意、U-49） | Default | `discord/fill` blurple-500（面 vs ground 4.12） | `on-discord` neutral-0（4.61） | — | — |
+| | Hover | `discord/hover` blurple-530（4.81） | 白（5.38） | — | |
+| | Pressed | `discord/pressed` blurple-560（5.74） | 白（6.42） | — | |
+| **Accent**（地の上はライブラリ） | Default | `accent-fill` green-600 | `on-accent` neutral-0（4.63） | — | Ground / Primary（S:81） |
+| | Hover | `accent-hover` green-700 | 白（5.08） | — | |
+| | Pressed | `accent-pressed` green-800 | 白（7.39） | — | |
+| **Outline**（参加ダイアログの閉じる、U-49） | Default | なし | `ink` | currentColor（ink） | Ground / Secondary（S:84） |
 | | Hover | `state/hover-tint` | ink（13.21） | ink | |
 | | Pressed | `state/pressed-tint` | ink（11.78） | ink | |
 | **Ghost**（ライブラリ） | Default | なし | `ink`（14.86） | — | Ground / Ghost（S:87） |
 | | Hover | `state/hover-tint` | ink（13.21） | — | |
 | | Pressed | `state/pressed-tint` | ink（11.78） | — | |
 
-- **DECISION K-5** Accent primary・Outline・Ghost は **ページに置かない**（§1 C-18。Lime が着色する 4 箇所に CTA は含まれず、アクセント文字のボタンは Mono 原則に反する。加えて lime-400 の面は地に対し 1.37 で輪郭が読めない、C-25）。ページの ground 地ボタンは Ink solid（Nav CTA・Menu panel CTA・Skip link）のみ。
+- **DECISION K-5 改（C-30 → C-31 → U-49）** ground 地の帯と本文では Accent・Outline・Ghost を**置かない**（Nav CTA・Menu panel CTA・Skip link は Ink solid。帯の中で色を増やさない）。例外は参加ダイアログ（U-49）: 同意は Discord、閉じるは Outline — 紙から持ち上げた面の中で主と副を並べる必要がある唯一の場所。**ink 地の参加 CTA（Hero 主・Poster）は Discord**（`discord/fill` Blurple + 白、C-31）— 参加の動線だけが有彩色の面を持ち、その色は行き先の持ち主のもの。C-30 の Accent（accent-fill + 白）は同日に置換し、Accent はどの地でもライブラリ。旧 K-5 の根拠（lime-400 の面は地の上 1.37）は accent-fill を 600 にしたことで解けている。
 - **DECISION K-2** Outline の枠は `color/divider`（2.59）ではなく **currentColor（ink）**。枠だけがボタンを識別する情報なので非テキスト 3:1 が要る（WCAG 1.4.11）。
 - Ghost のラベルは ink 固定（R21）。
 
@@ -1539,12 +1642,18 @@ Focus-visible は全スタイル共通で **リング 2px offset 2**、色は地
 | **Ground solid** | Default | `inverse/action/fill` 100 | `inverse/action/ink` ink（14.86） | — | Ink / Solid（H:46, 233） |
 | | Hover | `inverse/action/fill-hover` 200 | ink（13.51） | — | |
 | | Pressed | `inverse/action/fill-pressed` 300 | ink（11.19） | — | |
+| **Discord**（参加 CTA、C-31） | Default | `discord/fill` blurple-500（面 vs ink 3.60） | `on-discord` neutral-0（4.61） | — | — |
+| | Hover | `discord/hover` blurple-530（3.09） | 白（5.38） | — | |
+| | Pressed | `discord/pressed` blurple-560（2.59、押下の瞬間） | 白（6.42） | — | |
+| **Accent**（ライブラリ。C-30 → C-31） | Default | `accent-fill` green-600（面 vs ink 3.59） | `on-accent` neutral-0（4.63） | — | — |
+| | Hover | `accent-hover` green-700（3.27） | 白（5.08） | — | |
+| | Pressed | `accent-pressed` green-800（2.25、押下の瞬間） | 白（7.39） | — | |
 | **Outline** | Default | なし | `inverse/ink` | `inverse/outline`（14.86） | Ink / Outline 55・100 を統合（R3） |
 | | Hover | `inverse/state/hover-tint` | ground（10.58） | 同 | |
 | | Pressed | `inverse/state/pressed-tint` | ground（7.06） | 同 | |
 
-- 制約: **Outline は ink 地専用**（Hero・Bento Ink cell）。Lime の Poster は明るい面なので、グラウンド色の枠・ラベルが 1.53 で読めない（§1.4.4）。Poster の CTA は **Ink solid**（`poster/action/*`）のみで、面 vs 地が 10.83 / 7.61 で UI 3:1 ✓。
-- 同じ面に主ボタン（Ground solid）があるとき副次は Outline。
+- 制約: **Outline は ink 地専用**（Hero）。Poster もインク面（C-30）なので Outline を置けるが、現ページの Poster は Discord 1 本（C-31）。`poster/action/*` はライブラリ（Mono 検証用）。
+- 同じ面に主ボタン（Accent または Ground solid）があるとき副次は Outline。
 
 **Icon button（`Button / Icon`）**
 
@@ -1574,7 +1683,7 @@ Focus-visible は全スタイル共通で **リング 2px offset 2**、色は地
 - 和欧間に手動スペースを **入れない**（`Discordに参加する`）。自動アキも無効（§2.6.2）。
 - 外部リンクは `arrow-up-right`、サイト内は `arrow-right`、ページ内スクロールはアイコンなし（§6.1.9）。矢印は必ず末尾。
 - ラベルに記号（`→`、`!`）を含めない。
-- 同一画面の主 CTA は 1 つ（Hero: Ground solid、Poster: Ground solid、Bento: Outline は副次）。
+- 同一画面の主 CTA は 1 つ（Hero: Discord、Poster: Discord、参加ダイアログ: 学生として参加する = Discord、副次は Outline）。
 
 #### 6.2.6 Figma
 
@@ -1593,14 +1702,16 @@ Focus-visible は全スタイル共通で **リング 2px offset 2**、色は地
 
 | 場所 | Set / Style / Size | ラベル | アイコン |
 |---|---|---|---|
-| Nav CTA（Desktop） | Ground / Ink / **sm** | `参加する` | `arrow-up-right` 16 |
-| Nav CTA（Mobile） | Ground / Ink / **md** | `参加する` | `arrow-up-right` 20 |
-| Hero 主 | On Ink / Ground / md | `参加する` | `arrow-up-right` 20 |
+| Nav CTA（Desktop） | Ground / Ink / **sm** | `参加する`（参加ダイアログを開く、U-49） | `arrow-up-right` 16 |
+| Nav CTA（Mobile） | Ground / Ink / **md** | `参加する`（同） | `arrow-up-right` 20 |
+| Hero 主 | On Ink / **Discord** / md（C-31） | `参加する`（参加ダイアログを開く） | Discord マーク 20 + `arrow-up-right` 20 |
 | Hero 副 | On Ink / Outline / md | `活動を見る` | なし（ページ内スクロール） |
-| Bento CTA | On Ink / Outline / md | `Discordに参加する` | `arrow-up-right` 20 |
-| Poster | On Ink / Ground / md | `Discordに参加する` | `arrow-up-right` 20 |
+| ~~Bento CTA~~ | ~~On Ink / Outline / md~~（U-40 で撤去） | — | — |
+| Poster | On Ink / **Discord** / md（C-31） | `Discordに参加する`（参加ダイアログを開く） | Discord マーク 20 + `arrow-up-right` 20 |
 | Mobile menu | Icon / Ground / md | — | `menu-2` / `x` 24 |
-| Menu panel CTA | Ground / Ink / md、`fullWidth` | `参加する` | `arrow-up-right` 20 |
+| Menu panel CTA | Ground / Ink / md、`fullWidth` | `参加する`（参加ダイアログを開く） | `arrow-up-right` 20 |
+| 参加ダイアログ 参加 | Ground / **Discord** / md（Mobile は `fullWidth`、U-49 / U-54） | `学生として参加する` | Discord マーク 20 + `arrow-up-right` 20 |
+| 参加ダイアログ 閉じる | Ground / **Outline** / md（Mobile は `fullWidth`。`<form method="dialog">` の submit） | `閉じる` | なし |
 | Skip link | Ground / Ink / sm（D）/ md（M） | `本文へスキップ` | なし |
 
 Desktop Nav に sm を使う理由: バー高 `nav/pad-y` 12 + 36 + 12 + `stroke/rule` 2 = **62**（§3.9）。Mobile は 8 + 44 + 8 + 2 = 62 で同じ帯高を保つ。
@@ -1626,7 +1737,7 @@ Desktop Nav に sm を使う理由: バー高 `nav/pad-y` 12 + 36 + 12 + `stroke
 #### 6.3.2 振る舞い
 
 - Nav link はページ内アンカー（`scroll-behavior: smooth`、Reduced motion で `auto`）。`aria-current="true"` を使う場合は IntersectionObserver 閾値 50%。
-- 外部リンク（Social・Discord・mailto・Partner ロゴ・Member SNS）は **すべて `target="_blank"` + `rel="noopener noreferrer"` で新しいタブに開く**（**DECISION M-21**、§8.5）。visually-hidden で `（外部、新しいタブで開く）` を添え（WCAG G201）、文字リンクには `arrow-up-right` を付ける。属性と文言は `lib/external-link.ts` の 1 か所で持つ。文字ラベルは CSS で大文字化し、ソースは `X` `Instagram` `GitHub` の正書法。
+- 外部リンク（Social・Discord・mailto・Partner ロゴ・Member SNS）は **すべて `target="_blank"` + `rel="noopener noreferrer"` で新しいタブに開く**（**DECISION M-21**、§8.5）。visually-hidden で `（外部、新しいタブで開く）` を添え（WCAG G201）、文字リンクには `arrow-up-right` を付ける。属性と文言は `lib/external-link.ts` の 1 か所で持つ。文字ラベルは CSS で大文字化し、ソースは `X` `Instagram` `GitHub` の正書法。参加の CTA 4 本はリンクではなくボタン（参加ダイアログを開く、U-49）で、Discord へ出るのはダイアログの同意リンク。
 - Hit area は §6.1.5。
 
 #### 6.3.3 コンテンツ規則
@@ -1703,7 +1814,7 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 |---|---|
 | 高さ | **62** = `nav/pad-y` 12 + `size/control/sm` 36 + 12 + `stroke/rule` 2 |
 | 横 | full-bleed、`page/inset` 24（container に縛らない: バーは紙の端まで、DECISION L-23） |
-| 構成 | Brand lockup（左）← `margin-right: auto` → Link Nav × 4（gap `inline/md` 16）→ 16 → Button Ground / Ink / sm `参加する` + `arrow-up-right`（Discord マークは置かない: U-19。U-27 で一度足したが同日に撤回 — 帯の CTA は文言だけで足りる） |
+| 構成 | Brand lockup（左）← `margin-right: auto` → Link Nav × 4（gap `inline/md` 16）→ 16 → Button Ground / Ink / sm `参加する` + `arrow-up-right`（参加ダイアログを開く `<button aria-haspopup="dialog">`、U-49。Discord マークは置かない: U-19。U-27 で一度足したが同日に撤回 — 帯の CTA は文言だけで足りる） |
 | 塗り | `ground`、下辺 Rule 2/H |
 | 固定 | `position: sticky; top: 0`。不透明（半透明マテリアルは使わない: フラット原則、`prefers-reduced-transparency` 分岐不要） |
 | スクロール中 | 変化なし（影・縮小・自動隠しをしない、§7 D7）。セクションに `scroll-margin-top: var(--size-nav)` |
@@ -1713,7 +1824,7 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 | 項目 | 値 |
 |---|---|
 | 高さ | 62 = 8 + `size/control/md` 44 + 8 + 2（DECISION L-22） |
-| 構成 | Brand（tagline なし）← auto → Button Ground / Ink / md `参加する` + `arrow-up-right` → `inline/sm` 12 → Icon button md `menu-2` |
+| 構成 | Brand（tagline なし）← auto → Button Ground / Ink / md `参加する` + `arrow-up-right`（参加ダイアログを開く、U-49）→ `inline/sm` 12 → Icon button md `menu-2` |
 | 幅検算 | 24 + mark 24 + 12 + wordmark 95（`ChoTech` Title 3 19、実測）+ ≥ 16 + CTA 127（inset 20 + ラベル 59 + 8 + 矢印 20 + 20）+ 12 + 44 + 24 = **378 ≤ 390**（実測 2026-09-05: brand 131、CTA 127、余り 28）。wordmark は `white-space: nowrap` で折らない |
 
 #### 6.7.3 Menu panel（Mobile、DECISION K-6）
@@ -1721,7 +1832,7 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 | 項目 | 値 |
 |---|---|
 | 位置 | Nav bar 直下、幅 100%、`ground`、下辺 Rule 2/H |
-| 行 | Menu row 高 `size/control/md` 44、`Label/Nav` 14 `ink`、横 inset `page/inset` 24、行間 Rule 1/H。4 行 + 末尾に Button Ground / Ink / md `参加する`（`fullWidth`、上下 `inset/md` 16、左右 24） |
+| 行 | Menu row 高 `size/control/md` 44、`Label/Nav` 14 `ink`、横 inset `page/inset` 24、行間 Rule 1/H。4 行 + 末尾に Button Ground / Ink / md `参加する`（`fullWidth`、上下 `inset/md` 16、左右 24。参加ダイアログを開く — ダイアログの Escape はメニューに伝えず、閉じたらフォーカスは CTA へ戻りメニューは開いたまま、U-49） |
 | 状態（row） | Default `ink` / Hover `state/hover-tint`（13.21）/ Pressed `pressed-tint`（11.78）/ Current ラベル幅の 2px `link/current` 下線（R16。左の縦バーは §4.3 規則 6 に反する）/ Focus **inset** ring（offset −2、K-7） |
 | 開閉 | Icon button `aria-expanded` `aria-controls`。開: **フォーカスはボタンに留める**（非モーダル disclosure、APG）。ArrowDown で 1 行目へ。閉: Escape / 外側タップ / 行選択、フォーカスをボタンへ戻す。アイコン `menu-2` ↔ `x` は `duration/0` |
 | モーダル性 | 非モーダル（背後を暗くしない・スクロールロックなし）。項目 4 つの開示であり、Apple「dim to focus, separate to keep flow」の後者 |
@@ -1736,13 +1847,10 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 #### 6.8.1 Section / Hero（解剖）
 
 ```
-┌ inverse/ground  ─ 背景写真（不透明度 0.2、原色）────────────────────────────┐
+┌ inverse/ground  ─ 背景写真（不透明度 0.2、原色、blur 4px、静止）─────────────┐
 │ section/pad-display 96 (M 64)                                                  │
-│ SINCE 2025 | 長崎大学公認 学生団体 |                     meta strip（折返し）  │
-│ サポーターズ 技育プロジェクト 学生団体公式パートナー | MEMBERS 50+              │
-│ stack/xl 32                                                                    │
-│ 仲間と、学ぶ。                                            h1 = lead-in + word   │
-│   ink    accent                                                                │
+│ ▌Hack Your Limits.▐                                       h1 = 黒 64% の板 + 句点  │
+│   inverse/ink   hero/word                                                      │
 │ stack/xl 32                                                                    │
 │ 長崎にテック好きのためのハブを。                          lead (Title/1)       │
 │ stack/xs 8                                                                     │
@@ -1756,25 +1864,20 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 | 要素 | 仕様 |
 |---|---|
 | 面 | `color/inverse/ground`。`min-height: min(100svh − var(--size-nav) − var(--size-band-marquee), var(--size-hero-max))`、内容は垂直中央（DECISION L-7 → **L-33**: 帯もファーストビューに入れる）。full-bleed、内容は container 1200 / 342 |
-| 背景写真 | ink 面の**上**に `--hero-backdrop-opacity` **0.2** で重ねる（`cover`、原色 U-21、`aria-hidden`）。動きは §7.3（U-20）。**不透明度は測って決める値**: 実レンダリングの合成結果から測った文字コントラストの最小は ink 8.94 / secondary 7.37 / **tertiary 5.55**（12px の meta strip が最も厳しい）で、AA 4.5 を下回る面積は 0 %。素材を替えたら測り直す — 明部の多い写真は同じ 0.2 で通らない |
+| 背景写真 | ink 面の**上**に `--hero-backdrop-opacity` **0.2** で重ねる（`cover`、原色 U-21、`aria-hidden`）。**静止画**。`filter: blur(4px)`（`--hero-backdrop-blur`）で軽くぼかし、`scale` 1.04 でぼかしの縁を Hero の外へ出す（**U-50**。U-20 の 48 s の漂いは撤去）。ぼかしは局所の明部を均すので、下の最小値は下がらない。**不透明度は測って決める値**: 実レンダリングの合成結果から測った文字コントラストの最小は ink 8.94 / secondary 7.37 / **tertiary 5.55**（12px の meta strip が最も厳しい）で、AA 4.5 を下回る面積は 0 %。素材を替えたら測り直す — 明部の多い写真は同じ 0.2 で通らない |
 | 格子線 | **なし**（**DECISION U-22**: K-12 の 4 本を撤去。写真の上に線が乗ると写真の一部に見え、何の線か分からない。`color/inverse/hairline` は用途を失うが、トークンは残す） |
-| Meta strip | §6.8.2 |
-| h1 | `Display/XL` **116** / 56、`lang="en"`。**`Hack Your Limits.`**（タグラインと同文、**DECISION U-37**）。動詞 `Hack` を **`color/hero/word`**、目的語 `Your Limits.` を **`inverse/ink`**（14.86）で塗り、**アクセント → 白の 2 色**で「動詞 ＋ 目的語」を対比させる（U-3 の対比を語順を入れ替えて引き継ぐ）。Desktop 1 行（≈ 1131 ≤ 1200。124 のままだと 1209 で 1280 幅では入るのに 1440 幅で折れるため上限を 116 に）。Mobile は `Hack Your` / `Limits.` の自然折返し（`Hack Your` ≈ 322 ≤ 342）。著者改行は入れない。`text-wrap: balance` は使わない（`Hack` / `Your Limits.` に寄り、Mobile で `Your Limits.` ≈ 366 が入らない）。名前は可視の文そのもの（visually-hidden なし） |
+| Meta strip | **撤去**（§6.8.2、**DECISION U-39**）。「SINCE 2025 / 長崎大学公認 / 技育プロジェクト 学生団体公式パートナー」は About の SINCE / OFFICIAL セルへ（§6.11） |
+| h1 | `Display/XL` **116** / 56、`lang="en"`。**`Hack Your Limits.`**（タグラインと同文、**DECISION U-37**）。文を**真っ黒 64% の板**（`hero/plate` = `alpha/black/64`、**U-50**。板越しに写真がうっすら透ける。影は無い。実色の `inverse/ground` は周囲の面と同色で、写真の明部の上でしか板に見えなかった。inline-block、padding 左右 **0.2em** / 上下 **0.1em**、左右は `−0.2em` の負マージンで container の外へ吊るし**字の左端**を lead と揃える）に載せ、文は `inverse/ink`（14.86）、句点 **`.` だけ `color/hero/word`**（**DECISION U-39**。U-37 の「動詞 `Hack` をアクセント」は撤回 — 板が強調を担うので色の強調は 1 か所）。板を inline ではなく inline-block にするのは、この書体の content area（≈ 1.6em）が行送り 1.11 を超えて背景が上下 30px はみ出すため。Desktop 1 行（板 ≈ 1177 = 1131 + 46、124 のままだと 1209 で 1280 幅では入るのに 1440 幅で折れるため上限を 116 に）。Mobile は板の中で `Hack Your` / `Limits.` の自然折返し（`Hack Your` ≈ 322 ≤ 342）。著者改行は入れない。`text-wrap: balance` は使わない。名前は可視の文そのもの（visually-hidden なし） |
 | lead | `Title/1` **32 / 26**、`inverse/ink`（14.86）。Display 124 と本文 16 の間に中間の階層を作る（**DECISION U-5**） |
 | 段落 | `Body/L` 16、`inverse/ink-secondary`（11.78）、`max-width: measure/paragraph` 588（≈ 36.8 全角）。Mobile は container 幅 |
-| actions | 横 flex、gap `inline/sm` 12。主 = On Ink / Ground / md、副 = On Ink / Outline / md（アイコンなし）。Mobile も 1 行（255 ≤ 342） |
-| 縦リズム | meta → h1 → lead → actions は `stack/xl` 32、lead → 段落は `stack/xs` 8（DECISION L-6） |
+| actions | 横 flex、gap `inline/sm` 12。主 = On Ink / **Discord** / md（`discord/fill` Blurple + 白、Discord マーク先頭、C-31。押すと参加ダイアログ、U-49）、副 = On Ink / Outline / md（アイコンなし）。Mobile も 1 行（255 ≤ 342） |
+| 縦リズム | h1 → lead → actions は `stack/xl` 32、lead → 段落は `stack/xs` 8（DECISION L-6） |
 | 状態 | ボタン §6.2、Focus ring `focus/ring-inverse`、Selection `inverse/selection` |
-| Reveal | §7.4.1（Hero はオブザーバなし、`document.fonts.ready` か 400ms） |
+| Reveal | 段は h1 0 / lead 1 / actions 2（meta strip 撤去で 1 段詰める）。§7.4.1（Hero はオブザーバなし、`document.fonts.ready` か 400ms） |
 
-#### 6.8.2 Hero / Meta strip
+#### 6.8.2 Hero / Meta strip（撤去）
 
-| 要素 | 仕様 |
-|---|---|
-| 項目 | `Overline/Latin` 12 UPPER（`Since 2025`、`Members 50+`）/ `Overline/JP` 12（`長崎大学公認 学生団体`、`サポーターズ 技育プロジェクト 学生団体公式パートナー`）、`inverse/ink-tertiary`（8.29）。**DECISION U-13** 公認と公式パートナーは同じ強さで並べる — どちらも「第三者が裏づけた事実」で、片方だけを本文に落とすと格が下がって見える |
-| 区切り | Rule 1/V 1 × 12、**currentColor**（DECISION L-16） |
-| gap | `inline/md` 16、`flex-wrap`（Desktop 1–2 行 / Mobile 3–4 行、行間 `stack/xs` 8）。区切り罫は行頭に来ないよう項目とセットで折返す |
-| 意味 | `<p>`（見出しにしない、§8.5）。数字は半角、`Since 2025` に `lang="en"` は付けない（単語レベル） |
+**DECISION U-39**（2026-09-12、クライアント判断）で撤去。「SINCE 2025 / 長崎大学公認 / 技育プロジェクト 学生団体公式パートナー」の 3 項目は About が受け持つ — 設立は SINCE セル、公認と公式パートナーは OFFICIAL セル（§6.11）。Hero は「タグライン → リード → 段落 → 導線」の 4 段だけになり、ファーストビューで最初に読まれる文字が h1 になる。U-13（公認と公式パートナーを同じ強さで併記）の趣旨は OFFICIAL セルの 2 行が引き継ぐ。部品 `Hero / Meta Strip`、`heroContent.meta`、`meta-strip.tsx` は消す。
 
 #### 6.8.3 Hero / Rotating word（撤去）
 
@@ -1782,7 +1885,7 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 
 #### 6.8.4 Figma
 
-`Hero / Meta Strip` 1（`item1–4` TEXT）。`Section / Hero` `Viewport` {Desktop, Mobile} 2（`headline` TEXT = `Hack Your Limits.`、`leadStrong` `leadBody` `primaryLabel` `secondaryLabel` TEXT）。`Hero / Rotating Word` とそのプロトタイプ（After delay 2,500ms）は U-37 で削除。
+~~`Hero / Meta Strip` 1（`item1–4` TEXT）~~（U-39 で撤去）。`Section / Hero` `Viewport` {Desktop, Mobile} 2（`headline` TEXT = `Hack Your Limits.`、`leadStrong` `leadBody` `primaryLabel` `secondaryLabel` TEXT）。`Hero / Rotating Word` とそのプロトタイプ（After delay 2,500ms）は U-37 で削除。
 
 ### 6.9 Marquee band + item + control
 
@@ -1828,7 +1931,7 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 | title | `Title/1` **32 / 26**、`ink`、`<h2>`。1 行（最長 11 全角 × 26 = 286 ≤ 342）。`word-break: auto-phrase`（対応ブラウザ） |
 | label | `Overline/Latin` 12 UPPER、`ink-secondary`（5.83）。`ABOUT` / `ACTIVITY` / `FOR YOU` / `MEMBERS` / `PARTNERS`。**title の後ろ**。`<p>`（見出しにしない） |
 | 並び | Desktop: 横、**ベースライン揃え**、gap `inline/md` 16。Mobile: 縦、gap `stack/xs` 8、左揃え |
-| 下マージン | `section/heading-mb` 32 / 24。ベントの直前 `heading-mb-list` 8（Activities）。導入文の前 `heading-mb-intro` 12 |
+| 下マージン | `section/heading-mb` 32 / 24（ベントの直前も同じ。旧 Activities の `heading-mb-list` 8 は hairline 行リストの名残で、写真セルの上に 8 しか無いと見出しが格子に貼り付いて他節と縦リズムが揃わなかった、U-46）。導入文の前 `heading-mb-intro` 12。`heading-mb-list` は hairline 行リスト用にライブラリへ残す |
 | note | 持たない（**DECISION K-9**: 概念の note は編集ヒントの受け皿。本番に置かない） |
 
 - **DECISION U-4** 連番（`01 —`）を廃止し、和文の題を先・欧文ラベルを後に置く。理由は 2 つ。(1) 番号は読者に順路を約束するが、このページは目次のない 1 枚もので、飛ばし読みの入口はナビが担っている。番号は情報を足さずに視線の最初の一撃を数字に取られる。(2) 日本語話者にとって節の意味を運ぶのは和文の題であり、英字ラベルは調子付け。強い方を先に置く。
@@ -1846,62 +1949,72 @@ Figma: `Section / Heading` `Layout` {Row, Stacked} 2。Props: `title` `label` TE
 | 列 | 4 列均等（(1200 − 10) / 4 = 297.5）。2×1 = 597 | 1 列（338）、DOM 順、span 無視 |
 | 行の最小高 | `size/cell-min` 120 | 120 |
 | セル inset | `inset/cell` **24** | **20** |
-| 行構成 | 行 1 [2×1 CULTURE · 1×1 OFFICIAL · Stat] / 行 2–3 [Chat 2×2 · Image 2×2] / 行 4 [1×1 · 1×1 · CTA 2×1] | 縦に 1 列 |
-| 行の高さ | 背の高いセルが HUG で決め、同じ行の他のセルが FILL で追う（行 1 は OFFICIAL セルが駆動） | 各セルが HUG |
+| 行構成 | 行 1 [CULTURE 2×1 · MEMBERS（墨）· SINCE] / 行 2–3 [CHAT 2×2 · OFFICIAL 2×1 / ONLINE & OFFLINE · FOR EVERYONE]（**DECISION U-40**） | 縦に 1 列: CULTURE → MEMBERS → SINCE → CHAT → OFFICIAL → ONLINE & OFFLINE → FOR EVERYONE |
+| 行の高さ | 行 1 は CULTURE（Display/M 2 行 + 図）が HUG で決め（実測 **284**）、MEMBERS / SINCE が FILL で追う。行 2–3 は CHAT（**465**）が決め、OFFICIAL **241.5** / 行 3 **221.5** が FILL で追う（U-52 改） | 各セル HUG |
+
+**DECISION U-40**（2026-09-12、クライアント判断）ベントを **3 行 7 セル**に組み直す。
+
+1. Discord CTA セル（旧 §6.11.6）を**撤去**。導線は Hero・Nav・Poster が持ち、About は「何者か」を語る面に徹する。U-10（導線は「参加する」1 本）は残る 3 か所で維持。
+2. 活動写真セル（旧 §6.11.5、U-18 のスライド）を **Activities へ移す**（§6.13）。写真は活動の説明に添えてこそ情報になる。
+3. Hero の meta strip から降りた設立を **SINCE** セルに置く（U-39）。
+4. 文字だけのセルは題の語をひとつずつ**図**（Tabler 32、stroke 1.5、`icon/xl`）にして、旧レイアウトで空いていた中段を埋める。→ **U-52** で図は淡い緑の円（Bento / Figure）になり、題の**下**に移った。
+5. OFFICIAL を 1×1 → **2×1** にし、2 件を 1 行ずつ並べる（§6.11.4）。
+
+根拠: 旧配置は行 1 の高さを OFFICIAL の 3 行 body が駆動して CULTURE の中段が空き、行 4 は CTA 1 本のために 2×1 を使っていた。セルごとに面積と中身の量が釣り合わず、Apple の発表会末尾のベント（1 タイル = 1 つの主張 + 1 つの図）のように読めなかった。3 行にすると、行 2–3 の高さをチャットが決め、右の 3 セルがそれに追従する構図が 1 つだけ残る。
 
 #### 6.11.2 Cell Text
 
-| Kind | kicker | title | body |
-|---|---|---|---|
-| 2×1 | `Overline/Latin` 12 UPPER `ink-secondary` | `Title/2` 22 `ink`、≤ 2 行 | `Body/S` 14 `ink-secondary`、上 `stack/xs` 8 |
-| 1×1 md | 同 | `Title/3` 19、≤ 2 行 | 同（`showBody`） |
-| 1×1 sm | 同 | `Headline` 17、≤ 3 行 | 同（`showBody`） |
+| Kind | kicker | title | figures（題の下、U-52） | body |
+|---|---|---|---|---|
+| 2×1 statement | `Overline/Latin` 12 UPPER `ink-secondary` | **`Display/M` 56 / 32** `ink`、2 行「仲間と、／学ぶ。創る。話す。」（U-46: Title/2 では 597 幅の左 1/3 に寄って右が空き、隣の 50+ と釣り合わなかった） | 円 **64**（`size/figure`）× 1–3、gap `inline/sm` 12 | — |
+| 2×1 | 同 | `Title/2` 22 `ink`、≤ 2 行 | 同 | `Body/S` 14 `ink-secondary`、上 `stack/xs` 8 |
+| 1×1 lg | 同 | **`Title/1` 32 / 26**、1 行（SINCE「2025年4月」176.8 ≤ 249.5） | 同 | — |
+| 1×1 md | 同 | `Title/3` 19、≤ 2 行 | 同 | 同（`showBody`） |
+| 1×1 sm | 同 | `Headline` 17、≤ 3 行 | 同 | 同（`showBody`） |
 
-- セルは縦 flex、`justify-content: space-between`（kicker 上・title 下）、kicker → title の最小距離 `stack/md` 16。
+- 解剖は **2 段**、全セル共通: kicker（天）／ [title（→ body）→ `stack/md` 16 → figures]（地）。縦 flex、`justify-content: space-between`。図は題と 1 つの塊にする — 天・中・地の 3 段に散らすと、行が伸びたとき図だけが中空に浮く（U-40）。図が題の**下**にあるのは、クライアントの絵「仲間と、の下に丸の背景に囲まれたアイコン」どおり — 題を読んだ続きに図が並び、円の列がベント全体の底の帯になる（U-52）。
+- **Bento / Figure**（`figure.tsx`）: 緑の円（`radius/full`、§4.1 の 4 つ目の例外、`figure/fill` = accent-fill green-600 — 自分側バブルと同じ）の中の白い Tabler **32 / stroke 1.5**（`icon/xl`、`figure/ink` = on-accent、4.63）。**語は添えない** — 意味は題が運び、図は Apple のベントの「1 タイル 1 つの絵」（クライアント判断 2026-09-15: 初版の語つき 4 色の図は「浮きすぎ」「説明書きは不要」で撤回、§1.2.5）。行全体は `aria-hidden`（装飾）。`forced-colors` では円に 1px の枠。左揃え、中央揃えはしない。
+- 可視の題が文の一部（SINCE「2025年4月」）のときは `accessibleTitle` に全文「2025年4月 設立」を渡し、可視側 `aria-hidden` + `sr-only` 全文（Stat の 50+ と同じ形）。content は文字列（`AboutIcon`）で持ち、`bentoIcons` が解決する。
+- ページの 4 セル: **CULTURE**（2×1 statement、「仲間と、／学ぶ。創る。話す。」+ book / hammer / message-circle）、**SINCE**（1×1 lg、「2025年4月」+ flag）、**ONLINE & OFFLINE**（1×1 md、題 + map-pin / messages）、**FOR EVERYONE**（1×1 md、題 + code / palette / flask）。1×1 は sm ではなく md（Title/3 19）— U-46: Headline 17 では行 2–3 の右セルが軽く、空きが目立った。
+- **DECISION U-52**（2026-09-14、クライアント判断「アイコンの存在感がなさすぎます … 極端にそれぞれのスペースに対して文字が小さかったりアンバランス、特に設立のところ」）: U-40 の線画 32（題の上）は面積に対して軽く、SINCE は Title/3 の 1 行が 1×1 の中で浮いていた。図を 64 の円にして題の下に置き、SINCE の題を Title/1 の日付にすると、各セルの地のブロックが面積に釣り合う（CULTURE 地 204 / 236、SINCE 120 / 236）。
 - Tone Ink（ライブラリ）: fill `inverse/ground`、kicker `inverse/ink-tertiary`、title `inverse/ink`、body `inverse/ink-secondary`。
-- kicker は英語 1–2 語（`CULTURE` `OFFICIAL` `ONLINE & OFFLINE` `FOR EVERYONE`）。title は `<br>` で意図的に改行してよい（ポスターの語割り）。`<h3>`。
-- **DECISION U-11** `ONLINE & OFFLINE` を `ONLINE & OFFLINE` にする。「first」は序列の宣言なので、対面が二番手だという含みが残る。実態はどちらもあるので、並列の接続詞で言う。title も「チャットも通話もDiscordで。対面イベントも定期的に。」と両方を主語にする。
-- **DECISION U-14** `body` は全 Kind で使える（`showBody`）。OFFICIAL セルは title に長崎大学公認、body にサポーターズ 技育プロジェクト公式パートナーを置き、**公的な裏づけを 1 セルに集約**する。
+- kicker は英語 1–2 語。title は `<br>` で意図的に改行してよい（ポスターの語割り）。`<h3>`。
+- **DECISION U-11** `ONLINE & OFFLINE`（「first」は序列の宣言なので使わない）。title は両方を主語に。
+- **DECISION U-14** `body` は全 Kind で使える（`showBody`）。現ページでは未使用 — 公的な裏づけは §6.11.4 の専用セルへ移った（U-40）。
 - 状態なし。
 
 #### 6.11.3 Cell Stat（Ink）
 
-fill `inverse/ground`。kicker `Overline/Latin` `MEMBERS` `inverse/ink-tertiary`（8.29）。value `50` **`Display/L` 96 / 40** + `+` **`Display/M` 56 / 32**、ベースライン揃え、**`inverse/ink`**（14.86、**DECISION U-24**: U-6 のアクセントを撤回。規模は色ではなく大きさで語る — lime の Display/M は kicker との間に空きが目立ち、アクセントの枠を 1 つ使うわりに釣り合わなかった）。セルに載るのは数字だけで、セルの底に置く（**DECISION U-36**: 所属のバッジ U-29 を 2026-09-11 に撤回。規模を語るセルに所属の列が乗ると、数字の大きさより先に文字が読まれた。人数の内訳も出さない）。`<p><span aria-hidden="true">50+</span><span class="vh">メンバー 50人以上</span></p>`。数字は半角（書体に `tnum` はない）。
+fill `inverse/ground`。kicker `Overline/Latin` `MEMBERS` `inverse/ink-tertiary`（8.29）。value `50` **`Display/L` 96 / 40** + `+` **`Display/M` 56 / 32**、ベースライン揃え、**`inverse/ink`**（14.86、**DECISION U-24**: U-6 のアクセントを撤回。規模は色ではなく大きさで語る）。セルに載るのは数字だけで、セルの底に置く（**DECISION U-36**）。`<p><span aria-hidden="true">50+</span><span class="vh">メンバー 50人以上</span></p>`。数字は半角（書体に `tnum` はない）。
 
-#### 6.11.4 Cell Chat
+ページで Display サイズの数字を出すのは**このセルだけ**。設立年 `2025` を Display/L で並べる案（U-40 の検討）は、1×1 の内側 250 に 4 桁 ≈ 260 が入らず 2 行に折れ、Display/M に落とすと隣の `50+` と釣り合わないので採らない。SINCE は Cell Text 1×1 lg（`Title/1` の日付「2025年4月」176.8 px + 設立の図、U-52）— Title/1 は h2 の段であって Display ではない。
+
+#### 6.11.4 Cell Official（2×1、U-40）
+
+fill `ground`。kicker `Overline/Latin` `OFFICIAL` `ink-secondary` → `<ul>` を **2 列**（`grid`、tablet 以上 2 列 gap `inline/lg` 24、`align-items: end`、Mobile 1 列 gap `stack/lg` 24、**U-52**）、各列 = [題 `Headline` 17 `ink` `<h3>` → `stack/2xs` 4 → 補足 `Footnote/Regular` 13 `ink-secondary`] → `stack/md` 16 → 図（円 64）。解剖は Cell Text と同じ 2 段（kicker 天 ／ 列群 地）で、2 列の円は底で揃い、1 行 / 2 行の題の差は上に逃がす。列幅 262.5（1440）/ 326（768）。
+
+| 列 | 題 | 補足 | 図 |
+|---|---|---|---|
+| 1 | 長崎大学公認団体 | 長崎大学の公認を受けた学生団体 | `school` |
+| 2 | 技育プロジェクト<br>学生団体公式パートナー（著者改行） | 株式会社サポーターズが運営 | `heart-handshake` |
+
+根拠: 旧 1×1（title `公認団体` + body 2 行）は 297 幅で body が「技育 / プロジェクト」で折れ、2 件が 1 段落に溶けて読めなかった（U-40 で 1 件 = 1 行に）。U-40 の行は図 32 が行頭で小さく、2×1 の右半分が空いて見えた — クライアント「OFFICIAL のところもグリッド内で 2 列で表現していい」。2 列にすると 1 件 = 1 タイルの形になり、他の文字セルと同じ解剖で並ぶ。パートナーの題は著者改行で「技育 / プロジェクト」と割れない。2 件は同格なので `<ul>`、各列の題は `<h3>`（見出しナビゲーションに 2 つの事実がそのまま並ぶ）。状態なし。
+
+#### 6.11.5 Cell Chat
 
 §6.12 の部品を積む。`<figure>`: kicker `<p>` `Overline/JP`（ORIGINAL）`#general — いつものChoTech` `ink-secondary` → `stack/md` 16 → thread `<ul>`（message 間 `stack/xs` 8）→ `<figcaption>` `Caption/Regular` `こんな会話が、毎日どこかで。` `ink-secondary`、`margin-top: auto`、上 `stack/md` 16。**矢印なし**（§9.6: 注記は位置で分かる）。図の名前は figcaption（DECISION M-18）。
 
-#### 6.11.5 Cell Image
+#### 6.11.6 Cell Image（Activities へ移動、U-40）
 
-fill `ground`、Image slot Rect / Cover を `inset: 0`。比率 **16:9**（DECISION L-20: Desktop は Chat セル高 ≈ 336 に stretch、Mobile 338 × 190）。原色（U-21）。`alt` = 被写体を 1 文 ≤ 60 字（§8.6）。
+About からは撤去。写真は Activities の各セルに**静止画**として置く（§6.13）。スライド送り（**DECISION U-18**）は廃止 — 活動ごとに 1 枚ずつ添えれば「いろいろやっている」は 4 枚が並ぶことで伝わり、時間を持つセルを About に置く理由が無くなった。`PhotoSlides`、`Cell Image`、`motion/photo/step` は消す。§7 の M8 / M9 の一覧から「写真送り」を外す。
 
-**DECISION U-18** 1 枚ではなく複数枚を横にスライドさせて回す。活動の様子は「1 枚の代表写真」では出ない — Talk Day と Hackathon と勉強会が同じ枠に並んで初めて「いろいろやっている」が伝わる。ベントの中で唯一「時間を持つ」セルになるので、隣のチャットと合わせて 2 つ以上は作らない。
+#### 6.11.7 Cell CTA（撤去、U-40）
 
-| 項目 | 値 |
-|---|---|
-| 送り | `translateX(-n × 100%)`、`spring/default`。フェードではなく**スライド**（面が入れ替わる、という物理を保つ） |
-| 間隔 | `motion/photo/step` 4,000 ms。1 枚を見終える時間 |
-| ループ | 末尾に先頭の複製を 1 枚置き、そこまで送ったらトランジション無しで 0 に戻す。逆回しの掃引を見せない |
-| 停止 | セルが非可視、タブ非表示、ページのスイッチ、reduced-motion。止まっているときは**先頭の 1 枚**を出す |
-| 支援技術 | トラックは `aria-hidden`。写真は装飾（`alt=""`）で、活動の情報は Activities 節が本文として持つ |
+About からは撤去。Discord への導線は Hero（主 CTA）・Nav（帯の CTA）・Poster の 3 か所（U-10 の「参加する」1 本は変わらない）。DECISION K-8（Mobile の縦積み）は前提を失う。部品 `cell-cta.tsx` は消す。
 
-#### 6.11.6 Cell CTA（Ink、2×1）
+#### 6.11.8 Figma
 
-| 項目 | Desktop | Mobile |
-|---|---|---|
-| 構成 | 横 flex、`align-items: center`、gap `inline/md` 16 | **縦**、gap `stack/md` 16（**DECISION K-8**） |
-| title | `Title/3` 19 `inverse/ink`（`まずはDiscordから`、1 行） | 同、折返し可 |
-| sub | `Footnote/Regular` 13 `inverse/ink-secondary`（11.78） | 同 |
-| button | On Ink / Outline / md `Discordに参加する` + `arrow-up-right` 20 | 同、`fullWidth`・左揃え |
-
-K-8 の根拠: Mobile セル内幅 338 − 40 = 298。横並びでは title が 3 字/行になる。
-
-- **DECISION U-10** Discord の導線は「参加する」1 本にする。「見学」という中間段階を作らない。理由: Discord に入ること自体が可逆で低コストな行為なので、その手前に軽い段階を用意しても心理的な障壁は下がらず、**導線が 2 つに割れて主導線が弱くなる**。ハードルは文言（`見るだけ参加も歓迎です`）で下げ、動詞は 1 つに保つ。
-
-#### 6.11.7 Figma
-
-`Bento / Cell Text` `Kind` {2x1, 1x1-md, 1x1-sm} × `Tone` {Ground, Ink} 6。`Cell Stat` 1、`Cell Chat` 1、`Cell Image` 1、`Cell CTA` `Viewport` 2、`Bento / Grid` `Viewport` 2。Props: `kicker` `title` `body` TEXT、`showBody` BOOL。**注**: `body` は当初 6 variant すべてで `characters` が未配線で、値を入れても既定文が出ていた（2026-09-01 修正）。
+`Bento / Cell Text` `Kind` {2x1, 1x1-lg, 1x1-md, 1x1-sm} × `Tone` {Ground, Ink} に `figure1–3`（`Bento / Figure`: `icon` INSTANCE_SWAP）を足す（U-52、未反映）。`Cell Stat` 1、`Cell Chat` 1、**`Cell Official` 1（新設、`row1Title` `row1Sub` `row2Title` `row2Sub` TEXT、`icon1–2` INSTANCE_SWAP）**、`Bento / Grid` `Viewport` 2（行構成を U-40 に合わせて組み直す）。`Cell Image` / `Cell CTA` は後継ありとして残置。**Figma 側は未反映**（2026-09-12、別作業）。
 
 ### 6.12 Chat message / typing
 
@@ -1913,8 +2026,8 @@ K-8 の根拠: Mobile セル内幅 338 − 40 = 298。横並びでは title が 
 
 | 項目 | 値 |
 |---|---|
-| 1 手の間隔 | `motion/chat/step` 900 ms。読点まで目が追える最短 |
-| 一巡後の間 | `motion/chat/hold` 2,400 ms。最後の発言を読み終える時間を置いてから畳む |
+| 1 手の間隔 | `motion/chat/step` **600 ms**（900 → 600、U-44: 900 は待たされて見えた）。短い台詞を読み終え、点滅にはならない |
+| 一巡後の間 | `motion/chat/hold` **2,000 ms**（2,400 → 2,000）。最後の発言を読み終える時間を置いてから畳む。**畳む先は 1 行目を残した状態**（U-44）: 0 行まで畳むと次の 1 手までの step のあいだ空のスレッドが見え、「一瞬真っ白」の故障に見える。初回も 1 行目は最初から見えている |
 | 出方 | `opacity 0 → 1` と `translateY(8 → 0)`、`spring/default`。左右の寄せは変えない（動く方向が発言者を示す情報になってしまう） |
 | 高さ | **最初から全行ぶんの高さを取る**。1 行ずつ足すとセルが伸び縮みして隣の写真セルまで動く（CLS）。未再生の行は不透明度だけを 0 にする |
 | 停止 | セルが非可視、タブ非表示、ページのスイッチ、reduced-motion。止まっているときは**全行を最初から見せる**（何も見えない状態で止めない） |
@@ -1930,7 +2043,7 @@ K-8 の根拠: Mobile セル内幅 338 − 40 = 298。横並びでは title が 
 | 要素 | Left（相手） | Right（自分） |
 |---|---|---|
 | avatar | `size/avatar` 24 × 24、fill `color/avatar` neutral-300 の上に Humation のイラスト（§6.14 と同じ SVG、`alt=""`、**DECISION U-26**）、**`radius/full`**、bubble の下端に揃える | **持たない**（Messages と同じ。送り手は右寄せで示す） |
-| bubble | fill `surface`、`Callout` 14 Bold `ink`（**13.51**）、inset `inset/xs` 8 × `inset/sm` 12、`radius/bubble` 18（**左下だけ** `radius/bubble-tail` 4）+ テール | fill **`color/accent`**、文字 **`color/on-accent`**（**10.83**）、`radius/bubble` 18（**右下だけ** 4）+ テール |
+| bubble | fill `surface`、`Callout` 14 Bold `ink`（**13.51**）、inset `inset/xs` 8 × `inset/sm` 12、`radius/bubble` 18（**左下だけ** `radius/bubble-tail` 4）+ テール | fill **`color/accent-fill`**（green-600）、文字 **`color/on-accent`**（neutral-0、**4.63**。C-30: 400 に墨の文字は読みにくかった。面 vs ground 4.14）、`radius/bubble` 18（**右下だけ** 4）+ テール |
 | テール | 幅 10 × 高さ 12 のベクター、吹き出しと同色。外側へ 6 はみ出し、下端は吹き出しと面一 | 同（左右反転）。コンポーネント右に padding 6 を持たせ、はみ出しを枠内に収める |
 | 最大幅 | 親の 80% | 同 |
 
@@ -1956,40 +2069,39 @@ K-8 の根拠: Mobile セル内幅 338 − 40 = 298。横並びでは title が 
 #### 6.13.1 解剖（読ませるための面。リンクではない）
 
 ```
-┌ divider grid: frame fill divider, padding 2, gap 2 ────────────────────────────┐
-│ ┌ Feature 797 ─────────────────────────┐ ┌ Compact 397 ───────────────────┐   │
-│ │ inset/cell 24                         │ │ Talk 以外                      │   │
-│ │ Talk Day            [arrow-right]     │ │ Dev Day          [arrow-right] │   │
-│ │ ライトニングトーク                     │ │ 勉強会・ハンズオン              │   │
-│ │ 説明（measure/paragraph 588）          │ │ 説明（セル幅）                  │   │
-│ │ [Chip][Chip][Chip]                    │ │ [Chip][Chip][Chip]             │   │
-│ └───────────────────────────────────────┘ └────────────────────────────────┘   │
-│ ┌ Compact 597 ─────────────────────────┐ ┌ Compact 597 ───────────────────┐   │
-│ │ Project                               │ │ Hackathon                      │   │
-│ └───────────────────────────────────────┘ └────────────────────────────────┘   │
+┌ divider grid: frame fill divider, padding 2, gap 2 ──────────────────────────┐
+│ ┌ 597 ────────────────────────────┐ ┌ 597 ────────────────────────────┐        │
+│ │ 写真 16:9（597 × 336、inset 0）  │ │ 写真 16:9                        │        │
+│ │ inset/cell 24                    │ │                                  │        │
+│ │ Talk Day                         │ │ Dev Day                          │        │
+│ │ 座談会・ライトニングトーク（LT）  │ │ 勉強会・ワークショップ             │        │
+│ │ 説明（セル幅 549）               │ │ 説明                             │        │
+│ │ [Chip][Chip][Chip]  ← mt: auto   │ │ [Chip][Chip][Chip]               │        │
+│ └──────────────────────────────────┘ └──────────────────────────────────┘        │
+│ ┌ Project ─────────────────────────┐ ┌ Hackathon ───────────────────────┐        │
+│ └──────────────────────────────────┘ └──────────────────────────────────┘        │
 └────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**DECISION U-8** 活動内容を hairline の一覧からベント 4 セルにする。理由は 2 つ。(1) 4 件は「並んだ行」で読ませると同格に見えるが、実際には Talk Day が最も入口として太い。面積で差をつけると、読み手は最初に見るべきものを選ばずに済む。(2) About が既にベントなので、罫線グリッドという同じ装置を 2 回使うことでページの語彙が減る。
+**DECISION U-41**（2026-09-12、クライアント判断）4 件を**均等な 2×2 の写真セル**にする。U-8 の Feature / Compact（Talk Day 797 + 397 / 597 × 2）は撤回。理由は 2 つ。(1) Feature セルは題 Display/M の右半分が空き、Compact は文字が詰まって、4 セルの面積と中身の量が釣り合っていなかった。同じ大きさなら 4 件は「一覧」として読まれ、入口の太さは並び順（左上が最初）が示す。(2) About のスライド（U-18）から降りた写真を各セルの上端に縁まで敷くと、「何をしているか」が字より先に伝わる — 写真は活動の説明に添えてこそ情報になる。アコーディオンやタブは内容を隠し、状態を持たない面の思想（U-17）にも合わないので採らない。
 
 | 項目 | Desktop | Mobile |
 |---|---|---|
-| 構成 | 行 1 [Feature 797 + Compact 397] / 行 2 [Compact 597 × 2] | Feature → Compact × 3 の縦積み（338） |
-| 行の高さ | 背の高いセルが HUG で決め、もう一方が FILL で追う | 各セル HUG |
-| セル inset | `inset/cell` **24** | **20** |
+| 構成 | 2 列 × 2 行、均等（実測 **597 × 544**、写真 597 × 336）。tablet も 2 列 | 1 列（338、実測 406–430。写真 338 × 190）、DOM 順 |
+| 行の高さ | 同じ行の背の高いセルが HUG で決め、もう一方が FILL で追う。タグは `margin-top: auto` で底に揃う（説明が 2 行と 3 行で揺れても、行内でタグの高さが揃う） | 各セル HUG |
+| セル inset | 写真は **inset 0**（縁まで）、body は `inset/cell` **24** | 写真 inset 0、body **20** |
 
 | 要素 | 仕様 |
 |---|---|
-| title | Feature `Display/M` **56 / 32**、Compact `Title/1` **32 / 26**、`ink`、`<h3>` 内。4 件は `Talk Day` / `Dev Day` / `Project` / `Hackathon` |
-| subtitle | `Subheadline` 15 Bold、`ink-secondary`（K-1）、title の**下**（`stack/2xs` 4）。セルが縦に伸びるので横並びにしない |
-| badge | `Overline/JP` 12、`pop/badge`（ink-secondary / lime-800）。**`showBadge` は既定 false**（**DECISION U-9**: 開催頻度が確定するまで出さない。空欄や「随時」で埋めると、確定した情報と見分けがつかなくなる）。**矢印は置かない**（U-17: 行き先が無いのに遷移の印を出さない） |
-| description | `Body/S` 14、`ink-secondary`。Feature は `measure/paragraph` 588、Compact はセル幅いっぱい |
-| tags | Chip / Tag × 3、gap `inline/xs` 8、上 `stack/xs` 8。Compact では折返す |
+| photo | Image slot Rect / Cover、**16:9**、原色（U-21）、`alt=""`（写真は装飾。活動の情報は題と説明が本文で持つ、§8.6）。先頭のセルだけ eager。素材は `public/images/activities/`（Talk Day / Dev Day / Hackathon は About から移動。**Project は実写が届くまで Hero の集合写真の複製で仮置き**、2026-09-12） |
+| title | `Title/1` **32 / 26**、`ink`、`<h3>` 内。4 件とも同じ級数（U-41: 面積差を捨てたので級数差も捨てる）。`Talk Day` / `Dev Day` / `Project` / `Hackathon` |
+| subtitle | `Subheadline` 15 Bold、`ink-secondary`（K-1）、title の**下**（`stack/2xs` 4） |
+| badge | `Overline/JP` 12、`pop/badge`。**`showBadge` は既定 false**（**DECISION U-9**）。**矢印は置かない**（U-17） |
+| description | `Body/S` 14、`ink-secondary`。セル幅いっぱい（549 ≈ 39 全角、`measure/paragraph` 588 の内側なので上限は要らない） |
+| tags | Chip / Tag × 3、gap `inline/xs` 8、上 `stack/xs` 8 + `stack/2xs` 4（`margin-top: auto` で底へ） |
 | Head の折返し | title 群と badge は `flex-wrap`。セル幅が足りなければ badge が title の下に落ちる |
 
-**DECISION U-17** セルをリンクにしない。当初はセル全体を Discord への外部リンクにしていたが、4 セルとも同じ Discord に着地するので「Talk Day を押した」のに「Discord のトップ」に出る — 押した対象と行き先が対応しない。活動ごとの行き先が用意できるまでは、ここは**読ませるための面**に徹する。参加への導線は Hero・About の CTA・Poster が 3 度受け持っていて足りている。
-
-したがってこのセルは hover / pressed / focus を持たず、矢印も持たない。「押せそうに見えて押せない」より「押せるように見えない」ほうが誠実で、状態を持たないぶん罫線グリッドの静けさも保てる。
+**DECISION U-17** セルをリンクにしない。当初はセル全体を Discord への外部リンクにしていたが、4 セルとも同じ Discord に着地するので「Talk Day を押した」のに「Discord のトップ」に出る — 押した対象と行き先が対応しない。活動ごとの行き先が用意できるまでは、ここは**読ませるための面**に徹する。参加への導線は Hero・Nav・Poster が受け持っていて足りている（About の CTA は U-40 で撤去）。
 
 内容の区別（**DECISION U-8b**）:
 
@@ -2005,44 +2117,47 @@ Project と Hackathon を分ける理由: 前者は継続的な営み、後者�
 #### 6.13.2 状態
 
 **持たない**（U-17）。リンクでもボタンでもないので hover / pressed / focus は無く、
-地は `ground` のまま動かない。文字の比は ink 14.86 / n700 5.83 / lime-800 6.31。
+地は `ground` のまま動かない。文字の比は ink 14.86 / n700 5.83 / green-800 6.62。
 
 これは「機能を削った」のではなく、状態を出さないことが正しい表示だという判断である。
 押せない面がポインタに反応すると、読み手は一度クリックして何も起きないことを確かめる。
 
 #### 6.13.3 アクセシビリティ
 
-- DOM（**DECISION M-12 改**）: `<li><h3><span>Talk Day</span> <span>ライトニングトーク</span></h3> …説明・タグ… </li>`。リンクではなくなった（U-17）ので `aria-labelledby` は要らず、見出しがそのまま節の名前になる。
+- DOM（**DECISION M-12 改**）: `<li><img alt=""> <h3><span>Talk Day</span> <span>ライトニングトーク</span></h3> …説明・タグ… </li>`。リンクではなくなった（U-17）ので `aria-labelledby` は要らず、見出しがそのまま節の名前になる。
 - セル内にリンク・ボタンを置かない。面全体を押させないので、テキストは普通にドラッグ選択できる（旧 M-12 のトレードオフが消えた）。
-- グリッドは `<ul>`。ベントの見た目上の並び（Feature が大きい）と DOM 順を一致させる。
+- グリッドは `<ul>`。4 セルは同じ大きさなので、視覚順 = DOM 順（左上 → 右上 → 左下 → 右下）。
 
 #### 6.13.4 Figma
 
-`Activity / Cell` `Size` {Feature, Compact} × `State` {Default, Hover, Pressed} **6** + `focus` BOOL、`showBadge` BOOL(false)。Props: `title` `subtitle` `badge` `description` TEXT、tag は exposed instance。`Activity / Bento` `Viewport` {Desktop, Mobile} 2。旧 `Activity / Row` `Activity / List` は後継ありとして残置（新規の画面では使わない）。
+`Activity / Cell` は `Size` {Feature, Compact} → **1 サイズに統合**（`photo` INSTANCE_SWAP を追加）、`State` {Default, Hover, Pressed} は U-17 で意味を失っている。`Activity / Bento` `Viewport` {Desktop, Mobile} 2 は 2×2 に組み直す。**Figma 側は未反映**（2026-09-12、別作業）。
 
 ### 6.14 Persona card
 
 ```
-┌ inset/cell 24 (M 20) ────────────────────┐
-│ CASE 01                   ( 96 )         │  header: space-between, gap inline/sm 12
-│ これから始めたい人                         │  title Headline
-│ ▌「プログラミング、何から…」              │  quote: surface, inset 8×12
-│ [arrow-right] Dev Dayで一緒に手を動かそう │  rec: margin-top auto
-└──────────────────────────────────────────┘
+┌ inset/cell 24 (M 20) ─────────────────────────┐
+│ ( 80 )  CASE 01                               │  header: イラスト + [番号 / 題]、上下中央、gap inline/sm 12
+│         これから始めたい人                      │  ↓ stack/md 16
+│ 「プログラミング、何から始めれば…」             │  quote: 地の上の Callout、箱 size/persona-quote 44（2 行ぶん、上下中央）
+│                                               │  ↓ stack/md 16
+│ ░░→ Dev Dayで一緒に手を動かしてみよう！░░░░░  │  rec: surface の板、箱 size/persona-rec 64（2 行ぶん、上下中央）
+└───────────────────────────────────────────────┘
 ```
+
+**DECISION U-42**（2026-09-12、クライアント判断）解剖を「番号 / イラスト右上 / 題 / 引用 / 矢印行」の 5 段から **3 行**に組み直す。(1) イラストを **80** に縮めて題の横に置く — 旧解剖は番号と題の間にイラストの高さ（96）ぶんの空きができ、番号だけが天に浮いていた。(2) 引用は**墨の板**（`inverse/ground` 上 `inverse/ink`）、次の一歩は **`surface` の板**にし、2 枚を**隙間なし**で積む — 「悩み」と「答え」が 1 つの対であることを形で言う。旧「→ 文」の行は面を持たず、目に留まらなかった。(3) カードは親 `<ul>` の 3 行を借りる **subgrid** で、同じ行のカード同士で header・引用・次の一歩の境目が必ず揃う（引用が 1 行でも 2 行でも、推薦が 1 行でも 2 行でも）。flex-1 で残りを埋める作りでは、推薦が 2 行に折れたカードだけ板の境目が 20px ずれた。
+
+**DECISION U-53**（2026-09-14、クライアント判断「2 行だったり 1 行だったりで高さが統一されていない。黒ボックスは存在感ありすぎて逆に浮いて見える」）U-42 の (2) を改める。(a) 引用の**墨の板を外す** — `inverse/ground` は `action/fill` と同じ色で、6 枚並ぶと 6 個のボタンのように読め、Hero と Poster の間で唯一の暗い面として浮いた。声は「」が運び、板は「答え」（次の一歩、surface）だけが持つ。板が無くなると、板に `data-surface="ink"` が無く明るい面の選択色が暗い塗りに乗っていた `::selection` の潜在不具合も消える。(b) 高さは**目標値**の 2 つの箱で決める: 引用 `size/persona-quote` 44（Callout 2 行）、次の一歩 `size/persona-rec` 64（Footnote/Bold 2 行 + inset 12 × 2）。subgrid は同じ行の中しか揃えないので、行を跨いで 6 枚を同じ高さにするには行ごとの箱を固定するしかない。前提は §9.3 の上限（引用 42 / 推薦 36）。吹き出しにはしない — U-1 の角丸はチャット（Messages の引用）に閉じる。左の縦バーも置かない（§4.3 規則 6）。U-42 の (1)(3) はそのまま。
 
 | 要素 | 仕様 |
 |---|---|
-| caseNo | `Overline/Latin` 12 UPPER、`ink-secondary`、上 `stack/2xs` 4（円との視覚バランス） |
-| illustration | Image slot Circle `size/illustration` 96、Humation のイラスト（hand-drawn kawaii avatar、MIT）、原色、`alt=""`。`scripts/generate-avatars.mjs` が部位と色から決定的に SVG を生成し `public/images/personas/` に置く（**DECISION U-26**: 実在しない人物像に実写の顔を当てると「誰？」が先に立つ。イラストなら人物像として読める） |
-| title | `Headline` 17、`ink`、`<h3>` |
-| quote | fill `surface`、inset `inset/xs` 8 × `inset/sm` 12、`Callout` 14 Bold `ink`（13.51）。鉤括弧はコンテンツ側 |
-| rec | `arrow-right` 16（先頭、`inline/icon` 4）+ `Footnote/Bold` 13 `ink-secondary`（5.83）。和欧間スペースなし（`Dev Dayで一緒に`） |
-| card | `ground`、inset `inset/cell` 24 / 20、ブロック間 `stack/md` 16、高さは行で揃う（stretch） |
+| header | 横 flex、`align-items: center`、gap `inline/sm` 12、下 `stack/md` 16。イラスト Image slot Circle **`size/illustration` 80**（96 → 80、U-42）、Humation、原色、`alt=""`（U-26）。右に縦積み: caseNo `Overline/Latin` 12 UPPER `ink-secondary` → `stack/2xs` 4 → title `Headline` 17 `ink` `<h3>`。番号 16 + 4 + 題 24 = 44 は 80 の中に収まり、題が 2 行（48）でも 68 で収まる |
+| quote | **板なし**（U-53）。`Callout` 14 Bold **`ink`**（ground 上 14.86）、箱 `min-height: size/persona-quote` **44**、`align-items: center`（1 行は上下中央、2 行は箱いっぱい）、下 `stack/md` 16。鉤括弧はコンテンツ側、`「` 始まりは `trim-start`（flex の中でも効く: 引用の左端 = イラストの左端、実測） |
+| rec | fill `surface`（カードで唯一の板）、inset `inset/sm` 12 × `inset/md` 16、箱 `min-height: size/persona-rec` **64**、`align-items: center`。中は `arrow-right` 16（先頭、`inline/icon` 4、1 行目の行ボックス中央）+ `Footnote/Bold` 13 **`ink`**（13.51）。ボタンではない: 64 ≠ 44、Footnote ≠ Label、矢印は先頭、状態なし（`p + p` の 12 は打ち消す） |
+| card | `ground`、inset `inset/cell` 24 / 20、**subgrid 3 行**（親 `<ul>` は `auto-rows: auto` — 罫線グリッド既定の行の床 120 を 3 行それぞれに掛けない）、行間 0（親の 2px gap を持ち込まない）。実測 Desktop **397 × 268**（6 枚同値: 24 + 80 + 16 + 44 + 16 + 64 + 24）、親のトラック 119 / 58 / 87（DevTools。gap の差分 ±1 と inset の畳み込み）、Mobile 338 × 260（6 枚同値） |
 
-イラスト 104 → 96 は DECISION L-12。状態なし（カードはリンクではない）。Desktop 3 列（397.33）× 2 行、Mobile 1 列。`<ul>` > `<li>`。
+イラスト 104 → 96 は DECISION L-12、96 → 80 は U-42。状態なし（カードはリンクではない）。Desktop 3 列（397.33）× 2 行、Mobile 1 列。`<ul>` > `<li>`（subgrid の `<li>` は `row-span: 3`）。
 
-Figma: `Persona / Card` 1。Props: `caseNo` `title` `quote` `rec` TEXT、`image` INSTANCE_SWAP。
+Figma: `Persona / Card` 1。Props: `caseNo` `title` `quote` `rec` TEXT、`image` INSTANCE_SWAP。解剖の変更（U-42 / U-53）は**未反映**（Figma 同期はクライアント判断で停止）。
 
 ### 6.15 Member card（Leader / Staff）
 
@@ -2061,8 +2176,8 @@ Leader と Staff の差は **写真比・inset・name・skills の 4 点**（Soc
 
 | 項目 | 仕様 |
 |---|---|
-| 位置 | skills の下、`stack/xs` 8。カードの最終行 |
-| 中身 | アイコン **20**（`icon/md`）× 最大 3、`color/ink`。既定は X / GitHub / 外部リンク（個人サイト）。Instagram・mail に差し替え可 |
+| 位置 | カードの**底**（`margin-top: auto`、skills との最小距離 `stack/xs` 8）。紹介文が 2 行と 3 行で揺れても同じ行のカードで導線の高さが揃う（U-46） |
+| 中身 | ブランドマーク **20**（`icon/md` の枠、公式素材 §5.1 / U-38）× 最大 3、`color/ink`（`currentColor`）。既定は X / GitHub / 外部リンク（個人サイトは Tabler `external-link`）。Instagram・mail に差し替え可 |
 | gap | Leader `inline/md` 16 / Staff `inline/sm` 12 |
 | ターゲット | 見た目 20 でも hit area は `::before` inset −12 で 44 を確保（§6.1.5、§8.3） |
 | 意味 | `<ul>` > `<li>` > `<a>`。アイコンは `aria-hidden`、名前は visually-hidden で「田中 太郎 の X」のように**人名を含める**（同じ「X」が 5 枚並ぶため） |
@@ -2073,12 +2188,28 @@ Leader と Staff の差は **写真比・inset・name・skills の 4 点**（Soc
 
 Figma: `Member / Card` `Size` {Leader, Staff} 2。Props: `role` `name` `skills` TEXT、`social1–3` INSTANCE_SWAP、`showSocials` BOOL(true)、`photo` INSTANCE_SWAP。
 
-### 6.16 Partner cell
+### 6.16 Partner logos（外枠だけの 1 行、U-43）
 
-| Type | 内容 |
-|---|---|
-| Logo | **3:2 のタイル**（Desktop 6 列 197.67 × 131.78 / tablet 3 列 237.33 × 158.22 / Mobile 2 列 168 × 120 = 床 `size/cell-min`。DECISION L-32、列数は L-31）、**`logo-ground`（白、U-33）**、**inset 0**（余白は正規化した素材側が持つ。§6.11.5 の画像セルと同じ）、Image slot fill / **Contain**（セル中央。画像の中央配置は左揃え原則の唯一の例外、DECISION L-26）、ブランド規定の色のまま（U-21）、`alt` = 団体名。**`href` があればタイル全体が団体サイトへのリンク**（`<a>` が Image slot を包む。新しいタブ、名前 = alt + vh「（外部、新しいタブで開く）」。hover / pressed の表現なし、`focus/ring` は内側 K-7。**DECISION U-35**） |
-| Filler | 行の端数を埋める**無地**の白タイル（Logo と同じ 3:2、`logo-ground`、`aria-hidden`）。枚数は団体数を 6 の倍数に切り上げた差（6 / 3 / 2 列はすべて 6 の約数なので、どの幅でも行が欠けない）。文言も導線も持たない — 旧 Placeholder「YOUR LOGO HERE」は 2026-09-10 に撤去（**DECISION U-34**） |
+```
+┌ divider frame: fill divider, padding 2 ───────────────────────────────────────┐
+│ ┌ logo-ground（白）inset/cell 24 ───────────────────────────────────────────┐ │
+│ │  [ 144×96 ]    [ 144×96 ]    [ 144×96 ]    [ 144×96 ]    [ 144×96 ]      │ │
+│ │  ← 1200 を団体数で等分（5 → 239.2）。各列の中央にロゴ →                    │ │
+│ └───────────────────────────────────────────────────────────────────────────┘ │
+└───────────────────────────────────────────────────────────────────────────────┘
+```
+
+**DECISION U-43**（2026-09-12、クライアント判断）6 列の 3:2 タイル（L-31 / L-32）をやめ、**外枠だけ**の白い面（`RuledGrid columns=1` + `Cell surface=logo`）の中に、ロゴを**等分の列**で 1 行に並べる。内側の罫は無い。旧タイルは罫が 1 枚ずつを区切り、団体数が 6 の倍数でないと無地の埋め草（U-34）が「空席」に見えた。外枠 1 つの中に並べれば、団体数がいくつでも 1 行の「顔ぶれ」として読める。
+
+| 項目 | Desktop | Mobile |
+|---|---|---|
+| 枠 | 2px の外枠（frame fill `divider`、padding 2）+ 白い面 1 枚（`logo-ground`、U-33、inset `inset/cell` 24）。行の床 `size/cell-min` 120 | 同、inset 20 |
+| 列 | CSS grid、**団体数で等分**（`repeat(N, minmax(0, 1fr))`、N は content の件数を CSS 変数で渡す。5 団体 → 239.2）。tablet 3 列 | 2 列。列間 `inline/lg` 24、行間 `stack/lg` 24 |
+| ロゴ枠 | マーキーと同じ **3:2 × 高さ `size/marquee-logo` 96（幅 144）**、Image slot Contain、原色（U-21）。各列の**中央**（L-26: 画像の中央配置は左揃え原則の唯一の例外） | 同 |
+| リンク | `href` があれば枠全体が団体サイトへのリンク（U-35）。名前 = alt（団体名）+ vh「（外部、新しいタブで開く）」。hover / pressed の表現なし、フォーカスリングは既定の外向き（枠は罫に接していないので K-7 の内側は要らない） | 同 |
+| 埋め草 | **無し**（U-34 の Filler は不要に） | 同（端数の行は左詰め） |
+
+素材は変わらない: `pnpm generate:partner-logos` が 3:2 の白キャンバス 600 × 400 に正規化した PNG（U-33）。白い面の上に白いキャンバスを置くので枠の縁は見えず、図だけが浮かぶ。
 
 **DECISION U-35**（2026-09-10） Logo タイルはリンク。ロゴを見た読者の次の行動は「その団体を知る」で、行き先は団体ごとに一意なので U-17（Activity セルをリンクにしない — 4 セルが同じ Discord に着地する）の問題は起きない。`<a>` は Image slot の外側で、タイル全体を当たり判定にする（罫線グリッドの「押せるのは中の導線だけ」は、ここでは中身 = ロゴそのものが導線）。hover / pressed の表現は持たない — 素材は白キャンバスでタイルを埋めるため面のティントが乗らず、画像に filter を掛けない（U-21）。応答はカーソルとフォーカスリング（内側、K-7）だけ。`href` の無い団体は画像のまま。
 
@@ -2090,37 +2221,37 @@ Figma: `Member / Card` `Size` {Leader, Staff} 2。Props: `role` `name` `skills` 
 
 **DECISION U-33**（2026-09-10） ロゴを置く面は **白（`color/logo-ground` = neutral-0）**。ロゴは原則として背景を持つ図で、実物も 5 枚中 3 枚が白背景の jpg / png だった。ground（neutral-100）の上に置くと白い板として浮く（比 1.12 は「輪郭が読める最小段」に当たる）。素材に手を加えない約束（U-21）を守ったまま板を消すには、面の側を素材の背景に合わせるしかない。白はパートナーのタイル（埋め草含む）とマーキー帯だけに使い、他の面には広げない。素材の縦横比・余白・背景のばらつきは表示側ではなく `scripts/normalize-partner-logos.mjs` で揃える: 余白をトリム → 3:2 の白キャンバス 600 × 400（セーフエリア inset 72 / 48）に contain → 団体ごとの倍率で見た目の重さを揃える → PNG。元素材は `assets/partners/` に置き、public には正規化後だけを出す。
 
-Figma: `Partner / Cell` `Type` {Logo, Filler} 2。Props: `logo` INSTANCE_SWAP（`label` TEXT は U-34 で不要に）。
+Figma: `Partner / Cell` `Type` {Logo, Filler} 2 は後継あり（`Partner / Logo` 1 + `Section / Partners` の外枠）として残置。**未反映**（2026-09-12、別作業）。
 
 ### 6.17 Poster CTA
 
 ```
 section/pad-display 96 (M 64)
-JOIN US                                    kicker Overline/Latin
+JOIN US                                    kicker Overline/Latin、inverse/ink-secondary
 stack/md 16
-いっしょに、                               Display/L 96 (M 40)
-やろう。
+Hack                                       Display/L 96 (M 40)、poster/ink（白）
+Your Limits.                               句点だけ poster/display = green-400（U-51）
 stack/lg 24
-段落 Body/M、measure/paragraph 588
+段落 Body/M、measure/paragraph 588、inverse/ink-secondary
 stack/xl 32
-[ Discordに参加する [arrow-up-right] ]  inline/lg 24  [x]  24  [instagram]  24  [github]
+[ (Discord) Discordに参加する [arrow-up-right] ]  inline/lg 24  [x]  24  [instagram]  24  [github]
 section/pad-display 96 (M 64)
 ```
 
+**DECISION C-30**（2026-09-12、クライアント判断）ポスター面を**インク面**にする。Green の 400 を面にして墨の文字を載せた版（C-27 / C-28 の明るい緑面）は、数値上 6.54 で AA を通っても「見にくい」という所見だった — 中明度の高彩度面に墨の本文は、輝度差があっても色の振動で読みにくい。緑は面ではなく、見出し「Hack Your Limits.」（`poster/display` = green-400、ink 上 6.54。C-30 では全文が緑だったが、U-51 で Hero と同じ**句点だけ**に）で出す（参加 CTA も C-30 の時点では緑のボタンだったが、同日の C-31 で Discord の Blurple に置換）。Hero（インク面 + 墨の板の h1）と同じ面で開幕と終幕が対になり、GitHub のダークモードと同じ「墨地に緑」の表情になる。上端の 2px 罫（C-27）は撤去 — 面が地に対して 14.86 で、境界は色面の切り替えそのもの。
+
 | 要素 | 仕様 |
 |---|---|
-| 背景 | `poster/ground`（neutral-950 / **lime-400**）。角丸なし。上端に 2px の `poster/ink` 罫（Top rule、絶対配置で高さに影響させない）。Lime では地との輝度差が 1.37（色相のみの境界）のため（C-27） |
-| kicker | `Overline/Latin` 12 UPPER、`poster/ink-secondary`（11.78 / 4.82）、`<p>` |
-| display | `Display/L` **96 / 40**、`poster/ink`、`<h2>`、2 行（著者改行 `<br>`）。Mobile 6 全角 × 40 = 240 ≤ 272（320px リフロー ✓） |
-| 段落 | `Body/M` 15、`poster/ink-secondary`、`max-width: measure/paragraph` 588（39 全角、R18） |
-| actions | 横 flex、`align-items: center`、ボタン ↔ Social `inline/lg` 24、Social 間 **`inline/lg` 24**（44 角の hit area が重ならない間隔）、`flex-wrap`（Mobile: ボタン 207 → 次行に Social） |
-| CTA | `poster/action/*`（Mono: Ground solid / Lime: **Ink solid**）/ md、`Discordに参加する` + `arrow-up-right` 20。Lime 地で面 10.83 / hover 7.61（UI ✓）、ラベル 14.86 |
-| Social | ブランドマーク **20 のみ** × 3（Link Social の色と状態、ラベルは visually-hidden「X（外部）」、hit area 44 角、**DECISION U-28**: ラベルと矢印を落とす。マークが行き先を言い切るので文字は冗長で、CTA と同じ行で目立ち過ぎていた） |
-| Focus / Selection | `poster/focus/ring`（Mono → focus/ring-inverse lime-300 12.79 / Lime lime-900 5.72）、`poster/selection`（Mono → inverse/selection / Lime ink@12） |
+| 背景 | `poster/ground`（= neutral-950、Mono と同値）。角丸なし。上端罫なし（Hero と同じ）。`on-ink`（反転面のスムージング） |
+| kicker | `Overline/Latin` 12 UPPER、`poster/ink-secondary`（= inverse/ink-secondary 11.78）、`<p>` |
+| display | `Display/L` **96 / 40**、文は **`poster/ink`**（白 14.86）、**句点だけ `poster/display`**（green-400、6.54。Hero の h1 と同じ印、**U-51**）、`<h2>`、2 行（著者改行）。Mobile 6 全角 × 40 = 240 ≤ 272 |
+| 段落 | `Body/M` 15、`poster/ink-secondary`、`max-width: measure/paragraph` 588 |
+| actions | 横 flex、`align-items: center`、ボタン ↔ Social `inline/lg` 24、Social 間 `inline/lg` 24、`flex-wrap`（Mobile: ボタン → 次行に Social） |
+| CTA | **Discord**（`discord/fill` Blurple + `on-discord` 白、モード非依存、C-31）。md、Discord マーク 20（先頭、U-19）+ `Discordに参加する` + `arrow-up-right` 20。面 vs ink 3.60、ラベル 4.61（hover 5.38 / pressed 6.42）。押すと参加ダイアログ（U-49） |
+| Social | ブランドマーク **20 のみ** × 3（公式素材 §5.1 / U-38）。`poster/ink-secondary` → hover / pressed `poster/ink`（white）+ 1px 下線、hit area 44 角（U-28） |
+| Focus / Selection | `poster/focus/ring` = `focus/ring-inverse`（green-300、ink 上 8.62）、`poster/selection` = `inverse/selection`（`#274329`、上の ground 9.78） |
 
-Lime モードの補助文字は ink@88（8.23 ✓）。面が明るいのでグラウンド色の文字は使えない（1.53）。Poster 上に Outline ボタンを置かない（§6.2.3）。
-
-Figma: `Section / Poster` 1（色はモード）。Props: `kicker` `display` `paragraph` `ctaLabel` `social1–3` TEXT、`showSocial` BOOL。
+Figma: `Section / Poster` 1。Props: `kicker` `display` `paragraph` `ctaLabel` `social1–3` TEXT、`showSocial` BOOL。面・見出し色・CTA の変更は**未反映**（別作業）。
 
 ### 6.18 Footer
 
@@ -2146,7 +2277,7 @@ Figma: `Section / Footer` `Viewport` {Desktop, Mobile} 2。Props: `copyright` TE
 | Placeholder | fill `image/placeholder`（surface）、`photo` 24 `ink-tertiary` を左上 `inset/md` 16、`stack/xs` 8 下に caption `Caption/Regular` `image/caption`（5.30）。**本番では caption を出さない**。円はアイコンのみ中央 |
 | 色 | 原色のまま。`filter` を掛けない（U-21）。ロゴマーク（Brand）も同じ |
 | 比率 | Bento 写真 16:9 / Leader 16:9 / Staff 4:3 / Persona 1:1 円 96 / Partner ロゴ: **3:2**（タイルとマーキー枠、L-32。§5.7.2 の 3 比率にロゴ用の 3:2 を加えた 4 比率） |
-| 読み込み | `loading="lazy"`（Bento 写真は `eager`）、`width` `height` 属性で CLS 防止。DPR 2 で AVIF / WebP |
+| 読み込み | next/image `fill`（U-45）。`priority` = Hero 背景・先頭の活動写真、他は lazy。`sizes` はスロットの実幅。CLS は枠の aspect-ratio が防ぐ（width / height 属性は持たない）。AVIF / WebP は Next が配信 |
 | alt | 活動写真 = 被写体 1 文 ≤ 60 字、人物 = `""`（氏名が隣に可視）、ロゴ = 団体名、イラスト = `""`。「写真」「画像」の接頭辞は付けない（§8.6） |
 | 状態 | なし。hover で色を戻す等の演出はしない（「tint imagery」禁止）。Partner のリンクは Image slot の外側の `<a>` が持つ（§6.16、U-35） |
 
@@ -2165,10 +2296,47 @@ Figma: `Media / Image Slot` `Shape` {Rect, Circle} × `Fit` {Cover, Contain} × 
 | 記号 | 矢印・星・絵文字を文字として置かない（§6.1.9）。鉤括弧・em dash・中黒・三点リーダ（U+2026 × 1）は句読点として可 |
 | 最小サイズ | 12px、例外なし（R10） |
 
+### 6.21 Join dialog（参加ダイアログ、U-49 / U-54）
+
+参加の導線（Nav CTA・Menu panel CTA・Hero 主・Poster の 4 本）は Discord へ直接出ず、このダイアログで**学生であることを確かめてから**新しいタブで出る（**DECISION U-49**、2026-09-12。中身は **U-54**、2026-09-14: 初版の「約束 3 つに同意」を「学生ですか？」の 1 問に）。確認の操作は「学生として参加する」を押すことそのもの — チェックボックスは置かない（1 手増えるだけで、読んだかどうかは変わらない）。
+
+```
+┌ ground、shadow/lg、幕 backdrop ink@48 ── 幅 min(viewport − 2 × page/inset, size/dialog 480) ┐
+│ inset/cell 24 (M 20)                                                                        │
+│ 学生ですか？                                              h2 Title/2 22、ink                │
+│ stack/md 16                                                                                 │
+│ ChoTechは学生向けのテックコミュニティです。                 p Body/S 14、ink-secondary        │
+│ 大学・学部・学科は問いません。                              （文節の塊 3 つ、塊内は nowrap）   │
+│ stack/xl 32                                                                                 │
+│ [ (Discord) 学生として参加する [arrow-up-right] ]  inline/sm 12  [ 閉じる ]                   │
+│ inset/cell 24 (M 20)                                                                        │
+└─────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+罫線グリッドのセル 1 枚を紙から持ち上げた形。ページで唯一の影（`shadow/lg`、§4.4 が dialog 用に予約していたもの）を幕と組んで使う。
+
+| 要素 | 仕様 |
+|---|---|
+| 要素 | 素の `<dialog>` + `showModal()`（幕・最上層・背後の inert・Escape・フォーカスの往復をブラウザが持つ。ライブラリは足さない）。`aria-labelledby` = 題、`aria-describedby` = 導入 |
+| 面 | `ground`、`radius/none`、`shadow/lg`。UA の padding / border / Canvas 色は打ち消す（preflight は dialog を触らない）。幕 `color/backdrop` ink@48（高コントラスト・低透明時は 88） |
+| 幅・位置 | `width: calc(100% − 2 × page/inset)`、`max-width: size/dialog` **480**（= 4 × cell-min）。Desktop 480、Mobile 342（container と同じ）。上下左右中央（`inset: 0; margin: auto`）。高さは内容（Desktop **216** = 24 + 28 + 16 + 48 + 32 + 44 + 24、Mobile **288** = 20 + 28 + 16 + 72 + 32 + 44 + 12 + 44 + 20）、`max-height: calc(100% − 2 × page/inset)` を超えたら中でスクロール（`overscroll-behavior: contain`） |
+| 題 | `Title/2` 22 EB `ink`、`<h2>`。「学生ですか？」（6 全角 = 132 px、1 行）。ページで唯一の疑問形の見出し — §9.1「見出しは常体・体言止め」の例外を `.join-dialog h2` に閉じる（U-54）。問いを避けるなら「学生向けのコミュニティ」 |
+| 導入 | `Body/S` 14 `ink-secondary`、`<p>`。文節の塊 3 つ「ChoTechは学生向けの」「テックコミュニティです。」「大学・学部・学科は問いません。」（≈ 141 / 168 / 210 px）を各 `white-space: nowrap` の span で描く — 折返しは塊の境目だけになり、`auto-phrase` の無い Safari / Firefox でも語中で割れない。Desktop 432 で 2 行（309 / 210）、Mobile 302 で 3 行、320 幅（内側 232）でも 3 行 |
+| 行動 | 主 = Ground / **Discord** / md `学生として参加する`（`<a target="_blank">`、Discord マーク 20 先頭 + `arrow-up-right` 20、vh「Discordへ（外部、新しいタブで開く）」— 可視の文に Discord の名が無いので読み上げ名で行き先を言う）、副 = Ground / **Outline** / md `閉じる`（`<form method="dialog">` の submit。JS を介さず閉じる）。tablet 以降は横並び gap `inline/sm` 12（231 + 12 + 85 = 328 ≤ 432）、Mobile は縦積み gap `stack/sm` 12 で両方 `fullWidth`。主が先（L-3）。「学生ではない」の副は置かない — 迷っている学生に嘘のボタンを押させず、閉じる / Escape / 幕の外で同じことが起きる |
+| 縦リズム | 題 → 導入 `stack/md` 16、導入 → 行動 `stack/xl` 32（§3.3 規則 2: 親の中の stack は 2 種） |
+| トリガー | 4 本とも `<button type="button" aria-haspopup="dialog">`（Button の asChild）。文言・矢印は従来どおり（`参加する` + `arrow-up-right`: 行き先は外部）。vh の「新しいタブ」注記はトリガーには付けず、参加リンクが持つ |
+| 開く | `showModal()`。初期フォーカスは DOM 先頭のフォーカス可能要素 = 「学生として参加する」（もう 1 手の Enter が表明。開いた Enter の keyup では発火しない） |
+| 閉じる | 「閉じる」/ Escape / 幕のクリック / 参加リンクを踏んだとき（新しいタブから戻ったときに幕が残らない）。閉じたらフォーカスは押した CTA へ戻る（UA 既定）。Escape はダイアログで止め、document で Escape を聞く Mobile メニューまで畳まない（メニューは開いたまま、フォーカスは Menu CTA へ） |
+| 背後 | `html:has(dialog:modal) { overflow: hidden; scrollbar-gutter: stable }` — 幕の裏のスクロールを止め、スクロールバーの溝を残してレイアウトを動かさない |
+| 状態 | ボタン §6.2。フォーカスリングは ground の `focus/ring`（green-700、4.55）。Blurple の隣でも緑（C-8） |
+| モーション | 開: opacity 0 → 1、y `reveal-y` 16 → 0、`spring/quick`（`@starting-style`）。幕は opacity のみ。閉: 逆再生（`transition-behavior: allow-discrete` で display / overlay を待つ）。`prefers-reduced-motion`: 移動なし、opacity `duration/2`。§7.3 |
+| コピー | 前提（`src/content/join.ts` に集約、クライアント確認待ち）: 学生 = 大学・大学院・高専・専門学校の在学生、学校は問わない（Hero の「大学・学部・学科を問わず」と同じ主張）、高校生は対象外。切替は 3 つ目の塊（長崎大学限定なら「長崎大学の学部・学科は問いません。」）。初版の約束 3 つ（尊重 / 勧誘禁止 / 持ち出し禁止）はサイトに置き場が無くなった — 置くなら Discord のルールチャンネル |
+| Figma | 未反映（クライアント判断で Figma 同期は停止） |
+
 ---
 ## 7. Motion
 
-本章がモーションのオーナー。§6 の部品はここで定義するトークン名で動きを参照し、値を再記述しない。原則の出典: Apple *Designing Fluid Interfaces* / HIG、WCAG 2.2。本ページにジェスチャ駆動 UI（ドラッグ、シート、スワイプ）はなく、動くものは reveal・マーキー・入力中ドット・Mobile メニュー・Hero の背景写真の 5 つだけ（回転語は U-37 で撤去）。
+本章がモーションのオーナー。§6 の部品はここで定義するトークン名で動きを参照し、値を再記述しない。原則の出典: Apple *Designing Fluid Interfaces* / HIG、WCAG 2.2。本ページにジェスチャ駆動 UI（ドラッグ、シート、スワイプ）はなく、動くものは reveal・マーキー・入力中ドット・Mobile メニュー・Hero の背景写真・参加ダイアログの 6 つだけ（回転語は U-37 で撤去、参加ダイアログは U-49）。
 
 ### 7.1 原則
 
@@ -2178,11 +2346,11 @@ Figma: `Media / Image Slot` `Shape` {Rect, Circle} × `Fit` {Cover, Contain} × 
 | M2 | 動きはスプリング、色は固定時間 | 位置・不透明度の「移動」（reveal、メニュー展開）は臨界減衰スプリング。色・下線・背景色は固定時間トランジション | スプリングは現在値から再ターゲットでき中断可能。色には物理がない |
 | M3 | 既定は減衰比 1.0 | `spring/default` = damping 1.0 / response 0.40 s。damping 0.8 は **ユーザーの投げ・フリックが先行した時のみ**。本ページに該当操作はない | 勝手に現れたものが跳ねると不自然。運動量を継いだものだけが跳ねる |
 | M4 | 中断可能・現在値から | すべてのトランジションは途中で逆転できる。hover 離脱、メニューの再タップ、語の切替中の停止のいずれも、表示中の値から次の目標へ | 「思考とジェスチャは並行する」。入力をロックする時間を作らない |
-| M5 | 出入りは対称、起点は発生源 | 開閉するものは同じ経路を逆再生。展開パネルは発生源（Nav の下罫）から現れる | 「消えた方向から戻ってくる」空間的一貫性 |
+| M5 | 出入りは対称、起点は発生源 | 開閉するものは同じ経路を逆再生。展開パネルは発生源（Nav の下罫）から現れる。参加ダイアログは reveal と同じ経路（下から 16）で現れ、幕と一緒に消える（U-49） | 「消えた方向から戻ってくる」空間的一貫性 |
 | M6 | compositor プロパティのみ | アニメーションは `transform` と `opacity` のみ（色は `background-color` / `color` / `text-decoration-color` / `text-decoration-thickness` を固定時間で）。`height` / `top` / `clip-path` / `filter` は不可 | 60 fps とジッターのなさが craft の最低条件。`clip-path` は全エンジンで compositor 処理されない |
 | M7 | 減速運動の停止は 1 % 残りで判定 | スプリングの「見かけの長さ」= 目標との差が 1 % を切る時刻 | 0.1 % まで待つと約 1.4 倍長くなり、体感と一致しない |
-| M8 | ループは低減設定・画面外で停止 | 自動で動くもの（マーキー、入力中ドット、背景写真、チャット再生、写真送り）は `prefers-reduced-motion` で止まり、画面外・バックグラウンドタブでも止まる。ページ内スイッチ（停止 / 再生ボタン）は **U-31 で撤去** | WCAG 2.2.2 はページ内の停止手段を求めるため**未達**（クライアント判断で許容） |
-| M9 | 追加しない | 装飾のためだけの動きは足さない。ヒーローの浮遊バブルと矢印の nudge は **採用しない**。チャットの再生と写真の送りは装飾ではなく情報（順に現れることでしか出せない、U-16 / U-18）。**唯一の例外が Hero の背景写真の漂い**（U-20）— 情報を運ぶのは写真であって動きではないと認めたうえで採った | Apple「Purpose」: 動きはユーザーの注意を消費する予算。1 つの状態に 2 つの信号を出さない |
+| M8 | ループは低減設定・画面外で停止 | 自動で動くもの（マーキー、入力中ドット、チャット再生。写真送りは U-40、背景写真の漂いは U-50 で撤去）は `prefers-reduced-motion` で止まり、画面外・バックグラウンドタブでも止まる。ページ内スイッチ（停止 / 再生ボタン）は **U-31 で撤去** | WCAG 2.2.2 はページ内の停止手段を求めるため**未達**（クライアント判断で許容） |
+| M9 | 追加しない | 装飾のためだけの動きは足さない。ヒーローの浮遊バブルと矢印の nudge は **採用しない**。チャットの再生は装飾ではなく情報（順に現れることでしか出せない、U-16）。写真の送り（U-18）は U-40 で撤去し静止画に。Hero の背景写真の漂い（U-20）は唯一の例外だったが、**U-50 で撤去**し静止画 + ぼかしに — 例外は無くなった | Apple「Purpose」: 動きはユーザーの注意を消費する予算。1 つの状態に 2 つの信号を出さない |
 
 ### 7.2 トークン
 
@@ -2208,12 +2376,13 @@ CSS カスタムプロパティで持つ。Figma には Variables として置�
 | `motion/marquee/speed` | `--marquee-speed` | **40 px/s** | マーキー速度（duration ではなく速度で指定） | 19 px 級の大文字を約 2 字/秒で追える。内容量が変わっても速さが変わらない |
 | ~~`motion/word/period`~~ | ~~`--word-period`~~ | ~~2.5 s~~ | 回転語 1 語の周期。**U-37 で廃止**（`--word-transition-offset` 80 ms も） | — |
 | `motion/dots/period` | `--dots-period` | **1.2 s**（= 3 × `duration/3`）、ドット間 **200 ms** | 入力中ドット | 0.8 Hz。Apple が避けよと言う 0.2 Hz 級の緩慢な振動から離す |
-| `motion/chat/step` | — | **900 ms** | チャットの 1 手（U-16） | 短い台詞を読み終える最短。これより速いと会話ではなく点滅に見える |
-| `motion/chat/hold` | — | **2,400 ms** | 一巡後の間（U-16） | 最後の発言を読み切ってから畳む。`chat/step` の約 2.7 倍 |
-| `motion/photo/step` | — | **4,000 ms** | 写真の送り（U-18） | 1 枚を見終える時間。文字より情報が多いので `chat/step` の 4 倍以上取る |
-| `motion/hero-backdrop/period` | `--hero-backdrop-period` | **48 s**（片道・`alternate` で往復 96 s） | Hero 背景写真の漂い（U-20） | 1440 幅で片道 ≈ 29 px = 0.6 px/s。マーキー 40 px/s の 1/60 で、視線を引かない上限 |
-| `motion/hero-backdrop/drift` | `--hero-backdrop-drift` | **2 %**（片道、縦は 1 %） | 同上の移動量 | `scale` の余白 6 % の 1/3。往復しても縁が出ない |
-| `motion/hero-backdrop/scale` | `--hero-backdrop-scale` | **1.12** | 移動の余白（**静的**でアニメーションではない） | 個別プロパティ `scale` に置き、動く `translate` と 1 つの transform を奪い合わせない |
+| `motion/chat/step` | — | **600 ms** | チャットの 1 手（U-16） | 900 → 600（U-44: 900 は待たされて見えた）。短い台詞を読み終え、これより速いと会話ではなく点滅に見える |
+| `motion/chat/hold` | — | **2,000 ms** | 一巡後の間（U-16） | 2,400 → 2,000（U-44）。最後の発言を読み切ってから 2 行目以降を畳む（1 行目は残す）。`chat/step` の約 3.3 倍 |
+| ~~`motion/photo/step`~~ | — | ~~**4,000 ms**~~ | ~~写真の送り（U-18）~~ **U-40 で撤去** | — |
+| ~~`motion/hero-backdrop/period`~~ | ~~`--hero-backdrop-period`~~ | ~~48 s~~ | Hero 背景写真の漂い（U-20）。**U-50 で撤去** | — |
+| ~~`motion/hero-backdrop/drift`~~ | ~~`--hero-backdrop-drift`~~ | ~~2 %~~ | 同上。**U-50 で撤去** | — |
+| `motion/hero-backdrop/scale` | `--hero-backdrop-scale` | **1.04** | ぼかしで透ける縁を Hero の外へ出す余白（**静的**でアニメーションではない） | 1.12 → 1.04（U-50: 移動が無くなったので、blur 4px の縁ぶんだけ） |
+| `hero/backdrop-blur` | `--hero-backdrop-blur` | **4 px** | Hero 背景写真の `filter: blur`（静的） | 「若干ぼかす」（U-50）。文字の背後の粒を潰して輪郭を守る。8 では写真が何か分からなくなる |
 | `color/hero/backdrop-opacity` | `--hero-backdrop-opacity` | **0.2** | Hero 背景写真の不透明度 | §6.8.1 の実測上限。`prefers-reduced-transparency` で 0 |
 
 ### 7.3 ページのモーション・インベントリ
@@ -2231,9 +2400,10 @@ CSS カスタムプロパティで持つ。Figma には Variables として置�
 | Chat 再生ループ（14 s） | 未定義 | **削除**。スレッドは静止（DECISION M-5） | — |
 | 入力中ドット | 未定義 | opacity 0.3⇄1、周期 1.2 s、ドット間 200 ms、**セルが可視の間のみ** | 静止（不透明度 100 %） |
 | Hero 浮遊バブル | 未定義 | **削除** | — |
-| Hero 背景写真（`.hero__backdrop`） | 未定義 | `scale` 1.12 を静的に当て、`translate` を ±2 % / ±1 % に `48s ease-in-out infinite alternate`。不透明度 0.2 で ink 面に重ね、原色（U-20 / U-21） | **静止**（`animation: none`）。写真は残る。`prefers-reduced-transparency` と `forced-colors` では層ごと消える |
+| Hero 背景写真（`.hero__backdrop`） | 未定義 | **静止**。`blur(4px)`、`scale` 1.04、不透明度 0.2 で ink 面に重ね、原色（U-20 / U-21 / **U-50**。48 s の漂いは撤去） | 同じ（動かない）。`prefers-reduced-transparency` と `forced-colors` では層ごと消える |
 | Nav（sticky） | sticky | 縮小・隠れなし。アンカー移動は `scroll-behavior: smooth` | `scroll-behavior: auto` |
 | Mobile メニュー | — | `overflow: hidden` のラッパー内でパネルを `translateY(−100 %) → 0` に `spring/quick`。閉じは逆再生。アイコン `menu-2` ⇄ `x` は `duration/0` | opacity `duration/2` |
+| 参加ダイアログ（U-49） | — | `<dialog>` を opacity 0 → 1、y `reveal-y` 16 → 0 に `spring/quick`（`@starting-style`）、幕は opacity。閉じは逆再生（`transition-behavior: allow-discrete` で display / overlay を待つ） | opacity `duration/2`、移動なし |
 | Mono ⇄ Lime | — | デザインモード。ランタイム切替なし | — |
 
 ### 7.4 個別仕様
@@ -2243,7 +2413,7 @@ CSS カスタムプロパティで持つ。Figma には Variables として置�
 - 隠し状態（opacity 0 / y 16 px）は **JS が有効かつ reduced-motion でない時だけ** 付与する（`html.js:not(.reduced) [data-reveal]`）。JS 失敗時にコンテンツが消えない。
 - 発火は IntersectionObserver（root-margin −10 %）、**一度だけ**。上へ戻った時に再び消さない — 読み終えたものが消えるのは予測可能性に反する。
 - Hero はオブザーバを使わず、`document.fonts.ready` か `duration/3` 400 ms のどちらか早い方で開始する。代替フォントで動かしてから本フォントで再描画すると二重に動いて見える。
-- インデックスはセクション内の順序。Hero 0/1/3/4、About 0/1、Activities 0、For You 0/1、Members 0/1/2、Partners 0/1/2、Poster 0/1/2/3（概念版のまま）。ベント・グリッドとカードのセル群は **親 1 つとして** reveal し、セル個別には動かさない — 2 px 罫線で結ばれた格子は 1 つの面。（DECISION M-2）
+- インデックスはセクション内の順序。Hero 0/1/2（h1 / lead / actions、U-39 で meta strip の段を詰めた）、About 0/1、Activities 0、For You 0/1、Members 0/1/2、Partners 0/1/2、Poster 0/1/2/3（概念版のまま）。ベント・グリッドとカードのセル群は **親 1 つとして** reveal し、セル個別には動かさない — 2 px 罫線で結ばれた格子は 1 つの面。（DECISION M-2）
 
 #### 7.4.2 Marquee
 
@@ -2294,6 +2464,7 @@ CSS カスタムプロパティで持つ。Figma には Variables として置�
   .marquee__track, .typing__dot { animation: none; }
   .hero__word { transition: none; }
   .menu__panel { transition: opacity var(--dur-2) var(--ease-color); transform: none; }
+  .join-dialog, .join-dialog::backdrop { transform: none; transition: opacity var(--dur-2) var(--ease-color), display var(--dur-2) allow-discrete, overlay var(--dur-2) allow-discrete; }
   html { scroll-behavior: auto; }
 }
 @media (prefers-contrast: more) {
@@ -2312,6 +2483,7 @@ CSS カスタムプロパティで持つ。Figma には Variables として置�
 | Marquee | CSS keyframes、duration = 幅 ÷ 40 | 表示のみ（26 s linear、ループ）。速度 40 px/s を説明に明記 |
 | Hover / press | `:hover` `duration/1` / `duration/2` `ease-out`、`:active` `duration/0` | While hovering → Change to（100 ms ease-out）、While pressing → Instant |
 | Mobile メニュー | `translateY` + `spring/quick`、ラッパー `overflow: hidden` | Move in（上から）Spring `spring/quick`、閉じは Move out（同経路） |
+| 参加ダイアログ | `@starting-style` + `transition: opacity, transform, display, overlay` を `spring/quick` | 未反映（Figma 同期停止） |
 
 stiffness = (2π / response)²、damping = 2·√stiffness（減衰比 1.0）。
 
@@ -2348,9 +2520,9 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 
 | トークン | 前景 → 背景 | 比 | 使用（サイズ / ウェイト） | 区分 | 判定 |
 |---|---|---|---|---|---|
-| `ink` / `ground` | #201e1d → #f3f2f2 | **14.86** | h2 32 EB、セル題、Nav 14 R、氏名、Activity 題 56 EB、Marquee 項目 19 EB | N | ✓ |
-| `ink` / `surface` | #201e1d → #eae7e7 | 13.51 | Persona 引用 14 B、相手側バブル 14 B、チップ数値 12 B | N | ✓ |
-| `ink-secondary` / ground | #605d5d → #f3f2f2 | **5.83** | 段落 14 R、Footer リンク 13 R、Persona 推奨 13 B、Activity 副題 15 B・説明 14 R、Member 紹介 12–13 R、セクション番号・キッカー・肩書・タグライン・© 12 B/R、Marquee ラベル 12 B、Mono バッジ 12 B | N | ✓（コンセプト n600 3.85 / n500 2.59 は ✗） |
+| `ink` / `ground` | #201e1d → #f3f2f2 | **14.86** | h2 32 EB、セル題、Nav 14 R、氏名、Activity 題 56 EB、Marquee 項目 19 EB、Persona 引用 14 B（U-53） | N | ✓ |
+| `ink` / `surface` | #201e1d → #eae7e7 | 13.51 | Persona 次の一歩 13 B（U-42 → U-53）、相手側バブル 14 B、チップ数値 12 B | N | ✓ |
+| `ink-secondary` / ground | #605d5d → #f3f2f2 | **5.83** | 段落 14 R、Footer リンク 13 R、Activity 副題 15 B・説明 14 R、Member 紹介 12–13 R、セクション番号・キッカー・肩書・タグライン・© 12 B/R、Marquee ラベル 12 B、Mono バッジ 12 B | N | ✓（コンセプト n600 3.85 / n500 2.59 は ✗） |
 | `ink-secondary` / surface | #605d5d → #eae7e7 | 5.30 | タグ 12 R、チップアイコン、画像キャプション 12 R（制作時のみ） | N / U | ✓ |
 | `ink-tertiary` / ground | #7d7979 → #f3f2f2 | 3.85 | Marquee ghost「YOUR COMPANY HERE」19 EB | L | ✓（コンセプト ink@40 は 2.41 ✗） |
 | `ink-tertiary` / ground・surface | #7d7979 → #f3f2f2 / #eae7e7 | 3.85 / 3.50 | 入力中ドット、placeholder アイコン、Mono の Marquee 区切り | U | ✓ |
@@ -2377,7 +2549,9 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | `inverse/ink-quaternary` / ink | #858483 → #201e1d | 4.45 | 「仲間と、」124 EB のみ | L | ✓（N には使わない） |
 | `inverse/outline` / ink | #f3f2f2 → #201e1d | 14.86 | Hero 副・Bento CTA の 1 px 枠 | U | ✓ |
 | `inverse/ink` / `inverse/state/hover-tint`・`pressed-tint` | #f3f2f2 → #393737 / #535150 | 10.58 / 7.06 | Outline ボタン hover / press | N | ✓ |
-| `inverse/action/ink` / `inverse/action/fill`・`-hover`・`-pressed` | #201e1d → #f3f2f2 / #eae7e7 / #d7d3d3 | 14.86 / 13.51 / 11.19 | Hero 主・Poster CTA 15 B | N | ✓ |
+| `inverse/action/ink` / `inverse/action/fill`・`-hover`・`-pressed` | #201e1d → #f3f2f2 / #eae7e7 / #d7d3d3 | 14.86 / 13.51 / 11.19 | ライブラリ（Ground solid on ink。Hero 主・Poster は C-31 で Discord） | N | ✓ |
+| `on-discord` / `discord/fill`・`hover`・`pressed` | #ffffff → #5865f2 / #505cdc / #4752c4 | 4.61 / 5.38 / 6.42 | Hero 主・Poster CTA 15 B、Discord マーク、矢印（C-31） | N | ✓ |
+| `discord/fill` / ink | #5865f2 → #201e1d | 3.60 | CTA の面の輪郭（hover 3.09 ✓、pressed 2.59 は押下の瞬間） | U | ✓ |
 | `hero/word`（Lime）/ ink | #9ae600 → #201e1d | 10.83 | h1 動詞 `Hack` 116 EB | L | ✓。Mono は `inverse/ink` 14.86 |
 | `on-accent` / `accent`（チャット自分側） | #201e1d → #9ae600 | 10.83 | 吹き出しの文 14 B | N | ✓ |
 | `accent` / `ground`（チャット自分側の面） | #9ae600 → #f3f2f2 | 1.37 | 吹き出しの境界 | [参考] | 装飾。意味は文字 10.83・右寄せ・avatar の有無が冗長に運ぶ |
@@ -2419,6 +2593,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | Footer リンク × 4 | Footnote 13 / 20 | 44 | 上下 −12。gap `inline/lg` 24 |
 | Mobile メニューボタン | `size/control/md` 44 | ✓ | 拡張不要（DECISION M-13） |
 | Menu row × 4 + CTA | 44 高 | ✓ | — |
+| 参加ダイアログ 同意 / 閉じる | `size/control/md` 44 | ✓ | Mobile は `fullWidth`、縦の gap `stack/sm` 12 ≥ 8 |
 | Skip link | Desktop `size/control/sm` 36（フォーカス時のみ表示）/ Mobile 44 | 44 | Desktop は `::before { inset: -4px }`（キーボード専用なので実質不要） |
 
 ### 8.4 フォーカス
@@ -2449,7 +2624,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | Marquee | `<div aria-hidden="true">`（トラック）+ 停止 `<button>`（aria-hidden の外） |
 | Footer | `<footer>`（contentinfo）。リンクは `<nav aria-label="フッター">` |
 
-**フォーカス順序**: Skip → Brand → Nav リンク × 4 → Nav CTA →（Mobile: メニューボタン → 開時 Menu row × 4 → Menu CTA）→ Hero 主 → Hero 副 → Bento CTA → Activity セル × 3 → Partner リンク → Poster CTA → Social × 3 → Footer Brand → Footer リンク × 4。
+**フォーカス順序**: Skip → Brand → Nav リンク × 4 → Nav CTA →（Mobile: メニューボタン → 開時 Menu row × 4 → Menu CTA）→ Hero 主 → Hero 副 → Bento CTA → Activity セル × 3 → Partner リンク → Poster CTA → Social × 3 → Footer Brand → Footer リンク × 4。参加 CTA を押すと参加ダイアログ（学生として参加する → 閉じる、背後は inert、閉じたら押した CTA へ戻る。U-49 / U-54）。
 
 **見出し階層**（h1 は 1 つ、階層を飛ばさない）
 
@@ -2466,12 +2641,13 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | Activity セル | `<li><a href aria-labelledby="t1 s1"><h3><span id="t1">Talk Day</span> <span id="s1">ライトニングトーク</span></h3> …説明・タグ… </a></li>`（DECISION M-12）。名前 = 題 + 副題、説明・タグは名前に含めないがリンク内容として読める。セル内に別のリンクを置かない。トレードオフ: リンク内のテキストはドラッグ選択しにくい（マーケティング面では許容） |
 | Member の SNS | `<ul>` > `<li>` > `<a>`。アイコンは `aria-hidden`、名前は visually-hidden で人名込み（「田中 太郎 の X」）。同じアイコンが 5 枚並ぶため、人名がないと区別できない |
 | Activity タグ | `<ul aria-label="キーワード">` > `<li>` |
-| Bento | `<ul>` ではなく `<section>` 群（内容が異種）。Stat は `<p><span aria-hidden="true">50+</span><span class="vh">メンバー 50人以上</span></p>` |
+| Bento | `<ul>` ではなく `<section>` 群（内容が異種）。Stat は `<p><span aria-hidden="true">50+</span><span class="vh">メンバー 50人以上</span></p>`。図の行（Bento / Figure）は `aria-hidden`（装飾。意味は題が運ぶ）。可視の題が文の一部（SINCE「2025年4月」）のときは Stat と同じ aria-hidden + sr-only の全文「2025年4月 設立」（U-52） |
 | Chat | `<figure>` > `<p class="kicker">#general — いつものChoTech</p>` + `<ul>`（`<li>` = 頭文字 `<span aria-hidden>` + vh「参加者」+ 本文）+ `<figcaption>こんな会話が、毎日どこかで。</figcaption>`。図の名前は figcaption（DECISION M-18）。リアクションは `<span role="img" aria-label="いいね 3">`（内部の svg と数字は presentational） |
 | Persona / Member / Partner | `<ul>` > `<li>`。カードに `<article>` は不要（見出し + 段落で足りる） |
 | ボタン内アイコン | `<svg aria-hidden="true" focusable="false">`。名前は可視ラベルのみ |
 | 外部リンク | Discord / X / Instagram / GitHub / mailto / Partner ロゴ / Member SNS: `target="_blank" rel="noopener noreferrer"` + vh「（外部、新しいタブで開く）」（DECISION M-21、WCAG G201）。文字リンクは `arrow-up-right` アイコンも付ける |
 | Mobile メニュー | `<button aria-expanded aria-controls>`、パネルは非モーダル。開いてもフォーカスはボタンに留め、ArrowDown で 1 行目へ（§6.7.3） |
+| 参加ダイアログ | `<dialog aria-labelledby="{h2}" aria-describedby="{導入 p}">` を `showModal()`。トリガーは `<button type="button" aria-haspopup="dialog">`。開いたら「学生として参加する」（`<a target="_blank">` + vh「Discordへ（外部、新しいタブで開く）」）にフォーカス、背後は inert、閉じたら押した要素へ戻る。「閉じる」は `<form method="dialog">` の submit（U-49） |
 
 ### 8.6 画像と代替テキスト
 
@@ -2514,7 +2690,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | 誘う | 「〜しよう」「〜から」（まずはDiscordから） | 「〜してください」「〜しませんか？」 |
 
 - 主語は ChoTech。「私たち」「あなた」は使わない。
-- 敬体（です・ます）は本文のみ。見出し・キッカー・ボタンは常体・体言止め。
+- 敬体（です・ます）は本文のみ。見出し・キッカー・ボタンは常体・体言止め。例外は参加ダイアログの題「学生ですか？」— 確認の問いはページで唯一で、`.join-dialog h2` に閉じる（U-54）。「〜しませんか？」の勧誘形の禁止は変わらない。
 - 感嘆符「！」はチャット引用の発話内のみ。UI コピーでは使わない。
 - 絵文字は使わない（ハード制約）。
 
@@ -2532,6 +2708,8 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | タグ | 名詞、4–8 字 | 初心者歓迎 |
 | Persona 引用 | 「」内に話し言葉 | 「個人開発、一人だと続かないんだよね」 |
 | Persona 推奨 | 「〜しよう」「〜でOK」 | Dev Dayで一緒に手を動かそう |
+| ダイアログ題 | 確認の問い（〜ですか？）。ページで唯一の疑問形の見出し（U-54） | 学生ですか？ |
+| ダイアログ導入 | です・ます。文節の塊で持つ | ChoTechは学生向けのテックコミュニティです。大学・学部・学科は問いません。 |
 
 ### 9.3 文字数上限
 
@@ -2547,7 +2725,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | セクション h2 | Title 1 32 / 26 | 1200 / 342 | 37 / 13 | **12** | 1 / 1（12 × 26 = 312 ≤ 342） |
 | キッカー（英） | Overline 12 | — | — | 20（"Partners" = 19） | 1 |
 | Bento 2×1 題 | Title 2 22 | 549 / 298 | 24 / 13 | 24 | 1 / 2 |
-| Bento 1×1 題 | Title 3 19 · Headline 17 | 249 / 298 | 13 · 14 / 15 · 17 | 26 | ≤ 2 |
+| Bento 1×1 題 | Title 1 32 · Title 3 19 · Headline 17 | 249 / 298 | 7 · 13 · 14 / 9 · 15 · 17 | 26（Title 1 は SINCE の日付 7） | ≤ 2（Title 1 は 1） |
 | Bento 本文 | Body S 14 | 549 · 249 / 298 | 39 · 17 / 21 | 2×1: 70、1×1: 45 | 2 · 3 / 4 |
 | Stat | Display M 56 + Title 1 32 | — | — | 数字 ≤ 3 桁 + `+`、キッカー ≤ 10（英） | 1 |
 | CTA セル題 / 副 | Title 3 19 / Footnote 13 | ≈ 326（549 − gap 16 − ボタン 207）/ 298 | 17 · 25 / 15 · 22 | 14 / 20 | 1 / 1（Mobile は縦積み: 題 → 副 → fullWidth ボタン、K-8） |
@@ -2561,8 +2739,8 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | Activity 説明 | Body S 14 | 588 / 342 | 42 / 24 | **60**（概念版最長 57） | 2 / 3 |
 | Activity タグ | Caption 12 | — | — | 8 × 3 | 1 |
 | Persona 題 | Headline 17 | 349 / 298 | 20 / 17 | 17（「データサイエンティストを目指したい人」= 17 = Mobile の容量。これ以上は伸ばさない） | 1 |
-| Persona 引用 | Callout 14 | 325 / 274 | 23 / 19 | 44（「」込み。概念版最長 26） | 2 / 3 |
-| Persona 推奨 | Footnote Bold 13（先頭に arrow-right 16 + 4） | 329 / 278 | 25 / 21 | 30（混植。Case 05「Dev Dayで手を動かして、Talk Dayで共有しよう！」≈ 23 em） | 1 / 1–2（矢印は 1 行目に留まる） |
+| Persona 引用 | Callout 14 | 349 / 298 | 24 / 21 | **42**（「」込み。箱 `size/persona-quote` 44 = 2 行の前提、U-53。概念版最長 26） | ≤ 2 / ≤ 2 |
+| Persona 推奨 | Footnote Bold 13（先頭に arrow-right 16 + 4） | 297 / 246 | 22 / 18 | **36**（板 `size/persona-rec` 64 = 2 行の前提、U-53。Case 05「Dev Dayで手を動かして、Talk Dayで共有しよう！」≈ 23 em） | ≤ 2 / ≤ 2（矢印は 1 行目に留まる） |
 | Member 役職 | Overline 12 | — | — | 6（英 10） | 1 |
 | Member 氏名 | Title 2 22 · Headline 17 | 549 · 365 | 24 · 21 | 8（姓 + 半角空白 + 名） | 1 |
 | Member 紹介 | Footnote 13 · Caption 12 | 549 · 365 / 298 | 42 · 30 / 22 · 24 | 40 | 1 · 2 / 2 |
@@ -2578,6 +2756,9 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | タグライン（英） | Caption Bold 12 | — | — | 20（"Hack Your Limits." = 17） | 1 |
 | Footer リンク / © | Footnote 13 / Caption 12 | — | — | 10 / `© YYYY ChoTech` | 1 |
 | Marquee 項目 | Title 3 Caps 19 | — | — | 12 | 1 |
+| ダイアログ題 | Title 2 22 | 432 / 302 | 19 / 13 | 12（「学生ですか？」= 6） | 1 |
+| ダイアログ導入 | Body S 14 | 432 / 302 | 30 / 21 | 45。文節の塊は各 ≤ 15（210 px ≤ 320 幅の内側 232、U-54） | 2 / 3 |
+| ダイアログ CTA | Label M 15 | — | — | **9**（「学生として参加する」= 9。ボタン 231 ≤ 320 幅の内側 232） | 1 |
 
 ### 9.4 句読点・記号
 
@@ -2609,7 +2790,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | 規則 | 内容 |
 |---|---|
 | 左寄せ | すべてのラベルは flush-left。ボタン内も左寄せ、アイコンはラベル直後（L-3） |
-| 動詞先行 | CTA は目的語 + 動詞終止形で終える（参加する／活動を見る／パートナーになる）。名詞だけの CTA は不可 |
+| 動詞先行 | CTA は目的語 + 動詞終止形で終える（参加する／活動を見る／パートナーになる／学生として参加する／閉じる）。名詞だけの CTA は不可 — ダイアログの副次も「キャンセル」ではなく起きることそのもの「閉じる」（U-49） |
 | 1 画面 1 主 CTA | Hero の「参加する」が主。他は目的語付きで区別（Discordに参加する／Discordに参加する） |
 | 矢印の意味 | 末尾の矢印 = 遷移。サイト内（Activity 行）: `arrow-right`。外部（Discord、X、Instagram、GitHub、mailto）: `arrow-up-right`。ページ内スクロール（Hero「活動を見る」、Nav リンク）: アイコンなし（R9）。先頭の `arrow-right` は Persona 推奨の「次の一歩」を指す指示子のみ（リンクではない） |
 | アイコン仕様 | Tabler outline、24 グリッド、stroke 2、`currentColor`、常に `aria-hidden`。サイズは §5.2 の判定順: **コントロール高で決める** 36 → 16、44 → 20、アイコンボタン 44 → 24。**文中は文字サイズで決める** ≤ 14 px → 16、15–19 px → 20（Marquee 19 Caps → 20） |
@@ -2890,7 +3071,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | `Shape` | 1 | **10** | `radius/none` `radius/full` `radius/bubble` `radius/bubble-tail`、`stroke/hair` `stroke/rule` `stroke/underline` `stroke/underline-strong` `stroke/focus`、`focus/offset` | CORNER_RADIUS / STROKE_FLOAT / GAP |
 | `Typography` | `Desktop` / `Mobile` | 37 | `font/family`、`font/style/*` 3、`font/size/*` 17、`font/leading/*` 16（§2.5.1） | FONT_FAMILY / FONT_STYLE / FONT_SIZE / LINE_HEIGHT |
 
-- モードの既定: `Color` = Lime accent（C-17、2026-09-01 確定）、`Spacing` / `Typography` = Desktop。Screens の Mobile フレームは 2 コレクションのモードを Mobile に切り替える。
+- モードの既定: `Color` = Lime accent（C-17、2026-09-01 確定）→ **Green accent に改名して値を差し替える（C-29、2026-09-12。Figma 未反映）**、`Spacing` / `Typography` = Desktop。Screens の Mobile フレームは 2 コレクションのモードを Mobile に切り替える。
 - `opacity/disabled` 0.48 と shadow の幾何は Variables にしていない（前者はライブラリ内の見せ方、後者は Effect Style が持つ）。§4.2・§4.4 の表が正本。
 - Motion は変数にしない（R24）。`01 Foundations / Motion` の表と、プロトタイプ設定（§7.6）で保持する。
 - CSS 変数名は Figma 名の `/` を `-` に置換（`--color-inverse-ink-secondary`、`--inset-cell`、`--size-nav`、`--stroke-rule`）。アルファは `color-mix()` で表現し、合成 hex を書かない（§1.5.5）。
@@ -2919,7 +3100,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | `Brand / Lockup` | `Size` {Nav, Footer} × `State` {Default, Hover} | 4 | `name` `tagline` TEXT、`showTagline` BOOL、`focus` BOOL | Rule |
 | `Nav / Menu Row` | `State` {Default, Hover, Pressed, Current} | 4 | `label` TEXT、`focus` BOOL | Rule |
 | `Nav / Bar` | `Viewport` {Desktop, Mobile} × `Menu` {Closed, Open}（sparse） | 3 | nested: brand、link1–4、ctaLabel | Brand、Link、Button、Menu Row |
-| `Hero / Meta Strip` | — | 1 | `item1–4` TEXT | Rule |
+| ~~`Hero / Meta Strip`~~（U-39 撤去） | — | 1 | `item1–4` TEXT | Rule |
 | `Hero / Rotating Word` | `Word` {学ぶ。, 創る。, 話す。} | 3 | — | — |
 | `Section / Hero` | `Viewport` {Desktop, Mobile} | 2 | `word` INSTANCE_SWAP、`leadStrong` `leadBody` `primaryLabel` `secondaryLabel` TEXT | Meta Strip、Rotating Word、Button |
 | `Marquee / Item` | `Kind` {Label, Word, Ghost, Separator} | 4 | `label` TEXT | Icon |
@@ -3004,7 +3185,11 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | C-14 | ポスターの副次コピーは全て 88 %（ライムでは ink@88） | 8.23。ライムでは 72 % も 5.32 で N を満たすが、抑制原則により階層は 2 段に留める |
 | C-15 | hover 4 → 6 %、disabled 45 → 48 %、backdrop n900@50 → ink@48、shadow は ink@24 の 1 濃度 | C-5 の尺度に載せる。影の段差は幾何で作る |
 | C-16 | リンク: ホバーは下線、プレス文字 600、現在地 ink 下線。ホバーで文字色を変えない | 罫線が構造を担う語彙に合う。1.4.1。持続状態にアクセントを使わない |
-| C-17 | 既定モード = Lime accent、Mono は検証モード | アクセント出現が 4 箇所に限定されるため。2026-09-01 クライアント確定 |
+| C-17 | ~~既定モード = Lime accent~~ **C-29 で Green accent に置換（2026-09-12）**、Mono は検証モード | アクセント出現が 4 箇所に限定されるため。2026-09-01 クライアント確定 |
+| C-29 | アクセントを Lime（Tailwind v4 lime）→ **Green（GitHub Primer green: 200 `#aceebb` / 300 `#56d364` / 400 `#3fb950` / 500 `#2ea043` / 600 `#238636` / 700 `#1a7f37` / 800 `#116329` / 900 `#044f1e`）** に（2026-09-12、クライアント判断）。極性の規範（C-25 / C-26 / C-27 / C-28）は不変、§1 の実測値をすべて再計算（付録 C.5） | ライムは「雰囲気に合わない」（黄緑寄りの色相）。候補 A の Tailwind v4 green（`#05df72`）は「目にきつい」。B の GitHub green は彩度が低く、墨地の上で GitHub のダークモードと同じ表情になる。極性はライムと同じ（400 は地の上 2.27 で不可、地の上の文字は 800 / 900）ので、ロール構造に手を入れずに済む |
+| C-30 | ポスター面を**インク面**に戻し、緑は見出し（`poster/display` = green-400）と**文字を載せる小さな面** `accent-fill`（green-600 + 白 `on-accent` = neutral-0）で出す: 参加 CTA（Hero 主・Poster）とチャット自分側バブル（2026-09-12、クライアント判断）。`accent-hover` / `accent-pressed` は 700 / 800（暗い方へ）。C-27 の上端罫は撤去、C-18 と K-5 の「accent ボタンはページに置かない」は撤回 | 「緑の上に黒文字は見にくい」。中明度の高彩度面に墨の本文は、6.54 で AA を通っても色の振動で読みにくい。白を載せるなら面は 600 まで下げる必要があり（400 に白は 2.54）、600 の大面は重いので、面は文字を載せる小さな面に限る。ホバーを明るい方へ動かすと白が 4.5 を割るので暗い方へ 1 段ずつ |
+| C-31 | Discord マークを持つ参加ボタン（Hero 主・Poster）の面を accent-fill（green-600）から **Discord の Blurple**（`discord/fill` = `#5865f2` + 白 `on-discord`、hover `#505cdc` / pressed `#4752c4`）に（2026-09-12、クライアント判断）。プリミティブ `blurple/500 / 530 / 560`、ロール `discord/*` 4 行。緑の面はチャット自分側バブルだけになり、Accent ボタンはどの地でもライブラリ、`poster/action/*` もライブラリ | 「Discord アイコンがあるボタンは Discord のブランドカラーを使わないと違和感がある」。ロゴは公式素材を色も変えずに置く（U-38）のに、面だけ自社の緑にするとロゴが借り物に見える。パートナーロゴを原色で置く U-21 と同じ「第三者の識別子は引用」の扱いにし、アクセントの色相には数えない。実測: 白 4.61 / hover 5.38 / pressed 6.42、面は ink 3.60・ground 4.12（極性なし）。ホバーを明るくすると白が 3.29 で割るので暗い方へ |
+| C-32 | ベントの図の円を **自分側バブルと同じ緑の面**で塗る: `figure/fill` = accent-fill（green-600）、`figure/ink` = on-accent（白、4.63）。新しいプリミティブもロールの値も無し（2026-09-14 初版 → 2026-09-15 改 2、クライアント判断）。`forced-colors` では円に 1px 枠 | 初版は GitHub Primer light の段 2 / 7 を 4 色相で写し意味で使い分けた →「配色が浮きすぎ。アクセントのグリーン系で統一。3 色の使い分けは不要」。改 1 は accent-subtle（green-200）+ green-900 の図 →「色がキモい。周りと同じ緑でいい」。周りの緑は同じ About の自分側バブル（accent-fill + 白）で、その対をそのまま使えば About の緑は 1 種になる。64 の円は C-30 の「文字を載せる小さな面」の族 |
 | C-18 | ページにアクセント塗りボタンを置かない（ライブラリのみ） | ポスター面と競合させない |
 | C-19 | neutral-50 / 400 は予備でテキスト不可。インディゴのランプ全段は記録用に残置 | 隣の段より優れる用途がない。ランプの完全性のために保持 |
 | C-20 | 画像プレースホルダ = surface、キャプション = ink-secondary、アイコン = ink-tertiary | 5.30 / 3.50 |
@@ -3069,7 +3254,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | L-28 | marquee 停止セル 44 × 内側高、左 2px rule、ground、icon 24 | 帯と同じ罫線語彙で「セル」として切り出す。**U-31 で撤去** |
 | L-29 | 実装のブレークポイントは 2 つ: 構造 48rem / トークン 78rem（§3.6） | 2 フレームしかない仕様と連続なブラウザ幅の橋渡し。ナビと列数だけ先に開き、タイポは離散のまま |
 | L-30 | logo mark は図の外接矩形で切った `icons/mark.svg` を 24 / 20 で置く | favicon.svg は余白込みで、図が小さく見え wordmark からも離れて見えた |
-| L-31 | Partner セルは正方形タイル（Desktop 6 列 / tablet 3 / Mobile 2） | ロゴは正方形のアイコンが基本なので図とタイルの形を揃える。文字を運ばないタイルは L-10 の制約外。Mobile 1 列だと 342 角が 6 枚縦に積まれる |
+| L-31 | ~~Partner セルは正方形タイル（Desktop 6 列 / tablet 3 / Mobile 2）~~ **U-43 でタイルごと撤去（外枠だけの 1 行）** | ロゴは正方形のアイコンが基本なので図とタイルの形を揃える。文字を運ばないタイルは L-10 の制約外。Mobile 1 列だと 342 角が 6 枚縦に積まれる |
 | L-33 | hero `min-height: min(100svh − size/nav − size/band-marquee, size/hero-max)`（2026-09-12、L-7 改） | ファーストビューの下端にパートナーの帯を乗せる。「支えられている」が最初の画面で見える。1440 × 900 で Hero 718 + 帯 120。内容が下限を超える画面（1280 × 720）では帯は一部 |
 
 ### A.4 Components（K）
@@ -3151,23 +3336,23 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 | U-5 | ヒーローのリードを `Title/3` 19 → `Title/1` 32 | 19 と本文 16 では差が知覚できず、Display 124 との間に階層がなかった |
 | U-6 | About の統計値（50+）を `color/accent` に | ページ唯一の数字。ここだけアクセントを当てて規模を一撃で読ませる |
 | U-7 | 「スポンサー」「協賛」を **パートナー**に統一（部品名 `Partner / Cell`、ナビ `Partners`、CTA「パートナーになる」） | 関係は金銭支援に限らない。呼び方を 1 つにして、団体・企業のどちらにも開く |
-| U-8 | 活動内容を hairline の一覧から**ベント 4 セル**に。Talk Day（Feature）/ Dev Day / Project / Hackathon | 4 件を同格の行で並べると入口の太さの差が消える。面積で差をつければ読み手は選ばずに済む。About と同じ罫線グリッドを再利用してページの語彙を減らす |
+| U-8 | 活動内容を hairline の一覧から**ベント 4 セル**に。~~Talk Day（Feature）/ Dev Day / Project / Hackathon~~ **U-41 で均等 2×2 の写真セルに（Feature / Compact の面積差は撤回）** | 4 件を同格の行で並べると入口の太さの差が消える。面積で差をつければ読み手は選ばずに済む。About と同じ罫線グリッドを再利用してページの語彙を減らす |
 | U-8b | Project（チーム開発・コードレビュー・イベント企画）と Hackathon（参加と開催の両方）を分ける | 前者は継続の営み、後者は期間の区切られた催し。関わり方（週次の役割 vs 数日の集中）が違うので、1 セルにまとめると読み手がどちらの顔で入るか決められない |
 | U-9 | 開催頻度バッジは `showBadge` 既定 false。`arrow-right` は常時残す | 頻度が確定するまで出さない。「随時」で埋めると確定した情報と見分けがつかない。矢印はリンクの印として必要 |
 | U-10 | Discord の導線は「参加する」1 本。「見学」段階を作らない | 参加自体が可逆で低コストなので、手前に段階を置いても障壁は下がらず導線が割れる。ハードルは文言（見るだけ参加も歓迎です）で下げる |
 | U-11 | `ONLINE & OFFLINE` → `ONLINE & OFFLINE`、title も両方を主語に | 「first」は序列の宣言で、対面が二番手だという含みが残る。実態は両方 |
 | U-12 | Member カードに SNS / 個人サイトのアイコンリンク（20 × 最大 3、`showSocials`） | 顔と実績が見えることが入会判断の材料になる。本文で列挙すると紹介文が読みにくいので 1 行に閉じる。同じアイコンが 5 枚並ぶので、支援技術向けの名前には**人名を含める** |
-| U-13 | メタストリップに「サポーターズ 技育プロジェクト 学生団体公式パートナー」を長崎大学公認と同じ強さで併記 | どちらも第三者が裏づけた事実。片方だけ本文に落とすと格が下がって見える |
+| U-13 | ~~メタストリップに「サポーターズ 技育プロジェクト 学生団体公式パートナー」を長崎大学公認と同じ強さで併記~~ **U-39 でメタストリップごと撤去。同じ強さで並べる趣旨は About の OFFICIAL セルの 2 行が引き継ぐ** | どちらも第三者が裏づけた事実。片方だけ本文に落とすと格が下がって見える |
 | U-14 | `Bento / Cell Text` の `body` プロパティを全 6 variant で `characters` に配線（バグ修正）。`body` は全 Kind で使える | 値を入れても既定文が出ていた。OFFICIAL セルに 2 つ目の裏づけを入れるために必要だった |
 | U-15 | ~~回転語は 2 周で静止せず**回り続ける**~~ **U-37 で回転語ごと撤去** | §7 M8 のスイッチが停止手段を提供済みで、有限化の理由（WCAG 2.2.2）が消えた。3 語を見せて止まる動きは「力尽きた」ようにしか見えない。U-31 でスイッチ撤去後も回し続ける（2.2.2 未達を許容） |
 | U-16 | チャットは静止画をやめ、発言・スタンプ単位で順に現れて**ループ**する | 静止スレッドは「会話のスクリーンショット」に見える。伝えたいのは「いま誰かが喋っていて返事が返ってくる場所だ」ということで、順に現れることでしか出せない |
 | U-17 | 活動セルを**リンクにしない**。hover / pressed / focus / 矢印も持たない | 4 セルとも同じ Discord に着地するので、押した対象と行き先が対応しない。参加への導線は Hero・Bento CTA・Poster が 3 度受け持っている |
-| U-18 | About の写真セルは複数枚を**スライドさせて回す** | 「いろいろやっている」は 1 枚の代表写真では出ない。ベントで唯一「時間を持つ」セルなので、隣のチャットと合わせて 2 つ以上は作らない |
+| U-18 | ~~About の写真セルは複数枚を**スライドさせて回す**~~ **U-40 で撤去（写真は Activities の静止画へ）** | 「いろいろやっている」は 1 枚の代表写真では出ない。ベントで唯一「時間を持つ」セルなので、隣のチャットと合わせて 2 つ以上は作らない |
 | U-19 | Discord / SNS の導線にブランドマークを**先頭**に添える | `arrow-up-right` は「外部」を言うが「どこへ」は言わない。ロゴは読む前に分かる唯一の記号。Nav の CTA だけは Mobile の幅検算が溢れるので置かない |
-| U-20 | Hero の ink 面に**背景写真**を不透明度 0.2 で重ね、48 s 周期で漂わせる | 「仲間と、学ぶ／創る／話す」を字だけで言っていた。誰がどこで何をしているのかは 1 枚の写真が先に答える。動きは M9 の唯一の例外で、装飾だと認めたうえで採った — 引き換えに (1) 不透明度は好みではなく AA から逆算した測定値、(2) 速さは 0.6 px/s（マーキーの 1/60）で視線を引かない上限、(3) M8 のスイッチ 1 つで止まり、`prefers-reduced-transparency` / `forced-colors` では層ごと消える、の 3 つを課す |
+| U-20 | Hero の ink 面に**背景写真**を不透明度 0.2 で重ね、~~48 s 周期で漂わせる~~ **漂いは U-50 で撤去（静止画 + blur 4px）** | 「仲間と、学ぶ／創る／話す」を字だけで言っていた。誰がどこで何をしているのかは 1 枚の写真が先に答える。動きは M9 の唯一の例外で、装飾だと認めたうえで採った — 引き換えに (1) 不透明度は好みではなく AA から逆算した測定値、(2) 速さは 0.6 px/s（マーキーの 1/60）で視線を引かない上限、(3) M8 のスイッチ 1 つで止まり、`prefers-reduced-transparency` / `forced-colors` では層ごと消える、の 3 つを課す |
 | U-21 | 写真・イラスト・ロゴは原色。B/W 処理（grayscale + contrast）を撤回 | 色は「コミュニティの実像」を運ぶ情報。モノクロ化はそれを削っていた |
 | U-22 | Hero の格子線 4 本（K-12）を撤去 | 写真の上に線が乗ると写真の一部に見え、何の線か分からない |
-| U-23 | Discord のブランドマークだけ filled | 輪郭版は顔の目が線になって崩れて見える。Tabler outline のみの唯一の例外 |
+| U-23 | ~~Discord のブランドマークだけ filled~~ **U-38 で公式素材に置換（2026-09-12）** | 輪郭版は顔の目が線になって崩れて見える。Tabler outline のみの唯一の例外 — だった。Tabler の filled 版も再描画である点は同じで、規約上の問題は解けていなかった |
 | U-24 | Cell Stat の数字は白（inverse/ink）、Display/L + Display/M。U-6 のアクセントを撤回 | 規模は色ではなく大きさで語る。lime の Display/M は kicker と釣り合わなかった |
 | U-25 | チャットのリアクションは実際の絵文字。数字は 1 から最終値へ 1 ずつ巻き上がる | Discord の実際のリアクションを写す絵。最初から「3」だと押した人がいないように見える |
 | U-26 | ペルソナとチャットのアバターは Humation のイラスト（生成スクリプトで SVG 化） | 実在しない人物像に実写の顔を当てると「誰？」が先に立つ |
@@ -3179,6 +3364,23 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 | U-32 | Marquee の ✳ は Label「PARTNERS」の両脇だけに置き、ロゴの間には置かない（2026-09-07） | 図の列に記号を挟むとロゴが 1 つずつ区切られて「一覧」に見えない。両脇の ✳ が「ここから団体」の開始記号になり、ロゴ同士は `inline/2xl` 48 の間だけで並ぶ |
 | U-37 | Hero の h1 を回転語「仲間と、学ぶ。創る。話す。」からタグライン **`Hack Your Limits.`** の静止 1 行に（2026-09-12）。動詞 `Hack` を `hero/word`、目的語を `inverse/ink`、`lang="en"`。Display/XL の上限 124 → **116**（129）。回転語の部品・トークン・§7.4.3 を撤去。3 語は About CULTURE の題へ | ページの芯をタグラインで言い切る。ヒーローが「何を一緒にやるか」を、CULTURE が「仲間と、学ぶ。創る。話す。」を持ち、役割が重ならない。124 では 1 行が 1209 で 1200 を超え、1280 幅で入るのに 1440 幅で折れる揺れが出た。116 なら 1131 で 69px の余裕、かつ 1 行なら Hero の内容が ≈ 600 に収まり L-33 の帯と同居できる |
 | U-36 | Cell Stat は `50+` の数字だけ。所属のバッジ（U-29）を撤回（2026-09-11、クライアント判断）。Chip の Inverse トーンはライブラリのみに格下げ | 規模を語るセルに所属の列が乗ると、数字の大きさが語る「規模」より先に文字が読まれた。所属の裏づけは Hero の「大学・学部・学科を問わず」が文で持つ |
+| U-38 | SNS / Discord のブランドマークは Tabler の `brand-*` をやめ、**各社の公式素材**（`assets/brand/`: X の `x-logo.zip` / `logo.svg`、GitHub の `GitHub_Logos.zip` / Invertocat、Discord の `Discord-Symbol-Black.svg`、Instagram は Brand Resource Center のグリフをクライアントが取得）の path を写したインライン SVG `brand-marks.tsx` に置き換える（2026-09-12）。幾何は不変、色は `currentColor` の黒 / 白のみ、枠は従来どおり 20（縦横比は素材のまま中央に収める）。U-23 は撤回 | 各社の規約が第三者の再描画を許さない: X「黒か白。形の完全性を保つ」、GitHub「色・寸法の変更を含め改変不可、黒 / 白 / グレー / 緑のみ」、Discord「編集・変更・歪曲・再配色・再構成をしない」、Instagram「Brand Resource Center のロゴのみ使用」。Tabler の `brand-*` は線画の再描画で、outline 版も filled 版も同じ問題を持つ |
+| U-39 | Hero の meta strip（SINCE 2025 / 長崎大学公認 / 技育プロジェクト 学生団体公式パートナー）を**撤去**し、h1 を**墨の板**（`inverse/ground` 実色、inline-block、padding 0.2em / 0.1em、左右は負マージンで吊るして字の左端を揃える）に載せ、文は白、**句点 `.` だけ `hero/word`**（2026-09-12、クライアント判断）。U-37 の「動詞だけアクセント」と U-13 は撤回。事実 3 件は About の SINCE / OFFICIAL セルへ | 写真が透ける面の上では、白い字の輪郭が写真の明部に食われる瞬間がある。実色の板を敷けば h1 だけが「印刷された」ように一段沈んで読める。強調が板・動詞・句点の 3 か所に散ると視線が割れるので、色は句点 1 つに絞る — 言い切りの印はそこにある。meta strip の 3 項目は About で本文として扱うほうが、12px の帯で読ませるより格が上がる |
+| U-40 | About のベントを **3 行 7 セル**に組み直す（2026-09-12、クライアント判断）: 行 1 [CULTURE 2×1 · MEMBERS · SINCE] / 行 2–3 [CHAT 2×2 · OFFICIAL 2×1 / ONLINE & OFFLINE · FOR EVERYONE]。Discord CTA セルを撤去、写真セルは Activities へ（U-18 廃止）、設立は SINCE セル（図 + Headline）、文字セルは題の語をひとつずつ **Tabler 32 の図**にする（`icon/xl`、stroke 1.5）、OFFICIAL は 2×1 で 1 件 = 1 行（図 + 題 + 補足） | 旧配置は行 1 の高さを OFFICIAL の 3 行 body が駆動して CULTURE の中段が空き、行 4 は CTA 1 本のために 2×1 を使っていた — 面積と中身の量がセルごとに釣り合わず、Apple の発表会末尾のベント（1 タイル = 1 つの主張 + 1 つの図）のように読めなかった。設立を Display/L の数字にする案は 1×1 の内側 250 に 4 桁 ≈ 260 が入らず、Display/M では 50+ と釣り合わないので図 + Headline に |
+| U-41 | 活動内容を**均等な 2×2 の写真セル**にする（2026-09-12、クライアント判断）。各セルの上端に 16:9 の写真を縁まで敷き、題は 4 件とも Title/1。U-8 の Feature / Compact は撤回。写真は About のスライド（U-18）から移動、Project は実写が届くまで Hero の集合写真の複製で仮置き | Feature セルは題の右半分が空き、Compact は文字が詰まって、面積と中身の量が釣り合っていなかった。同じ大きさなら 4 件は一覧として読まれ、優先は順序で示せる。写真は活動の説明に添えてこそ情報になる。アコーディオン / タブは内容を隠し、状態を持たない面（U-17）の思想に合わない |
+| U-42 | Persona card を 3 行の subgrid に組み直す（2026-09-12、クライアント判断）: header（イラスト **80** + [番号 / 題]、上下中央）／ 引用は**墨の板**（inverse/ink）／ 次の一歩は **surface の板**、2 枚は隙間なし。`size/illustration` 96 → 80 | 旧解剖は番号と題の間にイラストの高さぶんの空きができ、引用の行数で矢印行の位置が揺れ、「→ 文」は面を持たず目に留まらなかった。subgrid なら同じ行のカードで 3 行の境目が必ず揃う（flex-1 では推薦 2 行のカードだけ 20px ずれた） |
+| U-43 | Partners は 6 列の 3:2 タイル（L-31 / L-32 / U-34 の埋め草）をやめ、**外枠だけ**の白い面の中にロゴ（3:2 × 96、マーキーと同じ枠）を**団体数で等分**した列に中央配置で 1 行に並べる（2026-09-12、クライアント判断）。tablet 3 列 / Mobile 2 列で折返し | 内側の罫が 1 枚ずつを区切り、団体数が 6 の倍数でないと無地の埋め草が「空席」に見えた。外枠 1 つの中に並べれば、団体数がいくつでも 1 行の「顔ぶれ」として読める。列数を content の件数から決めるので、団体が増減しても幾何が壊れない |
+| U-44 | チャット再生の 1 手を 900 → **600 ms**、一巡後の間を 2,400 → **2,000 ms**。畳む先を 0 行から **1 行目を残した状態**に（2026-09-12、クライアント判断） | 900 は待たされて見え、UX を下げていた。0 行まで畳むと次の 1 手までの step のあいだスレッドが空になり、「一瞬真っ白で何も表示されない」故障に見えた。1 行目を残せば、一巡の終わりは「返事が消えて、また付き始める」動きになる |
+| U-45 | 画像を `<img>` から **next/image の `fill`** に移行（2026-09-12）。ImageSlot は `sizes` をそのまま Image に渡し、Hero の背景も `priority` + `sizes="100vw"` の Image に。`images.formats` を AVIF / WebP に。チャットのアバター（24px の SVG）だけは `<img>` のまま | 実素材（3〜4MB の jpg）が揃い、「素材が確定するまで next/image は入れない」の前提が外れた。§5.7.2 が求める「スロット幅に応じた AVIF / WebP」は next/image がそのまま実装で、Mobile に原寸を送らないことが体感を決める。.svg は Next が自動で unoptimized にする |
+| U-46 | 釣り合いの調整（2026-09-12、クライアント所見「まだアンバランスな UI が多い」）: (1) Member カードの Socials 行を `margin-top: auto` でカードの底に揃える、(2) Activities の見出し → グリッドを他節と同じ `heading-mb` 32 / 24 に（旧 `heading-mb-list` 8 を撤回）、(3) About の CULTURE を **Display/M** の statement セルに、1×1 の文字セル（SINCE / ONLINE & OFFLINE / FOR EVERYONE）を Headline 17 → **Title/3 19** に | (1) 紹介文が 2 行と 3 行のカードで導線の高さが 20px ずれていた。(2) 写真セルの上に 8 しか無く、見出しが格子に貼り付いて About / For You と縦リズムが違った。(3) 597 幅の 2×1 に Title/2 では文字が左 1/3 に寄り、隣の 50+（Display/L）と釣り合わなかった。1×1 は Headline では行 2–3 の右側が軽かった |
+| U-47 | Poster の Social とフッターのリンクの `<li>` を `display: flex` にする（2026-09-12） | 親の 15px の strut が `<li>` の行ボックスを 26 に広げ、inline-flex のマーク（20）が 3px 下がって 44 のボタンと上下中央が合わなかった（フッターは 1px）。実測で確認: Desktop / tablet / Mobile の 3 幅でボタンとマークの中心が一致 |
+| U-48 | 段落にも `word-break: auto-phrase` を当て、Hero のリード（Title/1）に `text-wrap: balance`（2026-09-12） | Mobile の Hero リードが「長崎にテック好きのためのハ / ブを。」、Poster の段落が「最初の一 / 歩」と語中で折れていた。見出しだけに auto-phrase を当てる旧規則では p のリードと段落が漏れる。対応ブラウザだけの段階的強化で、Figma との折返し一致（§2.6.2）は見出しの著者改行が正のまま |
+| U-49 | 参加の導線 4 本（Nav・Menu・Hero 主・Poster）は Discord へ直接出ず、**参加ダイアログ**（§6.21）でコミュニティの約束に同意してから新しいタブで出る（2026-09-12、クライアント判断）。素の `<dialog>` + `showModal()`、ground のセル 480、幕 ink@48 + `shadow/lg`。主「同意して参加する」= Discord、副「閉じる」= Ground / Outline。トリガーは `<button aria-haspopup="dialog">`。約束の文言は草案 | 「Discordに参加するボタンのみ、確認モーダルを設けて同意してから参加するようにした方がよさそう」。招待リンクは誰でも踏めるので、約束を読む場所はサーバの中ではなく手前に要る。同意はボタンを押すことそのもの — チェックボックスは 1 手増やすだけで読んだ証明にならない。ネイティブ `<dialog>` にしたのは、幕・inert・Escape・フォーカスの往復を自前で書くとどれかが漏れるため。影と幕は §4.4 が「dialog のみ」と予約していた段 |
+| U-50 | Hero の h1 の板を実色の `inverse/ground` から**真っ黒 64%**（`hero/plate` = `alpha/black/64`、プリミティブ `neutral/1000` `#000000`）に、背景写真は **`blur(4px)`** で軽くぼかし、U-20 の漂い（48 s の translate）を**撤去**して静止画に（2026-09-14、クライアント判断）。`scale` は 1.12 → 1.04（ぼかしの縁の余白）。`prefers-reduced-transparency` では板は実色の黒 | 「hack your limits の背景部分をちょっとだけ半透明の真っ黒にする。hero の画像も若干ぼかして、アニメーションもなし」。実色の ink の板は周囲の ink 面と同じ色で、写真の明部の上でだけ板に見えた。真っ黒なら面より一段暗く、板が常に板として読める。64% は尺度の外で見た目から決めた値 — 写真層が 20% しか無いので 88 / 72 では不透明に見え、48 では薄すぎた（クライアント所見を 2 回反映）。最も明るい画素の上でも白 17.2 / 句点 6.77。影は持たない（§4.4）。ぼかしは文字の背後の粒を潰して輪郭を守り、動きを消したぶん M9 の例外が無くなる |
+| U-51 | Poster の見出し「Hack Your Limits.」を全文 green-400 から、**文は `poster/ink`（白）・句点だけ `poster/display`（green-400）**に（2026-09-14、クライアント判断）。Hero の h1（U-39）と同じ印。content は `{ text, period }` に分ける | 「JOIN US の Hack Your Limits. も hero と同じように . だけ色変えるようにしよう」。開幕と終幕で同じ文が同じ印を持ち、緑の出現は「言い切りの句点」1 種に揃う。Display/L 96 の全文が緑だと面積として緑の大面に近づき、C-30 の趣旨（緑は面ではなく印）からも外れていた |
+| U-52 | About のベントの図を **Bento / Figure**（淡い緑の円 64 の中の Tabler 32、語なし、C-32）にし、解剖を全セル「kicker（天）／題 → `stack/md` 16 → 図（地）」に統一（2026-09-14、2026-09-15 改、クライアント判断）。CULTURE は Display/M「仲間と、／学ぶ。創る。話す。」+ book / hammer / message-circle、SINCE は **Title/1**「2025年4月」+ flag（新 Kind 1×1 lg）、OFFICIAL は 2×1 の中を **2 列**（題 + 補足 → 図、円は底揃え、Mobile 1 列）。図の行は aria-hidden。行高 284 / 241.5 + 221.5（チャット 465 が決める） | 「アイコンの存在感がなさすぎます。Culture の部分で、仲間と、の下に丸の背景に囲まれたアイコンで語るようなイメージ。他のやつもそんな感じの雰囲気がいい。極端にそれぞれのスペースに対して文字が小さかったりアンバランス、特に設立のところ。OFFICIAL もグリッド内で 2 列で表現していい」。線画 32 は面積に対して軽く、SINCE の Title/3 1 行は 1×1 の中で浮いていた。64 の円を題の下に置くと各セルの地のブロックが面積に釣り合い、円の列がベントの底の帯になる。初版は語（学ぶ / 創る …）を円の上に添え色を 4 相に分けたが、翌日の所見「説明書きは無くていい、洗練されて見やすければ OK、目指すは Apple の Bento」で語を落とし、色を緑系 1 色に（C-32 改） |
+| U-53 | Persona card の引用から**墨の板を外し**て地の上の Callout に、高さは**目標値**の箱 `size/persona-quote` 44 と `size/persona-rec` 64 で固定（2026-09-14、クライアント判断）。次の一歩の surface の板だけが残る。§9.3 の上限を引用 42 / 推薦 36 に。吹き出し（U-1 の拡張）と左の縦バーは退けた | 「FOR YOU のところは、2 行だったり 1 行だったりで高さが統一されていない部分があって気になる。あと、黒ボックスは存在感ありすぎて逆に浮いて見えるのかな？少し工夫して欲しい」。墨の板は action/fill と同色で 6 個のボタンに読め、Hero と Poster の間で唯一の暗い面だった。subgrid は行の中しか揃えないので、2 段 6 枚を同じ高さにするには行ごとの箱を目標値で固定するしかない（1 行の引用も 2 行ぶん）。実測 268 × 6 / 260 × 6 |
+| U-54 | 参加ダイアログの中身を**「学生ですか？」の 1 問**に（2026-09-14、クライアント判断）: 題 Title/2「学生ですか？」、導入「ChoTechは学生向けのテックコミュニティです。大学・学部・学科は問いません。」（文節の塊 3 つを nowrap で）、主「学生として参加する」（Discord、vh「Discordへ（外部、新しいタブで開く）」）、副「閉じる」。約束の行・hairline・rules の id を撤去、`aria-describedby` は導入のみ。高さ 216 / 288。学生の前提（大学・大学院・高専・専門学校の在学生、高校生は対象外）は `join.ts` に集約 | 「そんな感じの表記じゃなくて『学生ですか？ChoTech は学生向けのテックコミュニティです』くらいの確認。不特定多数の人に適当に参加されても困るから一応このモーダルを設けてる」。関所の目的が「学生かどうか」なら、規範の列挙は読ませる量を増やすだけで答えは変わらない。題の疑問形は §9.1 の例外だが、確認ダイアログの 1 問として自然で、代替の体言止め「学生向けのコミュニティ」は問いになっていない。「学生ではない」の副は嘘のボタンになるので置かない。可視の文から Discord の名が消えるぶん、読み上げ名で行き先を言う |
 
 ## 付録 B. 検証
 
@@ -3190,9 +3392,9 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 
 ---
 
-## 付録 C — アクセント色の決定（Indigo / Lime）
+## 付録 C — アクセント色の決定（Indigo / Lime / Green）
 
-**2026-09-01 決定: Lime accent を採用**（クライアント確定）。以下は判断の根拠。Indigo accent は Figma にモードとして残置し、決定過程の記録とする。
+**2026-09-01 決定: Lime accent を採用**（クライアント確定）→ **2026-09-12 に Green へ置換（C.5、DECISION C-29）**。C.1〜C.4 は 2026-09-01 時点の記録として残す。Indigo accent は Figma にモードとして残置し、決定過程の記録とする。
 
 2026-09-01 実施。Figma の `Accent Lab` ページ（コンポーネント `Accent / Proof` を Color モード 3 種で明示適用した 3 インスタンス）と、Figma から解決した実値に対する WCAG 2.x 実測で判定した。以下の数値はすべてエイリアスを解決した実 hex から算出しており、推定値は含まない。
 
@@ -3247,4 +3449,44 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 ### C.4 参照
 
 - 比較ラボ: Figma `Accent Lab` ページ（`Accent / Proof` コンポーネント + Mono / Indigo / Lime の 3 インスタンス）。ポスター面・地の面・墨地の 3 層とフォーカスリングを常時表示で含む。
-- Lime プリミティブ: Tailwind v4 lime（200 `#d8f999` / 300 `#bbf451` / 400 `#9ae600` / 500 `#7ccf00` / 600 `#5ea500` / 700 `#497d00` / 800 `#3c6300` / 900 `#35530e`）+ `alpha/lime-400/24`。
+- Lime プリミティブ（2026-09-12 まで）: Tailwind v4 lime（200 `#d8f999` / 300 `#bbf451` / 400 `#9ae600` / 500 `#7ccf00` / 600 `#5ea500` / 700 `#497d00` / 800 `#3c6300` / 900 `#35530e`）+ `alpha/lime-400/24`。
+
+### C.5 2026-09-12 — Lime → Green（DECISION C-29）
+
+クライアントの所見: 「ライムグリーンは雰囲気と合っていない。もっとフレッシュな、テックを感じるグリーン（GitHub のような）」。色相を 128°（黄緑）から 150° 前後へ動かす方針で、3 候補を globals.css のプリミティブ 8 行だけ差し替えたスパイクで実機比較した（ロール構造は不変）。
+
+| 候補 | 基底 400 | 400 vs ink | 800 vs ground | ポスター secondary（ink@88 vs 400） | 判定 |
+|---|---|---|---|---|---|
+| A. Tailwind v4 green | `#05df72` | 9.33 | `#016630` 6.38 | 7.42 | 却下: 「目にきつい」 |
+| **B. GitHub Primer green** | **`#3fb950`** | **6.54** | **`#116329` 6.62** | **5.37** | **採用** |
+| C. Tailwind v4 emerald | `#00d492` | 8.56 | `#006045` 6.81 | 6.88 | 未使用（B で確定） |
+
+Green の実測（本文 §1 の値と同一。すべて実 hex から算出、推定値なし）:
+
+| 判定項目 | 必要 | Lime（旧） | Green |
+|---|---|---|---|
+| ボタン: on-accent の文字 vs accent 面 | 4.5 | 10.83 | 6.54 |
+| ボタン: accent 面 vs 地（面の輪郭） | 3.0 | !1.37 | !2.27（C-25 のとおり地の上で面にしない） |
+| accent-hover / -pressed 上の on-accent | 4.5 | 8.52 / 5.42 | 4.92 / **!3.59**（ライブラリのみ、C-18） |
+| フォーカスリング（700）vs 地 / surface / hover-tint / pressed-tint | 3.0 | 4.46 / 4.05 / 3.96 / 3.53 | 4.55 / 4.13 / 4.04 / 3.60 |
+| hero/word（400）vs 墨地 | 3.0 | 10.83 | 6.54 |
+| accent-text（800）vs 地 / surface | 4.5 | 6.31 / 5.74 | 6.62 / 6.01 |
+| accent-text-small（900）vs 地 / hover-tint / pressed-tint | 4.5 | 7.85 / 6.97 / 6.22 | 8.77 / 7.80 / 6.95 |
+| pop/badge（800）vs hover-tint / pressed-tint | 4.5 | 5.61 / 5.00 | 5.88 / 5.24 |
+| on-accent-subtle（900）vs accent-subtle（200） | 4.5 | 7.49 | 7.33 |
+| focus/ring-inverse（300）vs 墨地 / inverse hover-tint | 3.0 | 12.79 / 9.11 | 8.62 / 6.14 |
+| selection（400@24 over ground `#c8e4cb`）上の ink / ink-secondary | 4.5 | 13.55 / 5.32 | 12.19 / 4.79 |
+| inverse/selection（400@24 over ink `#274329`）上の ground | 4.5 | 8.17 | 9.78 |
+| ポスター: poster/ink vs poster/ground | 4.5 | 10.83 | 6.54 |
+| ポスター: ink-secondary（ink@88 `#243123`）vs poster 面 | 4.5 | 8.23 | 5.37 |
+| ポスター: ink@72 / ink@48 | 4.5 | 5.32 / !2.79 | !3.97 / !2.39（階層は 2 段。C-14 は制約） |
+| ポスター: CTA 面（n950）/ hover（n800）/ pressed（n700）vs poster 面 | 3.0 | 10.83 / 7.61 / 5.29 | 6.54 / 3.98 / **!2.57**（押下の瞬間のみ） |
+| ポスター: focus ring（900）vs poster 面 | 3.0 | 5.72 | 3.86 |
+| ポスター: poster/selection（ink@12 `#3ba64a`）上の ink | 4.5 | 8.64 | 5.33 |
+| ポスター: 上端の 2px `poster/ink` 罫（C-27）vs poster 面 / 地 | 3.0 | 10.83 / 14.86 | 6.54 / 14.86（`divider` n500 は poster 面上 1.14） |
+| [参考] ポスター面 vs 地（節の境目） | — | 1.37 | 2.27 |
+| [参考] pop/separator（700）vs 白（マーキー帯） | 3.0 | — | 5.08 |
+
+不合格 3 件はいずれもページに現れない（ink@72 / 48 は使わない、CTA プレスは duration/0 の瞬間）。**同日 C-30 でポスター面をインク面に戻した**ので、上表の「ポスター」行（明るい緑面）は記録。C-30 後の値: 参加 CTA の面 accent-fill green-600 vs ink 3.59、白ラベル 4.63（hover 5.08 / pressed 7.39）、ポスター見出し green-400 vs ink 6.54、自分側バブル green-600 vs ground 4.14。C-25〜C-26、C-28 の規範は Green でもそのまま成立し、C-27 は不要になった。参加 CTA は同日 C-31 で Discord の Blurple に置換（§1.2.4 の実測）。
+
+Green プリミティブ: GitHub Primer green（200 `#aceebb` / 300 `#56d364` / 400 `#3fb950` / 500 `#2ea043` / 600 `#238636` / 700 `#1a7f37` / 800 `#116329` / 900 `#044f1e`）+ `alpha/green-400/24`。合成: green-400@24 over ground `#c8e4cb` / over ink `#274329`、ink@88 / 72 / 48 over green-400 `#243123` / `#29492b` / `#306f38`、ink@12 / 24 over green-400 `#3ba64a` / `#389444`。

@@ -1,3 +1,5 @@
+import { JoinDialog, joinDialogIds } from "@/components/join/join-dialog";
+import { JoinDialogProvider } from "@/components/join/join-dialog-provider";
 import { Footer } from "@/components/layout/footer";
 import { Marquee } from "@/components/layout/marquee";
 import { Nav } from "@/components/layout/nav";
@@ -20,10 +22,18 @@ import { Poster } from "@/components/sections/poster";
  * 順序そのものが読者への提案になっている: 何をしている人たちか（About）→ 何をするか
  * （Activities）→ あなたはどれか（For You）→ 誰がやっているか（Members）→
  * 支えている人たち（Partners）→ 参加（Poster）。
+ *
+ * 参加の導線（Nav・Menu・Hero 主・Poster）はすべて 1 つの参加ダイアログ（U-49 / U-54）を開き、
+ * 学生であることを確かめてから Discord へ出る。ダイアログの中身はここでサーバ描画し、
+ * 開閉だけを Provider（client）が持つ。
  */
 export default function Home() {
   return (
-    <>
+    <JoinDialogProvider
+      dialog={<JoinDialog />}
+      labelledBy={joinDialogIds.title}
+      describedBy={joinDialogIds.lead}
+    >
       <SkipLink />
       <Nav />
       <main id="main">
@@ -37,6 +47,6 @@ export default function Home() {
         <Poster />
       </main>
       <Footer />
-    </>
+    </JoinDialogProvider>
   );
 }

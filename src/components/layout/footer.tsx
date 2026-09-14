@@ -36,7 +36,8 @@ export function Footer({ className }: FooterProps) {
         <nav aria-label="フッター">
           <ul className="flex flex-wrap items-center gap-inline-lg">
             {navLinks.map((link) => (
-              <li key={link.id}>
+              // flex: li の strut で 1px 下がるのを防ぎ、Brand・© と上下中央を揃える（U-47）
+              <li className="flex" key={link.id}>
                 <TextLink variant="footer" href={sectionHref(link.id)}>
                   {link.label}
                 </TextLink>

@@ -1,7 +1,7 @@
 import { ArrowUpRight, BrandDiscord, brandIcons } from "@/components/icons";
+import { JoinTrigger } from "@/components/join/join-dialog-provider";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { Rule } from "@/components/ui/rule";
 import { sectionVariants } from "@/components/ui/section";
 import { TextLink } from "@/components/ui/text-link";
 import { sectionIds, socialLinks } from "@/config/site";
@@ -12,12 +12,13 @@ import { cn } from "@/lib/utils";
 /**
  * Section / Poster CTA（§6.17）
  *
- * ページで唯一の「色面」。Lime モードではこの面は **明るい面** に反転するので、文字は
- * inverse/*（グラウンド × α）ではなく poster/*（インク × α）で組み、CTA はインクの塗り。
- * アウトラインボタンは 1.53 で読めないので置かない（§1.4.4）。
+ * クロージング。面はインク（C-30 — green-400 の面に墨の文字を載せると読みにくい、という
+ * クライアント所見で 2026-09-12 に明るい緑面から戻した）。アクセントは見出し
+ * 「Hack Your Limits.」の句点（poster/display = green-400、ink 上 6.54。文は白、U-51）で現れ、参加 CTA は
+ * Discord の Blurple（discord-fill + 白、C-31）。Hero と同じ面で開幕と終幕が対になる。
  *
- * Section 部品ではなく素の <section> で組むのは、上端の 2px 罫を絶対配置にする必要があるため
- * （高さに影響させない）。面の配色と data-surface の語彙は Section と同じ sectionVariants を引く。
+ * 上端の 2px 罫（旧 C-27）は持たない — 面が地に対して 14.86 で、境界は色面の切り替えそのもの。
+ * Section 部品ではなく素の <section> で組むのは Hero と同じ理由（sectionVariants の poster を引く）。
  */
 export function Poster() {
   const headingId = `${sectionIds.join}-heading`;
@@ -29,24 +30,24 @@ export function Poster() {
       data-surface="poster"
       className={cn(sectionVariants({ surface: "poster" }), "relative")}
     >
-      {/* Lime では地との輝度差が 1.37（色相だけの境界）になるので、上端に 2px の
-          poster/ink 罫を引いて境界を作る（DECISION C-27）。
-          tone=current で面の文字色を継ぐ = Mono に反転しても poster/ink のまま */}
-      <Rule tone="current" className="absolute inset-x-0 top-0" />
-
       <Container className="py-section-pad-display">
         {/* キッカーは見出しにしない（§8.5） */}
         <p className="text-overline text-poster-ink-secondary" data-reveal>
           {posterContent.kicker}
         </p>
 
-        {/* 2 行は著者改行。balance に任せると Figma と改行位置がずれる */}
+        {/* 2 行は著者改行。balance に任せると Figma と改行位置がずれる。
+            文は poster/ink（白）、句点だけ poster/display（green-400）— Hero の板の h1 と同じ印（U-51）。
+            緑の出現は「言い切りの句点」1 種に揃う */}
         <h2
           id={headingId}
-          className="mt-stack-md whitespace-pre-line text-wrap text-display-l"
+          className="mt-stack-md whitespace-pre-line text-wrap text-display-l text-poster-ink"
           data-reveal
         >
-          {posterContent.display}
+          {posterContent.display.text}
+          <span className="text-poster-display">
+            {posterContent.display.period}
+          </span>
         </h2>
 
         <p
@@ -61,18 +62,16 @@ export function Poster() {
           className="mt-stack-xl flex flex-wrap items-center gap-x-inline-lg gap-y-stack-md"
           data-reveal
         >
-          {/* 行き先が Discord であることは矢印ではなくマークが言う（U-19） */}
+          {/* 行き先が Discord であることは矢印ではなくマークが言う（U-19）。
+              押すと参加ダイアログが開く（U-49） */}
           <Button
             surface="poster"
-            variant="solid"
+            variant="discord"
             asChild
             brand={BrandDiscord}
             icon={ArrowUpRight}
           >
-            <a href={posterContent.action.href} {...externalLinkProps}>
-              {posterContent.action.label}
-              <span className="sr-only">{externalLinkNote}</span>
-            </a>
+            <JoinTrigger>{posterContent.action.label}</JoinTrigger>
           </Button>
 
           {/* Tailwind preflight の list-style: none で Safari はリスト性を落とす。
@@ -84,7 +83,9 @@ export function Poster() {
             {socialLinks.map((link) => {
               const Brand = brandIcons[link.brand];
               return (
-                <li key={link.brand}>
+                // flex: <li> の行ボックス（親の 15px の strut）がマークを 3px 下げ、
+                // 44 のボタンと上下中央が合わなかった。li 自体を flex にして strut を消す（U-47）
+                <li className="flex" key={link.brand}>
                   {/* マークだけ（DECISION U-28）。行き先はマークが言い切るので文字も矢印も
                       置かず、名前は visually-hidden に残す（§8.6）。可視 20 を ::before で
                       44 角に広げる（§6.1.5）— 間隔 inline/lg 24 なので隣の判定と重ならない */}

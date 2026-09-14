@@ -1,5 +1,3 @@
-import { externalLinks } from "@/config/site";
-
 /**
  * Discord の様子を写した「絵」。操作する UI ではない（§6.12）
  *
@@ -27,9 +25,29 @@ export type ChatEntry =
   | { kind: "typing" };
 
 /**
+ * ベントのセルに置く図（§6.11.2、DECISION U-40 → U-52）。実体は icons.tsx の bentoIcons が解決する。
+ * content は文字列で持ち、React 部品を知らない（brandIcons と同じ流儀）。
+ */
+export type AboutIcon =
+  | "book"
+  | "hammer"
+  | "message"
+  | "code"
+  | "palette"
+  | "flask"
+  | "map-pin"
+  | "messages"
+  | "school"
+  | "handshake"
+  | "flag";
+
+/**
  * About のベント（§6.11）
  *
- * セルは面積で優先順位を示す。文言は Figma の合成画面（Screens / Desktop 1440）が正本。
+ * 7 セルを 3 行に組む（DECISION U-40）。
+ * 行 1 [CULTURE 2×1 · MEMBERS · SINCE] / 行 2–3 [CHAT 2×2 · OFFICIAL 2×1 / ONLINE & OFFLINE · FOR EVERYONE]。
+ * 文字だけだったセルは題の語をひとつずつ図（Tabler 32）にして、空いていた中段を埋める。
+ * Discord への CTA セルは撤去（導線は Hero・Nav・Poster が持つ）、活動写真は Activities へ。
  */
 export const aboutContent = {
   heading: { title: "ChoTechについて", label: "ABOUT" },
@@ -37,13 +55,8 @@ export const aboutContent = {
   culture: {
     kicker: "CULTURE",
     title: "仲間と、\n学ぶ。創る。話す。",
-  },
-
-  /** 公認と公式パートナーを 1 セルに集約する（DECISION U-14） */
-  official: {
-    kicker: "OFFICIAL",
-    title: "公認団体",
-    body: "長崎大学公認団体・サポーターズ 技育プロジェクト\n学生団体公式パートナー",
+    /** 学ぶ / 創る / 話す — 題の語順で図を並べる（U-52）。語は添えない */
+    figures: ["book", "hammer", "message"],
   },
 
   stat: {
@@ -52,6 +65,41 @@ export const aboutContent = {
     suffix: "+",
     /** 数字は装飾。読み上げは文で渡す（§6.11.3） */
     accessibleName: "メンバー 50人以上",
+  },
+
+  /**
+   * 設立。Hero の meta strip「SINCE 2025」から降りてきた（DECISION U-39 / U-40）。
+   * 数字のセルにはしない — 1×1 の内側 250 に Display/L の 4 桁（≈ 260）は入らず、
+   * Display/M に落とすと隣の 50+ と釣り合わない。ページで数字を大きく出すのは MEMBERS
+   * だけ（§6.11.3）という規則にも合う。図 + Headline の 1×1 として他のセルと同じ解剖にする。
+   */
+  founded: {
+    kicker: "SINCE",
+    /** 可視は日付だけを Title/1 で（U-52）。「設立」はキッカー SINCE と旗の図が言う。読み上げは全文 */
+    title: "2025年4月",
+    accessibleTitle: "2025年4月 設立",
+    figures: ["flag"],
+  },
+
+  /**
+   * 公認と公式パートナーを 1 セルに集約し、2 列（題 + 補足 → 図）で並べる（DECISION U-14 → U-40 → U-52）。
+   * figure は AboutIcon（語は添えない）。
+   * パートナーの題は著者改行 — 列幅 262.5 の中で「技育 / プロジェクト」と割れないように
+   */
+  official: {
+    kicker: "OFFICIAL",
+    rows: [
+      {
+        figure: "school",
+        title: "長崎大学公認団体",
+        sub: "長崎大学の公認を受けた学生団体",
+      },
+      {
+        figure: "handshake",
+        title: "技育プロジェクト\n学生団体公式パートナー",
+        sub: "株式会社サポーターズが運営",
+      },
+    ],
   },
 
   chat: {
@@ -111,44 +159,17 @@ export const aboutContent = {
     ] satisfies ChatEntry[],
   },
 
-  /**
-   * 活動の様子（§6.11.5 / DECISION U-18）
-   *
-   * 複数枚をスライドさせて回す。「いろいろやっている」は 1 枚の代表写真では出ない。
-   * 順に Talk Day の発表 / Dev Day のハンズオン / ハッカソンのチーム開発。
-   *
-   * 写真は装飾なので alt は ""（§8.6）— 活動の情報は Activities 節が本文で持つ。
-   * NOTE: 実写に差し替えるまでのプレースホルダ（Unsplash 由来）。実体は public/images/about/
-   * に保存してある。差し替えは同名で上書きするか、src の 1 行。
-   */
-  photos: [
-    {
-      src: "/images/about/talk-day.jpg",
-      alt: "",
-    },
-    {
-      src: "/images/about/dev-day.jpg",
-      alt: "",
-    },
-    {
-      src: "/images/about/hackathon.jpg",
-      alt: "",
-    },
-  ],
-
   onlineOffline: {
     kicker: "ONLINE & OFFLINE",
     title: "対面活動も、Discordでのオンライン交流も活発。",
+    /** 対面 / オンライン */
+    figures: ["map-pin", "messages"],
   },
 
   forEveryone: {
     kicker: "FOR EVERYONE",
     title: "エンジニアもデザイナーもサイエンティストも。",
-  },
-
-  cta: {
-    title: "まずはDiscordから",
-    sub: "見るだけ参加も歓迎です",
-    action: { label: "Discordに参加する", href: externalLinks.discord },
+    /** エンジニア / デザイナー / サイエンティスト */
+    figures: ["code", "palette", "flask"],
   },
 } as const;
