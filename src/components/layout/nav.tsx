@@ -31,7 +31,7 @@ export interface NavProps {
 
 export function Nav({ ctaLabel = "参加する", className }: NavProps) {
   // CTA は参加ダイアログを開くボタン（U-49）。行き先は外部なので矢印（ArrowUpRight）は
-  // 残すが、押した瞬間に新しいタブは開かない — 注記はダイアログの同意リンクが持つ。
+  // 残すが、押した瞬間に新しいタブは開かない — 注記はダイアログの参加リンクが持つ。
   // Discord マークは置かない（U-19。U-27 で一度足したが、帯の CTA は文言だけで足りると
   // 同日に撤回。Mobile の幅検算 §6.7.2 も矢印ありの元の式に戻る）
   return (

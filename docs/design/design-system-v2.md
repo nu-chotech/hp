@@ -29,6 +29,7 @@
 > - **2026-09-14（2）**: Poster の見出し「Hack Your Limits.」を全文 green-400 から**文は白・句点だけ green-400**（`poster/display`）に（**DECISION U-51**）。Hero の h1 と同じ印
 > - **2026-09-14（3）**: About のベントの図を **Bento / Figure**（淡い緑の円 64 の中の Tabler 32、語なし）にし、解剖を全セル「kicker（天）／題 → 図（地）」に統一（**DECISION U-52**）。SINCE は Title/1 の日付 + 旗の図、OFFICIAL は 2×1 の中を **2 列**に。円の色は `accent-subtle`（green-200）+ `on-accent-subtle`（green-900、7.33）（**DECISION C-32**、§1.2.5 / §1.3.10）。2026-09-15 改: 初版の 4 色相 + 語つきの図は所見「配色が浮きすぎ、説明書きは不要、Apple の Bento のように洗練させる」で撤回
 > - **2026-09-14（4）**: Persona card の引用から**墨の板を外し**、地の上の Callout に。引用 `size/persona-quote` 44（2 行ぶん）と次の一歩 `size/persona-rec` 64（2 行 + inset）の**目標高**で、6 枚が上下 2 段とも同じ高さ（Desktop 268 / Mobile 260）になる（**DECISION U-53**）。§9.3 の上限を 引用 42 / 推薦 36 に締める
+> - **2026-09-14（5）**: 参加ダイアログの中身を「約束 3 つに同意」から**「学生ですか？」の 1 問**に（**DECISION U-54**）。導入「ChoTechは学生向けのテックコミュニティです。大学・学部・学科は問いません。」（文節の塊を nowrap で）、主「学生として参加する」（Discord）、副「閉じる」。約束の行と hairline は撤去。学生の前提（大学・大学院・高専・専門学校、高校生は対象外）は `src/content/join.ts` に集約
 > - **Figma v2 への反映は未実施**（2026-09-12 時点）。反映すべき変更の一覧と手順は [figma-sync-2026-09-12.md](./figma-sync-2026-09-12.md)
 > - **2026-09-11**: Cell Stat の所属バッジ（U-29）を**撤回**し、セルは `50+` の数字だけに戻す（**DECISION U-36**）。Chip の Inverse トーンは Accent と同じくライブラリのみ（ページに出さない）。About の CULTURE セルは本文を落として題だけ（「仲間と、学ぶ。創る。話す。」— Hero の h1 を `Hack Your Limits.` に差し替える予定に合わせ、3 語を Culture に降ろす）
 > - **2026-09-10（2）**: 外部リンクは**すべて新しいタブ**で開く（`target="_blank" rel="noopener noreferrer"`、vh「（外部、新しいタブで開く）」、**DECISION M-21**。M-15 は撤回）。Partner の Logo タイルは `href` があれば**タイル全体が団体サイトへのリンク**（**DECISION U-35**。hover / pressed の表現なし、フォーカスリングは内側）
@@ -452,7 +453,7 @@ Bento / Figure 以外がこのロールを引いてはならない。Mono では
 | on-discord (neutral-0) | CTA ラベル Label/M 15 B、Discord マーク 20、矢印 20 | N | 4.61 | PASS | — |
 | on-discord | discord/hover (530) / discord/pressed (560) 上 | N | 5.38 / 6.42 | PASS | — |
 | discord/fill (500) | 面の輪郭 vs ink（Hero・Poster の CTA） | U | 3.60 | PASS | — |
-| discord/fill (500) | 面の輪郭 vs ground（参加ダイアログの「同意して参加する」、U-49）/ surface | U | 4.12 / 3.75 | PASS | — |
+| discord/fill (500) | 面の輪郭 vs ground（参加ダイアログの「学生として参加する」、U-49 / U-54）/ surface | U | 4.12 / 3.75 | PASS | — |
 | discord/hover (530) / discord/pressed (560) | 面の輪郭 vs ground（同） | U | 4.81 / 5.74 | PASS | — |
 | focus/ring (green-700) | 同意ボタンのリング（offset 2 で ground の上） | U | 4.55 | PASS | — |
 | discord/hover (530) / discord/pressed (560) | 面の輪郭 vs ink | U | 3.09 / 2.59 | hover PASS / pressed **FAIL** | 押下は duration/0 の瞬間。ラベル 6.42 が識別を担う（accent-pressed 2.25 と同じ扱い） |
@@ -1533,7 +1534,7 @@ Apple の `scale(0.97)` は「押し込める物体」の比喩で、影・奥�
 10. Poster: CTA → X / Instagram / GitHub
 11. Footer: Brand → 4 リンク
 
-参加ダイアログ（U-49）: Nav / Menu / Hero 主 / Poster の CTA が開く。開いたら「同意して参加する」（外部リンク）→「閉じる」の順に Tab が巡り、背後は inert。閉じたら押した CTA へ戻る（`<dialog>` の既定）。
+参加ダイアログ（U-49）: Nav / Menu / Hero 主 / Poster の CTA が開く。開いたら「学生として参加する」（外部リンク）→「閉じる」の順に Tab が巡り、背後は inert。閉じたら押した CTA へ戻る（`<dialog>` の既定）。
 
 Rotating word: 可視部分は `aria-hidden`、`<h1>` の名前は visually-hidden の全文 `仲間と、学ぶ。創る。話す。`（§8.5）。`aria-live` は使わない。アンカー移動後は見出しへフォーカス（`tabindex="-1"`、§7.4.6）。
 
@@ -1683,7 +1684,7 @@ Focus-visible は全スタイル共通で **リング 2px offset 2**、色は地
 - 和欧間に手動スペースを **入れない**（`Discordに参加する`）。自動アキも無効（§2.6.2）。
 - 外部リンクは `arrow-up-right`、サイト内は `arrow-right`、ページ内スクロールはアイコンなし（§6.1.9）。矢印は必ず末尾。
 - ラベルに記号（`→`、`!`）を含めない。
-- 同一画面の主 CTA は 1 つ（Hero: Discord、Poster: Discord、参加ダイアログ: 同意 = Discord、副次は Outline）。
+- 同一画面の主 CTA は 1 つ（Hero: Discord、Poster: Discord、参加ダイアログ: 学生として参加する = Discord、副次は Outline）。
 
 #### 6.2.6 Figma
 
@@ -1710,7 +1711,7 @@ Focus-visible は全スタイル共通で **リング 2px offset 2**、色は地
 | Poster | On Ink / **Discord** / md（C-31） | `Discordに参加する`（参加ダイアログを開く） | Discord マーク 20 + `arrow-up-right` 20 |
 | Mobile menu | Icon / Ground / md | — | `menu-2` / `x` 24 |
 | Menu panel CTA | Ground / Ink / md、`fullWidth` | `参加する`（参加ダイアログを開く） | `arrow-up-right` 20 |
-| 参加ダイアログ 同意 | Ground / **Discord** / md（Mobile は `fullWidth`、U-49） | `同意して参加する` | Discord マーク 20 + `arrow-up-right` 20 |
+| 参加ダイアログ 参加 | Ground / **Discord** / md（Mobile は `fullWidth`、U-49 / U-54） | `学生として参加する` | Discord マーク 20 + `arrow-up-right` 20 |
 | 参加ダイアログ 閉じる | Ground / **Outline** / md（Mobile は `fullWidth`。`<form method="dialog">` の submit） | `閉じる` | なし |
 | Skip link | Ground / Ink / sm（D）/ md（M） | `本文へスキップ` | なし |
 
@@ -2296,25 +2297,19 @@ Figma: `Media / Image Slot` `Shape` {Rect, Circle} × `Fit` {Cover, Contain} × 
 | 記号 | 矢印・星・絵文字を文字として置かない（§6.1.9）。鉤括弧・em dash・中黒・三点リーダ（U+2026 × 1）は句読点として可 |
 | 最小サイズ | 12px、例外なし（R10） |
 
-### 6.21 Join dialog（参加ダイアログ、U-49）
+### 6.21 Join dialog（参加ダイアログ、U-49 / U-54）
 
-参加の導線（Nav CTA・Menu panel CTA・Hero 主・Poster の 4 本）は Discord へ直接出ず、このダイアログで**コミュニティの約束に同意してから**新しいタブで出る（**DECISION U-49**、2026-09-12、クライアント判断）。同意の操作は「同意して参加する」を押すことそのもの — チェックボックスは置かない（1 手増えるだけで、読んだかどうかは変わらない）。
+参加の導線（Nav CTA・Menu panel CTA・Hero 主・Poster の 4 本）は Discord へ直接出ず、このダイアログで**学生であることを確かめてから**新しいタブで出る（**DECISION U-49**、2026-09-12。中身は **U-54**、2026-09-14: 初版の「約束 3 つに同意」を「学生ですか？」の 1 問に）。確認の操作は「学生として参加する」を押すことそのもの — チェックボックスは置かない（1 手増えるだけで、読んだかどうかは変わらない）。
 
 ```
 ┌ ground、shadow/lg、幕 backdrop ink@48 ── 幅 min(viewport − 2 × page/inset, size/dialog 480) ┐
 │ inset/cell 24 (M 20)                                                                        │
-│ Discordに参加する前に                                     h2 Title/2 22、ink                │
+│ 学生ですか？                                              h2 Title/2 22、ink                │
 │ stack/md 16                                                                                 │
-│ ChoTechのDiscordは、誰でも安心して学び合える場所です。…     p Body/S 14、ink-secondary        │
-│ stack/lg 24                                                                                 │
-│ 相手を尊重する。                                           Subheadline 15 B、ink             │
-│ 誹謗中傷、ハラスメント、差別的な発言をしない。              Footnote 13、ink-secondary（+4）   │
-│ ── inset/sm 12 ─ Rule 1/H hairline ─ 12 ──                                                   │
-│ 宣伝・勧誘は持ち込まない。 …                                                                 │
-│ ──                                                                                           │
-│ ここでの会話は、ここだけに。 …                                                               │
+│ ChoTechは学生向けのテックコミュニティです。                 p Body/S 14、ink-secondary        │
+│ 大学・学部・学科は問いません。                              （文節の塊 3 つ、塊内は nowrap）   │
 │ stack/xl 32                                                                                 │
-│ [ (Discord) 同意して参加する [arrow-up-right] ]  inline/sm 12  [ 閉じる ]                     │
+│ [ (Discord) 学生として参加する [arrow-up-right] ]  inline/sm 12  [ 閉じる ]                   │
 │ inset/cell 24 (M 20)                                                                        │
 └─────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -2323,21 +2318,20 @@ Figma: `Media / Image Slot` `Shape` {Rect, Circle} × `Fit` {Cover, Contain} × 
 
 | 要素 | 仕様 |
 |---|---|
-| 要素 | 素の `<dialog>` + `showModal()`（幕・最上層・背後の inert・Escape・フォーカスの往復をブラウザが持つ。ライブラリは足さない）。`aria-labelledby` = 題、`aria-describedby` = 導入 + 約束の `<ul>`（開いた瞬間に約束まで読み上げる） |
+| 要素 | 素の `<dialog>` + `showModal()`（幕・最上層・背後の inert・Escape・フォーカスの往復をブラウザが持つ。ライブラリは足さない）。`aria-labelledby` = 題、`aria-describedby` = 導入 |
 | 面 | `ground`、`radius/none`、`shadow/lg`。UA の padding / border / Canvas 色は打ち消す（preflight は dialog を触らない）。幕 `color/backdrop` ink@48（高コントラスト・低透明時は 88） |
-| 幅・位置 | `width: calc(100% − 2 × page/inset)`、`max-width: size/dialog` **480**（= 4 × cell-min）。Desktop 480、Mobile 342（container と同じ）。上下左右中央（`inset: 0; margin: auto`）。高さは内容（Desktop 434）、`max-height: calc(100% − 2 × page/inset)` を超えたら中でスクロール（`overscroll-behavior: contain`） |
-| 題 | `Title/2` 22 EB `ink`、`<h2>`。「Discordに参加する前に」（≈ 11.3 em = 249 ≤ 302 で Mobile も 1 行） |
-| 導入 | `Body/S` 14 `ink-secondary`、`<p>`。41 字 → 2 行（D 30 字 / M 21 字の行） |
-| 約束 | `<ul role="list">` 3 行。行 = `Subheadline` 15 B `ink` + `stack/2xs` 4 + `Footnote` 13 `ink-secondary`。行間は `inset/sm` 12 + Rule 1/H hairline + 12。先頭の上・末尾の下に余白なし（導入・行動との距離は stack/* が決める） |
-| 行動 | 主 = Ground / **Discord** / md `同意して参加する`（`<a target="_blank">`、Discord マーク 20 先頭 + `arrow-up-right` 20、vh「（外部、新しいタブで開く）」）、副 = Ground / **Outline** / md `閉じる`（`<form method="dialog">` の submit。JS を介さず閉じる）。tablet 以降は横並び gap `inline/sm` 12（213 + 12 + 85 = 310 ≤ 432）、Mobile は縦積み gap `stack/sm` 12 で両方 `fullWidth`。主が先（L-3） |
-| 縦リズム | 題 → 導入 `stack/md` 16、導入 → 約束 `stack/lg` 24（導入 → グリッド）、約束 → 行動 `stack/xl` 32（Hero の段落 → 行動と同じ） |
-| トリガー | 4 本とも `<button type="button" aria-haspopup="dialog">`（Button の asChild）。文言・矢印は従来どおり（`参加する` + `arrow-up-right`: 行き先は外部）。vh の「新しいタブ」注記はトリガーには付けず、同意リンクが持つ |
-| 開く | `showModal()`。初期フォーカスは DOM 先頭のフォーカス可能要素 = 「同意して参加する」（もう 1 手の Enter が同意。開いた Enter の keyup では発火しない） |
-| 閉じる | 「閉じる」/ Escape / 幕のクリック / 同意リンクを踏んだとき（新しいタブから戻ったときに幕が残らない）。閉じたらフォーカスは押した CTA へ戻る（UA 既定）。Escape はダイアログで止め、document で Escape を聞く Mobile メニューまで畳まない（メニューは開いたまま、フォーカスは Menu CTA へ） |
-| 背後 | `html:has(dialog:modal) { overflow: hidden; scrollbar-gutter: stable }` — 幕の裏のスクロールを止め、スクロールバーの溝を残してレイアウトを動かさない（実測: 1440 で header 幅 1440 のまま） |
+| 幅・位置 | `width: calc(100% − 2 × page/inset)`、`max-width: size/dialog` **480**（= 4 × cell-min）。Desktop 480、Mobile 342（container と同じ）。上下左右中央（`inset: 0; margin: auto`）。高さは内容（Desktop **216** = 24 + 28 + 16 + 48 + 32 + 44 + 24、Mobile **288** = 20 + 28 + 16 + 72 + 32 + 44 + 12 + 44 + 20）、`max-height: calc(100% − 2 × page/inset)` を超えたら中でスクロール（`overscroll-behavior: contain`） |
+| 題 | `Title/2` 22 EB `ink`、`<h2>`。「学生ですか？」（6 全角 = 132 px、1 行）。ページで唯一の疑問形の見出し — §9.1「見出しは常体・体言止め」の例外を `.join-dialog h2` に閉じる（U-54）。問いを避けるなら「学生向けのコミュニティ」 |
+| 導入 | `Body/S` 14 `ink-secondary`、`<p>`。文節の塊 3 つ「ChoTechは学生向けの」「テックコミュニティです。」「大学・学部・学科は問いません。」（≈ 141 / 168 / 210 px）を各 `white-space: nowrap` の span で描く — 折返しは塊の境目だけになり、`auto-phrase` の無い Safari / Firefox でも語中で割れない。Desktop 432 で 2 行（309 / 210）、Mobile 302 で 3 行、320 幅（内側 232）でも 3 行 |
+| 行動 | 主 = Ground / **Discord** / md `学生として参加する`（`<a target="_blank">`、Discord マーク 20 先頭 + `arrow-up-right` 20、vh「Discordへ（外部、新しいタブで開く）」— 可視の文に Discord の名が無いので読み上げ名で行き先を言う）、副 = Ground / **Outline** / md `閉じる`（`<form method="dialog">` の submit。JS を介さず閉じる）。tablet 以降は横並び gap `inline/sm` 12（231 + 12 + 85 = 328 ≤ 432）、Mobile は縦積み gap `stack/sm` 12 で両方 `fullWidth`。主が先（L-3）。「学生ではない」の副は置かない — 迷っている学生に嘘のボタンを押させず、閉じる / Escape / 幕の外で同じことが起きる |
+| 縦リズム | 題 → 導入 `stack/md` 16、導入 → 行動 `stack/xl` 32（§3.3 規則 2: 親の中の stack は 2 種） |
+| トリガー | 4 本とも `<button type="button" aria-haspopup="dialog">`（Button の asChild）。文言・矢印は従来どおり（`参加する` + `arrow-up-right`: 行き先は外部）。vh の「新しいタブ」注記はトリガーには付けず、参加リンクが持つ |
+| 開く | `showModal()`。初期フォーカスは DOM 先頭のフォーカス可能要素 = 「学生として参加する」（もう 1 手の Enter が表明。開いた Enter の keyup では発火しない） |
+| 閉じる | 「閉じる」/ Escape / 幕のクリック / 参加リンクを踏んだとき（新しいタブから戻ったときに幕が残らない）。閉じたらフォーカスは押した CTA へ戻る（UA 既定）。Escape はダイアログで止め、document で Escape を聞く Mobile メニューまで畳まない（メニューは開いたまま、フォーカスは Menu CTA へ） |
+| 背後 | `html:has(dialog:modal) { overflow: hidden; scrollbar-gutter: stable }` — 幕の裏のスクロールを止め、スクロールバーの溝を残してレイアウトを動かさない |
 | 状態 | ボタン §6.2。フォーカスリングは ground の `focus/ring`（green-700、4.55）。Blurple の隣でも緑（C-8） |
 | モーション | 開: opacity 0 → 1、y `reveal-y` 16 → 0、`spring/quick`（`@starting-style`）。幕は opacity のみ。閉: 逆再生（`transition-behavior: allow-discrete` で display / overlay を待つ）。`prefers-reduced-motion`: 移動なし、opacity `duration/2`。§7.3 |
-| コピー | §9.1 の声。題は体言止め、導入は です・ます + 「〜しよう」、約束は「〜する。」「〜しない。」の言い切り、CTA は目的語 + 動詞（同意して参加する / 閉じる）。文言は `src/content/join.ts`（**草案**。クライアント確定で差し替え） |
+| コピー | 前提（`src/content/join.ts` に集約、クライアント確認待ち）: 学生 = 大学・大学院・高専・専門学校の在学生、学校は問わない（Hero の「大学・学部・学科を問わず」と同じ主張）、高校生は対象外。切替は 3 つ目の塊（長崎大学限定なら「長崎大学の学部・学科は問いません。」）。初版の約束 3 つ（尊重 / 勧誘禁止 / 持ち出し禁止）はサイトに置き場が無くなった — 置くなら Discord のルールチャンネル |
 | Figma | 未反映（クライアント判断で Figma 同期は停止） |
 
 ---
@@ -2631,7 +2625,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | Marquee | `<div aria-hidden="true">`（トラック）+ 停止 `<button>`（aria-hidden の外） |
 | Footer | `<footer>`（contentinfo）。リンクは `<nav aria-label="フッター">` |
 
-**フォーカス順序**: Skip → Brand → Nav リンク × 4 → Nav CTA →（Mobile: メニューボタン → 開時 Menu row × 4 → Menu CTA）→ Hero 主 → Hero 副 → Bento CTA → Activity セル × 3 → Partner リンク → Poster CTA → Social × 3 → Footer Brand → Footer リンク × 4。参加 CTA を押すと参加ダイアログ（同意して参加する → 閉じる、背後は inert、閉じたら押した CTA へ戻る。U-49）。
+**フォーカス順序**: Skip → Brand → Nav リンク × 4 → Nav CTA →（Mobile: メニューボタン → 開時 Menu row × 4 → Menu CTA）→ Hero 主 → Hero 副 → Bento CTA → Activity セル × 3 → Partner リンク → Poster CTA → Social × 3 → Footer Brand → Footer リンク × 4。参加 CTA を押すと参加ダイアログ（学生として参加する → 閉じる、背後は inert、閉じたら押した CTA へ戻る。U-49 / U-54）。
 
 **見出し階層**（h1 は 1 つ、階層を飛ばさない）
 
@@ -2654,7 +2648,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | ボタン内アイコン | `<svg aria-hidden="true" focusable="false">`。名前は可視ラベルのみ |
 | 外部リンク | Discord / X / Instagram / GitHub / mailto / Partner ロゴ / Member SNS: `target="_blank" rel="noopener noreferrer"` + vh「（外部、新しいタブで開く）」（DECISION M-21、WCAG G201）。文字リンクは `arrow-up-right` アイコンも付ける |
 | Mobile メニュー | `<button aria-expanded aria-controls>`、パネルは非モーダル。開いてもフォーカスはボタンに留め、ArrowDown で 1 行目へ（§6.7.3） |
-| 参加ダイアログ | `<dialog aria-labelledby="{h2}" aria-describedby="{導入 p} {約束 ul}">` を `showModal()`。トリガーは `<button type="button" aria-haspopup="dialog">`。開いたら「同意して参加する」（`<a target="_blank">` + vh 注記）にフォーカス、背後は inert、閉じたら押した要素へ戻る。「閉じる」は `<form method="dialog">` の submit（U-49） |
+| 参加ダイアログ | `<dialog aria-labelledby="{h2}" aria-describedby="{導入 p}">` を `showModal()`。トリガーは `<button type="button" aria-haspopup="dialog">`。開いたら「学生として参加する」（`<a target="_blank">` + vh「Discordへ（外部、新しいタブで開く）」）にフォーカス、背後は inert、閉じたら押した要素へ戻る。「閉じる」は `<form method="dialog">` の submit（U-49） |
 
 ### 8.6 画像と代替テキスト
 
@@ -2697,7 +2691,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | 誘う | 「〜しよう」「〜から」（まずはDiscordから） | 「〜してください」「〜しませんか？」 |
 
 - 主語は ChoTech。「私たち」「あなた」は使わない。
-- 敬体（です・ます）は本文のみ。見出し・キッカー・ボタンは常体・体言止め。
+- 敬体（です・ます）は本文のみ。見出し・キッカー・ボタンは常体・体言止め。例外は参加ダイアログの題「学生ですか？」— 確認の問いはページで唯一で、`.join-dialog h2` に閉じる（U-54）。「〜しませんか？」の勧誘形の禁止は変わらない。
 - 感嘆符「！」はチャット引用の発話内のみ。UI コピーでは使わない。
 - 絵文字は使わない（ハード制約）。
 
@@ -2715,8 +2709,8 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | タグ | 名詞、4–8 字 | 初心者歓迎 |
 | Persona 引用 | 「」内に話し言葉 | 「個人開発、一人だと続かないんだよね」 |
 | Persona 推奨 | 「〜しよう」「〜でOK」 | Dev Dayで一緒に手を動かそう |
-| ダイアログ題 | 体言止め | Discordに参加する前に |
-| ダイアログ約束 | 「〜する。」「〜しない。」の言い切り。本文は禁止事項を並べて終える | 相手を尊重する。／誹謗中傷、ハラスメント、差別的な発言をしない。 |
+| ダイアログ題 | 確認の問い（〜ですか？）。ページで唯一の疑問形の見出し（U-54） | 学生ですか？ |
+| ダイアログ導入 | です・ます。文節の塊で持つ | ChoTechは学生向けのテックコミュニティです。大学・学部・学科は問いません。 |
 
 ### 9.3 文字数上限
 
@@ -2763,10 +2757,9 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | タグライン（英） | Caption Bold 12 | — | — | 20（"Hack Your Limits." = 17） | 1 |
 | Footer リンク / © | Footnote 13 / Caption 12 | — | — | 10 / `© YYYY ChoTech` | 1 |
 | Marquee 項目 | Title 3 Caps 19 | — | — | 12 | 1 |
-| ダイアログ題 | Title 2 22 | 432 / 302 | 19 / 13 | 12（「Discordに参加する前に」= 11.3） | 1 |
-| ダイアログ導入 | Body S 14 | 432 / 302 | 30 / 21 | 45 | 2 / 3 |
-| ダイアログ約束 題 / 本文 | Subheadline 15 / Footnote 13 | 432 / 302 | 28 / 20 · 33 / 23 | 14 / 30 | 1 / 1–2 |
-| ダイアログ CTA | Label M 15 | — | — | 8（「同意して参加する」= 8） | 1 |
+| ダイアログ題 | Title 2 22 | 432 / 302 | 19 / 13 | 12（「学生ですか？」= 6） | 1 |
+| ダイアログ導入 | Body S 14 | 432 / 302 | 30 / 21 | 45。文節の塊は各 ≤ 15（210 px ≤ 320 幅の内側 232、U-54） | 2 / 3 |
+| ダイアログ CTA | Label M 15 | — | — | **9**（「学生として参加する」= 9。ボタン 231 ≤ 320 幅の内側 232） | 1 |
 
 ### 9.4 句読点・記号
 
@@ -2798,7 +2791,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | 規則 | 内容 |
 |---|---|
 | 左寄せ | すべてのラベルは flush-left。ボタン内も左寄せ、アイコンはラベル直後（L-3） |
-| 動詞先行 | CTA は目的語 + 動詞終止形で終える（参加する／活動を見る／パートナーになる／同意して参加する／閉じる）。名詞だけの CTA は不可 — ダイアログの副次も「キャンセル」ではなく起きることそのもの「閉じる」（U-49） |
+| 動詞先行 | CTA は目的語 + 動詞終止形で終える（参加する／活動を見る／パートナーになる／学生として参加する／閉じる）。名詞だけの CTA は不可 — ダイアログの副次も「キャンセル」ではなく起きることそのもの「閉じる」（U-49） |
 | 1 画面 1 主 CTA | Hero の「参加する」が主。他は目的語付きで区別（Discordに参加する／Discordに参加する） |
 | 矢印の意味 | 末尾の矢印 = 遷移。サイト内（Activity 行）: `arrow-right`。外部（Discord、X、Instagram、GitHub、mailto）: `arrow-up-right`。ページ内スクロール（Hero「活動を見る」、Nav リンク）: アイコンなし（R9）。先頭の `arrow-right` は Persona 推奨の「次の一歩」を指す指示子のみ（リンクではない） |
 | アイコン仕様 | Tabler outline、24 グリッド、stroke 2、`currentColor`、常に `aria-hidden`。サイズは §5.2 の判定順: **コントロール高で決める** 36 → 16、44 → 20、アイコンボタン 44 → 24。**文中は文字サイズで決める** ≤ 14 px → 16、15–19 px → 20（Marquee 19 Caps → 20） |
@@ -3388,6 +3381,7 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 | U-51 | Poster の見出し「Hack Your Limits.」を全文 green-400 から、**文は `poster/ink`（白）・句点だけ `poster/display`（green-400）**に（2026-09-14、クライアント判断）。Hero の h1（U-39）と同じ印。content は `{ text, period }` に分ける | 「JOIN US の Hack Your Limits. も hero と同じように . だけ色変えるようにしよう」。開幕と終幕で同じ文が同じ印を持ち、緑の出現は「言い切りの句点」1 種に揃う。Display/L 96 の全文が緑だと面積として緑の大面に近づき、C-30 の趣旨（緑は面ではなく印）からも外れていた |
 | U-52 | About のベントの図を **Bento / Figure**（淡い緑の円 64 の中の Tabler 32、語なし、C-32）にし、解剖を全セル「kicker（天）／題 → `stack/md` 16 → 図（地）」に統一（2026-09-14、2026-09-15 改、クライアント判断）。CULTURE は Display/M「仲間と、／学ぶ。創る。話す。」+ book / hammer / message-circle、SINCE は **Title/1**「2025年4月」+ flag（新 Kind 1×1 lg）、OFFICIAL は 2×1 の中を **2 列**（題 + 補足 → 図、円は底揃え、Mobile 1 列）。図の行は aria-hidden。行高 284 / 241.5 + 221.5（チャット 465 が決める） | 「アイコンの存在感がなさすぎます。Culture の部分で、仲間と、の下に丸の背景に囲まれたアイコンで語るようなイメージ。他のやつもそんな感じの雰囲気がいい。極端にそれぞれのスペースに対して文字が小さかったりアンバランス、特に設立のところ。OFFICIAL もグリッド内で 2 列で表現していい」。線画 32 は面積に対して軽く、SINCE の Title/3 1 行は 1×1 の中で浮いていた。64 の円を題の下に置くと各セルの地のブロックが面積に釣り合い、円の列がベントの底の帯になる。初版は語（学ぶ / 創る …）を円の上に添え色を 4 相に分けたが、翌日の所見「説明書きは無くていい、洗練されて見やすければ OK、目指すは Apple の Bento」で語を落とし、色を緑系 1 色に（C-32 改） |
 | U-53 | Persona card の引用から**墨の板を外し**て地の上の Callout に、高さは**目標値**の箱 `size/persona-quote` 44 と `size/persona-rec` 64 で固定（2026-09-14、クライアント判断）。次の一歩の surface の板だけが残る。§9.3 の上限を引用 42 / 推薦 36 に。吹き出し（U-1 の拡張）と左の縦バーは退けた | 「FOR YOU のところは、2 行だったり 1 行だったりで高さが統一されていない部分があって気になる。あと、黒ボックスは存在感ありすぎて逆に浮いて見えるのかな？少し工夫して欲しい」。墨の板は action/fill と同色で 6 個のボタンに読め、Hero と Poster の間で唯一の暗い面だった。subgrid は行の中しか揃えないので、2 段 6 枚を同じ高さにするには行ごとの箱を目標値で固定するしかない（1 行の引用も 2 行ぶん）。実測 268 × 6 / 260 × 6 |
+| U-54 | 参加ダイアログの中身を**「学生ですか？」の 1 問**に（2026-09-14、クライアント判断）: 題 Title/2「学生ですか？」、導入「ChoTechは学生向けのテックコミュニティです。大学・学部・学科は問いません。」（文節の塊 3 つを nowrap で）、主「学生として参加する」（Discord、vh「Discordへ（外部、新しいタブで開く）」）、副「閉じる」。約束の行・hairline・rules の id を撤去、`aria-describedby` は導入のみ。高さ 216 / 288。学生の前提（大学・大学院・高専・専門学校の在学生、高校生は対象外）は `join.ts` に集約 | 「そんな感じの表記じゃなくて『学生ですか？ChoTech は学生向けのテックコミュニティです』くらいの確認。不特定多数の人に適当に参加されても困るから一応このモーダルを設けてる」。関所の目的が「学生かどうか」なら、規範の列挙は読ませる量を増やすだけで答えは変わらない。題の疑問形は §9.1 の例外だが、確認ダイアログの 1 問として自然で、代替の体言止め「学生向けのコミュニティ」は問いになっていない。「学生ではない」の副は嘘のボタンになるので置かない。可視の文から Discord の名が消えるぶん、読み上げ名で行き先を言う |
 
 ## 付録 B. 検証
 

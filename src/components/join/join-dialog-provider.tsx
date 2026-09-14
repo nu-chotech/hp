@@ -17,7 +17,7 @@ import {
  * ダイアログは 1 つだけをページの根に置き、トリガーは context の open() を呼ぶ。
  * 実体は素の <dialog> + showModal(): 幕・最上層・背後の inert・Escape・フォーカスの
  * 往復（閉じたら押した要素へ戻る）をブラウザが持つので、ライブラリを足さない。
- * 中身（題・約束・ボタン）はサーバで描いたものを `dialog` として受け取る —
+ * 中身（題・導入・ボタン）はサーバで描いたものを `dialog` として受け取る —
  * nav.tsx と同じ理由で、Button を丸ごとクライアントチャンクに乗せないため。
  *
  * 開閉の動きは reveal と同じ語彙（opacity + y 16、spring/quick）。閉じる側は
@@ -53,7 +53,7 @@ export function JoinDialogProvider({
   }, []);
 
   // 幕のクリックで閉じる（閉じるボタンと同じ結果）。中身は inset を持つ内側の div が
-  // 受けるので、target が dialog 自身なら幕。同意リンクを踏んだら閉じる — 新しいタブへ
+  // 受けるので、target が dialog 自身なら幕。参加リンクを踏んだら閉じる — 新しいタブへ
   // 出た後にこのページへ戻ったとき、幕が残っていると「もう一度参加」を迫って見える。
   // Escape は dialog の既定で閉じるが、document で Escape を聞いている Mobile メニュー
   // まで畳まないよう伝播を止める（フォーカスは押した CTA へ戻り、メニューは開いたまま）。
@@ -117,8 +117,8 @@ export type JoinTriggerProps = Omit<
  * Button の asChild の子として使う。Slot が渡す className などは先に展開し、
  * type / haspopup / onClick はこの部品が最後に決める（Slot は onClick を undefined で
  * 渡してくるので、後に置くと open が消える）。
- * 行き先は外部だが、出る前に約束への同意を挟むので、押した瞬間に新しいタブは開かない —
- * 「（外部、新しいタブで開く）」の注記はダイアログの同意リンクが持つ。
+ * 行き先は外部だが、出る前に学生であることの確認を挟むので、押した瞬間に新しいタブは開かない —
+ * 「（外部、新しいタブで開く）」の注記はダイアログの参加リンクが持つ。
  */
 export function JoinTrigger({ children, ...props }: JoinTriggerProps) {
   const open = useJoinDialog();

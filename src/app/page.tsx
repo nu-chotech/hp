@@ -23,8 +23,8 @@ import { Poster } from "@/components/sections/poster";
  * （Activities）→ あなたはどれか（For You）→ 誰がやっているか（Members）→
  * 支えている人たち（Partners）→ 参加（Poster）。
  *
- * 参加の導線（Nav・Menu・Hero 主・Poster）はすべて 1 つの参加ダイアログ（U-49）を開き、
- * 約束に同意してから Discord へ出る。ダイアログの中身はここでサーバ描画し、
+ * 参加の導線（Nav・Menu・Hero 主・Poster）はすべて 1 つの参加ダイアログ（U-49 / U-54）を開き、
+ * 学生であることを確かめてから Discord へ出る。ダイアログの中身はここでサーバ描画し、
  * 開閉だけを Provider（client）が持つ。
  */
 export default function Home() {
@@ -32,7 +32,7 @@ export default function Home() {
     <JoinDialogProvider
       dialog={<JoinDialog />}
       labelledBy={joinDialogIds.title}
-      describedBy={`${joinDialogIds.lead} ${joinDialogIds.rules}`}
+      describedBy={joinDialogIds.lead}
     >
       <SkipLink />
       <Nav />

@@ -122,8 +122,8 @@ export function Hero() {
             data-reveal-index="2"
           >
             {/* 主 = Discord へ。面は Discord の Blurple（discord-fill）+ 白 — マークと同じ
-                持ち主の色で行き先を言う（C-31）。押すと参加ダイアログが開き、約束に同意して
-                から新しいタブで出る（U-49 / M-21）。矢印は「外へ出る」の予告として残す */}
+                持ち主の色で行き先を言う（C-31）。押すと参加ダイアログが開き、学生であることを
+                確かめてから新しいタブで出る（U-49 / U-54 / M-21）。矢印は「外へ出る」の予告として残す */}
             <Button
               surface="ink"
               variant="discord"
