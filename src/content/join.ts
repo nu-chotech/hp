@@ -18,18 +18,18 @@ import { externalLinks } from "@/config/site";
  * 押させない。閉じる / Escape / 幕の外で同じことが起きる。
  */
 export const joinContent = {
-  title: "学生ですか？",
+  title: "参加する前に",
   /**
    * 導入は文節の塊で持ち、各塊を `white-space: nowrap` で描く。折返しは塊の境目だけになり、
    * `auto-phrase` の無い Safari / Firefox でも「テックコミュニ／ティです。」と割れない。
    * 幅（Body/S 14）: ≈ 141 / 168 / 210。Desktop 432 では 2 行、Mobile 302 では 3 行。
    */
   lead: [
-    "ChoTechは学生向けの",
-    "テックコミュニティです。",
-    "大学・学部・学科は問いません。",
+    "ChoTechは学生向けのテックコミュニティです。",
+    "参加にあたり、居住地・経験・大学・学部・学科は問いません。",
+    "ものづくりに興味がある学生であれば、どなたでも歓迎します。",
   ],
   /** 押すことが「学生です」の表明。9 全角（§9.3: 320 幅の内側 232 に 231 で収まる上限） */
-  join: { label: "学生として参加する", href: externalLinks.discord },
+  join: { label: "サーバーに参加する", href: externalLinks.discord },
   close: { label: "閉じる" },
 } as const;
