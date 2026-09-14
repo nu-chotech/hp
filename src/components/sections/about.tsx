@@ -52,7 +52,6 @@ export function About() {
       <RuledGrid columns={4} data-reveal>
         {/* 行 1: 2×1 CULTURE · MEMBERS（墨、ページ唯一の数字）· SINCE（題 + 図） */}
         <CellText
-          accessibleTitle={culture.accessibleTitle}
           colSpan={2}
           figures={culture.figures}
           kicker={culture.kicker}

@@ -1,7 +1,7 @@
 import type { ComponentProps } from "react";
 import { FigureRow } from "@/components/bento/figure";
 import { Cell } from "@/components/ui/ruled-grid";
-import type { AboutFigure } from "@/content/about";
+import type { AboutIcon } from "@/content/about";
 import { cn } from "@/lib/utils";
 
 /**
@@ -20,7 +20,7 @@ import { cn } from "@/lib/utils";
  */
 
 export interface OfficialRow {
-  figure: AboutFigure;
+  figure: AboutIcon;
   /** `\n` で意図的に改行してよい */
   title: string;
   sub: string;

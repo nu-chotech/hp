@@ -2,7 +2,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import type { ComponentProps } from "react";
 import { FigureRow } from "@/components/bento/figure";
 import { Cell } from "@/components/ui/ruled-grid";
-import type { AboutFigure } from "@/content/about";
+import type { AboutIcon } from "@/content/about";
 import { cn } from "@/lib/utils";
 
 /**
@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
  * セルが決めるので、内容の量に関わらず「キッカーは天、題は地」という位置関係だけが
  * 残るようにする。行が伸びてもセルの表情が変わらない。
  *
- * 題の下に図（Bento / Figure: 語 + 色の円の中の Tabler 32）を並べる（DECISION U-52。
+ * 題の下に図（Bento / Figure: 淡い緑の円 64 の中の Tabler 32）を並べる（DECISION U-52。
  * U-40 の「題の上に線画 32」は存在感が無く、セルの文字が面積に対して小さく見えた）。
  * 図は題と 1 つの塊（stack/md 16）にして地に置く — 天・中・地の 3 段に散らすと、行が
  * 伸びたとき図だけが中空に浮く。解剖は全セル同じ: kicker（天）／ [題 → 図]（地）。
@@ -75,8 +75,8 @@ export interface CellTextProps // title は section の tooltip 属性と衝突�
   accessibleTitle?: string;
   /** §6.11.2 の showBody。全 Kind で使える（DECISION U-14） */
   body?: string;
-  /** 題の下に並べる図（U-52）。順序は題の語順。2×1 statement は lg 80、他は md 64 */
-  figures?: readonly AboutFigure[];
+  /** 題の下に並べる図（U-52）。順序は題の語順。円は全セル 64 */
+  figures?: readonly AboutIcon[];
   /** ライブラリの Tone。ページで使うのは ground（インク面は Stat が持つ） */
   tone?: VariantProps<typeof kickerVariants>["tone"];
   /** 2×1 のときだけ 2。tablet 以上で効く */
@@ -127,10 +127,7 @@ export function CellText({
             {body ? <p className={bodyVariants({ tone })}>{body}</p> : null}
           </div>
           {figures && figures.length > 0 ? (
-            <FigureRow
-              figures={figures}
-              size={size === "2x1-statement" ? "lg" : "md"}
-            />
+            <FigureRow figures={figures} />
           ) : null}
         </div>
       </section>
