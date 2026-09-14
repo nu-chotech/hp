@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
  *
  * クロージング。面はインク（C-30 — green-400 の面に墨の文字を載せると読みにくい、という
  * クライアント所見で 2026-09-12 に明るい緑面から戻した）。アクセントは見出し
- * 「Hack Your Limits.」（poster/display = green-400、ink 上 6.54）で現れ、参加 CTA は
+ * 「Hack Your Limits.」の句点（poster/display = green-400、ink 上 6.54。文は白、U-51）で現れ、参加 CTA は
  * Discord の Blurple（discord-fill + 白、C-31）。Hero と同じ面で開幕と終幕が対になる。
  *
  * 上端の 2px 罫（旧 C-27）は持たない — 面が地に対して 14.86 で、境界は色面の切り替えそのもの。
@@ -37,13 +37,17 @@ export function Poster() {
         </p>
 
         {/* 2 行は著者改行。balance に任せると Figma と改行位置がずれる。
-            色は poster/display（green-400）— インク面の上でアクセントを担うのはこの見出し */}
+            文は poster/ink（白）、句点だけ poster/display（green-400）— Hero の板の h1 と同じ印（U-51）。
+            緑の出現は「言い切りの句点」1 種に揃う */}
         <h2
           id={headingId}
-          className="mt-stack-md whitespace-pre-line text-wrap text-display-l text-poster-display"
+          className="mt-stack-md whitespace-pre-line text-wrap text-display-l text-poster-ink"
           data-reveal
         >
-          {posterContent.display}
+          {posterContent.display.text}
+          <span className="text-poster-display">
+            {posterContent.display.period}
+          </span>
         </h2>
 
         <p
