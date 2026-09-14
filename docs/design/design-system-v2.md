@@ -25,7 +25,7 @@
 > - **2026-09-12（12）**: 釣り合いの調整（**DECISION U-46**）: Member の Socials をカードの底に、Activities の見出し余白を他節と同じ 32 / 24 に、About の CULTURE を Display/M・1×1 文字セルを Title/3 に
 > - **2026-09-12（13）**: Discord マークを持つ参加ボタン（Hero 主・Poster）の面を緑の `accent-fill` から **Discord のブランド色 Blurple**（`discord/fill` = `#5865f2` + 白 `on-discord`、hover `#505cdc` / pressed `#4752c4`、**DECISION C-31**）に。プリミティブ `blurple/500 / 530 / 560`、ロール `discord/*` 4 行（§1.2.4 / §1.3.9 / §1.4.5）。緑の面はチャット自分側バブルだけになり、Accent ボタンはどの地でもライブラリ、`poster/action/*` もライブラリ
 > - **2026-09-12（14）**: 参加の導線（Nav・Menu・Hero 主・Poster の 4 本）は Discord へ直接出ず、**参加ダイアログ**で約束に同意してから新しいタブで出る（**DECISION U-49**、§6.21）。素の `<dialog>` + `showModal()`、ground の面 480 × inset/cell、幕 `backdrop` ink@48 + `shadow/lg`（§4.4 で dialog 用に予約していた唯一の影）。主「同意して参加する」= Discord（外部リンク）、副「閉じる」= Ground / Outline（K-5 の帯の外での初出）。トリガーは `<button aria-haspopup="dialog">`、動きは reveal と同じ opacity + y 16 の `spring/quick`。約束の文言は草案（`src/content/join.ts`）
-> - **2026-09-14**: Hero の h1 の板を実色の ink から**真っ黒 48%**（`hero/plate` = `alpha/black/48`、プリミティブ `neutral/1000`。板越しに写真がうっすら透ける）に、背景写真は **`blur(4px)`** で軽くぼかし、U-20 の漂い（48 s の translate）を**撤去**して静止画に（**DECISION U-50**）。動くものは 5 つ（reveal・マーキー・入力中ドット・Mobile メニュー・参加ダイアログ）
+> - **2026-09-14**: Hero の h1 の板を実色の ink から**真っ黒 64%**（`hero/plate` = `alpha/black/64`、プリミティブ `neutral/1000`。板越しに写真がうっすら透ける）に、背景写真は **`blur(4px)`** で軽くぼかし、U-20 の漂い（48 s の translate）を**撤去**して静止画に（**DECISION U-50**）。動くものは 5 つ（reveal・マーキー・入力中ドット・Mobile メニュー・参加ダイアログ）
 > - **2026-09-14（2）**: Poster の見出し「Hack Your Limits.」を全文 green-400 から**文は白・句点だけ green-400**（`poster/display`）に（**DECISION U-51**）。Hero の h1 と同じ印
 > - **Figma v2 への反映は未実施**（2026-09-12 時点）。反映すべき変更の一覧と手順は [figma-sync-2026-09-12.md](./figma-sync-2026-09-12.md)
 > - **2026-09-11**: Cell Stat の所属バッジ（U-29）を**撤回**し、セルは `50+` の数字だけに戻す（**DECISION U-36**）。Chip の Inverse トーンは Accent と同じくライブラリのみ（ページに出さない）。About の CULTURE セルは本文を落として題だけ（「仲間と、学ぶ。創る。話す。」— Hero の h1 を `Hack Your Limits.` に差し替える予定に合わせ、3 語を Culture に降ろす）
@@ -68,7 +68,7 @@ Familiarity（慣れ）・Agency（主体性）・Flexibility（柔軟）・Resp
 
 ### 0.3 ページの骨格（コンセプトの認識可能な部分）
 
-Nav（sticky、2px 下罫）→ Hero（インク面、ぼかした背景写真、真っ黒 48% の板の h1 と Discord 色の参加ボタン）→ Marquee 帯（2px 上下罫、白の面、パートナーロゴ 3:2 高さ 96、asterisk は PARTNERS の両脇のみ。停止ボタンは U-31 で撤去）→ About（ベント 3 行 7 セル: 文化 / 統計 / 設立 / チャット / 公認 / 場 / 対象、U-40）→ Activities（均等 2×2 の写真セル、U-41）→ For You（ペルソナカード 3 × 2）→ Members（リーダー 2 列 + スタッフ 3 列）→ Partners（外枠だけの白い面にロゴを等分の 1 行、U-43）→ Poster（クロージング CTA。インク面に白の見出し + 緑の句点と Discord 色の参加ボタン、C-30 / C-31 / U-51）→ Footer。参加の導線 4 本はすべて参加ダイアログ（U-49）を経て Discord へ。全要素左揃え。
+Nav（sticky、2px 下罫）→ Hero（インク面、ぼかした背景写真、真っ黒 64% の板の h1 と Discord 色の参加ボタン）→ Marquee 帯（2px 上下罫、白の面、パートナーロゴ 3:2 高さ 96、asterisk は PARTNERS の両脇のみ。停止ボタンは U-31 で撤去）→ About（ベント 3 行 7 セル: 文化 / 統計 / 設立 / チャット / 公認 / 場 / 対象、U-40）→ Activities（均等 2×2 の写真セル、U-41）→ For You（ペルソナカード 3 × 2）→ Members（リーダー 2 列 + スタッフ 3 列）→ Partners（外枠だけの白い面にロゴを等分の 1 行、U-43）→ Poster（クロージング CTA。インク面に白の見出し + 緑の句点と Discord 色の参加ボタン、C-30 / C-31 / U-51）→ Footer。参加の導線 4 本はすべて参加ダイアログ（U-49）を経て Discord へ。全要素左揃え。
 
 ### 0.4 分冊間の矛盾と解決
 
@@ -138,7 +138,7 @@ Figma: コレクション `Primitives`（単一モード）と `Color`（モー�
 | 800 | `#444141` | 0.054 | 9.04 | 1.64 | インク色ボタンのホバー |
 | 900 | `#2d2b2b` | 0.025 | 12.60 | 1.18 | ヒーロー格子線 |
 | 950 | `#201e1d` | 0.013 | 14.86 | 1.00 | **ink**、インク面、ポスター面（Mono）、backdrop / shadow の基底 |
-| 1000 | `#000000` | 0.000 | 18.80 | 1.26 | 真っ黒。Hero の h1 の板 `hero/plate`（48%、**U-50**）の基底だけ。文字・面には使わない |
+| 1000 | `#000000` | 0.000 | 18.80 | 1.26 | 真っ黒。Hero の h1 の板 `hero/plate`（64%、**U-50**）の基底だけ。文字・面には使わない |
 
 **600 を再調整しない根拠**（DECISION C-1）: グラウンド上で AA を満たす最も明るい段は 700（5.83）。600 を Y 0.159 以下に暗くして AA 化しても（例 `#6b6767` 5.00）、700 との差は 1.17:1 で知覚できず、ランプの等比（×1.5）も壊れる（500→600 が ×2.27、600→700 が ×1.24）。さらにその値はホバー面 4.44 / プレス面 3.96 で活動セルの副題が AA を割る。600 は概念値のまま、役割を「大テキスト・図形専用」に限定する方が一貫する。
 
@@ -174,9 +174,11 @@ GitHub Primer の green をそのまま採用（**DECISION C-29**、2026-09-12�
 | 6 % | `alpha/ink/6` → `state/hover-tint`（vs ground 1.13） | — | — | 知覚できる最小のティント |
 | 12 % | `alpha/ink/12` → `state/pressed-tint`（1.26） | `alpha/ground/12` → `inverse/state/hover-tint`（vs ink 1.40） | — | ホバーの 2 倍 |
 | 24 % | `alpha/ink/24` → `shadow`（1.64） | `alpha/ground/24` → `inverse/state/pressed-tint`（2.10） | `alpha/green-400/24` → `selection`（地の上 `#c8e4cb`）+ `inverse/selection`（インク面 `#274329`） | ティントの上限。選択上のインク文字 12.19、インク面の選択上のグラウンド文字 9.78 |
-| 48 % | `alpha/ink/48` → `backdrop`（2.99）、`opacity/disabled`。`alpha/black/48`（neutral-1000）→ `hero/plate`（h1 の板、U-50: 板越しに写真がうっすら透ける段） | `alpha/ground/48` → `inverse/ink-quaternary`（ink 4.45） | — | 幕として面を半分に落とす。ディスプレイ文字は L 合格 |
+| 48 % | `alpha/ink/48` → `backdrop`（2.99）、`opacity/disabled` | `alpha/ground/48` → `inverse/ink-quaternary`（ink 4.45） | — | 幕として面を半分に落とす。ディスプレイ文字は L 合格 |
 | 72 % | — | `alpha/ground/72` → `inverse/ink-tertiary`（ink 8.29） | — | 3 × 24。インク面・グリーンのポスター面ともに N |
 | 88 % | `alpha/ink/88` → 高コントラスト時の `backdrop`（ポスターの secondary は C-30 で `inverse/ink-secondary` に） | `alpha/ground/88` → `inverse/ink-secondary`（ink 11.78） | — | どちらの面でも secondary を N で通す。低透明・高コントラスト時の backdrop |
+
+尺度の外に 2 つ: `hero/backdrop-opacity` 0.2（U-20）と `hero/plate` = `alpha/black/64`（neutral-1000 の 64%、U-50）。どちらも見た目から測って決めた値で、階梯の段ではない（板は 48 では薄く、72 では不透明に見えた — クライアント所見。写真層が 20% しか無いので、透け方は (1 − α) × 0.2 で決まる）。
 
 アルファは 13 個（ink 5、ground 5、indigo 2〈Indigo モードの記録用〉、green 1）。Figma では `Primitives` に RGBA リテラルとして置く（エイリアスはアルファを付与できない）。合成値: ground@88 / 72 / 48 over ink = `#dad9d8` / `#b8b7b6` / `#858483`。ink@6 / 12 / 24 / 48 over ground = `#e6e5e5` / `#dad9d8` / `#c0bfbf` / `#8e8c8c`。ink@88 / 72 / 48 over green-400 = `#243123` / `#29492b` / `#306f38`、ink@12 / 24 over green-400 = `#3ba64a` / `#389444`。ground@12 / 24 over ink = `#393737` / `#535150`。green-400@24 over ground = `#c8e4cb`、over ink = `#274329`。
 
@@ -272,7 +274,7 @@ Blurple を文字・罫・印・大面に使わない。Discord 以外のサー�
 | `color/pop/separator` | → ink-tertiary (neutral-600) | green-700 | SF | マーキー区切りアイコン（Tabler `asterisk` 20） | 3.85 / 4.55 |
 | `color/pop/badge` | → ink-secondary (neutral-700) | green-800 | TF SF | 活動バッジ（Overline JP 12 B）+ `arrow-right` 16 | 5.83 / 6.62（hover-tint 5.19 / 5.88、pressed-tint 4.62 / 5.24） |
 | `color/hero/word` | → inverse/ink | green-400 | TF | h1 `Hack Your Limits.` の**句点**の文字色（U-39。回転語の下線 U-3 → 動詞 U-37 → 句点）。板の上 | 14.86 / 6.54 |
-| `color/hero/plate` | alpha/black/48 | = | FF | h1 の板（U-50）: 写真の上の 48% の真っ黒（板越しに写真がうっすら透ける。72% では不透明に見えた）。`prefers-reduced-transparency` では neutral-1000 の実色 | 上の inverse/ink 14.9・句点 5.87（写真の最も明るい画素の上、合成 `#282727`） |
+| `color/hero/plate` | alpha/black/64 | = | FF | h1 の板（U-50）: 写真の上の 64% の真っ黒（板越しに写真がうっすら透ける。48 は薄く、72 は不透明に見えた）。`prefers-reduced-transparency` では neutral-1000 の実色 | 上の inverse/ink 17.2・句点 6.77（写真の最も明るい画素の上、合成 `#1c1b1b`） |
 | `color/poster/ground` | neutral-950 | = | FF | ポスター面（インク面、C-30） | — |
 | `color/poster/display` | → inverse/ink | green-400 | TF | ポスター見出しの句点（U-51） | 14.86 / 6.54 |
 | `color/poster/ink` | → inverse/ink | = | TF SF SC | ポスターの primary 文字 | 14.86 |
@@ -403,8 +405,8 @@ Blurple を文字・罫・印・大面に使わない。Discord 以外のサー�
 | inverse/ink | inverse hover-tint / pressed-tint 上 | N | 10.58 / 7.06 | PASS | — |
 | inverse/action/ink | inverse/action fill / -hover / -pressed | N | 14.86 / 13.51 / 11.19 | PASS | — |
 | accent-on-ink (green-400) | ヒーロー h1 の句点 | U | 6.54 | PASS | — |
-| inverse/ink on hero/plate | h1 Display XL 116 EB（真っ黒 48% の板の上、U-50） | N | ≥ 14.9 | PASS | 板 = 黒 48% + 写真 20%（最明部 `#4d4b4a`）の合成 `#282727` で測る。写真が無い所は `#11100f` で 19.1 |
-| hero/word (green-400) on hero/plate | 句点 | U | ≥ 5.87 | PASS | 写真が無い所は 7.50 |
+| inverse/ink on hero/plate | h1 Display XL 116 EB（真っ黒 64% の板の上、U-50） | N | ≥ 17.2 | PASS | 板 = 黒 64% + 写真 20%（最明部 `#4d4b4a`）の合成 `#1c1b1b` で測る。写真が無い所は `#0c0b0a` で 19.7 |
+| hero/word (green-400) on hero/plate | 句点 | U | ≥ 6.77 | PASS | 写真が無い所は 7.75 |
 | focus/ring-inverse (green-300) | リング（ink / inverse hover-tint 上） | U | 8.62 / 6.14 | PASS | — |
 | inverse/ink | inverse/selection 上（green-400@24） | N | 9.78 | PASS | — |
 | inverse/hairline (900) | 格子線 | — | 1.18 | n/a | テクスチャ |
@@ -1820,7 +1822,7 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 ```
 ┌ inverse/ground  ─ 背景写真（不透明度 0.2、原色、blur 4px、静止）─────────────┐
 │ section/pad-display 96 (M 64)                                                  │
-│ ▌Hack Your Limits.▐                                       h1 = 黒 48% の板 + 句点  │
+│ ▌Hack Your Limits.▐                                       h1 = 黒 64% の板 + 句点  │
 │   inverse/ink   hero/word                                                      │
 │ stack/xl 32                                                                    │
 │ 長崎にテック好きのためのハブを。                          lead (Title/1)       │
@@ -1838,7 +1840,7 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 | 背景写真 | ink 面の**上**に `--hero-backdrop-opacity` **0.2** で重ねる（`cover`、原色 U-21、`aria-hidden`）。**静止画**。`filter: blur(4px)`（`--hero-backdrop-blur`）で軽くぼかし、`scale` 1.04 でぼかしの縁を Hero の外へ出す（**U-50**。U-20 の 48 s の漂いは撤去）。ぼかしは局所の明部を均すので、下の最小値は下がらない。**不透明度は測って決める値**: 実レンダリングの合成結果から測った文字コントラストの最小は ink 8.94 / secondary 7.37 / **tertiary 5.55**（12px の meta strip が最も厳しい）で、AA 4.5 を下回る面積は 0 %。素材を替えたら測り直す — 明部の多い写真は同じ 0.2 で通らない |
 | 格子線 | **なし**（**DECISION U-22**: K-12 の 4 本を撤去。写真の上に線が乗ると写真の一部に見え、何の線か分からない。`color/inverse/hairline` は用途を失うが、トークンは残す） |
 | Meta strip | **撤去**（§6.8.2、**DECISION U-39**）。「SINCE 2025 / 長崎大学公認 / 技育プロジェクト 学生団体公式パートナー」は About の SINCE / OFFICIAL セルへ（§6.11） |
-| h1 | `Display/XL` **116** / 56、`lang="en"`。**`Hack Your Limits.`**（タグラインと同文、**DECISION U-37**）。文を**真っ黒 48% の板**（`hero/plate` = `alpha/black/48`、**U-50**。板越しに写真がうっすら透ける。実色の `inverse/ground` は周囲の面と同色で、写真の明部の上でしか板に見えなかった。inline-block、padding 左右 **0.2em** / 上下 **0.1em**、左右は `−0.2em` の負マージンで container の外へ吊るし**字の左端**を lead と揃える）に載せ、文は `inverse/ink`（14.86）、句点 **`.` だけ `color/hero/word`**（**DECISION U-39**。U-37 の「動詞 `Hack` をアクセント」は撤回 — 板が強調を担うので色の強調は 1 か所）。板を inline ではなく inline-block にするのは、この書体の content area（≈ 1.6em）が行送り 1.11 を超えて背景が上下 30px はみ出すため。Desktop 1 行（板 ≈ 1177 = 1131 + 46、124 のままだと 1209 で 1280 幅では入るのに 1440 幅で折れるため上限を 116 に）。Mobile は板の中で `Hack Your` / `Limits.` の自然折返し（`Hack Your` ≈ 322 ≤ 342）。著者改行は入れない。`text-wrap: balance` は使わない。名前は可視の文そのもの（visually-hidden なし） |
+| h1 | `Display/XL` **116** / 56、`lang="en"`。**`Hack Your Limits.`**（タグラインと同文、**DECISION U-37**）。文を**真っ黒 64% の板**（`hero/plate` = `alpha/black/64`、**U-50**。板越しに写真がうっすら透ける。影は無い。実色の `inverse/ground` は周囲の面と同色で、写真の明部の上でしか板に見えなかった。inline-block、padding 左右 **0.2em** / 上下 **0.1em**、左右は `−0.2em` の負マージンで container の外へ吊るし**字の左端**を lead と揃える）に載せ、文は `inverse/ink`（14.86）、句点 **`.` だけ `color/hero/word`**（**DECISION U-39**。U-37 の「動詞 `Hack` をアクセント」は撤回 — 板が強調を担うので色の強調は 1 か所）。板を inline ではなく inline-block にするのは、この書体の content area（≈ 1.6em）が行送り 1.11 を超えて背景が上下 30px はみ出すため。Desktop 1 行（板 ≈ 1177 = 1131 + 46、124 のままだと 1209 で 1280 幅では入るのに 1440 幅で折れるため上限を 116 に）。Mobile は板の中で `Hack Your` / `Limits.` の自然折返し（`Hack Your` ≈ 322 ≤ 342）。著者改行は入れない。`text-wrap: balance` は使わない。名前は可視の文そのもの（visually-hidden なし） |
 | lead | `Title/1` **32 / 26**、`inverse/ink`（14.86）。Display 124 と本文 16 の間に中間の階層を作る（**DECISION U-5**） |
 | 段落 | `Body/L` 16、`inverse/ink-secondary`（11.78）、`max-width: measure/paragraph` 588（≈ 36.8 全角）。Mobile は container 幅 |
 | actions | 横 flex、gap `inline/sm` 12。主 = On Ink / **Discord** / md（`discord/fill` Blurple + 白、Discord マーク先頭、C-31。押すと参加ダイアログ、U-49）、副 = On Ink / Outline / md（アイコンなし）。Mobile も 1 行（255 ≤ 342） |
@@ -3348,7 +3350,7 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 | U-47 | Poster の Social とフッターのリンクの `<li>` を `display: flex` にする（2026-09-12） | 親の 15px の strut が `<li>` の行ボックスを 26 に広げ、inline-flex のマーク（20）が 3px 下がって 44 のボタンと上下中央が合わなかった（フッターは 1px）。実測で確認: Desktop / tablet / Mobile の 3 幅でボタンとマークの中心が一致 |
 | U-48 | 段落にも `word-break: auto-phrase` を当て、Hero のリード（Title/1）に `text-wrap: balance`（2026-09-12） | Mobile の Hero リードが「長崎にテック好きのためのハ / ブを。」、Poster の段落が「最初の一 / 歩」と語中で折れていた。見出しだけに auto-phrase を当てる旧規則では p のリードと段落が漏れる。対応ブラウザだけの段階的強化で、Figma との折返し一致（§2.6.2）は見出しの著者改行が正のまま |
 | U-49 | 参加の導線 4 本（Nav・Menu・Hero 主・Poster）は Discord へ直接出ず、**参加ダイアログ**（§6.21）でコミュニティの約束に同意してから新しいタブで出る（2026-09-12、クライアント判断）。素の `<dialog>` + `showModal()`、ground のセル 480、幕 ink@48 + `shadow/lg`。主「同意して参加する」= Discord、副「閉じる」= Ground / Outline。トリガーは `<button aria-haspopup="dialog">`。約束の文言は草案 | 「Discordに参加するボタンのみ、確認モーダルを設けて同意してから参加するようにした方がよさそう」。招待リンクは誰でも踏めるので、約束を読む場所はサーバの中ではなく手前に要る。同意はボタンを押すことそのもの — チェックボックスは 1 手増やすだけで読んだ証明にならない。ネイティブ `<dialog>` にしたのは、幕・inert・Escape・フォーカスの往復を自前で書くとどれかが漏れるため。影と幕は §4.4 が「dialog のみ」と予約していた段 |
-| U-50 | Hero の h1 の板を実色の `inverse/ground` から**真っ黒 48%**（`hero/plate` = `alpha/black/48`、プリミティブ `neutral/1000` `#000000`）に、背景写真は **`blur(4px)`** で軽くぼかし、U-20 の漂い（48 s の translate）を**撤去**して静止画に（2026-09-14、クライアント判断）。`scale` は 1.12 → 1.04（ぼかしの縁の余白）。`prefers-reduced-transparency` では板は実色の黒 | 「hack your limits の背景部分をちょっとだけ半透明の真っ黒にする。hero の画像も若干ぼかして、アニメーションもなし」。実色の ink の板は周囲の ink 面と同じ色で、写真の明部の上でだけ板に見えた。真っ黒なら面より一段暗く、板が常に板として読める。48% は alpha 尺度の既存段（幕と同じ）で、板越しに写真がうっすら透ける — 88% / 72% では写真層が 20% しかないので不透明に見えた（クライアント指摘）。最も明るい画素の上でも白 14.9 / 句点 5.87。ぼかしは文字の背後の粒を潰して輪郭を守り、動きを消したぶん M9 の例外が無くなる |
+| U-50 | Hero の h1 の板を実色の `inverse/ground` から**真っ黒 64%**（`hero/plate` = `alpha/black/64`、プリミティブ `neutral/1000` `#000000`）に、背景写真は **`blur(4px)`** で軽くぼかし、U-20 の漂い（48 s の translate）を**撤去**して静止画に（2026-09-14、クライアント判断）。`scale` は 1.12 → 1.04（ぼかしの縁の余白）。`prefers-reduced-transparency` では板は実色の黒 | 「hack your limits の背景部分をちょっとだけ半透明の真っ黒にする。hero の画像も若干ぼかして、アニメーションもなし」。実色の ink の板は周囲の ink 面と同じ色で、写真の明部の上でだけ板に見えた。真っ黒なら面より一段暗く、板が常に板として読める。64% は尺度の外で見た目から決めた値 — 写真層が 20% しか無いので 88 / 72 では不透明に見え、48 では薄すぎた（クライアント所見を 2 回反映）。最も明るい画素の上でも白 17.2 / 句点 6.77。影は持たない（§4.4）。ぼかしは文字の背後の粒を潰して輪郭を守り、動きを消したぶん M9 の例外が無くなる |
 | U-51 | Poster の見出し「Hack Your Limits.」を全文 green-400 から、**文は `poster/ink`（白）・句点だけ `poster/display`（green-400）**に（2026-09-14、クライアント判断）。Hero の h1（U-39）と同じ印。content は `{ text, period }` に分ける | 「JOIN US の Hack Your Limits. も hero と同じように . だけ色変えるようにしよう」。開幕と終幕で同じ文が同じ印を持ち、緑の出現は「言い切りの句点」1 種に揃う。Display/L 96 の全文が緑だと面積として緑の大面に近づき、C-30 の趣旨（緑は面ではなく印）からも外れていた |
 
 ## 付録 B. 検証

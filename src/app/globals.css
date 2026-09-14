@@ -65,7 +65,7 @@
   --blurple-530: #505cdc; /* Y 0.145 — ホバー。白 5.38、ground 上 4.81 / ink 上 3.09 */
   --blurple-560: #4752c4; /* Y 0.114 — プレス。白 6.42、ink 上 2.59 は押下の瞬間 */
 
-  /* alpha — 12 個（ink 5 / ground 5 / green-400 1 / black 1）。
+  /* alpha — 12 個（ink 5 / ground 5 / green-400 1 / black 1、black だけ尺度外の 64）。
      6 → 12 → 24 → 48 は倍々（ティント・影・幕・無効）、72 = 3 × 24（tertiary 文字）、
      88 は secondary 文字。合成 hex をハードコードせず color-mix で持つ
      （固定値が要る prefers-reduced-transparency だけ §1.2.3 の合成 hex を使う）。 */
@@ -80,7 +80,8 @@
   --alpha-ground-72: color-mix(in srgb, var(--neutral-100) 72%, transparent);
   --alpha-ground-88: color-mix(in srgb, var(--neutral-100) 88%, transparent);
   --alpha-green-400-24: color-mix(in srgb, var(--green-400) 24%, transparent);
-  --alpha-black-48: color-mix(in srgb, var(--neutral-1000) 48%, transparent);
+  /* 64 は尺度の外（見た目で決めた値、U-50）: 48 は薄く、72 は不透明に見えた */
+  --alpha-black-64: color-mix(in srgb, var(--neutral-1000) 64%, transparent);
 }
 
 /* =============================================================================
@@ -169,9 +170,9 @@
   --pop-separator: var(--green-700); /* ground 4.55 */
   --pop-badge: var(--green-800); /* ground 6.62 */
   --hero-word: var(--green-400); /* ink 6.54 */
-  /* h1 の板（U-50）: 写真の上に 48% の真っ黒 — 板越しに写真がうっすら透ける。
-     最も明るい画素の上でも白 14.9 / 句点 5.87（72% では不透明に見えた） */
-  --hero-plate: var(--alpha-black-48);
+  /* h1 の板（U-50）: 写真の上に 64% の真っ黒 — 板越しに写真がうっすら透ける。
+     最も明るい画素の上でも白 17.2 / 句点 6.77（48 は薄く、72 は不透明に見えた） */
+  --hero-plate: var(--alpha-black-64);
   --poster-display: var(
     --green-400
   ); /* ポスター見出し（Display L）。ink 面上 6.54 */

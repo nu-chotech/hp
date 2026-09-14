@@ -71,10 +71,10 @@ export function Hero() {
         <Container className="relative flex flex-col gap-stack-xl pt-section-pad-display pb-section-pad-bottom">
           {/*
            * タグラインを Display/XL で言い切る（DECISION U-37）。名前は可視の文そのもの。
-           * 文は**真っ黒 48% の板**に載せる（DECISION U-39 → U-50: 実色の inverse/ground から
+           * 文は**真っ黒 64% の板**に載せる（DECISION U-39 → U-50: 実色の inverse/ground から
            * hero/plate へ）: 写真が透ける面の上で、周囲より暗い板が「印刷された」ように一段
            * 沈み、文字の輪郭が写真の明部に食われない。板越しに写真がうっすら透ける
-           * （72% ではまだ不透明に見えた）。
+           * （48% は薄く、72% は不透明に見えた）。影は無い — 柔らかく見えるのはぼかした写真が透けるため。
            *
            * ボックスは inline-block。inline のまま背景を塗ると、この書体の content area
            * （≈ 1.6em）が行送り 1.11 を大きく超えて、板が上下に 30px ずつはみ出し lead に
