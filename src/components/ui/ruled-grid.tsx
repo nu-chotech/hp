@@ -185,12 +185,15 @@ export function Cell({
  * 置けるのは本文を持たないセル（MEMBERS の数字 / SINCE の日付 + 図）だけ: 168 のセルの
  * 内側 128 は L-10 の 20 字に足りない（L-31 と同じ理屈）。ラッパーに data-reveal や
  * フォーカスできる内容を置かないこと。
+ *
+ * 子セルは size container（`*:@container`）。ペアの幅は viewport で決まるが、題の段を
+ * 決めるのはセルの内側なので、Cell Text の 1×1 lg はセル幅で Title/2 ↔ Title/3 を選ぶ（U-55）。
  */
 export function CellPair({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "grid grid-cols-2 gap-rule auto-rows-[minmax(var(--size-cell-min),auto)] tablet:contents",
+        "grid grid-cols-2 gap-rule auto-rows-[minmax(var(--size-cell-min),auto)] *:@container tablet:contents",
         className,
       )}
       {...props}

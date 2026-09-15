@@ -90,7 +90,7 @@ export function About() {
           colSpan="2-desktop-only"
           figures={forEveryone.figures}
           kicker={forEveryone.kicker}
-          size="1x1-md"
+          size="2x1-desktop-only"
           title={forEveryone.title}
         />
       </RuledGrid>

@@ -24,7 +24,7 @@ export interface PersonaCardProps {
  *
  * 高さは **目標値**の 2 つの箱で決める: 引用 `size/persona-quote` 44（Callout 2 行）、次の一歩
  * `size/persona-rec` 64（Footnote/Bold 2 行 + inset 12 × 2）。引用が 1 行でも 2 行ぶん取る —
- * 同じ行の中だけでなく、上下 2 段の 6 枚が同じ高さ（Desktop 268 / tablet・Mobile 260）になる
+ * 同じ行の中だけでなく、上下 2 段の 6 枚が同じ高さ（tablet 以上 268 / Mobile 260）になる
  * ため。前提は §9.3 の字数上限（引用 ≤ 42 全角、推薦 ≤ 36）。
  *
  * 3 行は **subgrid**。カードは親グリッド（`<ul>`）の 3 行ぶんを占め、行の高さを親から

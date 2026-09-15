@@ -31,6 +31,7 @@
 > - **2026-09-14（4）**: Persona card の引用から**墨の板を外し**、地の上の Callout に。引用 `size/persona-quote` 44（2 行ぶん）と次の一歩 `size/persona-rec` 64（2 行 + inset）の**目標高**で、6 枚が上下 2 段とも同じ高さ（Desktop 268 / Mobile 260）になる（**DECISION U-53**）。§9.3 の上限を 引用 42 / 推薦 36 に締める
 > - **2026-09-14（5）**: 参加ダイアログの中身を「約束 3 つに同意」から**学生向けであることの確認**に（**DECISION U-54**）。文言はクライアントが 2026-09-15 に確定: 題「参加する前に」、導入 3 文「ChoTechは学生向けのテックコミュニティです。」「参加にあたり、居住地・経験・大学・学部・学科は問いません。」「ものづくりに興味がある学生であれば、どなたでも歓迎します。」（1 文 = 1 行）、主「サーバーに参加する」（Discord）、副「閉じる」。約束の行と hairline は撤去
 > - **2026-09-15（2）**: ブレークポイントを **3 点**に（**DECISION L-34**、L-29 改）: tablet 48rem で**トークンも** Desktop に切り替え（見出し行・footer 行・ベント 2 列構図、L-36）、desktop 64rem で 3 列（persona / staff / ベント 3 列 + CHAT 2×2、partner N 列、タグライン）、wide 78rem でベント 4 列。Mobile は MEMBERS · SINCE を 1 行 2 列のペアに（**L-35**）、tablet の Staff は端数を行埋め（L-36）。クライアント所見「レスポンシブが最悪、特にモバイルとタブレット。タブレットがスマホ寄り」
+> - **2026-09-15（3）**: 最終レビューの是正（**DECISION U-55**）: (1) Hero h1 は Mobile で著者改行「Hack Your」/「Limits.」（`\n`、pre-line。tablet から normal で 1 行）— 板は最長行を抱き、744 で右に空の板が残らない。Display/XL と Display/M は 390 未満で container に追従する第 2 項を持ち、320 でも「Hack Your」と「学ぶ。創る。話す。」が 1 行に入る。768 は Display/XL 71.2 で 1 行。(2) Nav CTA は矢印なし（文言だけ。矢印つき 378 は 375 の電話で溢れていた）、360 未満は帯から CTA を落とす。(3) Mobile ペアの SINCE は内側 < 122 で Title/3（container query）。(4) FOR EVERYONE は 3 列（2×1）でだけ Title/2。(5) tablet の `fillRow` カードは横組み + 本文 `measure`。(6) 参加ダイアログの backdrop / 閉じるのタップでメニューを畳まない（フォーカスが body に落ちていた）、`forced-colors` で枠。(7) 数値の訂正: hero/plate 上の inverse/ink 15.4 / 17.6（白ではなく `#f3f2f2` で測る）、OFFICIAL 768 の内側 309、ダイアログ導入 310 / 404 / 399、§7 の動くもの 5 つ
 > - **Figma v2 への反映は未実施**（2026-09-12 時点）。反映すべき変更の一覧と手順は [figma-sync-2026-09-12.md](./figma-sync-2026-09-12.md)
 > - **2026-09-11**: Cell Stat の所属バッジ（U-29）を**撤回**し、セルは `50+` の数字だけに戻す（**DECISION U-36**）。Chip の Inverse トーンは Accent と同じくライブラリのみ（ページに出さない）。About の CULTURE セルは本文を落として題だけ（「仲間と、学ぶ。創る。話す。」— Hero の h1 を `Hack Your Limits.` に差し替える予定に合わせ、3 語を Culture に降ろす）
 > - **2026-09-10（2）**: 外部リンクは**すべて新しいタブ**で開く（`target="_blank" rel="noopener noreferrer"`、vh「（外部、新しいタブで開く）」、**DECISION M-21**。M-15 は撤回）。Partner の Logo タイルは `href` があれば**タイル全体が団体サイトへのリンク**（**DECISION U-35**。hover / pressed の表現なし、フォーカスリングは内側）
@@ -287,7 +288,7 @@ About のベントの図（Bento / Figure、§6.11.2）の円は **チャット�
 | `color/pop/separator` | → ink-tertiary (neutral-600) | green-700 | SF | マーキー区切りアイコン（Tabler `asterisk` 20） | 3.85 / 4.55 |
 | `color/pop/badge` | → ink-secondary (neutral-700) | green-800 | TF SF | 活動バッジ（Overline JP 12 B）+ `arrow-right` 16 | 5.83 / 6.62（hover-tint 5.19 / 5.88、pressed-tint 4.62 / 5.24） |
 | `color/hero/word` | → inverse/ink | green-400 | TF | h1 `Hack Your Limits.` の**句点**の文字色（U-39。回転語の下線 U-3 → 動詞 U-37 → 句点）。板の上 | 14.86 / 6.54 |
-| `color/hero/plate` | alpha/black/64 | = | FF | h1 の板（U-50）: 写真の上の 64% の真っ黒（板越しに写真がうっすら透ける。48 は薄く、72 は不透明に見えた）。`prefers-reduced-transparency` では neutral-1000 の実色 | 上の inverse/ink 17.2・句点 6.77（写真の最も明るい画素の上、合成 `#1c1b1b`） |
+| `color/hero/plate` | alpha/black/64 | = | FF | h1 の板（U-50）: 写真の上の 64% の真っ黒（板越しに写真がうっすら透ける。48 は薄く、72 は不透明に見えた）。`prefers-reduced-transparency` では neutral-1000 の実色 | 上の inverse/ink 15.4・句点 6.77（写真の最も明るい画素の上、合成 `#1c1b1b`。U-55 で白 17.2 → `#f3f2f2` の実測に訂正） |
 | `color/poster/ground` | neutral-950 | = | FF | ポスター面（インク面、C-30） | — |
 | `color/poster/display` | → inverse/ink | green-400 | TF | ポスター見出しの句点（U-51） | 14.86 / 6.54 |
 | `color/poster/ink` | → inverse/ink | = | TF SF SC | ポスターの primary 文字 | 14.86 |
@@ -429,7 +430,7 @@ Bento / Figure 以外がこのロールを引いてはならない。Mono では
 | inverse/ink | inverse hover-tint / pressed-tint 上 | N | 10.58 / 7.06 | PASS | — |
 | inverse/action/ink | inverse/action fill / -hover / -pressed | N | 14.86 / 13.51 / 11.19 | PASS | — |
 | accent-on-ink (green-400) | ヒーロー h1 の句点 | U | 6.54 | PASS | — |
-| inverse/ink on hero/plate | h1 Display XL 116 EB（真っ黒 64% の板の上、U-50） | N | ≥ 17.2 | PASS | 板 = 黒 64% + 写真 20%（最明部 `#4d4b4a`）の合成 `#1c1b1b` で測る。写真が無い所は `#0c0b0a` で 19.7 |
+| inverse/ink on hero/plate | h1 Display XL 116 EB（真っ黒 64% の板の上、U-50） | N | ≥ 15.4 | PASS | 板 = 黒 64% + 写真 20%（最明部 `#4d4b4a`）の合成 `#1c1b1b` で測る。写真が無い所は `#0c0b0a` で 17.6。前景は `inverse/ink` `#f3f2f2`（白 `#ffffff` なら 17.2 / 19.7 — U-55 で訂正） |
 | hero/word (green-400) on hero/plate | 句点 | U | ≥ 6.77 | PASS | 写真が無い所は 7.75 |
 | focus/ring-inverse (green-300) | リング（ink / inverse hover-tint 上） | U | 8.62 / 6.14 | PASS | — |
 | inverse/ink | inverse/selection 上（green-400@24） | N | 9.78 | PASS | — |
@@ -626,7 +627,7 @@ CSS 変数名は Figma 名の `/` を `-` に置換する（例 `--color-inverse
 
 | ロール | サイズ D / M | W | 行送り D / M | LS | Case | 行数・行長 | 色トークン | 用途 |
 |---|---|---|---|---|---|---|---|---|
-| **Display/XL** | **116** / 56（U-37。旧 124） | 800 | 129 / 62（1.11） | −2% | — | Desktop 1 行（`Hack Your Limits.` ≈ 1131 ≤ 1200）。M は `Hack Your` / `Limits.` の 2 行 | `color/hero/word`（動詞 `Hack`）、`color/inverse/ink`（`Your Limits.`） | ヒーロー h1 `Hack Your Limits.` |
+| **Display/XL** | **116** / 56（U-37。旧 124） | 800 | 129 / 62（1.11） | −2% | — | Desktop 1 行（`Hack Your Limits.` ≈ 1131 ≤ 1200）。M は `Hack Your` / `Limits.` の 2 行（著者改行、U-55）。390 未満と 768–916 は container に追従（§2.8） | `color/hero/word`（動詞 `Hack`）、`color/inverse/ink`（`Your Limits.`） | ヒーロー h1 `Hack Your Limits.` |
 | **Display/L** | 96 / 40 | 800 | 106 / 44（1.10） | −2% | — | 2 行（著者改行）。1 行 ≤ 12 全角（D）/ ≤ 8 全角（M） | `color/poster/ink` | ポスター「いっしょに、／やろう。」 |
 | **Display/M** | 56 / 32 | 800 | 62 / 36（1.11 / 1.13） | −2% | — | 1 行、欧文 ≤ 10 字 | `color/ink`、統計は `color/inverse/ink` | 活動タイトル Talk Day / Dev Day / Project、統計「50」 |
 | **Title/1** | 32 / 26 | 800 | 40 / 32（1.25 / 1.23） | −1% | — | 1 行 ≤ 12 全角（M は 2 行可） | `color/ink`、「+」は `color/inverse/ink` | セクション h2 ×5、統計の「+」（range） |
@@ -869,9 +870,10 @@ s.description = "Hero h1. 1 line ≤ 9 zenkaku (D) / 2 authored lines (M). Color
 
 | 対象 | Desktop 1200 | Mobile 342 | 320px（内側 272） |
 |---|---|---|---|
-| Display XL「仲間と、学ぶ。」7 全角 | 7 × 124 × 0.98 = 851 ≤ 1200 → 1 行 | 7 × 56 × 0.98 = 384 > 342 → 読点で 2 行（「仲間と、」4 全角 = 220） | 220 ≤ 272 ✓ |
+| Display XL「Hack Your Limits.」9.75em（U-37） | 9.75 × 116 = 1131 ≤ 1200 → 1 行。768 は 71.2 × 9.75 = 694 ≤ 720（U-55） | 「Hack Your」5.74 × 56 = 321 ≤ 342 → 著者改行で 2 行 | 45.6 × 5.74 = 262 ≤ 272 ✓（U-55: 377 未満は container 追従） |
 | Display L「いっしょに、」6 全角 | 6 × 96 × 0.98 = 565 → 1 行/行 | 6 × 40 × 0.98 = 235 ≤ 342 | 235 ≤ 272 ✓ |
 | Display M「Talk Day」5.15em | 5.15 × 56 × 0.98 = 283 | 5.15 × 32 × 0.98 = 162 | ✓ |
+| Display M「学ぶ。創る。話す。」9 全角（CULTURE、U-46） | 9 × 56 × 0.98 = 494 ≤ 549（2×1 の内側） | 9 × 32 × 0.98 = 282 ≤ 298（1 列の内側） | 24.9 × 9 × 0.98 = 220 ≤ 228 ✓（U-55: 383 未満は container 追従。360 で 29.4） |
 | Title 1「こんな人に、おすすめ。」11 全角 | 11 × 32 × 0.99 = 348 → 1 行 | 11 × 26 × 0.99 = 283 ≤ 342 → 1 行 | 283 > 272 → 2 行（`text-wrap: balance`、許容） |
 
 WCAG 1.4.10（320px リフロー）: 上記のとおり横スクロールは発生しない。
@@ -944,16 +946,22 @@ html {
 .overline    { font: 700 .75rem/1rem "LINE Seed JP"; letter-spacing: .12em; text-transform: uppercase; }  /* 12 / 16 */
 .overline-jp { font: 700 .75rem/1rem "LINE Seed JP"; letter-spacing: .06em; }
 
-/* 流動ロール: 390px で Mobile 値、1440px で Desktop 値に一致する一次補間（size・leading とも） */
+/* 流動ロール: 390px で Mobile 値、1440px で Desktop 値に一致する一次補間（size・leading とも）。
+   Display XL / M は min() の第 2 項で container にも追従する（U-55）: 390 未満で「Hack Your」5.74em と
+   「学ぶ。創る。話す。」9 全角が 1 行に入る値（100vw − 48 / 100vw − 92 の 2% 内側）、
+   Display XL は ≥ 768 で 1 行 9.75em が入る値（917 まで勝つ。768 で 71.2 / 78.8） */
 .display-xl { font-weight: 800; letter-spacing: -.02em;
-  font-size:   clamp(3.5rem,   calc(2.1071rem + 5.714vw), 7.25rem);    /* 56 → 116（U-37。旧 124） */
-  line-height: clamp(3.875rem, calc(2.3196rem + 6.381vw), 8.0625rem); } /* 62 → 129 */
+  font-size:   clamp(2.75rem,   min(calc(2.1071rem + 5.714vw), calc(17vw - .55rem)), 7.25rem);    /* 45.6（320）→ 56 → 116（U-37。旧 124） */
+  line-height: clamp(3.0625rem, min(calc(2.3196rem + 6.381vw), calc(18.8vw - .6rem)), 8.0625rem); } /* 50.6 → 62 → 129 */
+@media (width >= 48rem) { .display-xl {
+  font-size:   clamp(3.5rem,   min(calc(2.1071rem + 5.714vw), calc(10vw - .35rem)), 7.25rem);      /* 71.2（768）→ 116 */
+  line-height: clamp(3.875rem, min(calc(2.3196rem + 6.381vw), calc(11.07vw - .39rem)), 8.0625rem); } }
 .display-l  { font-weight: 800; letter-spacing: -.02em;
   font-size:   clamp(2.5rem,   calc(1.2rem + 5.333vw), 6rem);          /* 40 → 96 */
   line-height: clamp(2.75rem,  calc(1.3107rem + 5.905vw), 6.625rem); } /* 44 → 106 */
 .display-m  { font-weight: 800; letter-spacing: -.02em;
-  font-size:   clamp(2rem,     calc(1.4429rem + 2.286vw), 3.5rem);     /* 32 → 56 */
-  line-height: clamp(2.25rem,  calc(1.6464rem + 2.476vw), 3.875rem); } /* 36 → 62 */
+  font-size:   clamp(1.5rem,    min(calc(1.4429rem + 2.286vw), calc(11.1vw - .66rem)), 3.5rem);     /* 24.9（320）→ 32 → 56 */
+  line-height: clamp(1.6875rem, min(calc(1.6464rem + 2.476vw), calc(12.49vw - .74rem)), 3.875rem); } /* 28.1 → 36 → 62 */
 .title-1    { font-weight: 800; letter-spacing: -.01em;
   font-size:   clamp(1.625rem, calc(1.4857rem + .571vw), 2rem);        /* 26 → 32 */
   line-height: clamp(2rem,     calc(1.8143rem + .762vw), 2.5rem); }    /* 32 → 40 */
@@ -1120,7 +1128,7 @@ CSS: `.container { width: min(100% - 2 * var(--page-inset), 75rem); margin-inlin
 | **desktop 64rem = 1024**（iPad 横 1024 / 1180 / 1194、小さいノート） | 構造だけ: persona / staff 3 列、partner N 列（5 → 165.6 ≥ 144）、ベント 3 列（CHAT 2×2 が開く）、Nav のタグライン。トークンは変わらない | container 976 で Desktop の性質が保たれる最小幅: h1 1 行（899 ≤ 976）、CULTURE の 2 行目 419 ≤ 599、ロゴ 5 枚、persona 3 列で引用 19 字 / 行 |
 | **wide 78rem = 1248**（container 1200） | 構造だけ: ベント 4 列と OFFICIAL の内側 2 列。ここで初めて §3.7 の 12 列幾何が成立する | 4 列の 1×1 の内側 (V − 58) / 4 − 48 が FOR EVERYONE の「エンジニアもデザイナーも」12 字 × 19 = 228（auto-phrase の折れ目）と図 3 つ 216 を超えるのは V ≥ 1162。1248 はそれを満たす、本書が自ら名指しする唯一の viewport 値 |
 
-container は `min(viewport − 48, 1200)`: 342 / 720 / 786 / 976 / 1146 / 1200（390 / 768 / 834 / 1024 / 1194 / 1440）。タイポグラフィは 4 ロール（Display XL / L / M、Title/1）だけ 390–1440 の `clamp()` で連続、残り 18 ロールは単一値（§2.8。旧 L-29 の「流体補間しない」は実装と食い違っていたので改める）。CSS は `--breakpoint-tablet` 48rem / `--breakpoint-desktop` 64rem / `--breakpoint-wide` 78rem の 3 つを持ち、Tailwind の既定階梯は消す。iPad mini 縦（744）は tablet 未満で Mobile の段 — 744 の 2 列は内側 181 で OFFICIAL の題が割れるため、下げない。
+container は `min(viewport − 48, 1200)`: 342 / 720 / 786 / 976 / 1146 / 1200（390 / 768 / 834 / 1024 / 1194 / 1440）。タイポグラフィは 4 ロール（Display XL / L / M、Title/1）だけ 390–1440 の `clamp()` で連続、残り 18 ロールは単一値（§2.8。旧 L-29 の「流体補間しない」は実装と食い違っていたので改める）。CSS は `--breakpoint-tablet` 48rem / `--breakpoint-desktop` 64rem / `--breakpoint-wide` 78rem の 3 つを持ち、Tailwind の既定階梯は消す。iPad mini 縦（744）は tablet 未満で Mobile の段 — 段の境は iPad 縦の定番 768 に置き、744 だけの段は作らない（744 の 2 列は内側 305 で成立はする。U-55 で「内側 181」の誤記を訂正 — 181 は 3 列の値）。Mobile の Hero は著者改行の 2 行で、板は最長行「Hack Your」を抱くので 744 でも崩れない（U-55）。
 
 旧 L-29（構造 48rem / トークン 78rem の 2 点）では、iPad 縦（768–834）はもちろん横（1024–1194）まで Mobile のトークンと 2 列の構図で描かれ、CULTURE と CHAT が全幅の帯になり、Staff の 3 枚目の横に灰色の空トラックが出ていた。
 
@@ -1575,7 +1583,7 @@ Spring は移動にだけ使う（M2）。本章の部品で移動するのは M
 
 **DECISION U-19** Discord と SNS の導線にはブランドマークを**先頭**に添える。行き先が「外部」であることは `arrow-up-right` が言うが、**どこへ**行くかは文字を読まないと分からない。ロゴは読む前に分かる唯一の記号で、ここだけは §5.1 の「アイコンは装飾、意味は隣の文字が運ぶ」の例外にあたる（マークそのものが固有名詞）。
 
-例外の範囲を閉じるため、次の 2 つは守る。(1) マークを置くのは**サービスへ出る導線だけ**。節の見出しや本文には置かない。(2) Nav の CTA には置かない — sm の 36 に 16 のマークと 8 の送りを足すと Mobile 390 の幅検算（§6.7.2 の 374）が 398 になって溢れる。
+例外の範囲を閉じるため、次の 2 つは守る。(1) マークを置くのは**サービスへ出る導線だけ**。節の見出しや本文には置かない。(2) Nav の CTA にはマークも矢印も置かない（U-55） — 文言だけの 99 で Mobile の幅検算（§6.7.2）が 350 ≤ 360。矢印つき 127 では 378 で 375 の電話に入らなかった。
 
 - Icon button の径は 1 か所で決める: **sm 36 → 20、md 44 → 24**（§5.2）。
 - stroke-width は 24 grid の 2 のまま拡縮。数値を上書きしない。色は `currentColor`（例外は `pop/separator`）。
@@ -1817,7 +1825,7 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 |---|---|
 | 高さ | **62** = `nav/pad-y` 12 + `size/control/sm` 36 + 12 + `stroke/rule` 2 |
 | 横 | full-bleed、`page/inset` 24（container に縛らない: バーは紙の端まで、DECISION L-23） |
-| 構成 | Brand lockup（左）← `margin-right: auto` → Link Nav × 4（gap `inline/md` 16）→ 16 → Button Ground / Ink / sm `参加する` + `arrow-up-right`（参加ダイアログを開く `<button aria-haspopup="dialog">`、U-49。Discord マークは置かない: U-19。U-27 で一度足したが同日に撤回 — 帯の CTA は文言だけで足りる） |
+| 構成 | Brand lockup（左）← `margin-right: auto` → Link Nav × 4（gap `inline/md` 16）→ 16 → Button Ground / Ink / sm `参加する`（アイコンなし。参加ダイアログを開く `<button aria-haspopup="dialog">`、U-49。Discord マークは置かない: U-19。U-27 で一度足したが同日に撤回、矢印は U-55 で外した — 開くのはページ内のダイアログで、外へ出る予告はダイアログの参加リンクが持つ。帯の CTA は文言だけで足りる） |
 | 塗り | `ground`、下辺 Rule 2/H |
 | 固定 | `position: sticky; top: 0`。不透明（半透明マテリアルは使わない: フラット原則、`prefers-reduced-transparency` 分岐不要） |
 | スクロール中 | 変化なし（影・縮小・自動隠しをしない、§7 D7）。セクションに `scroll-margin-top: var(--size-nav)` |
@@ -1827,15 +1835,15 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 | 項目 | 値 |
 |---|---|
 | 高さ | 62 = 8 + `size/control/md` 44 + 8 + 2（DECISION L-22） |
-| 構成 | Brand（tagline なし。tagline は desktop 1024 から、L-34）← auto → Button Ground / Ink / md `参加する` + `arrow-up-right`（参加ダイアログを開く、U-49）→ `inline/sm` 12 → Icon button md `menu-2` |
-| 幅検算 | 24 + mark 24 + 12 + wordmark 95（`ChoTech` Title 3 19、実測）+ ≥ 16 + CTA 127（inset 20 + ラベル 59 + 8 + 矢印 20 + 20）+ 12 + 44 + 24 = **378 ≤ 390**（実測 2026-09-05: brand 131、CTA 127、余り 28）。wordmark は `white-space: nowrap` で折らない |
+| 構成 | Brand（tagline なし。tagline は desktop 1024 から、L-34）← auto → Button Ground / Ink / md `参加する`（アイコンなし、U-55。参加ダイアログを開く、U-49）→ `inline/sm` 12 → Icon button md `menu-2`。**360 未満**（折りたたみ端末の外画面）は CTA を帯から落とす — 同じ導線は Menu panel と Hero が持つ |
+| 幅検算 | 24 + mark 24 + 12 + wordmark 95（`ChoTech` Title 3 19、実測）+ ≥ 16 + CTA 99（inset 20 + ラベル 59 + 20）+ 12 + 44 + 24 = **350 ≤ 360**（実測 2026-09-15: brand 131、CTA 99。390 で余り 40、375 で 25）。矢印つきの旧式 378 は 375（iPhone mini / SE）で溢れていた（U-55）。320–359 は CTA なしで 243。wordmark は `white-space: nowrap` で折らない |
 
 #### 6.7.3 Menu panel（Mobile、DECISION K-6）
 
 | 項目 | 値 |
 |---|---|
 | 位置 | Nav bar 直下、幅 100%、`ground`、下辺 Rule 2/H |
-| 行 | Menu row 高 `size/control/md` 44、`Label/Nav` 14 `ink`、横 inset `page/inset` 24、行間 Rule 1/H。4 行 + 末尾に Button Ground / Ink / md `参加する`（`fullWidth`、上下 `inset/md` 16、左右 24。参加ダイアログを開く — ダイアログの Escape はメニューに伝えず、閉じたらフォーカスは CTA へ戻りメニューは開いたまま、U-49） |
+| 行 | Menu row 高 `size/control/md` 44、`Label/Nav` 14 `ink`、横 inset `page/inset` 24、行間 Rule 1/H。4 行 + 末尾に Button Ground / Ink / md `参加する`（`fullWidth`、上下 `inset/md` 16、左右 24。参加ダイアログを開く — ダイアログの Escape はメニューに伝えず、backdrop・閉じる・参加リンクのタップも「外側タップ」に数えない（top layer の中）。閉じたらフォーカスは CTA へ戻りメニューは開いたまま、U-49 / U-55） |
 | 状態（row） | Default `ink` / Hover `state/hover-tint`（13.21）/ Pressed `pressed-tint`（11.78）/ Current ラベル幅の 2px `link/current` 下線（R16。左の縦バーは §4.3 規則 6 に反する）/ Focus **inset** ring（offset −2、K-7） |
 | 開閉 | Icon button `aria-expanded` `aria-controls`。開: **フォーカスはボタンに留める**（非モーダル disclosure、APG）。ArrowDown で 1 行目へ。閉: Escape / 外側タップ / 行選択、フォーカスをボタンへ戻す。アイコン `menu-2` ↔ `x` は `duration/0` |
 | モーダル性 | 非モーダル（背後を暗くしない・スクロールロックなし）。項目 4 つの開示であり、Apple「dim to focus, separate to keep flow」の後者 |
@@ -1870,7 +1878,7 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 | 背景写真 | ink 面の**上**に `--hero-backdrop-opacity` **0.2** で重ねる（`cover`、原色 U-21、`aria-hidden`）。**静止画**。`filter: blur(4px)`（`--hero-backdrop-blur`）で軽くぼかし、`scale` 1.04 でぼかしの縁を Hero の外へ出す（**U-50**。U-20 の 48 s の漂いは撤去）。ぼかしは局所の明部を均すので、下の最小値は下がらない。**不透明度は測って決める値**: 実レンダリングの合成結果から測った文字コントラストの最小は ink 8.94 / secondary 7.37 / **tertiary 5.55**（12px の meta strip が最も厳しい）で、AA 4.5 を下回る面積は 0 %。素材を替えたら測り直す — 明部の多い写真は同じ 0.2 で通らない |
 | 格子線 | **なし**（**DECISION U-22**: K-12 の 4 本を撤去。写真の上に線が乗ると写真の一部に見え、何の線か分からない。`color/inverse/hairline` は用途を失うが、トークンは残す） |
 | Meta strip | **撤去**（§6.8.2、**DECISION U-39**）。「SINCE 2025 / 長崎大学公認 / 技育プロジェクト 学生団体公式パートナー」は About の SINCE / OFFICIAL セルへ（§6.11） |
-| h1 | `Display/XL` **116** / 56、`lang="en"`。**`Hack Your Limits.`**（タグラインと同文、**DECISION U-37**）。文を**真っ黒 64% の板**（`hero/plate` = `alpha/black/64`、**U-50**。板越しに写真がうっすら透ける。影は無い。実色の `inverse/ground` は周囲の面と同色で、写真の明部の上でしか板に見えなかった。inline-block、padding 左右 **0.2em** / 上下 **0.1em**、左右は `−0.2em` の負マージンで container の外へ吊るし**字の左端**を lead と揃える）に載せ、文は `inverse/ink`（14.86）、句点 **`.` だけ `color/hero/word`**（**DECISION U-39**。U-37 の「動詞 `Hack` をアクセント」は撤回 — 板が強調を担うので色の強調は 1 か所）。板を inline ではなく inline-block にするのは、この書体の content area（≈ 1.6em）が行送り 1.11 を超えて背景が上下 30px はみ出すため。Desktop 1 行（板 ≈ 1177 = 1131 + 46、124 のままだと 1209 で 1280 幅では入るのに 1440 幅で折れるため上限を 116 に）。Mobile は板の中で `Hack Your` / `Limits.` の自然折返し（`Hack Your` ≈ 322 ≤ 342）。著者改行は入れない。`text-wrap: balance` は使わない。名前は可視の文そのもの（visually-hidden なし） |
+| h1 | `Display/XL` **116** / 56、`lang="en"`。**`Hack Your Limits.`**（タグラインと同文、**DECISION U-37**）。文を**真っ黒 64% の板**（`hero/plate` = `alpha/black/64`、**U-50**。板越しに写真がうっすら透ける。影は無い。実色の `inverse/ground` は周囲の面と同色で、写真の明部の上でしか板に見えなかった。inline-block、padding 左右 **0.2em** / 上下 **0.1em**、左右は `−0.2em` の負マージンで container の外へ吊るし**字の左端**を lead と揃える）に載せ、文は `inverse/ink`（14.86）、句点 **`.` だけ `color/hero/word`**（**DECISION U-39**。U-37 の「動詞 `Hack` をアクセント」は撤回 — 板が強調を担うので色の強調は 1 か所）。板を inline ではなく inline-block にするのは、この書体の content area（≈ 1.6em）が行送り 1.11 を超えて背景が上下 30px はみ出すため。Desktop 1 行（板 ≈ 1177 = 1131 + 46、124 のままだと 1209 で 1280 幅では入るのに 1440 幅で折れるため上限を 116 に）。tablet 768 も 1 行（Display/XL 71.2、板 ≈ 723、§2.8）。Mobile（< 768）は板の中で `Hack Your` / `Limits.` の **著者改行**（content の `\n`、`white-space: pre-line`。tablet から `normal` で空白に潰す、**U-55**）— 板の幅 = 最長行 ≈ 322 + 46。自然折返しだと折れた inline-block は container いっぱいに広がり、744 では字の右に 258 の空の板が残った。377 未満は Display/XL が container に追従して `Hack Your` を 1 行に保つ（320 で 45.6 → 262 ≤ 272）。`text-wrap: balance` は使わない。名前は可視の文そのもの（visually-hidden なし） |
 | lead | `Title/1` **32 / 26**、`inverse/ink`（14.86）。Display 124 と本文 16 の間に中間の階層を作る（**DECISION U-5**） |
 | 段落 | `Body/L` 16、`inverse/ink-secondary`（11.78）、`max-width: measure/paragraph` 588（≈ 36.8 全角）。Mobile は container 幅 |
 | actions | 横 flex、gap `inline/sm` 12。主 = On Ink / **Discord** / md（`discord/fill` Blurple + 白、Discord マーク先頭、C-31。押すと参加ダイアログ、U-49）、副 = On Ink / Outline / md（アイコンなし）。Mobile も 1 行（255 ≤ 342） |
@@ -1971,14 +1979,14 @@ Figma: `Section / Heading` `Layout` {Row, Stacked} 2。Props: `title` `label` TE
 |---|---|---|---|---|
 | 2×1 statement | `Overline/Latin` 12 UPPER `ink-secondary` | **`Display/M` 56 / 32** `ink`、2 行「仲間と、／学ぶ。創る。話す。」（U-46: Title/2 では 597 幅の左 1/3 に寄って右が空き、隣の 50+ と釣り合わなかった） | 円 **64**（`size/figure`）× 1–3、gap `inline/sm` 12 | — |
 | 2×1 | 同 | `Title/2` 22 `ink`、≤ 2 行 | 同 | `Body/S` 14 `ink-secondary`、上 `stack/xs` 8 |
-| 1×1 lg | 同 | **`Title/1` 32 / 26**、1 行（SINCE「2025年4月」176.8 ≤ 249.5） | 同 | — |
+| 1×1 lg | 同 | **`Title/1` 32 / 26**、1 行（SINCE「2025年4月」176.8 ≤ 249.5）。Mobile のペア（L-35）では `Title/2` 22、セルの内側 < 122（viewport < 380）では `Title/3` 19（container query、U-55。内側 < 105 = viewport < 342 は 2 行、溢れない） | 同 | — |
 | 1×1 md | 同 | `Title/3` 19、≤ 2 行 | 同 | 同（`showBody`） |
 | 1×1 sm | 同 | `Headline` 17、≤ 3 行 | 同 | 同（`showBody`） |
 
 - 解剖は **2 段**、全セル共通: kicker（天）／ [title（→ body）→ `stack/md` 16 → figures]（地）。縦 flex、`justify-content: space-between`。図は題と 1 つの塊にする — 天・中・地の 3 段に散らすと、行が伸びたとき図だけが中空に浮く（U-40）。図が題の**下**にあるのは、クライアントの絵「仲間と、の下に丸の背景に囲まれたアイコン」どおり — 題を読んだ続きに図が並び、円の列がベント全体の底の帯になる（U-52）。
 - **Bento / Figure**（`figure.tsx`）: 緑の円（`radius/full`、§4.1 の 4 つ目の例外、`figure/fill` = accent-fill green-600 — 自分側バブルと同じ）の中の白い Tabler **32 / stroke 1.5**（`icon/xl`、`figure/ink` = on-accent、4.63）。**語は添えない** — 意味は題が運び、図は Apple のベントの「1 タイル 1 つの絵」（クライアント判断 2026-09-15: 初版の語つき 4 色の図は「浮きすぎ」「説明書きは不要」で撤回、§1.2.5）。行全体は `aria-hidden`（装飾）。`forced-colors` では円に 1px の枠。左揃え、中央揃えはしない。
 - 可視の題が文の一部（SINCE「2025年4月」）のときは `accessibleTitle` に全文「2025年4月 設立」を渡し、可視側 `aria-hidden` + `sr-only` 全文（Stat の 50+ と同じ形）。content は文字列（`AboutIcon`）で持ち、`bentoIcons` が解決する。
-- ページの 4 セル: **CULTURE**（2×1 statement、「仲間と、／学ぶ。創る。話す。」+ book / hammer / message-circle）、**SINCE**（1×1 lg、「2025年4月」+ flag）、**ONLINE & OFFLINE**（1×1 md、題 + map-pin / messages）、**FOR EVERYONE**（1×1 md、題 + code / palette / flask）。1×1 は sm ではなく md（Title/3 19）— U-46: Headline 17 では行 2–3 の右セルが軽く、空きが目立った。
+- ページの 4 セル: **CULTURE**（2×1 statement、「仲間と、／学ぶ。創る。話す。」+ book / hammer / message-circle）、**SINCE**（1×1 lg、「2025年4月」+ flag）、**ONLINE & OFFLINE**（1×1 md、題 + map-pin / messages）、**FOR EVERYONE**（1×1 md、題 + code / palette / flask。3 列 1024–1247 では 2×1 なので `Title/2` — 面積と格を揃える、U-55）。1×1 は sm ではなく md（Title/3 19）— U-46: Headline 17 では行 2–3 の右セルが軽く、空きが目立った。
 - **DECISION U-52**（2026-09-14、クライアント判断「アイコンの存在感がなさすぎます … 極端にそれぞれのスペースに対して文字が小さかったりアンバランス、特に設立のところ」）: U-40 の線画 32（題の上）は面積に対して軽く、SINCE は Title/3 の 1 行が 1×1 の中で浮いていた。図を 64 の円にして題の下に置き、SINCE の題を Title/1 の日付にすると、各セルの地のブロックが面積に釣り合う（CULTURE 地 204 / 236、SINCE 120 / 236）。
 - Tone Ink（ライブラリ）: fill `inverse/ground`、kicker `inverse/ink-tertiary`、title `inverse/ink`、body `inverse/ink-secondary`。
 - kicker は英語 1–2 語。title は `<br>` で意図的に改行してよい（ポスターの語割り）。`<h3>`。
@@ -1994,7 +2002,7 @@ fill `inverse/ground`。kicker `Overline/Latin` `MEMBERS` `inverse/ink-tertiary`
 
 #### 6.11.4 Cell Official（2×1、U-40）
 
-fill `ground`。kicker `Overline/Latin` `OFFICIAL` `ink-secondary` → `<ul>` を **2 列**（`grid`、wide 1248 以上で 2 列 gap `inline/lg` 24、`align-items: end`。tablet / desktop の 2 列・3 列のベントでは 1×1 で 2 件を縦積み gap `stack/lg` 24、L-34、**U-52**）、各列 = [題 `Headline` 17 `ink` `<h3>` → `stack/2xs` 4 → 補足 `Footnote/Regular` 13 `ink-secondary`] → `stack/md` 16 → 図（円 64）。解剖は Cell Text と同じ 2 段（kicker 天 ／ 列群 地）で、2 列の円は底で揃い、1 行 / 2 行の題の差は上に逃がす。列幅 262.5（1440）/ 326（768）。
+fill `ground`。kicker `Overline/Latin` `OFFICIAL` `ink-secondary` → `<ul>` を **2 列**（`grid`、wide 1248 以上で 2 列 gap `inline/lg` 24、`align-items: end`。tablet / desktop の 2 列・3 列のベントでは 1×1 で 2 件を縦積み gap `stack/lg` 24、L-34、**U-52**）、各列 = [題 `Headline` 17 `ink` `<h3>` → `stack/2xs` 4 → 補足 `Footnote/Regular` 13 `ink-secondary`] → `stack/md` 16 → 図（円 64）。解剖は Cell Text と同じ 2 段（kicker 天 ／ 列群 地）で、2 列の円は底で揃い、1 行 / 2 行の題の差は上に逃がす。列幅 262.5（1440）。tablet / desktop の 1 列は内側 309（768、inset 24）。
 
 | 列 | 題 | 補足 | 図 |
 |---|---|---|---|
@@ -2156,7 +2164,7 @@ Project と Hackathon を分ける理由: 前者は継続的な営み、後者�
 | header | 横 flex、`align-items: center`、gap `inline/sm` 12、下 `stack/md` 16。イラスト Image slot Circle **`size/illustration` 80**（96 → 80、U-42）、Humation、原色、`alt=""`（U-26）。右に縦積み: caseNo `Overline/Latin` 12 UPPER `ink-secondary` → `stack/2xs` 4 → title `Headline` 17 `ink` `<h3>`。番号 16 + 4 + 題 24 = 44 は 80 の中に収まり、題が 2 行（48）でも 68 で収まる |
 | quote | **板なし**（U-53）。`Callout` 14 Bold **`ink`**（ground 上 14.86）、箱 `min-height: size/persona-quote` **44**、`align-items: center`（1 行は上下中央、2 行は箱いっぱい）、下 `stack/md` 16。鉤括弧はコンテンツ側、`「` 始まりは `trim-start`（flex の中でも効く: 引用の左端 = イラストの左端、実測） |
 | rec | fill `surface`（カードで唯一の板）、inset `inset/sm` 12 × `inset/md` 16、箱 `min-height: size/persona-rec` **64**、`align-items: center`。中は `arrow-right` 16（先頭、`inline/icon` 4、1 行目の行ボックス中央）+ `Footnote/Bold` 13 **`ink`**（13.51）。ボタンではない: 64 ≠ 44、Footnote ≠ Label、矢印は先頭、状態なし（`p + p` の 12 は打ち消す） |
-| card | `ground`、inset `inset/cell` 24 / 20、**subgrid 3 行**（親 `<ul>` は `auto-rows: auto` — 罫線グリッド既定の行の床 120 を 3 行それぞれに掛けない）、行間 0（親の 2px gap を持ち込まない）。実測 Desktop **397 × 268**（6 枚同値: 24 + 80 + 16 + 44 + 16 + 64 + 24）、親のトラック 119 / 58 / 87（DevTools。gap の差分 ±1 と inset の畳み込み）、Mobile 338 × 260（6 枚同値） |
+| card | `ground`、inset `inset/cell` 24 / 20、**subgrid 3 行**（親 `<ul>` は `auto-rows: auto` — 罫線グリッド既定の行の床 120 を 3 行それぞれに掛けない）、行間 0（親の 2px gap を持ち込まない）。実測 Desktop **397 × 268**（6 枚同値: 24 + 80 + 16 + 44 + 16 + 64 + 24）、親のトラック 119 / 58 / 87（DevTools。gap の差分 ±1 と inset の畳み込み）、tablet 357 × 268（inset 24）、Mobile 338 × 260（6 枚同値） |
 
 イラスト 104 → 96 は DECISION L-12、96 → 80 は U-42。状態なし（カードはリンクではない）。3 列 × 2 行は desktop 1024 から（322.7 … 397.33、内側 274.7 で引用 19 字 / 行、推薦 17 字 / 行 — 現行の文言は 2 行の箱に収まる）、tablet 768–1023 は 2 列 × 3 行（357 … 391）、Mobile 1 列（L-34）。`<ul>` > `<li>`（subgrid の `<li>` は `row-span: 3`）。
 
@@ -2171,7 +2179,7 @@ Figma: `Persona / Card` 1。Props: `caseNo` `title` `quote` `rec` TEXT、`image`
 | role | `Overline/Latin` / `Overline/JP` 12、`ink-secondary`（5.83）、下 `stack/2xs` 4 | 同 |
 | name | `Title/2` 22 `ink`、`<h3>`、姓名の間は半角スペース | `Headline` 17 |
 | skills | `Footnote/Regular` 13 `ink-secondary`、上 `stack/xs` 8、≤ 2 行 | `Caption/Regular` 12 |
-| 列 | 2 列は tablet 768 から（357 … 597）/ Mobile 1 列 | 3 列は desktop 1024 から（322.7 … 397.33、内側 290.7 = 24 字）。tablet 768–1023 は 2 列で、奇数なら最後の 1 枚を行いっぱいに（`fillRow`、L-36。空トラックの灰色の板を出さない）/ Mobile 1 列 |
+| 列 | 2 列は tablet 768 から（357 … 597）/ Mobile 1 列 | 3 列は desktop 1024 から（322.7 … 397.33、内側 290.7 = 24 字）。tablet 768–1023 は 2 列で、奇数なら最後の 1 枚を行いっぱいに（`fillRow`、L-36。空トラックの灰色の板を出さない）。広げたカードは**横組み**（写真 1/2 + 本文、本文は `max-width: measure/paragraph` 588 — U-55: 縦組みのままだと 4:3 の写真が 716 × 537 の面になり、紹介文が 53 全角の 1 行の帯になった）/ Mobile 1 列 |
 
 Leader と Staff の差は **写真比・inset・name・skills の 4 点**（Socials は共通）。Staff グリッドは Leader グリッドの直下に上枠なしで接続（1 つの罫線列、§3.8）。カード自体はリンクではない。
 
@@ -2323,9 +2331,9 @@ Figma: `Media / Image Slot` `Shape` {Rect, Circle} × `Fit` {Cover, Contain} × 
 |---|---|
 | 要素 | 素の `<dialog>` + `showModal()`（幕・最上層・背後の inert・Escape・フォーカスの往復をブラウザが持つ。ライブラリは足さない）。`aria-labelledby` = 題、`aria-describedby` = 導入 |
 | 面 | `ground`、`radius/none`、`shadow/lg`。UA の padding / border / Canvas 色は打ち消す（preflight は dialog を触らない）。幕 `color/backdrop` ink@48（高コントラスト・低透明時は 88） |
-| 幅・位置 | `width: calc(100% − 2 × page/inset)`、`max-width: size/dialog` **480**（= 4 × cell-min）。Desktop 480、Mobile 342（container と同じ）。上下左右中央（`inset: 0; margin: auto`）。高さは内容（Desktop **240** = 24 + 28 + 16 + 72 + 32 + 44 + 24、Mobile **360** = 20 + 28 + 16 + 144 + 32 + 44 + 12 + 44 + 20、実測）、`max-height: calc(100% − 2 × page/inset)` を超えたら中でスクロール（`overscroll-behavior: contain`） |
+| 幅・位置 | `width: calc(100% − 2 × page/inset)`、`max-width: size/dialog` **480**（= 4 × cell-min）。`forced-colors` では 1px の `border: solid`（塗りと影が消えても範囲が残る、U-55）。Desktop 480、Mobile 342（container と同じ）。上下左右中央（`inset: 0; margin: auto`）。高さは内容（Desktop **240** = 24 + 28 + 16 + 72 + 32 + 44 + 24、Mobile **360** = 20 + 28 + 16 + 144 + 32 + 44 + 12 + 44 + 20、実測）、`max-height: calc(100% − 2 × page/inset)` を超えたら中でスクロール（`overscroll-behavior: contain`） |
 | 題 | `Title/2` 22 EB `ink`、`<h2>`。「参加する前に」（6 全角 = 132 px、1 行、体言止め。初案「学生ですか？」の疑問形はクライアントの文言確定で不要になった） |
-| 導入 | `Body/S` 14 `ink-secondary`、`<p>`。**1 文 = 1 行**（`display: block` の span）: 「ChoTechは学生向けのテックコミュニティです。」「参加にあたり、居住地・経験・大学・学部・学科は問いません。」「ものづくりに興味がある学生であれば、どなたでも歓迎します。」（≈ 258 / 406 / 420 px ≤ 432 で Desktop は 3 行）。文の中の折返しは段落の既定（`auto-phrase`、U-48）で、Mobile 302 では 3 文とも文節で 2 行に折れて計 6 行（実測: 「ChoTechは学生向けの／テックコミュニティです。」「…大学・学部・／学科は問いません。」「…学生であれば、／どなたでも歓迎します。」）。1 文の上限は 30 全角（§9.3） |
+| 導入 | `Body/S` 14 `ink-secondary`、`<p>`。**1 文 = 1 行**（`display: block` の span）: 「ChoTechは学生向けのテックコミュニティです。」「参加にあたり、居住地・経験・大学・学部・学科は問いません。」「ものづくりに興味がある学生であれば、どなたでも歓迎します。」（実測 ≈ 310 / 404 / 399 px ≤ 432 で Desktop は 3 行。U-55 で訂正）。文の中の折返しは段落の既定（`auto-phrase`、U-48）で、Mobile 302 では 3 文とも文節で 2 行に折れて計 6 行（実測: 「ChoTechは学生向けの／テックコミュニティです。」「…大学・学部・／学科は問いません。」「…学生であれば、／どなたでも歓迎します。」）。1 文の上限は 30 全角（§9.3） |
 | 行動 | 主 = Ground / **Discord** / md `サーバーに参加する`（`<a target="_blank">`、Discord マーク 20 先頭 + `arrow-up-right` 20、vh「Discordへ（外部、新しいタブで開く）」— 可視の文に Discord の名が無いので読み上げ名で行き先を言う）、副 = Ground / **Outline** / md `閉じる`（`<form method="dialog">` の submit。JS を介さず閉じる）。tablet 以降は横並び gap `inline/sm` 12（231 + 12 + 85 = 328 ≤ 432）、Mobile は縦積み gap `stack/sm` 12 で両方 `fullWidth`。主が先（L-3）。「学生ではない」の副は置かない — 迷っている学生に嘘のボタンを押させず、閉じる / Escape / 幕の外で同じことが起きる |
 | 縦リズム | 題 → 導入 `stack/md` 16、導入 → 行動 `stack/xl` 32（§3.3 規則 2: 親の中の stack は 2 種） |
 | トリガー | 4 本とも `<button type="button" aria-haspopup="dialog">`（Button の asChild）。文言・矢印は従来どおり（`参加する` + `arrow-up-right`: 行き先は外部）。vh の「新しいタブ」注記はトリガーには付けず、参加リンクが持つ |
@@ -2340,7 +2348,7 @@ Figma: `Media / Image Slot` `Shape` {Rect, Circle} × `Fit` {Cover, Contain} × 
 ---
 ## 7. Motion
 
-本章がモーションのオーナー。§6 の部品はここで定義するトークン名で動きを参照し、値を再記述しない。原則の出典: Apple *Designing Fluid Interfaces* / HIG、WCAG 2.2。本ページにジェスチャ駆動 UI（ドラッグ、シート、スワイプ）はなく、動くものは reveal・マーキー・入力中ドット・Mobile メニュー・Hero の背景写真・参加ダイアログの 6 つだけ（回転語は U-37 で撤去、参加ダイアログは U-49）。
+本章がモーションのオーナー。§6 の部品はここで定義するトークン名で動きを参照し、値を再記述しない。原則の出典: Apple *Designing Fluid Interfaces* / HIG、WCAG 2.2。本ページにジェスチャ駆動 UI（ドラッグ、シート、スワイプ）はなく、動くものは reveal・マーキー・入力中ドット・Mobile メニュー・参加ダイアログの 5 つだけ（回転語は U-37、Hero の背景写真の漂いは U-50 で撤去。参加ダイアログは U-49）。
 
 ### 7.1 原則
 
@@ -2457,7 +2465,7 @@ CSS カスタムプロパティで持つ。Figma には Variables として置�
 | `prefers-reduced-motion: reduce` | §7.3 右列。移動はすべてクロスフェード `duration/2` か静止。自動ループの初期状態 = 停止（スイッチで任意に再生可）。`scroll-behavior: auto`。押下・hover の色変化は維持（理解を助ける） |
 | `prefers-reduced-transparency: reduce` | ページに `backdrop-filter` / 素材はない（Nav は不透明）。半透明トークンは平坦な地の上にしか置かないので分岐は不要。検証・Figma 用の実効色: `state/hover-tint` ink@6 → `#e6e5e5`、`pressed-tint` @12 → `#dad9d8`、`inverse/state/hover-tint` ground@12 → `#393737`、`pressed-tint` @24 → `#535150`、`inverse/ink-secondary` @88 → `#dad9d8`、`inverse/ink-tertiary` @72 → `#b8b7b6`、`inverse/ink-quaternary` @48 → `#858483`、`poster/ink-secondary` ink@88 over lime-400 → `#2f361a`、`poster/selection` ink@12 over lime-400 → `#8bce03`、`selection` lime-400@24 over ground → `#deefb8`、`inverse/selection` lime-400@24 over ink → `#3d4e16`。ライブラリの幕 `backdrop` は ink@88（→ `#393737` over ground）。今後も素材（ぼかし）は導入しない |
 | `prefers-contrast: more` | §1.5.5 の写像: `ink-secondary` → `ink`、`ink-tertiary`（ゴースト・アイコン・点）→ `ink-secondary`、`divider` → neutral-700（5.83、R22）、不透明度階層（88 / 72 / 48 %）→ 100 %、hover 6 → 12 %・pressed 12 → 24 %、アクセント文字 lime-800 / 900 → lime-900（7.85）、`backdrop` 48 → 88 %。フォーカスリング `stroke/focus` 2 → **3 px** |
-| `forced-colors: active` | フォーカスは `outline` なので残る。罫は塗りなので消える → 罫線グリッドと 2 px rule に 1 px `border: solid` を補う（`forced-color-adjust` の下でも線が残る）。hover の塗りは消えるため、リンクは hover で下線（既に `text-decoration`）。アイコンは `stroke: currentColor` |
+| `forced-colors: active` | フォーカスは `outline` なので残る。罫は塗りなので消える → 罫線グリッドと 2 px rule、ベントの図の円、参加ダイアログに 1 px `border: solid` を補う（`forced-color-adjust` の下でも線が残る）。hover の塗りは消えるため、リンクは hover で下線（既に `text-decoration`）。アイコンは `stroke: currentColor` |
 | バックグラウンド / 非可視 | すべてのループを停止（`visibilitychange` + IntersectionObserver） |
 
 装飾罫線（`color/divider` 2.59:1）は WCAG 1.4.11 の対象外（§1.4.1）。`prefers-contrast: more` でのみ 700 に上げる。
@@ -2508,8 +2516,8 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | 2.2.2 一時停止・停止・非表示 | 5 秒超の自動移動に停止手段 | **未達**（U-31 で停止ボタンを撤去。`prefers-reduced-motion` で静止、画面外で停止、マーキーは hover で一時停止するのみ） |
 | 2.3.1 / 2.3.3 | 3 回/秒の閃光なし・操作起因アニメーション（AAA） | 最速の周期は 0.8 Hz。reduced-motion で全停止 |
 | 2.4.2 ページタイトル | ページの主題を表すタイトル | `<title>` の組立規則と meta description（§9.9） |
-| 1.4.10 リフロー | 320 px 幅（container 272）で横スクロールなし | Hero h1 Mobile 56 px × 4 字 = 220 ≤ 272 ✓。Poster 見出し Mobile 40 px × 6 字 = 235 ≤ 272 ✓。h2 Title 1 26 px × 11 字 = 283 → 320 px では 2 行に折返す（許容）。Marquee は装飾でクリップ可、静止時は折返し |
-| 1.4.12 テキストの間隔 | 行間 1.5・字間 0.12 em・段落 2 倍で欠損なし | テキスト容器の `overflow: hidden` はマーキー帯（装飾）以外禁止。Hero h1 の `nowrap` は 7 × 124 × 1.12 = 972 < 1200、Mobile 4 × 56 × 1.12 = 251 < 342 で安全 |
+| 1.4.10 リフロー | 320 px 幅（container 272）で横スクロールなし | Hero h1 は 320 で Display/XL 45.6、`Hack Your` 5.74em = 262 ≤ 272 ✓（U-55）。Nav は 360 未満で CTA を落とし 243 ≤ 320 ✓（矢印つき CTA の帯は 320 で 58 溢れていた）。Poster 見出し Mobile 40 px × 6 字 = 235 ≤ 272 ✓。h2 Title 1 26 px × 11 字 = 283 → 320 px では 2 行に折返す（許容）。CULTURE は Display/M 24.9 で 2 行 ✓、SINCE は Title/3 で 2 行（許容）。Marquee は装飾でクリップ可、静止時は折返し。実測 2026-09-15: 320 / 360 / 375 / 390 で `scrollWidth` = viewport |
+| 1.4.12 テキストの間隔 | 行間 1.5・字間 0.12 em・段落 2 倍で欠損なし | テキスト容器の `overflow: hidden` はマーキー帯（装飾）以外禁止。Hero h1 に `nowrap` は無い（pre-line の著者改行、U-55）。Nav の wordmark と Label の `nowrap` は 1 語 |
 | 1.4.4 テキストのサイズ変更 | 200 % | サイズは `rem`、余白は `em` / `rem`。固定高さのセル（`size/cell-min` 120）・コントロール（36 / 44）は `min-height` |
 | 1.3.1 / 2.4.1 / 2.4.6 | 構造・ブロックスキップ・見出し | ランドマーク、h1→h2→h3、スキップリンク（§8.5）。回転見出しの名前は全文で安定 |
 | 1.1.1 非テキストコンテンツ | 代替テキスト | §8.6 |
@@ -2761,7 +2769,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | Footer リンク / © | Footnote 13 / Caption 12 | — | — | 10 / `© YYYY ChoTech` | 1 |
 | Marquee 項目 | Title 3 Caps 19 | — | — | 12 | 1 |
 | ダイアログ題 | Title 2 22 | 432 / 302 | 19 / 13 | 12（「参加する前に」= 6） | 1 |
-| ダイアログ導入 | Body S 14 | 432 / 302 | 30 / 21 | 1 文 ≤ **30**（3 文、1 文 = 1 行。最長「ものづくりに興味がある学生であれば、どなたでも歓迎します。」= 30 = 420 ≤ 432） | 3 / 6 |
+| ダイアログ導入 | Body S 14 | 432 / 302 | 30 / 21 | 1 文 ≤ **30**（3 文、1 文 = 1 行。最長は 29 全角 = 406 ≤ 432 — 「参加にあたり、…問いません。」実測 404、「ものづくりに…歓迎します。」399。U-55 で 30 / 420 を訂正） | 3 / 6 |
 | ダイアログ CTA | Label M 15 | — | — | **9**（「サーバーに参加する」= 9。ボタン 231 ≤ 320 幅の内側 232） | 1 |
 
 ### 9.4 句読点・記号
@@ -3258,7 +3266,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | L-28 | marquee 停止セル 44 × 内側高、左 2px rule、ground、icon 24 | 帯と同じ罫線語彙で「セル」として切り出す。**U-31 で撤去** |
 | L-29 | ~~実装のブレークポイントは 2 つ: 構造 48rem / トークン 78rem（§3.6）~~ **L-34 で 3 点に改める（2026-09-15）** | 2 フレームしかない仕様と連続なブラウザ幅の橋渡し。ナビと列数だけ先に開き、タイポは離散のまま — だったが、iPad が横幅 1194 まで Mobile のトークンと 2 列で描かれ「スマホ寄り」に見えた |
 | L-34 | ブレークポイントを **3 点**に: tablet 48rem = **トークンのモード** + 構造（2 列、見出し行、footer 行）、desktop 64rem = 構造（persona / staff 3 列、partner N 列、ベント 3 列 + CHAT 2×2、タグライン）、wide 78rem = ベント 4 列 + OFFICIAL 内側 2 列（2026-09-15、クライアント判断）。ベントは 1 / 2 / 3 / 4 列の 4 構図を DOM を変えずに span だけで作る（§3.8） | 「タブレットの時の表示がスマホ寄りになるのがすごく違和感」。Mobile のトークンは 342 の紙を守る値で、720 以上の紙には Desktop の刻みが要る（iPad は Mac 側の size class）。4 列は 1×1 の内側が 228（FOR EVERYONE の折れ目）と 216（図 3 つ）を超える V ≥ 1162 が要り、spec が名指しする 1248 に置く。1024 は container 976 で h1 1 行・ロゴ 5 枚・persona 3 列が成立する最小幅 |
-| L-35 | Mobile で MEMBERS と SINCE を `CellPair`（背景なしの入れ子グリッド、gap 2、tablet から `display: contents`）で 168 × 2 の 1 行に（2026-09-15）。SINCE の題は Title/2 22（121.5 ≤ 128）、tablet から Title/1 | 「モバイルの時のデザインが最悪」。L-10 の 1 列は本文を持つセルのための規則で、数字と日付 + 図のセルは 128 でも割れない（L-31 と同じ理屈）。About は 2005 → 1871 になり、電話でもベントに 1 行の対ができる |
+| L-35 | Mobile で MEMBERS と SINCE を `CellPair`（背景なしの入れ子グリッド、gap 2、tablet から `display: contents`）で 168 × 2 の 1 行に（2026-09-15）。SINCE の題は Title/2 22（121.5 ≤ 128）、tablet から Title/1。内側 < 122 では Title/3（container query、U-55） | 「モバイルの時のデザインが最悪」。L-10 の 1 列は本文を持つセルのための規則で、数字と日付 + 図のセルは 128 でも割れない（L-31 と同じ理屈）。About は 2005 → 1871 になり、電話でもベントに 1 行の対ができる |
 | L-36 | 見出し行と footer 行を tablet 48rem から横に、tablet の 2 列で Staff が奇数なら最後の 1 枚を `fillRow` で行いっぱいに（2026-09-15） | 見出しと footer の縦積みはトークンと同じ点で解く（旧 L-29 は 78rem）。frame fill = divider なので空トラックは灰色の板 — 均等セルの格子は空席を作らない（§3.8） |
 | L-30 | logo mark は図の外接矩形で切った `icons/mark.svg` を 24 / 20 で置く | favicon.svg は余白込みで、図が小さく見え wordmark からも離れて見えた |
 | L-31 | ~~Partner セルは正方形タイル（Desktop 6 列 / tablet 3 / Mobile 2）~~ **U-43 でタイルごと撤去（外枠だけの 1 行）** | ロゴは正方形のアイコンが基本なので図とタイルの形を揃える。文字を運ばないタイルは L-10 の制約外。Mobile 1 列だと 342 角が 6 枚縦に積まれる |
@@ -3383,11 +3391,12 @@ Figma 上のレビューで出た指摘と、その決定。番号は U（UI fee
 | U-47 | Poster の Social とフッターのリンクの `<li>` を `display: flex` にする（2026-09-12） | 親の 15px の strut が `<li>` の行ボックスを 26 に広げ、inline-flex のマーク（20）が 3px 下がって 44 のボタンと上下中央が合わなかった（フッターは 1px）。実測で確認: Desktop / tablet / Mobile の 3 幅でボタンとマークの中心が一致 |
 | U-48 | 段落にも `word-break: auto-phrase` を当て、Hero のリード（Title/1）に `text-wrap: balance`（2026-09-12） | Mobile の Hero リードが「長崎にテック好きのためのハ / ブを。」、Poster の段落が「最初の一 / 歩」と語中で折れていた。見出しだけに auto-phrase を当てる旧規則では p のリードと段落が漏れる。対応ブラウザだけの段階的強化で、Figma との折返し一致（§2.6.2）は見出しの著者改行が正のまま |
 | U-49 | 参加の導線 4 本（Nav・Menu・Hero 主・Poster）は Discord へ直接出ず、**参加ダイアログ**（§6.21）でコミュニティの約束に同意してから新しいタブで出る（2026-09-12、クライアント判断）。素の `<dialog>` + `showModal()`、ground のセル 480、幕 ink@48 + `shadow/lg`。主「同意して参加する」= Discord、副「閉じる」= Ground / Outline。トリガーは `<button aria-haspopup="dialog">`。約束の文言は草案 | 「Discordに参加するボタンのみ、確認モーダルを設けて同意してから参加するようにした方がよさそう」。招待リンクは誰でも踏めるので、約束を読む場所はサーバの中ではなく手前に要る。同意はボタンを押すことそのもの — チェックボックスは 1 手増やすだけで読んだ証明にならない。ネイティブ `<dialog>` にしたのは、幕・inert・Escape・フォーカスの往復を自前で書くとどれかが漏れるため。影と幕は §4.4 が「dialog のみ」と予約していた段 |
-| U-50 | Hero の h1 の板を実色の `inverse/ground` から**真っ黒 64%**（`hero/plate` = `alpha/black/64`、プリミティブ `neutral/1000` `#000000`）に、背景写真は **`blur(4px)`** で軽くぼかし、U-20 の漂い（48 s の translate）を**撤去**して静止画に（2026-09-14、クライアント判断）。`scale` は 1.12 → 1.04（ぼかしの縁の余白）。`prefers-reduced-transparency` では板は実色の黒 | 「hack your limits の背景部分をちょっとだけ半透明の真っ黒にする。hero の画像も若干ぼかして、アニメーションもなし」。実色の ink の板は周囲の ink 面と同じ色で、写真の明部の上でだけ板に見えた。真っ黒なら面より一段暗く、板が常に板として読める。64% は尺度の外で見た目から決めた値 — 写真層が 20% しか無いので 88 / 72 では不透明に見え、48 では薄すぎた（クライアント所見を 2 回反映）。最も明るい画素の上でも白 17.2 / 句点 6.77。影は持たない（§4.4）。ぼかしは文字の背後の粒を潰して輪郭を守り、動きを消したぶん M9 の例外が無くなる |
+| U-50 | Hero の h1 の板を実色の `inverse/ground` から**真っ黒 64%**（`hero/plate` = `alpha/black/64`、プリミティブ `neutral/1000` `#000000`）に、背景写真は **`blur(4px)`** で軽くぼかし、U-20 の漂い（48 s の translate）を**撤去**して静止画に（2026-09-14、クライアント判断）。`scale` は 1.12 → 1.04（ぼかしの縁の余白）。`prefers-reduced-transparency` では板は実色の黒 | 「hack your limits の背景部分をちょっとだけ半透明の真っ黒にする。hero の画像も若干ぼかして、アニメーションもなし」。実色の ink の板は周囲の ink 面と同じ色で、写真の明部の上でだけ板に見えた。真っ黒なら面より一段暗く、板が常に板として読める。64% は尺度の外で見た目から決めた値 — 写真層が 20% しか無いので 88 / 72 では不透明に見え、48 では薄すぎた（クライアント所見を 2 回反映）。最も明るい画素の上でも inverse/ink 15.4 / 句点 6.77。影は持たない（§4.4）。ぼかしは文字の背後の粒を潰して輪郭を守り、動きを消したぶん M9 の例外が無くなる |
 | U-51 | Poster の見出し「Hack Your Limits.」を全文 green-400 から、**文は `poster/ink`（白）・句点だけ `poster/display`（green-400）**に（2026-09-14、クライアント判断）。Hero の h1（U-39）と同じ印。content は `{ text, period }` に分ける | 「JOIN US の Hack Your Limits. も hero と同じように . だけ色変えるようにしよう」。開幕と終幕で同じ文が同じ印を持ち、緑の出現は「言い切りの句点」1 種に揃う。Display/L 96 の全文が緑だと面積として緑の大面に近づき、C-30 の趣旨（緑は面ではなく印）からも外れていた |
 | U-52 | About のベントの図を **Bento / Figure**（淡い緑の円 64 の中の Tabler 32、語なし、C-32）にし、解剖を全セル「kicker（天）／題 → `stack/md` 16 → 図（地）」に統一（2026-09-14、2026-09-15 改、クライアント判断）。CULTURE は Display/M「仲間と、／学ぶ。創る。話す。」+ book / hammer / message-circle、SINCE は **Title/1**「2025年4月」+ flag（新 Kind 1×1 lg）、OFFICIAL は 2×1 の中を **2 列**（題 + 補足 → 図、円は底揃え、Mobile 1 列）。図の行は aria-hidden。行高 284 / 241.5 + 221.5（チャット 465 が決める） | 「アイコンの存在感がなさすぎます。Culture の部分で、仲間と、の下に丸の背景に囲まれたアイコンで語るようなイメージ。他のやつもそんな感じの雰囲気がいい。極端にそれぞれのスペースに対して文字が小さかったりアンバランス、特に設立のところ。OFFICIAL もグリッド内で 2 列で表現していい」。線画 32 は面積に対して軽く、SINCE の Title/3 1 行は 1×1 の中で浮いていた。64 の円を題の下に置くと各セルの地のブロックが面積に釣り合い、円の列がベントの底の帯になる。初版は語（学ぶ / 創る …）を円の上に添え色を 4 相に分けたが、翌日の所見「説明書きは無くていい、洗練されて見やすければ OK、目指すは Apple の Bento」で語を落とし、色を緑系 1 色に（C-32 改） |
 | U-53 | Persona card の引用から**墨の板を外し**て地の上の Callout に、高さは**目標値**の箱 `size/persona-quote` 44 と `size/persona-rec` 64 で固定（2026-09-14、クライアント判断）。次の一歩の surface の板だけが残る。§9.3 の上限を引用 42 / 推薦 36 に。吹き出し（U-1 の拡張）と左の縦バーは退けた | 「FOR YOU のところは、2 行だったり 1 行だったりで高さが統一されていない部分があって気になる。あと、黒ボックスは存在感ありすぎて逆に浮いて見えるのかな？少し工夫して欲しい」。墨の板は action/fill と同色で 6 個のボタンに読め、Hero と Poster の間で唯一の暗い面だった。subgrid は行の中しか揃えないので、2 段 6 枚を同じ高さにするには行ごとの箱を目標値で固定するしかない（1 行の引用も 2 行ぶん）。実測 268 × 6 / 260 × 6 |
 | U-54 | 参加ダイアログの中身を**学生向けであることの確認**に（2026-09-14、クライアント判断。文言は 2026-09-15 にクライアントが確定）: 題 Title/2「参加する前に」、導入 3 文（1 文 = 1 行。「ChoTechは学生向けのテックコミュニティです。」「参加にあたり、居住地・経験・大学・学部・学科は問いません。」「ものづくりに興味がある学生であれば、どなたでも歓迎します。」）、主「サーバーに参加する」（Discord、vh「Discordへ（外部、新しいタブで開く）」）、副「閉じる」。約束の行・hairline・rules の id を撤去、`aria-describedby` は導入のみ。高さ 240 / 360。初案の疑問形の題「学生ですか？」と文節ごとの nowrap は文言確定で退いた | 「そんな感じの表記じゃなくて『学生ですか？ChoTech は学生向けのテックコミュニティです』くらいの確認。不特定多数の人に適当に参加されても困るから一応このモーダルを設けてる」。関所の目的が「学生かどうか」なら、規範の列挙は読ませる量を増やすだけで答えは変わらない。題の疑問形は §9.1 の例外だが、確認ダイアログの 1 問として自然で、代替の体言止め「学生向けのコミュニティ」は問いになっていない。「学生ではない」の副は嘘のボタンになるので置かない。可視の文から Discord の名が消えるぶん、読み上げ名で行き先を言う |
+| U-55 | 最終レビュー（2026-09-15、51 エージェントの多視点レビューで確認された 20 件）の是正: (1) Hero h1 の Mobile を著者改行（`\n`、pre-line → tablet で normal）に、Display/XL / M に container 追従の第 2 項（390 未満）と Display/XL の 768 用の 1 行項。(2) Nav CTA の矢印を外し、360 未満は帯から落とす。(3) Mobile ペアの SINCE を内側 < 122 で Title/3（`CellPair` の子を `@container`）。(4) FOR EVERYONE の 3 列（2×1）で Title/2。(5) tablet の `fillRow` カードを横組み + 本文 `measure`。(6) 参加ダイアログの中のタップでメニューを畳まない、`forced-colors` の枠。(7) 数値の訂正（hero/plate 15.4 / 17.6、OFFICIAL 309、導入 310 / 404 / 399、§7 の 5 つ、§3.6 の 744 の根拠、on-accent 4.63） | 板の帯: 自然折返しの inline-block は折れた瞬間に container 幅になり、744 では字の右に 258 の空の板が残った。矢印つき CTA の帯は 378 で、375 の電話（iPhone mini / SE）と 360 の Android で横スクロールが出ていた（1.4.10）。ペアの SINCE は 380 未満で 2 行に折れ、L-35 の検算は 390 でしか成立していなかった。CULTURE は 374 未満で 3 行。FOR EVERYONE は 3 列で最も広いのに 1×1 と同じ Title/3 で格が逆転。`fillRow` の縦組みは 53 全角の 1 行。ダイアログの pointerdown が document に届いてメニューが inert になり、閉じたときの focus 復帰先が消えて body に落ちていた |
 
 ## 付録 B. 検証
 

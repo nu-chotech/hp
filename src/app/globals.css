@@ -158,7 +158,7 @@
   /* 文字を載せる緑の面。ページではチャット自分側バブルだけ（ground 上 4.14）。
      参加 CTA は C-31 で Discord の Blurple（--discord-fill）に移り、緑の面ではなくなった */
   --accent-fill: var(--green-600);
-  --on-accent: var(--neutral-0); /* accent-fill 上 4.62（ground だと 4.14） */
+  --on-accent: var(--neutral-0); /* accent-fill 上 4.63（ground だと 4.14） */
   /* ホバー・プレスは暗い方へ 1 段ずつ（白 5.07 / 7.40）。Accent ボタンはライブラリのみ（K-5） */
   --accent-hover: var(--green-700);
   --accent-pressed: var(--green-800);
@@ -171,7 +171,7 @@
   --pop-badge: var(--green-800); /* ground 6.62 */
   --hero-word: var(--green-400); /* ink 6.54 */
   /* h1 の板（U-50）: 写真の上に 64% の真っ黒 — 板越しに写真がうっすら透ける。
-     最も明るい画素の上でも白 17.2 / 句点 6.77（48 は薄く、72 は不透明に見えた） */
+     最も明るい画素の上でも inverse/ink 15.4 / 句点 6.77（48 は薄く、72 は不透明に見えた） */
   --hero-plate: var(--alpha-black-64);
   --poster-display: var(
     --green-400
@@ -311,9 +311,19 @@
    * -------------------------------------------------------------------------- */
 
   /* Display/XL — ヒーロー h1。116/129 ⇔ 56/62、EB。Desktop 1 行 "Hack Your Limits." ≈ 1131 ≤ 1200
-     （U-37: 124 では 1209 で container を 9px 超え、1280 幅で入るのに 1440 幅で折れる揺れが出た） */
-  --display-xl-size: clamp(3.5rem, calc(2.1071rem + 5.714vw), 7.25rem);
-  --display-xl-leading: clamp(3.875rem, calc(2.3196rem + 6.381vw), 8.0625rem);
+     （U-37: 124 では 1209 で container を 9px 超え、1280 幅で入るのに 1440 幅で折れる揺れが出た）。
+     377 未満は container に追従する第 2 項が勝つ（U-55: "Hack Your" 5.74em が 100vw − 48 の
+     2% 内側に入る値。320 で 45.6 — 板の中で "Hack" / "Your" に割れない）。床 44 には届かない */
+  --display-xl-size: clamp(
+    2.75rem,
+    min(calc(2.1071rem + 5.714vw), calc(17vw - 0.55rem)),
+    7.25rem
+  );
+  --display-xl-leading: clamp(
+    3.0625rem,
+    min(calc(2.3196rem + 6.381vw), calc(18.8vw - 0.6rem)),
+    8.0625rem
+  );
   --display-xl-tracking: -0.02em;
   --display-xl-weight: 800;
 
@@ -323,9 +333,19 @@
   --display-l-tracking: -0.02em;
   --display-l-weight: 800;
 
-  /* Display/M — 活動タイトル、統計値「50」。56/62 ⇔ 32/36、EB */
-  --display-m-size: clamp(2rem, calc(1.4429rem + 2.286vw), 3.5rem);
-  --display-m-leading: clamp(2.25rem, calc(1.6464rem + 2.476vw), 3.875rem);
+  /* Display/M — 活動タイトル、統計値「50」、CULTURE の statement。56/62 ⇔ 32/36、EB。
+     383 未満は container に追従する第 2 項が勝つ（U-55: 「学ぶ。創る。話す。」9 全角 × 0.98 が
+     1 列セルの内側 100vw − 92 の 2% 内側に入る値。360 で 29.4、320 で 24.9）。床 24 には届かない */
+  --display-m-size: clamp(
+    1.5rem,
+    min(calc(1.4429rem + 2.286vw), calc(11.1vw - 0.66rem)),
+    3.5rem
+  );
+  --display-m-leading: clamp(
+    1.6875rem,
+    min(calc(1.6464rem + 2.476vw), calc(12.49vw - 0.74rem)),
+    3.875rem
+  );
   --display-m-tracking: -0.02em;
   --display-m-weight: 800;
 
@@ -599,6 +619,19 @@
   :root {
     --inset-cell: 1.5rem; /* 24 */
     --nav-pad-y: 0.75rem; /* 12 */
+    /* Display/XL: 768 から 1 行 "Hack Your Limits."（9.75em）が container に入る値（U-55）。
+       第 2 項は 917 まで勝ち（768 で 71.2）、以降は 390–1440 の補間に戻る。
+       767 → 768 で 77.5 → 71.2 に下がるのは、2 行の板が 1 行の板に変わる点と同じ */
+    --display-xl-size: clamp(
+      3.5rem,
+      min(calc(2.1071rem + 5.714vw), calc(10vw - 0.35rem)),
+      7.25rem
+    );
+    --display-xl-leading: clamp(
+      3.875rem,
+      min(calc(2.3196rem + 6.381vw), calc(11.07vw - 0.39rem)),
+      8.0625rem
+    );
     --grid-gutter: 1.5rem; /* 24 */
     --section-pad-top: 4rem; /* 64 */
     --section-pad-bottom: 5rem; /* 80 */

@@ -84,7 +84,7 @@ const buttonVariants = cva(
         surface: "ground",
         variant: "accent",
         // 地の上ではライブラリ専用（K-5: Nav CTA は Ink solid のまま）。面は accent-fill
-        // （green-600、地に対し 4.14）+ 白（4.62）。green-400 の面は 2.27 で輪郭が読めない（C-25）
+        // （green-600、地に対し 4.14）+ 白（4.63）。green-400 の面は 2.27 で輪郭が読めない（C-25）
         class: [
           "bg-accent-fill text-on-accent",
           "hover:bg-accent-hover active:bg-accent-pressed",
@@ -118,7 +118,7 @@ const buttonVariants = cva(
         surface: "ink",
         variant: "accent",
         // ライブラリ（C-30 で Hero 主に使ったが、C-31 で Discord に置換）。緑の面 accent-fill
-        // （ink 上 3.59）に白のラベル（4.62）。ホバー・プレスは暗い方へ 1 段ずつ（700 / 800）
+        // （ink 上 3.59）に白のラベル（4.63）。ホバー・プレスは暗い方へ 1 段ずつ（700 / 800）
         class: [
           "bg-accent-fill text-on-accent",
           "hover:bg-accent-hover active:bg-accent-pressed",

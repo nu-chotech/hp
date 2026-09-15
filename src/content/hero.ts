@@ -29,13 +29,16 @@ export const heroContent = {
    * 墨のボックスに載った 1 行の中で「言い切った」ことを示す最小の印がそれだから。
    * U-37 の「動詞だけアクセント」は撤回 — ボックスが強調を担うので、色の強調は 1 か所に絞る。
    *
-   * 改行は入れない。Desktop は 1 行（Display/XL の上限を 116 に下げて ≈ 1131 ≤ 1200）、
-   * Mobile は「Hack Your」/「Limits.」に自然に折れ、ボックスも行ごとに付く
-   * （box-decoration-break: clone）。Poster（Display/L、2 行の著者改行、ボックスなし）と
-   * 形を変えることで、同じ文が開幕と終幕で別の顔になる。
+   * `\n` は Mobile の折り目（U-55）。Desktop / tablet は 1 行（Display/XL の上限を 116 に下げて
+   * ≈ 1131 ≤ 1200、768 では 1 行に入る値まで下げる）で、hero.tsx が `\n` を空白に潰す。
+   * Mobile（< 768）は「Hack Your」/「Limits.」で折る — 自然折返しに任せると、板（inline-block）は
+   * 折れた瞬間に container いっぱいに広がり、iPad mini 744 では「Hack Your」の右に 258px の空の
+   * 板が残った。著者改行なら板の幅 = 最長行「Hack Your」で、どの幅でも字を抱く。
+   * Poster（Display/L、2 行の著者改行、ボックスなし）と形を変えることで、同じ文が開幕と終幕で
+   * 別の顔になる。
    */
   headline: {
-    text: "Hack Your Limits",
+    text: "Hack Your\nLimits",
     period: ".",
   },
   lead: "長崎にテック好きのためのハブを。",

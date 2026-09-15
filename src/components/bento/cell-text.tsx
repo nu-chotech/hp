@@ -19,6 +19,8 @@ import { cn } from "@/lib/utils";
  *
  * 題の大きさはセルの面積に従う（2×1 = Title/2、1×1 中 = Title/3、1×1 小 = Headline）。
  * 面積が優先順位を示す部品なので、大きいセルの題が小さいと格が逆転して読める。
+ * だから段で面積が変わるセルは題も段で変える: FOR EVERYONE は 3 列（1024–1247）でだけ
+ * 2×1 になるので、そこでだけ Title/2（U-55）。
  * 2×1 の statement（CULTURE）だけ Display/M — 節の主張を 1 枚で言い切るセル（U-46）。
  * 1×1 lg（SINCE）は Title/1 — 日付 1 語のセルで、Title/3 では 1×1 の中で文字が小さく見えた（U-52）。
  *
@@ -34,8 +36,14 @@ const titleVariants = cva(
       size: {
         "2x1-statement": "text-display-m",
         "2x1": "text-title-2",
-        // Mobile の MEMBERS · SINCE ペア（168、内側 128）では Title/2 22 — 「2025年4月」5.525em = 121.5 ≤ 128（L-35）
-        "1x1-lg": "text-title-2 tablet:text-title-1",
+        // desktop の 3 列でだけ 2×1 になるセル（FOR EVERYONE）。colSpan="2-desktop-only" と対
+        "2x1-desktop-only": "text-title-3 desktop:max-wide:text-title-2",
+        // Mobile の MEMBERS · SINCE ペア（168、内側 128）では Title/2 22 — 「2025年4月」5.525em = 121.5 ≤ 128（L-35）。
+        // ペアのセルは @container（CellPair）。container query は content box で測るので、
+        // 内側（セル − inset 40）が 122 を割る幅（viewport < 380）では Title/3 19（105）に落として
+        // 1 行を守る（U-55）。内側 < 105（viewport < 342）は 2 行に折れる（溢れない）
+        "1x1-lg":
+          "text-title-2 @max-[7.625rem]:text-title-3 tablet:text-title-1",
         "1x1-md": "text-title-3",
         "1x1-sm": "text-headline",
       },
