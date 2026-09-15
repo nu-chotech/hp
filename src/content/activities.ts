@@ -52,7 +52,7 @@ export const activitiesContent = {
       title: "Project",
       subtitle: "チーム開発・イベント企画",
       description:
-        "チームを組んでアプリ開発をしたり、定期的なコードレビュー会を行なっています。また、学園祭での企画・運営も行ったりもします。",
+        "チームを組んでアプリ開発をしたり、定期的なコードレビュー会を行っています。また、学園祭での企画・運営も行ったりもします。",
       tags: ["チーム開発", "コードレビュー", "イベント企画"],
       // TODO(client): Project の実写が届くまで Hero の集合写真の複製で仮置き（2026-09-12）。
       // 届いたら public/images/activities/project.jpg を上書きするだけでよい
