@@ -42,3 +42,10 @@ next-env.d.ts
 
 # claude code worktrees
 /.claude/worktrees/
+
+# design-sync (claude.ai/design): staged converter + build output + machine state
+/.ds-sync/
+/ds-bundle/
+/.design-sync/.cache/
+/.design-sync/learnings/
+/.design-sync/node_modules

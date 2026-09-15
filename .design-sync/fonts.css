@@ -1,0 +1,25 @@
+/* LINE Seed JP（§2.0）。layout.tsx の next/font/local と同じ 3 ウェイト・woff2 のみ */
+@font-face {
+  font-family: "LINE Seed JP";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url(../node_modules/line-seed-jp/woff2/LINESeedJP_OTF_Rg.woff2)
+    format("woff2");
+}
+@font-face {
+  font-family: "LINE Seed JP";
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url(../node_modules/line-seed-jp/woff2/LINESeedJP_OTF_Bd.woff2)
+    format("woff2");
+}
+@font-face {
+  font-family: "LINE Seed JP";
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+  src: url(../node_modules/line-seed-jp/woff2/LINESeedJP_OTF_Eb.woff2)
+    format("woff2");
+}

@@ -1,0 +1,20 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "incremental": false,
+    "composite": false,
+    "rootDir": "..",
+    "outDir": "../build/ts",
+    "plugins": [],
+    "paths": {
+      "@/*": ["./src/*"],
+      "next/image": ["./.design-sync/shims/next-image.tsx"]
+    },
+    "baseUrl": ".."
+  },
+  "include": ["../build/ds-entry/index.ts", "../src/**/*.ts", "../src/**/*.tsx", "shims/*.tsx", ".cache/assets.ts"],
+  "exclude": ["../node_modules", "../src/app/**"]
+}
