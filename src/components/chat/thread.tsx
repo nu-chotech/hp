@@ -87,7 +87,7 @@ export function ChatThread({ thread }: ChatThreadProps) {
   }, [playing, awake, thread.length]);
 
   return (
-    <ul className="mt-stack-md flex flex-col gap-stack-xs" ref={listRef}>
+    <ul className="mt-stack-lg flex flex-col gap-stack-sm" ref={listRef}>
       {thread.map((entry, index) => {
         const shown = index < revealed;
         /**

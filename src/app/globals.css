@@ -246,13 +246,34 @@
   --discord-hover: var(--blurple-530); /* 白 5.38。ground 4.81 / ink 3.09 */
   --discord-pressed: var(--blurple-560); /* 白 6.42。ink 上 2.59 は押下の瞬間 */
 
-  /* --- 1.3.10 図の円（Bento Figure、C-32） --------------------------------
-   * About のベントの図（緑の円 + 白い Tabler 32）だけが使う 2 行。チャットの自分側バブルと
+  /* --- 1.3.10 図の円（Bento Figure、C-32 / U-56） --------------------------
+   * About のベントの図（緑の円 + 白い Tabler）だけが使う 2 行。チャットの自分側バブルと
    * 同じ accent-fill + on-accent のエイリアス — 「周りと同じ緑」（クライアント判断。淡い
-   * 緑 + 濃い緑の図は「キモい」、4 色相は「浮きすぎ」で撤回）。図は装飾なので語は添えない。
+   * 緑 + 濃い緑の図は「キモい」、4 色相は「浮きすぎ」で撤回）。
+   * U-56 で円は語を抱えるようになったが、色の役割は変わらない（語は白 = figure/ink 4.63）。
+   * cycle/orbit は CULTURE の軌道の線。テクスチャ（1px の環）なので WCAG の対象外。
    * ---------------------------------------------------------------------- */
   --figure-fill: var(--accent-fill); /* green-600。ground 4.14 */
   --figure-ink: var(--on-accent); /* 白。green-600 上 4.63 */
+  --cycle-orbit: var(
+    --alpha-ground-24
+  ); /* インク面の環。ground@24 = 7.06 相当の線 */
+
+  /* --- 1.3.11 数字のグラデーション（U-56） ---------------------------------
+   * 「規模」を語る数字（MEMBERS 50+ / SINCE 2025 / CULTURE の中心語）だけに掛ける
+   * 縦のグラデーション。塗りではなく文字の色なので、下端が面に対して AA を満たす値で
+   * 止める。階梯の外の 2 値（alpha/black/64 と同じ「見た目で決めた値」の扱い）:
+   *   #b8b5b5 … インク面の上 8.15（neutral-300 では明るすぎ、400 では濃淡が出なかった）
+   *   #6b6868 … 地の上 4.94（neutral-600 3.85 では下端が薄れて字が消えた）
+   * `forced-colors` / `prefers-contrast: more` では層ごと落として currentColor に戻す
+   * （§6.5 の .number-gradient-*）。
+   * ---------------------------------------------------------------------- */
+  --number-gradient-on-ink: linear-gradient(180deg, #ffffff 0%, #b8b5b5 100%);
+  --number-gradient-on-ground: linear-gradient(
+    180deg,
+    #201e1d 0%,
+    #6b6868 100%
+  );
 
   /* 専用ロールを置かないもの:
      typing dot / placeholder アイコン → --ink-tertiary に直接 bind（3.85 / 3.50）
@@ -465,6 +486,29 @@
   --overline-jp-tracking: 0.06em;
   --overline-jp-weight: 700;
 
+  /* Cycle/Center — CULTURE のサイクル図の中心語「仲間と」。26/32 ⇔ 40/44、EB（DECISION U-56）。
+     可変な 4 ロール（§2.8 の clamp）とは違い、切替は tablet 48rem の 1 点だけ — 図そのものが
+     その点で md（箱 286・円 96）から lg（箱 440・円 128）へ入れ替わるので、字も一緒に跳ぶ。
+     階梯の 26 と 40 を使うが、既存のロールはどちらの端も合わない（Title/1 は Desktop で 32、
+     Display/L は Desktop で 96）ので専用ロールを立てる。
+
+     378 未満は**箱に追従する第 2 項**が勝つ（U-55 の Display/XL・M と同じ作り）。Mobile の箱は
+     セルの内側 `100vw − 92` で縮むので、字だけ 26 に留まると「仲間と」が円に触れる。
+     比 26 / 286 = 0.09091 を保つ: 0.09091 × (100vw − 92) = 9.091vw − 0.523rem（320 で 20.7）。
+     leading も同じ比（32 / 26 = 1.2308）で follow する */
+  --cycle-center-size: min(1.625rem, calc(9.091vw - 0.523rem));
+  --cycle-center-leading: min(2rem, calc(11.189vw - 0.643rem));
+  --cycle-center-tracking: -0.01em;
+  --cycle-center-weight: 800;
+
+  /* Cycle/Word — 円の中の語「学ぶ / 創る / 話す」。13/20 ⇔ 17/24、**B 700**（U-56）。
+     Mobile 端は Footnote/Bold と同値。Desktop 端で Headline（17/24）の EB 800 を取らないのは、
+     緑の面の上に白で置く 17px は 800 では字面が詰まって読みにくいため（§2.4 の反転地の規則と同旨） */
+  --cycle-word-size: 0.8125rem;
+  --cycle-word-leading: 1.25rem;
+  --cycle-word-tracking: 0;
+  --cycle-word-weight: 700;
+
   /* --- 3.2 spacing エイリアス -----------------------------------------------
    * 生の space/* を直接 bind しない（§3.0 原則 4）。役割でエイリアスを選ぶ。
    * 4px モジュール。2px は罫線専用。帯の総高（62 / 56）だけが例外。
@@ -552,13 +596,22 @@
   --size-mark-footer: 1.25rem; /* 20 — フッターのロゴマーク。Headline 17 に対し比 1.18 */
   --size-rule-v: 0.75rem; /* 12 — 縦 hairline の高さ。隣接する文字サイズと等しい（L-16） */
   --size-dialog: 30rem; /* 480 — 参加ダイアログの最大幅（= 4 × cell-min、U-49）。Mobile は container 幅 */
-  --size-figure: 4rem; /* 64 — ベントの図の円（md、= 2 × icon/xl）。lg は size/illustration 80（U-52） */
+  /* 80 — 語を下に添えるベントの図の円（FOR EVERYONE / FORMAT）。
+     DECISION U-56 で 64 → 80: 円が語を連れてくると、64 では語のほうが大きく見えた。
+     サイクル図の円（96 / 128）は箱に対する比で決まるので寸法トークンを持たない（§6.11.2） */
+  --size-figure: 5rem;
+  /* CULTURE のサイクル図の箱（正方形）。286 / 440 — 中の軌道と円はこの箱に対する比（U-56）。
+     Mobile の 1 列は container に追従するので max-width として渡す（375 未満で縮む） */
+  --size-cycle: 17.875rem;
+  --size-logo-tile: 5rem; /* 80 / 72 — OFFICIAL のロゴ板の高さ（logo-ground の白、U-56） */
+  --size-logo-mark: 3.5rem; /* 56 / 52 — 板の中のロゴ（3:2 の白キャンバスの高さ、L-32 と同じ素材） */
 
   /* --- 5.3 アイコン（Tabler outline、24 グリッド、stroke 2、round cap/join） -- */
   --icon-sm: 1rem; /* 16 — 12〜14px の文字の横、36px コントロールのラベル横 */
   --icon-md: 1.25rem; /* 20 — 15〜19px の文字の横、44px コントロールのラベル横、icon-only 36 */
   --icon-lg: 1.5rem; /* 24 — icon-only 44、placeholder の写真アイコン。Tabler のネイティブ */
   --icon-xl: 2rem; /* 32 — ベントのビジュアル（About のセル、stroke 1.5）。§5.2 / U-40 */
+  --icon-2xl: 2.5rem; /* 40 — サイクル図の円 128 の中（Desktop のみ）。階梯の次段（U-56） */
 
   /* --- 3.10 measure --------------------------------------------------------
    * Desktop 588 = 12 列のうち 6 列（6×78 + 5×24）、Mobile 342 = container 幅そのもの。
@@ -632,6 +685,15 @@
       min(calc(2.3196rem + 6.381vw), calc(11.07vw - 0.39rem)),
       8.0625rem
     );
+    /* Cycle/Center 40/44 −2%、Cycle/Word 17/24（U-56）。図が md → lg に入れ替わる点と同じ */
+    --cycle-center-size: 2.5rem;
+    --cycle-center-leading: 2.75rem;
+    --cycle-center-tracking: -0.02em;
+    --cycle-word-size: 1.0625rem;
+    --cycle-word-leading: 1.5rem;
+    --size-cycle: 27.5rem; /* 440 */
+    --size-logo-tile: 4.5rem; /* 72 — 板は Desktop のほうが低い（列が 2 つ並ぶため） */
+    --size-logo-mark: 3.25rem; /* 52 */
     --grid-gutter: 1.5rem; /* 24 */
     --section-pad-top: 4rem; /* 64 */
     --section-pad-bottom: 5rem; /* 80 */
@@ -724,9 +786,10 @@
   --color-on-discord: var(--on-discord);
   --color-discord-hover: var(--discord-hover);
   --color-discord-pressed: var(--discord-pressed);
-  /* 図のティント（C-32） */
+  /* 図のティント（C-32 / U-56） */
   --color-figure-fill: var(--figure-fill);
   --color-figure-ink: var(--figure-ink);
+  --color-cycle-orbit: var(--cycle-orbit);
   /* 状態 */
   --color-state-hover-tint: var(--state-hover-tint);
   --color-state-pressed-tint: var(--state-pressed-tint);
@@ -875,6 +938,16 @@
   --text-overline-jp--letter-spacing: var(--overline-jp-tracking);
   --text-overline-jp--font-weight: var(--overline-jp-weight);
 
+  --text-cycle-center: var(--cycle-center-size);
+  --text-cycle-center--line-height: var(--cycle-center-leading);
+  --text-cycle-center--letter-spacing: var(--cycle-center-tracking);
+  --text-cycle-center--font-weight: var(--cycle-center-weight);
+
+  --text-cycle-word: var(--cycle-word-size);
+  --text-cycle-word--line-height: var(--cycle-word-leading);
+  --text-cycle-word--letter-spacing: var(--cycle-word-tracking);
+  --text-cycle-word--font-weight: var(--cycle-word-weight);
+
   /* --- spacing（エイリアス）------------------------------------------------ */
   --spacing-inset-xs: var(--inset-xs);
   --spacing-inset-typing-x: var(--inset-typing-x);
@@ -924,6 +997,9 @@
   --spacing-persona-quote: var(--size-persona-quote);
   --spacing-persona-rec: var(--size-persona-rec);
   --spacing-figure: var(--size-figure);
+  --spacing-cycle: var(--size-cycle);
+  --spacing-logo-tile: var(--size-logo-tile);
+  --spacing-logo-mark: var(--size-logo-mark);
   --spacing-mark-nav: var(--size-mark-nav);
   --spacing-mark-footer: var(--size-mark-footer);
   --spacing-rule-v: var(--size-rule-v);
@@ -933,6 +1009,7 @@
   --spacing-icon-md: var(--icon-md);
   --spacing-icon-lg: var(--icon-lg);
   --spacing-icon-xl: var(--icon-xl);
+  --spacing-icon-2xl: var(--icon-2xl);
 
   /* --- spacing（線の太さ。罫線グリッドは gap / padding で描くので spacing 扱い）-- */
   --spacing-hair: var(--stroke-hair);
@@ -1191,6 +1268,42 @@
   .text-label-s,
   .text-label-nav {
     white-space: nowrap;
+  }
+
+  /*
+   * 数字のグラデーション（§1.3.11 / DECISION U-56）。`background-clip: text` は
+   * 要素の箱にグラデーションを敷いて字型で抜くので、**字だけを包む要素**に当てること
+   * （読み上げ用の sr-only を同じ箱に入れると、抜き型に空白が混ざる）。
+   *
+   * components レイヤーに置くのは、utilities（text-inverse-ink など）に負けてよいため —
+   * 色のユーティリティを同じ要素に重ねたらグラデーションは消えるのが正しい。
+   * 面の色は親から継ぐので、ここでは color を transparent にするだけでよい。
+   */
+  .number-gradient-ink,
+  .number-gradient-ground {
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .number-gradient-ink {
+    background-image: var(--number-gradient-on-ink);
+  }
+
+  .number-gradient-ground {
+    background-image: var(--number-gradient-on-ground);
+  }
+
+  /* 強制配色では背景画像ごと落ちて字が消える。高コントラスト設定でも濃淡は邪魔なので、
+     どちらも面の primary（currentColor）の実色に戻す */
+  @media (forced-colors: active), (prefers-contrast: more) {
+    .number-gradient-ink,
+    .number-gradient-ground {
+      background-image: none;
+      color: currentColor;
+      -webkit-text-fill-color: currentColor;
+    }
   }
 }
 

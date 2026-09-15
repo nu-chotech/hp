@@ -25,8 +25,8 @@ export type ChatEntry =
   | { kind: "typing" };
 
 /**
- * ベントのセルに置く図（§6.11.2、DECISION U-40 → U-52）。実体は icons.tsx の bentoIcons が解決する。
- * content は文字列で持ち、React 部品を知らない（brandIcons と同じ流儀）。
+ * ベントのセルに置く図（§6.11.2、DECISION U-40 → U-52 → U-56）。実体は icons.tsx の
+ * bentoIcons が解決する。content は文字列で持ち、React 部品を知らない（brandIcons と同じ流儀）。
  */
 export type AboutIcon =
   | "book"
@@ -34,29 +34,44 @@ export type AboutIcon =
   | "message"
   | "code"
   | "palette"
+  | "bulb"
   | "flask"
   | "map-pin"
-  | "messages"
-  | "school"
-  | "handshake"
-  | "flag";
+  | "messages";
+
+/** 円（緑）と、その円が連れている語。図だけを置くセルはもう無い（U-56） */
+export interface AboutFigure {
+  icon: AboutIcon;
+  label: string;
+}
 
 /**
  * About のベント（§6.11）
  *
- * 7 セルを 3 行に組む（DECISION U-40）。
- * 行 1 [CULTURE 2×1 · MEMBERS · SINCE] / 行 2–3 [CHAT 2×2 · OFFICIAL 2×1 / ONLINE & OFFLINE · FOR EVERYONE]。
- * 文字だけだったセルは題の語をひとつずつ図（Tabler 32）にして、空いていた中段を埋める。
- * Discord への CTA セルは撤去（導線は Hero・Nav・Poster が持つ）、活動写真は Activities へ。
+ * 9 セル（DECISION U-56）。DOM 順は Mobile の読み順そのままで、
+ * CULTURE → [MEMBERS · SINCE] → CHAT → 写真 → FOR EVERYONE → FORMAT → 写真 → OFFICIAL。
+ *
+ * U-52 までの「題 → 図」の解剖はやめ、セルごとに **1 つの絵**を置く:
+ * CULTURE は循環の図、MEMBERS / SINCE は数字、FOR EVERYONE / FORMAT は語を連れた円、
+ * OFFICIAL はロゴ板、あいだに活動写真 2 枚。
  */
 export const aboutContent = {
   heading: { title: "ChoTechについて", label: "ABOUT" },
 
+  /**
+   * 学ぶ → 創る → 話す が巡る 1 枚の図（U-56）。可視の中心語は「仲間と」だけで、
+   * 三つの語は円の中にある。読み上げには節の主張を 1 文で渡す（可視側は aria-hidden）。
+   */
   culture: {
     kicker: "CULTURE",
-    title: "仲間と、\n学ぶ。創る。話す。",
-    /** 学ぶ / 創る / 話す — 題の語順で図を並べる（U-52）。語は添えない */
-    figures: ["book", "hammer", "message"],
+    center: "仲間と",
+    accessibleTitle: "仲間と、学ぶ。創る。話す。",
+    /** 天（−90°）から時計回り。円の位置は cycle.tsx が角度で決める */
+    cycle: [
+      { icon: "book", label: "学ぶ" },
+      { icon: "hammer", label: "創る" },
+      { icon: "message", label: "話す" },
+    ] satisfies AboutFigure[],
   },
 
   stat: {
@@ -68,35 +83,32 @@ export const aboutContent = {
   },
 
   /**
-   * 設立。Hero の meta strip「SINCE 2025」から降りてきた（DECISION U-39 / U-40）。
-   * 数字のセルにはしない — 1×1 の内側 250 に Display/L の 4 桁（≈ 260）は入らず、
-   * Display/M に落とすと隣の 50+ と釣り合わない。ページで数字を大きく出すのは MEMBERS
-   * だけ（§6.11.3）という規則にも合う。図 + Headline の 1×1 として他のセルと同じ解剖にする。
+   * 設立（DECISION U-39 → U-40 → U-56）。可視は年だけの「2025」で、MEMBERS と同じ
+   * 「キッカー → 数字」のセルにする。U-52 の「2025年4月 + 旗の図」は、1×1 の中で
+   * 日付 1 行と図が中途半端に散っていた。月まで要る読み手には読み上げ名が全文を渡す。
    */
   founded: {
     kicker: "SINCE",
-    /** 可視は日付だけを Title/1 で（U-52）。「設立」はキッカー SINCE と旗の図が言う。読み上げは全文 */
-    title: "2025年4月",
-    accessibleTitle: "2025年4月 設立",
-    figures: ["flag"],
+    value: "2025",
+    accessibleName: "2025年4月 設立",
   },
 
   /**
-   * 公認と公式パートナーを 1 セルに集約し、2 列（題 + 補足 → 図）で並べる（DECISION U-14 → U-40 → U-52）。
-   * figure は AboutIcon（語は添えない）。
-   * パートナーの題は著者改行 — 列幅 262.5 の中で「技育 / プロジェクト」と割れないように
+   * 公的な裏づけ 2 件（DECISION U-14 → U-40 → U-52 → U-56）。図（Tabler の円）をやめ、
+   * **ロゴ板**（logo-ground の白）を各件の先頭に置く。裏づけを語るのは団体の意匠であって、
+   * こちらで選んだアイコンではない。長崎大学の公式マークは未入手なので枠だけ先に確定させる。
    */
   official: {
     kicker: "OFFICIAL",
     rows: [
       {
-        figure: "school",
+        // TODO(client): 長崎大学の公式マークが届いたら public/images/partners/ に置いて 1 行足す
         title: "長崎大学公認団体",
-        sub: "長崎大学の公認を受けた学生団体",
+        sub: "2026年に長崎大学の公認を取得",
       },
       {
-        figure: "handshake",
-        title: "技育プロジェクト\n学生団体公式パートナー",
+        logo: "/images/partners/geek-project.png",
+        title: "技育プロジェクト公式パートナー",
         sub: "株式会社サポーターズが運営",
       },
     ],
@@ -109,6 +121,9 @@ export const aboutContent = {
      * 発言のたびにスタンプが付く（U-25 改）。「反応が返ってくる場所」を見せるのが
      * この図の仕事なので、反応の無い発言を残さない。絵文字は発言ごとに変える —
      * 同じ 2 つが 4 回並ぶと定型に見える。数は 1〜4 に留め、巻き上げを短く保つ。
+     *
+     * 3 往復目（もくもく会）は U-56 で足した — wide でセルが 1 列 × 3 行に縦長くなり、
+     * 2 往復では下半分が空いた。誘い方が「催し」から「日常の集まり」に降りる往復でもある。
      */
     thread: [
       {
@@ -155,21 +170,60 @@ export const aboutContent = {
           { emoji: "🙌", label: "頼もしい", count: 1 },
         ],
       },
+      {
+        kind: "incoming",
+        // 学習を続けたい人（Case 01）
+        avatar: "/images/personas/case-01.svg",
+        message: "日曜にもくもく会やらない？",
+      },
+      {
+        kind: "reactions",
+        reactions: [
+          { emoji: "🙋", label: "参加", count: 4 },
+          { emoji: "🕐", label: "あとで", count: 2 },
+        ],
+      },
+      { kind: "outgoing", message: "行きます！" },
+      {
+        kind: "reactions",
+        side: "outgoing",
+        reactions: [{ emoji: "✌️", label: "やった", count: 2 }],
+      },
       { kind: "typing" },
     ] satisfies ChatEntry[],
   },
 
-  onlineOffline: {
-    kicker: "ONLINE & OFFLINE",
-    title: "対面活動も、Discordでのオンライン交流も活発。",
-    /** 対面 / オンライン */
-    figures: ["map-pin", "messages"],
+  /**
+   * 活動の場（DECISION U-11 → U-56）。キッカーは `ONLINE & OFFLINE` → **`FORMAT`** に。
+   * 図が「対面 / オンライン」と言い切るので、英字は短いほうが figure と重ならない。
+   * 文（「対面活動も、Discordでの…」）は figure の語と同じことを言っていたので撤去。
+   */
+  format: {
+    kicker: "FORMAT",
+    figures: [
+      { icon: "map-pin", label: "対面" },
+      { icon: "messages", label: "オンライン" },
+    ] satisfies AboutFigure[],
   },
 
+  /** 対象（U-56）。題は「誰でも歓迎。」の 1 文にし、職能は図の語が数え上げる */
   forEveryone: {
     kicker: "FOR EVERYONE",
-    title: "エンジニアもデザイナーもサイエンティストも。",
-    /** エンジニア / デザイナー / サイエンティスト */
-    figures: ["code", "palette", "flask"],
+    title: "誰でも歓迎。",
+    figures: [
+      { icon: "code", label: "エンジニア" },
+      { icon: "palette", label: "デザイナー" },
+      { icon: "bulb", label: "プランナー" },
+      { icon: "flask", label: "サイエンティスト" },
+    ] satisfies AboutFigure[],
   },
+
+  /**
+   * 活動写真 2 枚（U-56）。Activities と同じ実素材を共用する（差し替えは同名で上書き）。
+   * ここでは写真を説明する文が隣に無いので、alt は空にせず「何の場面か」を持たせる（§8.6）。
+   */
+  photos: [
+    { src: "/images/activities/talk-day.jpg", alt: "Talk Day の様子" },
+    { src: "/images/activities/dev-day.jpg", alt: "Dev Day の様子" },
+  ],
 } as const;
