@@ -31,7 +31,14 @@ export function CellChat({
   ...props
 }: CellChatProps) {
   return (
-    <Cell asChild className={className} colSpan={2} rowSpan={2} {...props}>
+    // tablet の 2 列では 1×1（OFFICIAL と並ぶ）、desktop の 3 列から 2×2（L-34）
+    <Cell
+      asChild
+      className={className}
+      colSpan="2-desktop"
+      rowSpan={2}
+      {...props}
+    >
       <figure>
         <p className="text-overline-jp text-ink-secondary">{kicker}</p>
         <ChatThread thread={thread} />

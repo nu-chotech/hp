@@ -11,12 +11,14 @@ import { cn } from "@/lib/utils";
  * トークンから出ることを構造的に保証するため — Figma の frame fill + itemSpacing と
  * CSS の background + gap が同じ構造になり、二重線や濃度差が生じる余地がなくなる。
  *
- * 列数の中間段（tablet の 2 列）は spec が定義しない実装上の判断である。spec は
+ * 列数の中間段は spec が定義しない実装上の判断である（DECISION L-34）。spec は
  * Desktop 1440 / Mobile 390 の 2 フレームしか持たないが、ブラウザ幅は連続なので中間を
  * 決めなければならない。DECISION L-10 が退けたのは「列数」ではなくセル内容 128px
  * （Body S で 9 字）であって、和文の最小行長（≈20 字 ≈ セル幅 168px）を満たす限り
- * 中間段は置いてよい。768px の 2 列はセル内容 ≈320px = 22 字で閾値を満たす。
- * 設計どおりの列数（bento 4 / persona・staff 3 / leader 2 / partner 6）は desktop から。
+ * 中間段は置いてよい。768px の 2 列はセル内容 ≈309px = 22 字で閾値を満たす。
+ * 段は 3 つ: tablet 48rem（2 列）/ desktop 64rem（persona・staff 3、bento 3）/
+ * wide 78rem（bento 4 = 12 列幾何）。ベントは 1 / 2 / 3 / 4 列の 4 つの構図を、DOM を
+ * 変えずに span だけで作る（疎な auto-placement で読む順 = DOM 順が各段で保たれることを検算済み）。
  *
  * 6 列は partner のロゴタイル（L-31 / L-32）のために置いた段で、U-43 でタイルをやめて
  * からページでは使っていない（ライブラリに残置）。1 列は「外枠だけ」の使い方 — 内側の罫を
@@ -35,7 +37,8 @@ const ruledGrid = cva(
         1: "grid-cols-1",
         2: "grid-cols-1 tablet:grid-cols-2",
         3: "grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-3",
-        4: "grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-4",
+        // ベント: 1 / 2 / 3 / 4 列。4 列は wide（1248）から — 1×1 の内側が 228 を超える最初の点
+        4: "grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-3 wide:grid-cols-4",
         6: "grid-cols-2 tablet:grid-cols-3 desktop:grid-cols-6",
       },
       /**
@@ -111,15 +114,23 @@ const cell = cva(
         none: "p-0",
       },
       /**
-       * 横 span。tablet 以上でだけ効く（tablet の 2 列でも「行いっぱい」として意味を保つ）。
-       * min-width 系のバリアントなので desktop にもそのまま継承される。
+       * 横 span。段ごとに効く幅が違う（L-34）:
+       *   2: tablet から常に 2（CULTURE — 2 列では行いっぱい、3 列では 2/3、4 列では 2/4）
+       *   2-desktop: desktop から 2（CHAT — tablet の 2 列では 1×1）
+       *   2-desktop-only: desktop の 3 列でだけ 2、wide の 4 列で 1（FOR EVERYONE）
+       *   2-wide: wide の 4 列でだけ 2（OFFICIAL）
+       *   2-tablet-only: tablet の 2 列でだけ 2（Staff の端数セル。空トラックを作らない、L-36）
        */
       colSpan: {
         1: "",
         2: "tablet:col-span-2",
+        "2-desktop": "desktop:col-span-2",
+        "2-desktop-only": "desktop:col-span-2 wide:col-span-1",
+        "2-wide": "wide:col-span-2",
+        "2-tablet-only": "tablet:max-desktop:col-span-2",
       },
       /**
-       * 縦 span。desktop でのみ効く。tablet の 2 列は 1 セル = 1 行に畳まれた状態で、
+       * 縦 span。desktop（3 列）からだけ効く。tablet の 2 列は 1 セル = 1 行に畳まれた状態で、
        * そこに行またぎを持ち込むと DOM 順と視覚順がずれるため。
        */
       rowSpan: {
@@ -160,6 +171,28 @@ export function Cell({
       // インクセルの中の部品は自分でリング色を持たない（globals.css @layer base）
       data-surface={surface === "ink" ? "ink" : undefined}
       className={cn(cell({ surface, inset, colSpan, rowSpan }), className)}
+      {...props}
+    />
+  );
+}
+
+/**
+ * Mobile の 1 列の中で 2 つのセルを 1 行に並べる（DECISION L-35）。
+ *
+ * 背景を持たない入れ子のグリッド。親の frame fill（divider）が gap 2 の隙間から覗くので、
+ * 罫線のレシピ（L-9）はそのまま成立する。tablet からは display: contents で箱ごと消え、
+ * 2 つの子は親グリッドの直接の item になる — 構図は親の span が決める。
+ * 置けるのは本文を持たないセル（MEMBERS の数字 / SINCE の日付 + 図）だけ: 168 のセルの
+ * 内側 128 は L-10 の 20 字に足りない（L-31 と同じ理屈）。ラッパーに data-reveal や
+ * フォーカスできる内容を置かないこと。
+ */
+export function CellPair({ className, ...props }: ComponentProps<"div">) {
+  return (
+    <div
+      className={cn(
+        "grid grid-cols-2 gap-rule auto-rows-[minmax(var(--size-cell-min),auto)] tablet:contents",
+        className,
+      )}
       {...props}
     />
   );

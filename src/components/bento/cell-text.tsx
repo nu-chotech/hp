@@ -34,7 +34,8 @@ const titleVariants = cva(
       size: {
         "2x1-statement": "text-display-m",
         "2x1": "text-title-2",
-        "1x1-lg": "text-title-1",
+        // Mobile の MEMBERS · SINCE ペア（168、内側 128）では Title/2 22 — 「2025年4月」5.525em = 121.5 ≤ 128（L-35）
+        "1x1-lg": "text-title-2 tablet:text-title-1",
         "1x1-md": "text-title-3",
         "1x1-sm": "text-headline",
       },
@@ -79,8 +80,8 @@ export interface CellTextProps // title は section の tooltip 属性と衝突�
   figures?: readonly AboutIcon[];
   /** ライブラリの Tone。ページで使うのは ground（インク面は Stat が持つ） */
   tone?: VariantProps<typeof kickerVariants>["tone"];
-  /** 2×1 のときだけ 2。tablet 以上で効く */
-  colSpan?: 1 | 2;
+  /** 2×1 のときだけ 2。段ごとの効き方は ruled-grid.tsx の colSpan を見る */
+  colSpan?: 1 | 2 | "2-desktop-only";
 }
 
 export function CellText({

@@ -266,7 +266,7 @@ export function NavBar({ brand, cta, menuCta, className }: NavBarProps) {
         >
           {brand}
 
-          {/* 横並びに開くのは tablet 48rem から。トークンは Mobile のまま（L-29） */}
+          {/* 横並びに開くのは tablet 48rem から（L-34: トークンも同じ点で Desktop に） */}
           <ul className="hidden items-center gap-inline-md tablet:flex">
             {navLinks.map((link) => (
               <li key={link.id}>

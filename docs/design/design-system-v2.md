@@ -30,6 +30,7 @@
 > - **2026-09-14（3）**: About のベントの図を **Bento / Figure**（淡い緑の円 64 の中の Tabler 32、語なし）にし、解剖を全セル「kicker（天）／題 → 図（地）」に統一（**DECISION U-52**）。SINCE は Title/1 の日付 + 旗の図、OFFICIAL は 2×1 の中を **2 列**に。円の色は自分側バブルと同じ `accent-fill`（green-600）+ 白（**DECISION C-32**、§1.2.5 / §1.3.10）。2026-09-15 改: 初版の 4 色相 + 語つきの図は「配色が浮きすぎ、説明書きは不要」、改 1 の淡い緑 + 濃い緑の図は「キモい、周りと同じ緑で」で撤回
 > - **2026-09-14（4）**: Persona card の引用から**墨の板を外し**、地の上の Callout に。引用 `size/persona-quote` 44（2 行ぶん）と次の一歩 `size/persona-rec` 64（2 行 + inset）の**目標高**で、6 枚が上下 2 段とも同じ高さ（Desktop 268 / Mobile 260）になる（**DECISION U-53**）。§9.3 の上限を 引用 42 / 推薦 36 に締める
 > - **2026-09-14（5）**: 参加ダイアログの中身を「約束 3 つに同意」から**「学生ですか？」の 1 問**に（**DECISION U-54**）。導入「ChoTechは学生向けのテックコミュニティです。大学・学部・学科は問いません。」（文節の塊を nowrap で）、主「学生として参加する」（Discord）、副「閉じる」。約束の行と hairline は撤去。学生の前提（大学・大学院・高専・専門学校、高校生は対象外）は `src/content/join.ts` に集約
+> - **2026-09-15（2）**: ブレークポイントを **3 点**に（**DECISION L-34**、L-29 改）: tablet 48rem で**トークンも** Desktop に切り替え（見出し行・footer 行・ベント 2 列構図、L-36）、desktop 64rem で 3 列（persona / staff / ベント 3 列 + CHAT 2×2、partner N 列、タグライン）、wide 78rem でベント 4 列。Mobile は MEMBERS · SINCE を 1 行 2 列のペアに（**L-35**）、tablet の Staff は端数を行埋め（L-36）。クライアント所見「レスポンシブが最悪、特にモバイルとタブレット。タブレットがスマホ寄り」
 > - **Figma v2 への反映は未実施**（2026-09-12 時点）。反映すべき変更の一覧と手順は [figma-sync-2026-09-12.md](./figma-sync-2026-09-12.md)
 > - **2026-09-11**: Cell Stat の所属バッジ（U-29）を**撤回**し、セルは `50+` の数字だけに戻す（**DECISION U-36**）。Chip の Inverse トーンは Accent と同じくライブラリのみ（ページに出さない）。About の CULTURE セルは本文を落として題だけ（「仲間と、学ぶ。創る。話す。」— Hero の h1 を `Hack Your Limits.` に差し替える予定に合わせ、3 語を Culture に降ろす）
 > - **2026-09-10（2）**: 外部リンクは**すべて新しいタブ**で開く（`target="_blank" rel="noopener noreferrer"`、vh「（外部、新しいタブで開く）」、**DECISION M-21**。M-15 は撤回）。Partner の Logo タイルは `href` があれば**タイル全体が団体サイトへのリンク**（**DECISION U-35**。hover / pressed の表現なし、フォーカスリングは内側）
@@ -1109,19 +1110,19 @@ CSS: `--size-nav: 3.875rem; --size-hero-max: 60rem; --size-cell-min: 7.5rem; --s
 
 CSS: `.container { width: min(100% - 2 * var(--page-inset), 75rem); margin-inline: auto }`。
 
-**DECISION L-29 実装のブレークポイント（Figma には持たない）**
+**DECISION L-29 → L-34 実装のブレークポイント（Figma には持たない）**
 
-本書は Desktop 1440 / Mobile 390 の 2 フレームしか定義しない。ブラウザの幅は連続なので、その間をどう扱うかは実装が決めなければならない。トークン（タイポ・余白）のモード切替は **1248px = 78rem** に置く — container が設計値 1200 に達し、§3.7 の 12 列幾何が成立する唯一の点で、本書が自ら言及している唯一の viewport 値でもある（`page/inset` の「viewport < 1248 で効く」）。
+本書は Desktop 1440 / Mobile 390 の 2 フレームしか定義しない。ブラウザの幅は連続なので、その間をどう扱うかは実装が決めなければならない。**3 点で段を作る**（**DECISION L-34**、2026-09-15、クライアント所見「タブレットの表示がスマホ寄りになるのがすごく違和感」）:
 
-ただし次の 2 つは「構造」の問題なので、トークンより早く切り替える:
-
-| 何を | いつ | なぜ |
+| 点 | 何が変わるか | なぜ |
 |---|---|---|
-| ナビを横並びに開く | 768px = 48rem | 英語 1 語のリンク 4 本 + CTA sm は 768 に余裕をもって収まる。ここでハンバーガーを維持するのは、タイプスケールの忠実さより明らかに悪い体験 |
-| 罫線グリッドを 2 列に開く | 768px = 48rem | L-10 が退けたのは列数ではなく「セル内容 128px（Body S で 9 字）」。768 の 2 列はセル内容 ≈ 320px（22 字）で閾値を満たす |
-| 罫線グリッドを設計どおりの列数（bento 4、persona / staff 3。partner は U-43 で外枠 1 セル + 団体数で等分）に開く | 1248px = 78rem | トークンのモードと一致させ、Figma の Desktop フレームと同一幾何にする |
+| **tablet 48rem = 768**（iPad 縦 768 / 810 / 820 / 834） | **トークンのモード**（inset/cell 24、nav/pad-y 12、gutter 24、section 64 / 80 / 96、heading-mb 32、footer 40、stagger 80）+ 構造: ナビ横並び、見出し行、footer 行、罫線グリッド 2 列、ベントの 2 列構図、Staff の端数 span、Mobile ペアの解除 | Mobile のトークンは 342 の紙を守るための値（L-10 / L-11 / L-24）。720 以上の紙に Mobile の余白と 48px の節の頭を残すと、iPad が「広い電話」に見える。iPad は Apple の size class でも Mac 側 |
+| **desktop 64rem = 1024**（iPad 横 1024 / 1180 / 1194、小さいノート） | 構造だけ: persona / staff 3 列、partner N 列（5 → 165.6 ≥ 144）、ベント 3 列（CHAT 2×2 が開く）、Nav のタグライン。トークンは変わらない | container 976 で Desktop の性質が保たれる最小幅: h1 1 行（899 ≤ 976）、CULTURE の 2 行目 419 ≤ 599、ロゴ 5 枚、persona 3 列で引用 19 字 / 行 |
+| **wide 78rem = 1248**（container 1200） | 構造だけ: ベント 4 列と OFFICIAL の内側 2 列。ここで初めて §3.7 の 12 列幾何が成立する | 4 列の 1×1 の内側 (V − 58) / 4 − 48 が FOR EVERYONE の「エンジニアもデザイナーも」12 字 × 19 = 228（auto-phrase の折れ目）と図 3 つ 216 を超えるのは V ≥ 1162。1248 はそれを満たす、本書が自ら名指しする唯一の viewport 値 |
 
-タイポグラフィを中間帯で流体補間（`clamp()`）しない: §2 の行長計算は「n 文字 = n em」の離散値に依存しており、補間した中間サイズでは §9.3 の文字数上限が検証されていない。CSS では `--breakpoint-tablet` 48rem / `--breakpoint-desktop` 78rem の 2 つだけを持ち、Tailwind の既定階梯は消す。
+container は `min(viewport − 48, 1200)`: 342 / 720 / 786 / 976 / 1146 / 1200（390 / 768 / 834 / 1024 / 1194 / 1440）。タイポグラフィは 4 ロール（Display XL / L / M、Title/1）だけ 390–1440 の `clamp()` で連続、残り 18 ロールは単一値（§2.8。旧 L-29 の「流体補間しない」は実装と食い違っていたので改める）。CSS は `--breakpoint-tablet` 48rem / `--breakpoint-desktop` 64rem / `--breakpoint-wide` 78rem の 3 つを持ち、Tailwind の既定階梯は消す。iPad mini 縦（744）は tablet 未満で Mobile の段 — 744 の 2 列は内側 181 で OFFICIAL の題が割れるため、下げない。
+
+旧 L-29（構造 48rem / トークン 78rem の 2 点）では、iPad 縦（768–834）はもちろん横（1024–1194）まで Mobile のトークンと 2 列の構図で描かれ、CULTURE と CHAT が全幅の帯になり、Staff の 3 枚目の横に灰色の空トラックが出ていた。
 
 ### 3.7 2 つのグリッド
 
@@ -1129,7 +1130,8 @@ CSS: `.container { width: min(100% - 2 * var(--page-inset), 75rem); margin-inlin
 |---|---|---|
 | 目的 | 自立するテキスト塊（hero lead、intro、poster 段落、見出し）の幅と揃え | 等幅セルを罫線で仕切る面（bento、persona、member、sponsor） |
 | Desktop | 12 col × 78 + 11 gutter × `grid/gutter` 24 = 1200 | 外枠 2 + gap 2、n 等分（§3.8） |
-| Mobile | 4 col × 73.5 + 3 gutter × `grid/gutter` 16 = 342（ガイドのみ、端数可） | 1 列 338 |
+| 768–1247（L-34） | container = viewport − 48（720 … 1199）。12 col は端数のガイドのみ | 2 列（768–1023）/ 3 列（1024–1247）、§3.8 |
+| Mobile | 4 col × 73.5 + 3 gutter × `grid/gutter` 16 = 342（ガイドのみ、端数可） | 1 列 338（例外: MEMBERS · SINCE のペア、L-35） |
 | 共有するもの | container の両端のみ。罫線グリッドは 12 col に従わない | |
 | Figma | Layout grid: Columns 12 / gutter 24 / margin 0 を 1200 の container frame に設定 | auto-layout（§3.8 recipe） |
 
@@ -1145,13 +1147,13 @@ cell:   fill = color/ground (or inverse/ground), width FILL, height FILL, inset/
 
 CSS: `.grid { display:grid; grid-template-columns: repeat(n, 1fr); gap: 2px; padding: 2px; background: var(--color-divider); grid-auto-rows: minmax(var(--size-cell-min), auto) }` — セルの `background` を塗り、gap と padding が罫線になる。`border` は使わない。**DECISION L-9** 罫線を fill + gap の 1 色 1 レイヤーで描くのは、Figma（frame fill + itemSpacing）と CSS（background + gap）が同じ構造になり、外枠と内側の線が同一 token `color/divider` から出ることを構造的に保証するため。コンセプトの外枠 64% / 内側 40% の濃度差は CSS の合成による副産物で、divider が実色（neutral-500）になった現在は再現もされない。
 
-| 列数 n | セル幅 Desktop（inner 1196） | 2 列 span | 用途 |
-|---|---|---|---|
-| 6 | 197.67 | — | sponsor（正方形タイル、L-31。tablet 3 列 237.33 / Mobile 2 列 168） |
-| 4 | 297.5 | 597 | bento |
-| 3 | 397.33 | — | persona、staff |
-| 2 | 597 | — | leader |
-| 1 (Mobile) | 338 | — | sponsor 以外すべて |
+| 列数 n | セル幅 Desktop（inner 1196） | 2 列 span | 段（L-34） | 用途 |
+|---|---|---|---|---|
+| 6 | 197.67 | — | ライブラリ | 旧 sponsor タイル（L-31、U-43 で撤去） |
+| 4 | 297.5 | 597 | wide 1248 から。desktop 1024–1247 は 3 列（322.7 … 379.3）、tablet 768–1023 は 2 列（357 … 391） | bento |
+| 3 | 397.33 | — | desktop 1024 から。tablet は 2 列 | persona、staff |
+| 2 | 597 | — | tablet 768 から | leader、activities |
+| 1 (Mobile) | 338 | — | < 768 | ペア（L-35）以外すべて |
 
 セル幅 = (W − 2(n+1)) / n。1200 では n = 2 以外が端数になる。**端数は許容する**: ブラウザは各セルの矩形を物理ピクセルに snap するため、gap は常に 2px で描画される。Figma は FILL に任せ、幅を手入力しない。
 
@@ -1162,14 +1164,15 @@ CSS: `.grid { display:grid; grid-template-columns: repeat(n, 1fr); gap: 2px; pad
 | 行の単位高さ | `size/cell-min` 120。行は内容で伸び、同じ行のセルは最も高いセルに揃う（stretch） |
 | 横 span (n) | 幅 = n × cell + (n−1) × 2 |
 | 縦 span (m) | 最小高さ = m × 120 + (m−1) × 2 = 242（m=2）。画像セルは隣接セル（chat）の高さに合わせて伸びる |
-| Desktop bento | 行 1 [2×1 · 1×1 · 1×1] / 行 2–3 [2×2 chat · 2×2 photo] / 行 4 [1×1 · 1×1 · 2×1 CTA] |
+| bento の構図（span だけで作る、DOM 固定） | 4 列: [CULTURE 2×1 · MEMBERS · SINCE] / [CHAT 2×2 · OFFICIAL 2×1] / [· ONLINE · EVERYONE]。3 列: [CULTURE 2×1 · MEMBERS] / [SINCE · CHAT 2×2] / [OFFICIAL · ·] / [ONLINE · EVERYONE 2×1]。2 列: [CULTURE 2×1] / [MEMBERS · SINCE] / [CHAT · OFFICIAL] / [ONLINE · EVERYONE]。1 列: DOM 順（MEMBERS · SINCE だけペア）。疎な auto-placement で読む順 = DOM 順が各段で保たれる（L-34） |
 | 連結グリッド | leader (2 col) の直下に staff (3 col) を置くときは staff 側の上枠を 0 にし、leader の下枠を共有する。2px 罫線を 2 本重ねない |
-| Mobile | **すべて 1 列**、DOM 順。span は無視。2×2 photo は 338 × 190（16:9）、chat は hug。**DECISION L-10** 2 列（168px）だと inset 20 を引いた本文幅 128 ≈ Body S 14 で 9 字。和文の最小行長（≈ 20 字）を割るため |
+| Mobile | **1 列**、DOM 順。span は無視。chat は hug。**DECISION L-10** 2 列（168px）だと inset 20 を引いた本文幅 128 ≈ Body S 14 で 9 字。和文の最小行長（≈ 20 字）を割るため。例外は**本文を持たないセルのペア**（**DECISION L-35**、2026-09-15）: MEMBERS（50+）と SINCE（日付 + 図）を `CellPair`（背景なしの入れ子グリッド、gap 2 から親の divider が覗く）で 168 × 2 の 1 行に。SINCE の題は 128 の内側に入る Title/2 22（121.5）で、tablet から Title/1。tablet からは `display: contents` で箱が消え、2 つは親の item に戻る |
 | Mobile 行最小 | 120（同値。1 列でも 1×1 セルは kicker + 見出し 2 行で 128 に伸びる） |
+| 空トラック | frame fill が divider なので、行の端数で空いたトラックは**灰色の板**として見える（L-9 の系）。均等セルの格子は空トラックを作らない: tablet の 2 列で Staff が奇数なら最後の 1 枚を `fillRow` で行いっぱいに（**DECISION L-36**） |
 
 ### 3.9 セクションの縦リズム
 
-| 帯 | Desktop の箱 | Mobile |
+| 帯 | Desktop の箱（≥ 768、L-34） | Mobile（< 768） |
 |---|---|---|
 | Nav | `nav/pad-y` 12 + `size/control/sm` 36 + 12 + `stroke/rule` 2 = **62** = `size/nav`（sticky） | `nav/pad-y` 8 + `size/control/md` 44 + 8 + 2 = **62**。幅検算: 24 + mark 28 + 12 + wordmark ≈ 86 + ≥ 16 + CTA 128 + 12 + menu 44 + 24 = **374 ≤ 390** |
 | Menu panel（Mobile） | — | nav 直下、全幅、`color/ground`、下辺 `stroke/rule`。行 = `size/control/md` 44 高 × 横 `page/inset` 24、行間 `stroke/hair`。末尾に md ボタン `fullWidth`（上下 `inset/md` 16、横 `page/inset` 24）。**DECISION L-25** 行の寸法は nav CTA と同じ 44 / 24: パネルは nav の延長であり、brand と同じ x = 24 に揃う |
@@ -1824,7 +1827,7 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 | 項目 | 値 |
 |---|---|
 | 高さ | 62 = 8 + `size/control/md` 44 + 8 + 2（DECISION L-22） |
-| 構成 | Brand（tagline なし）← auto → Button Ground / Ink / md `参加する` + `arrow-up-right`（参加ダイアログを開く、U-49）→ `inline/sm` 12 → Icon button md `menu-2` |
+| 構成 | Brand（tagline なし。tagline は desktop 1024 から、L-34）← auto → Button Ground / Ink / md `参加する` + `arrow-up-right`（参加ダイアログを開く、U-49）→ `inline/sm` 12 → Icon button md `menu-2` |
 | 幅検算 | 24 + mark 24 + 12 + wordmark 95（`ChoTech` Title 3 19、実測）+ ≥ 16 + CTA 127（inset 20 + ラベル 59 + 8 + 矢印 20 + 20）+ 12 + 44 + 24 = **378 ≤ 390**（実測 2026-09-05: brand 131、CTA 127、余り 28）。wordmark は `white-space: nowrap` で折らない |
 
 #### 6.7.3 Menu panel（Mobile、DECISION K-6）
@@ -1930,7 +1933,7 @@ Figma: `Brand / Lockup` `Size` {Nav, Footer} × `State` {Default, Hover} = 4。P
 |---|---|
 | title | `Title/1` **32 / 26**、`ink`、`<h2>`。1 行（最長 11 全角 × 26 = 286 ≤ 342）。`word-break: auto-phrase`（対応ブラウザ） |
 | label | `Overline/Latin` 12 UPPER、`ink-secondary`（5.83）。`ABOUT` / `ACTIVITY` / `FOR YOU` / `MEMBERS` / `PARTNERS`。**title の後ろ**。`<p>`（見出しにしない） |
-| 並び | Desktop: 横、**ベースライン揃え**、gap `inline/md` 16。Mobile: 縦、gap `stack/xs` 8、左揃え |
+| 並び | ≥ 768（tablet、L-36）: 横、**ベースライン揃え**、gap `inline/md` 16（最長「こんな人におすすめ！」10 × 28.2 + 16 + ラベル ≈ 360 ≤ 720）。< 768: 縦、gap `stack/xs` 8、左揃え |
 | 下マージン | `section/heading-mb` 32 / 24（ベントの直前も同じ。旧 Activities の `heading-mb-list` 8 は hairline 行リストの名残で、写真セルの上に 8 しか無いと見出しが格子に貼り付いて他節と縦リズムが揃わなかった、U-46）。導入文の前 `heading-mb-intro` 12。`heading-mb-list` は hairline 行リスト用にライブラリへ残す |
 | note | 持たない（**DECISION K-9**: 概念の note は編集ヒントの受け皿。本番に置かない） |
 
@@ -1946,11 +1949,11 @@ Figma: `Section / Heading` `Layout` {Row, Stacked} 2。Props: `title` `label` TE
 | 項目 | Desktop | Mobile |
 |---|---|---|
 | 描き方 | frame fill `divider`、padding `space/2`、gap `space/2`。セルが `ground` / `inverse/ground` を塗る（`border` は使わない、DECISION L-9） | 同 |
-| 列 | 4 列均等（(1200 − 10) / 4 = 297.5）。2×1 = 597 | 1 列（338）、DOM 順、span 無視 |
+| 列 | 4 列均等（(1200 − 10) / 4 = 297.5、wide 1248 から）。2×1 = 597。desktop 1024–1247 は 3 列（322.7 … 379.3、2×1 647 … 761）、tablet 768–1023 は 2 列（357 … 391、2×1 716 … 782）— L-34 | 1 列（338）、DOM 順。MEMBERS · SINCE だけ 168 × 2 のペア（L-35） |
 | 行の最小高 | `size/cell-min` 120 | 120 |
 | セル inset | `inset/cell` **24** | **20** |
-| 行構成 | 行 1 [CULTURE 2×1 · MEMBERS（墨）· SINCE] / 行 2–3 [CHAT 2×2 · OFFICIAL 2×1 / ONLINE & OFFLINE · FOR EVERYONE]（**DECISION U-40**） | 縦に 1 列: CULTURE → MEMBERS → SINCE → CHAT → OFFICIAL → ONLINE & OFFLINE → FOR EVERYONE |
-| 行の高さ | 行 1 は CULTURE（Display/M 2 行 + 図）が HUG で決め（実測 **284**）、MEMBERS / SINCE が FILL で追う。行 2–3 は CHAT（**465**）が決め、OFFICIAL **241.5** / 行 3 **221.5** が FILL で追う（U-52 改） | 各セル HUG |
+| 行構成 | 4 列: 行 1 [CULTURE 2×1 · MEMBERS（墨）· SINCE] / 行 2–3 [CHAT 2×2 · OFFICIAL 2×1 / ONLINE & OFFLINE · FOR EVERYONE]（**DECISION U-40**）。3 列（1024–1247）: [CULTURE 2×1 · MEMBERS] / [SINCE · CHAT 2×2] / [OFFICIAL · (CHAT)] / [ONLINE · FOR EVERYONE 2×1]。2 列（768–1023）: [CULTURE 2×1] / [MEMBERS · SINCE] / [CHAT · OFFICIAL] / [ONLINE · FOR EVERYONE]（L-34） | 縦に 1 列: CULTURE → [MEMBERS · SINCE] → CHAT → OFFICIAL → ONLINE & OFFLINE → FOR EVERYONE |
+| 行の高さ | 4 列（1440）: 行 1 は CULTURE（Display/M 2 行 + 図）が HUG で決め（実測 **284 / 465** = 行 1 / 行 2–3）、行 2–3 は CHAT（465）が決め OFFICIAL 241.5 / 行 3 221.5 が FILL で追う（U-52 改）。3 列（1024）: 263 / 197 + 2 + 384 = 583（SINCE + OFFICIAL の列がチャットを伸ばす）/ 212。1194: 272 / 198 + 2 + 384 = 584 / 212（3 列）。2 列（768）: 251 / 195 / 483（CHAT が決め、OFFICIAL は図を底に揃えて追う）/ 212 | 各セル HUG。ペア行 180、CULTURE 224、CHAT 475、OFFICIAL 376、ONLINE / EVERYONE 204。About 全体 1871（旧 2005） |
 
 **DECISION U-40**（2026-09-12、クライアント判断）ベントを **3 行 7 セル**に組み直す。
 
@@ -1991,7 +1994,7 @@ fill `inverse/ground`。kicker `Overline/Latin` `MEMBERS` `inverse/ink-tertiary`
 
 #### 6.11.4 Cell Official（2×1、U-40）
 
-fill `ground`。kicker `Overline/Latin` `OFFICIAL` `ink-secondary` → `<ul>` を **2 列**（`grid`、tablet 以上 2 列 gap `inline/lg` 24、`align-items: end`、Mobile 1 列 gap `stack/lg` 24、**U-52**）、各列 = [題 `Headline` 17 `ink` `<h3>` → `stack/2xs` 4 → 補足 `Footnote/Regular` 13 `ink-secondary`] → `stack/md` 16 → 図（円 64）。解剖は Cell Text と同じ 2 段（kicker 天 ／ 列群 地）で、2 列の円は底で揃い、1 行 / 2 行の題の差は上に逃がす。列幅 262.5（1440）/ 326（768）。
+fill `ground`。kicker `Overline/Latin` `OFFICIAL` `ink-secondary` → `<ul>` を **2 列**（`grid`、wide 1248 以上で 2 列 gap `inline/lg` 24、`align-items: end`。tablet / desktop の 2 列・3 列のベントでは 1×1 で 2 件を縦積み gap `stack/lg` 24、L-34、**U-52**）、各列 = [題 `Headline` 17 `ink` `<h3>` → `stack/2xs` 4 → 補足 `Footnote/Regular` 13 `ink-secondary`] → `stack/md` 16 → 図（円 64）。解剖は Cell Text と同じ 2 段（kicker 天 ／ 列群 地）で、2 列の円は底で揃い、1 行 / 2 行の題の差は上に逃がす。列幅 262.5（1440）/ 326（768）。
 
 | 列 | 題 | 補足 | 図 |
 |---|---|---|---|
@@ -2155,7 +2158,7 @@ Project と Hackathon を分ける理由: 前者は継続的な営み、後者�
 | rec | fill `surface`（カードで唯一の板）、inset `inset/sm` 12 × `inset/md` 16、箱 `min-height: size/persona-rec` **64**、`align-items: center`。中は `arrow-right` 16（先頭、`inline/icon` 4、1 行目の行ボックス中央）+ `Footnote/Bold` 13 **`ink`**（13.51）。ボタンではない: 64 ≠ 44、Footnote ≠ Label、矢印は先頭、状態なし（`p + p` の 12 は打ち消す） |
 | card | `ground`、inset `inset/cell` 24 / 20、**subgrid 3 行**（親 `<ul>` は `auto-rows: auto` — 罫線グリッド既定の行の床 120 を 3 行それぞれに掛けない）、行間 0（親の 2px gap を持ち込まない）。実測 Desktop **397 × 268**（6 枚同値: 24 + 80 + 16 + 44 + 16 + 64 + 24）、親のトラック 119 / 58 / 87（DevTools。gap の差分 ±1 と inset の畳み込み）、Mobile 338 × 260（6 枚同値） |
 
-イラスト 104 → 96 は DECISION L-12、96 → 80 は U-42。状態なし（カードはリンクではない）。Desktop 3 列（397.33）× 2 行、Mobile 1 列。`<ul>` > `<li>`（subgrid の `<li>` は `row-span: 3`）。
+イラスト 104 → 96 は DECISION L-12、96 → 80 は U-42。状態なし（カードはリンクではない）。3 列 × 2 行は desktop 1024 から（322.7 … 397.33、内側 274.7 で引用 19 字 / 行、推薦 17 字 / 行 — 現行の文言は 2 行の箱に収まる）、tablet 768–1023 は 2 列 × 3 行（357 … 391）、Mobile 1 列（L-34）。`<ul>` > `<li>`（subgrid の `<li>` は `row-span: 3`）。
 
 Figma: `Persona / Card` 1。Props: `caseNo` `title` `quote` `rec` TEXT、`image` INSTANCE_SWAP。解剖の変更（U-42 / U-53）は**未反映**（Figma 同期はクライアント判断で停止）。
 
@@ -2168,7 +2171,7 @@ Figma: `Persona / Card` 1。Props: `caseNo` `title` `quote` `rec` TEXT、`image`
 | role | `Overline/Latin` / `Overline/JP` 12、`ink-secondary`（5.83）、下 `stack/2xs` 4 | 同 |
 | name | `Title/2` 22 `ink`、`<h3>`、姓名の間は半角スペース | `Headline` 17 |
 | skills | `Footnote/Regular` 13 `ink-secondary`、上 `stack/xs` 8、≤ 2 行 | `Caption/Regular` 12 |
-| 列 | Desktop 2 列（597）/ Mobile 1 列 | Desktop 3 列（397.33）/ Mobile 1 列 |
+| 列 | 2 列は tablet 768 から（357 … 597）/ Mobile 1 列 | 3 列は desktop 1024 から（322.7 … 397.33、内側 290.7 = 24 字）。tablet 768–1023 は 2 列で、奇数なら最後の 1 枚を行いっぱいに（`fillRow`、L-36。空トラックの灰色の板を出さない）/ Mobile 1 列 |
 
 Leader と Staff の差は **写真比・inset・name・skills の 4 点**（Socials は共通）。Staff グリッドは Leader グリッドの直下に上枠なしで接続（1 つの罫線列、§3.8）。カード自体はリンクではない。
 
@@ -2204,7 +2207,7 @@ Figma: `Member / Card` `Size` {Leader, Staff} 2。Props: `role` `name` `skills` 
 | 項目 | Desktop | Mobile |
 |---|---|---|
 | 枠 | 2px の外枠（frame fill `divider`、padding 2）+ 白い面 1 枚（`logo-ground`、U-33、inset `inset/cell` 24）。行の床 `size/cell-min` 120 | 同、inset 20 |
-| 列 | CSS grid、**団体数で等分**（`repeat(N, minmax(0, 1fr))`、N は content の件数を CSS 変数で渡す。5 団体 → 239.2）。tablet 3 列 | 2 列。列間 `inline/lg` 24、行間 `stack/lg` 24 |
+| 列 | CSS grid、**団体数で等分**（`repeat(N, minmax(0, 1fr))`、N は content の件数を CSS 変数で渡す。5 団体 → 239.2）。N 列は desktop 1024 から（976 で 165.6 ≥ 144、L-34）。tablet 768–1023 は 3 列（端数は左詰め、U-43） | 2 列。列間 `inline/lg` 24、行間 `stack/lg` 24 |
 | ロゴ枠 | マーキーと同じ **3:2 × 高さ `size/marquee-logo` 96（幅 144）**、Image slot Contain、原色（U-21）。各列の**中央**（L-26: 画像の中央配置は左揃え原則の唯一の例外） | 同 |
 | リンク | `href` があれば枠全体が団体サイトへのリンク（U-35）。名前 = alt（団体名）+ vh「（外部、新しいタブで開く）」。hover / pressed の表現なし、フォーカスリングは既定の外向き（枠は罫に接していないので K-7 の内側は要らない） | 同 |
 | 埋め草 | **無し**（U-34 の Filler は不要に） | 同（端数の行は左詰め） |
@@ -2259,7 +2262,7 @@ Figma: `Section / Poster` 1。Props: `kicker` `display` `paragraph` `ctaLabel` `
 |---|---|---|
 | 上辺 | Rule 2/H | 同 |
 | pad | `footer/pad-y` **40** × `page/inset` 24 | **32** × 24 |
-| 構成 | Brand Footer（左）← auto → Link Footer × 4（gap `inline/lg` 24）→ 24 → `© 2026 ChoTech` | 3 行、`stack/lg` 24: Brand / リンク 4 つ（1 行、左揃え、≈ 273 ≤ 342）/ © |
+| 構成 | Brand Footer（左）← auto → Link Footer × 4（gap `inline/lg` 24）→ 24 → `© 2026 ChoTech`。1 行は tablet 768 から（≈ 617 ≤ 720、L-36） | 3 行、`stack/lg` 24: Brand / リンク 4 つ（1 行、左揃え、≈ 273 ≤ 342）/ © |
 | © | `Caption/Regular` 12、`ink-secondary`（5.83） | 同 |
 | 高さ | 2 + 40 + 24（mark 24 ≥ Headline 行 24）+ 40 = **106** | ≈ 176 |
 | 意味 | `<footer>`、リンクは `<nav aria-label="フッター">` | 同 |
@@ -3252,7 +3255,10 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | L-26 | sponsor ロゴはセル中央 | 図であってラベルではない |
 | L-27 | marquee 帯は高さ駆動 56、区切りアイコン 20 | 内側 52 = 4 × 13、19px 文字の横は `icon/md` |
 | L-28 | marquee 停止セル 44 × 内側高、左 2px rule、ground、icon 24 | 帯と同じ罫線語彙で「セル」として切り出す。**U-31 で撤去** |
-| L-29 | 実装のブレークポイントは 2 つ: 構造 48rem / トークン 78rem（§3.6） | 2 フレームしかない仕様と連続なブラウザ幅の橋渡し。ナビと列数だけ先に開き、タイポは離散のまま |
+| L-29 | ~~実装のブレークポイントは 2 つ: 構造 48rem / トークン 78rem（§3.6）~~ **L-34 で 3 点に改める（2026-09-15）** | 2 フレームしかない仕様と連続なブラウザ幅の橋渡し。ナビと列数だけ先に開き、タイポは離散のまま — だったが、iPad が横幅 1194 まで Mobile のトークンと 2 列で描かれ「スマホ寄り」に見えた |
+| L-34 | ブレークポイントを **3 点**に: tablet 48rem = **トークンのモード** + 構造（2 列、見出し行、footer 行）、desktop 64rem = 構造（persona / staff 3 列、partner N 列、ベント 3 列 + CHAT 2×2、タグライン）、wide 78rem = ベント 4 列 + OFFICIAL 内側 2 列（2026-09-15、クライアント判断）。ベントは 1 / 2 / 3 / 4 列の 4 構図を DOM を変えずに span だけで作る（§3.8） | 「タブレットの時の表示がスマホ寄りになるのがすごく違和感」。Mobile のトークンは 342 の紙を守る値で、720 以上の紙には Desktop の刻みが要る（iPad は Mac 側の size class）。4 列は 1×1 の内側が 228（FOR EVERYONE の折れ目）と 216（図 3 つ）を超える V ≥ 1162 が要り、spec が名指しする 1248 に置く。1024 は container 976 で h1 1 行・ロゴ 5 枚・persona 3 列が成立する最小幅 |
+| L-35 | Mobile で MEMBERS と SINCE を `CellPair`（背景なしの入れ子グリッド、gap 2、tablet から `display: contents`）で 168 × 2 の 1 行に（2026-09-15）。SINCE の題は Title/2 22（121.5 ≤ 128）、tablet から Title/1 | 「モバイルの時のデザインが最悪」。L-10 の 1 列は本文を持つセルのための規則で、数字と日付 + 図のセルは 128 でも割れない（L-31 と同じ理屈）。About は 2005 → 1871 になり、電話でもベントに 1 行の対ができる |
+| L-36 | 見出し行と footer 行を tablet 48rem から横に、tablet の 2 列で Staff が奇数なら最後の 1 枚を `fillRow` で行いっぱいに（2026-09-15） | 見出しと footer の縦積みはトークンと同じ点で解く（旧 L-29 は 78rem）。frame fill = divider なので空トラックは灰色の板 — 均等セルの格子は空席を作らない（§3.8） |
 | L-30 | logo mark は図の外接矩形で切った `icons/mark.svg` を 24 / 20 で置く | favicon.svg は余白込みで、図が小さく見え wordmark からも離れて見えた |
 | L-31 | ~~Partner セルは正方形タイル（Desktop 6 列 / tablet 3 / Mobile 2）~~ **U-43 でタイルごと撤去（外枠だけの 1 行）** | ロゴは正方形のアイコンが基本なので図とタイルの形を揃える。文字を運ばないタイルは L-10 の制約外。Mobile 1 列だと 342 角が 6 枚縦に積まれる |
 | L-33 | hero `min-height: min(100svh − size/nav − size/band-marquee, size/hero-max)`（2026-09-12、L-7 改） | ファーストビューの下端にパートナーの帯を乗せる。「支えられている」が最初の画面で見える。1440 × 900 で Hero 718 + 帯 120。内容が下限を超える画面（1280 × 720）では帯は一部 |

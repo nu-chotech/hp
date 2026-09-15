@@ -26,7 +26,8 @@ const PHOTO_RATIO = { leader: "16:9", staff: "4:3" } as const;
  */
 const PHOTO_SIZES = {
   leader: "(min-width: 78rem) 597px, (min-width: 48rem) 50vw, 100vw",
-  staff: "(min-width: 78rem) 397px, (min-width: 48rem) 50vw, 100vw",
+  staff:
+    "(min-width: 78rem) 397px, (min-width: 64rem) 33vw, (min-width: 48rem) 50vw, 100vw",
 } as const;
 
 const cardBody = cva("flex flex-1 flex-col", {
@@ -94,16 +95,22 @@ export interface MemberCardProps {
    * member.photo（パス）には触れない — content 側の値を残したまま表示だけを止める。
    */
   showPhoto?: boolean;
+  /**
+   * tablet の 2 列で最後の 1 枚が余るとき、行いっぱいに広げる（L-36）。
+   * 空いたトラックは frame fill（divider）の灰色の板になるので、格子に空席を作らない。
+   */
+  fillRow?: boolean;
 }
 
 export function MemberCard({
   member,
   size,
   showPhoto = true,
+  fillRow = false,
 }: MemberCardProps) {
   return (
     // inset は body 側が持つ。写真はセルの縁に触れる（§6.15 の photo）
-    <Cell asChild inset="none">
+    <Cell asChild colSpan={fillRow ? "2-tablet-only" : 1} inset="none">
       <li>
         {/* 人物写真の alt は空。氏名がすぐ隣に可視テキストとしてあるので、
             読み上げに同じ名前を二度出さない（§8.6）。focal は顔が上 1/3 に来る前提。
