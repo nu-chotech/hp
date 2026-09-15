@@ -11,7 +11,8 @@ import { cn } from "@/lib/utils";
  * （U-14 の趣旨）。2×1 の中を **2 列**に分け、1 件 = 1 列（題 + 補足 → 図）で並べる（U-52。
  * U-40 の「1 件 = 1 行」は、図 32 が行頭で小さく、行の右半分が空いて見えた）。
  * 列は他の文字セルと同じ解剖（題 → stack/md 16 → 図）で、図の円は 2 列で底を揃える
- * （items-end）。Mobile は 1 列に積み、件の間は stack/lg 24。
+ * （items-end）。2×1 と内側の 2 列は wide（1248、4 列のベント）から。tablet / desktop の
+ * 2 列・3 列のベントでは 1×1 で、2 件は縦に積む（件の間は stack/lg 24、L-34）。
  *
  * 2 件は同格なので <ul>。各列の題は h3 — 見出しナビゲーションに 2 つの事実がそのまま
  * 並ぶのが正しい（「公認団体」という抽象名詞 1 つより読み手の役に立つ）。
@@ -42,14 +43,14 @@ export function CellOfficial({
     <Cell
       asChild
       className={cn("justify-between gap-stack-md", className)}
-      colSpan={2}
+      colSpan="2-wide"
     >
       <section {...props}>
         <p className="text-overline text-ink-secondary">{kicker}</p>
         {/* biome-ignore-start lint/a11y/noRedundantRoles: Tailwind の preflight が list-style を none にするので、Safari / VoiceOver は ul から list ロールを外す。§8.5 が求める <ul> > <li> の読み上げを残すには明示が要る */}
         {/* biome-ignore lint/a11y/useSemanticElements: 要素はすでに <ul>。role は上の理由で重ねている */}
         <ul
-          className="grid gap-stack-lg tablet:grid-cols-2 tablet:items-end tablet:gap-x-inline-lg"
+          className="grid gap-stack-lg wide:grid-cols-2 wide:items-end wide:gap-x-inline-lg"
           role="list"
         >
           {rows.map(({ figure, title, sub }) => (

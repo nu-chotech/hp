@@ -12,12 +12,12 @@ import { cn } from "@/lib/utils";
  * 5 節だけで、どれも ground）。h2 は面から色を継ぐが欧文ラベルは ink-secondary 固定なので、
  * 反転面・ポスター面に置くと 1.9:1 まで落ちる。色面の見出しはその面の部品が自分で持つ。
  *
- * 横並び（ベースライン揃え）に開くのは desktop 78rem から。tablet 48rem で
- * 先に開くのはナビと罫線グリッドの 2 つだけで、それ以外はトークンのモードと
- * 同じ 1 点で切り替える（DECISION L-29）。
+ * 横並び（ベースライン揃え）に開くのは tablet 48rem から — トークンのモードが
+ * 切り替わる点と同じ（DECISION L-34 / L-36。旧 L-29 では desktop 78rem だった）。
+ * 最長の題「こんな人におすすめ！」10 字 × Title/1 28.2 + 16 + ラベル ≈ 360 ≤ 720。
  */
 const sectionHeadingVariants = cva(
-  "flex flex-col gap-stack-xs desktop:flex-row desktop:items-baseline desktop:gap-inline-md",
+  "flex flex-col gap-stack-xs tablet:flex-row tablet:items-baseline tablet:gap-inline-md",
   {
     variants: {
       /** 見出しの下に何が来るか。§3.9「section 内の順序」の 3 通り */

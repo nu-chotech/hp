@@ -185,7 +185,12 @@ export function NavBar({ brand, cta, menuCta, className }: NavBarProps) {
       if (event.key === "Escape") close(true);
     };
     const onPointerDown = (event: PointerEvent) => {
-      if (headerRef.current?.contains(event.target as Node)) return;
+      const target = event.target as Element | null;
+      if (headerRef.current?.contains(target)) return;
+      // 参加ダイアログ（top layer）の中や backdrop は「外側」ではない。ここで畳むと
+      // パネルが inert になり、ダイアログが閉じたとき Menu CTA へ戻るはずのフォーカスが
+      // body に落ちる（§6.7.3「閉じたらフォーカスは CTA へ戻りメニューは開いたまま」）
+      if (target?.closest?.("dialog")) return;
       // 外側を触ったときはフォーカスを奪い返さない（触った先に用がある）
       close(false);
     };
@@ -266,7 +271,7 @@ export function NavBar({ brand, cta, menuCta, className }: NavBarProps) {
         >
           {brand}
 
-          {/* 横並びに開くのは tablet 48rem から。トークンは Mobile のまま（L-29） */}
+          {/* 横並びに開くのは tablet 48rem から（L-34: トークンも同じ点で Desktop に） */}
           <ul className="hidden items-center gap-inline-md tablet:flex">
             {navLinks.map((link) => (
               <li key={link.id}>

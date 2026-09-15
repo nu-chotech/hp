@@ -98,7 +98,7 @@ export function JoinDialogProvider({
         ref={ref}
         aria-labelledby={labelledBy}
         aria-describedby={describedBy}
-        className="join-dialog fixed inset-0 m-auto w-[calc(100%_-_2_*_var(--page-inset))] max-w-dialog max-h-[calc(100%_-_2_*_var(--page-inset))] overflow-y-auto overscroll-contain border-0 bg-ground p-0 text-ink shadow-lg backdrop:bg-backdrop"
+        className="join-dialog fixed inset-0 m-auto w-[calc(100%_-_2_*_var(--page-inset))] max-w-dialog max-h-[calc(100%_-_2_*_var(--page-inset))] overflow-y-auto overscroll-contain border-0 bg-ground p-0 text-ink shadow-lg backdrop:bg-backdrop forced-colors:border"
       >
         {dialog}
       </dialog>

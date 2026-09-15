@@ -79,7 +79,10 @@ export function Hero() {
            * ボックスは inline-block。inline のまま背景を塗ると、この書体の content area
            * （≈ 1.6em）が行送り 1.11 を大きく超えて、板が上下に 30px ずつはみ出し lead に
            * 触れる。inline-block なら板の高さ = 行ボックス + padding で決まる。Mobile の
-           * "Hack Your" / "Limits." は 1 枚の板の中で 2 行に折れる。
+           * "Hack Your" / "Limits." は 1 枚の板の中で 2 行 — 折り目は content の `\n`
+           *（pre-line）で置き、tablet からは normal で空白に潰して 1 行にする（U-55）。自然折返し
+           * だと折れた板は container いっぱいに広がり、字の右に空の板が残る。377 未満は
+           * Display/XL 自体が container に追従して "Hack Your" を 1 行に保つ（§2.8）。
            * 余白は字の 0.2em / 0.1em — 固定 px にしないのは、板の厚みが級数に比例して
            * 初めて「文字の一部」に見えるため。左右の 0.2em ぶんは負のマージンで
            * container の外へ吊るし、**文字の左端**を lead・段落・ボタンと揃える（L-19 の
@@ -88,7 +91,7 @@ export function Hero() {
            * に寄ってしまう）。
            */}
           <h1
-            className="text-wrap text-display-xl text-inverse-ink"
+            className="whitespace-pre-line text-wrap text-display-xl text-inverse-ink tablet:whitespace-normal"
             data-reveal
             data-reveal-index="0"
             lang="en"

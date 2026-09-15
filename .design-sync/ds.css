@@ -1,0 +1,36 @@
+/* design-sync 用のスタイルシート入口。globals.css を丸ごと取り込み、
+   next/font と layout.tsx が <html>/<body> に与えているものだけを CSS で補う。 */
+@import "../src/app/globals.css";
+
+/* next/font/local が html.className 経由で定義する変数の代替（fonts.css の @font-face と対） */
+:root {
+  --font-line-seed-jp: "LINE Seed JP";
+}
+
+/* layout.tsx の <body className="bg-ground text-ink font-sans"> と同じ */
+@layer base {
+  body {
+    background-color: var(--ground);
+    color: var(--ink);
+    font-family: var(--font-sans);
+  }
+}
+
+/* -----------------------------------------------------------------------------
+ * デザインエージェント用の語彙セーフリスト。
+ * Tailwind v4 はソースで使われたユーティリティしか出力しないので、サイトが未使用の
+ * トークン組み合わせ（bg-accent-subtle、gap-stack-xl …）は claude.ai/design 側に存在しない。
+ * トークン × ユーティリティの全組み合わせと、レイアウトの基本語彙だけを明示的に生成する。
+ * 値の正本は globals.css の @theme（ここは名前を列挙するだけ）。
+ * -------------------------------------------------------------------------- */
+@source inline("{,tablet:,desktop:,wide:}{bg,text}-{ground,surface,logo-ground,inverse-ground,poster-ground,ink,ink-secondary,ink-tertiary,inverse-ink,inverse-ink-secondary,inverse-ink-tertiary,inverse-ink-quaternary,poster-ink,poster-ink-secondary,divider,divider-hairline,inverse-hairline,chip-fill,chip-ink,inverse-chip-fill,inverse-chip-ink,accent,accent-fill,on-accent,accent-hover,accent-pressed,accent-subtle,on-accent-subtle,accent-text,accent-text-small,accent-on-ink,discord-fill,on-discord,figure-fill,figure-ink,image-placeholder,image-caption,avatar,link-underline,inverse-outline}");
+@source inline("{,tablet:,desktop:,wide:}text-{display-xl,display-l,display-m,title-1,title-2,title-3,title-3-caps,headline,subheadline,callout,body-l,body-m,body-s,footnote,footnote-bold,caption,caption-bold,label-m,label-s,label-nav,overline,overline-jp}");
+@source inline("{,tablet:,desktop:,wide:}{gap,gap-x,gap-y,p,px,py,pt,pb,ps,pe,m,mx,my,mt,mb,ms,me}-{stack-2xs,stack-xs,stack-sm,stack-md,stack-lg,stack-xl,inline-xs,inline-sm,inline-md,inline-lg,inline-xl,inline-2xl,inline-icon,inset-xs,inset-sm,inset-md,inset-cell,inset-row,inset-control,page-inset,rule}");
+@source inline("{,tablet:,desktop:,wide:}{size,w,h}-{icon-sm,icon-md,icon-lg,icon-xl,avatar,figure,illustration,control-sm,control-md,full}");
+@source inline("{min-h,h}-{control-sm,control-md,chip,nav,band-marquee,cell-min}");
+@source inline("max-w-{measure,dialog,full}");
+@source inline("rounded-{none,full,bubble} shadow-{sm,md,lg} on-ink sr-only trim-start");
+@source inline("{,tablet:,desktop:,wide:}{flex,flex-col,flex-row,flex-wrap,flex-1,inline-flex,grid,contents,hidden,block,inline-block}");
+@source inline("{,tablet:,desktop:,wide:}{items-start,items-center,items-end,items-baseline,items-stretch,justify-start,justify-center,justify-end,justify-between,self-start,self-end}");
+@source inline("{,tablet:,desktop:,wide:}{grid-cols-1,grid-cols-2,grid-cols-3,grid-cols-4,grid-cols-6,col-span-1,col-span-2,col-span-3,row-span-1,row-span-2}");
+@source inline("{relative,absolute,inset-0,overflow-hidden,min-w-0,shrink-0,grow,w-full,w-fit,mx-auto,mt-auto,mb-auto,text-left,text-center,text-balance,whitespace-nowrap,whitespace-pre-line,object-cover,object-contain,aspect-16/9,aspect-4/3,aspect-3/2,aspect-square,no-underline,underline}");

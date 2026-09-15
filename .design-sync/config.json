@@ -1,0 +1,91 @@
+{
+  "projectId": "1f71365a-4aba-4014-8459-cfad859954f6",
+  "shape": "package",
+  "pkg": "hp",
+  "globalName": "ChoTechDS",
+  "buildCmd": "node .design-sync/prebuild.mjs",
+  "srcDir": "src/components",
+  "tsconfig": ".design-sync/tsconfig.json",
+  "cssEntry": ".design-sync/.cache/ds.css",
+  "extraFonts": [
+    ".design-sync/fonts.css"
+  ],
+  "guidelinesGlob": [
+    "docs/design/design-system-v2.md"
+  ],
+  "componentSrcMap": {
+    "BrandDiscord": null,
+    "BrandX": null,
+    "BrandInstagram": null,
+    "BrandGithub": null,
+    "ChatThread": "src/components/chat/thread.tsx",
+    "FigureRow": "src/components/bento/figure.tsx",
+    "JoinTrigger": "src/components/join/join-dialog-provider.tsx",
+    "Tail": "src/components/chat/message.tsx",
+    "ReactionChip": "src/components/ui/chip.tsx",
+    "CellPair": "src/components/ui/ruled-grid.tsx"
+  },
+  "docsMap": {
+    "Button": ".design-sync/docs/ui.md",
+    "Chip": ".design-sync/docs/ui.md",
+    "ReactionChip": ".design-sync/docs/ui.md",
+    "Container": ".design-sync/docs/ui.md",
+    "ImageSlot": ".design-sync/docs/ui.md",
+    "RollingNumber": ".design-sync/docs/ui.md",
+    "Rule": ".design-sync/docs/ui.md",
+    "RuledGrid": ".design-sync/docs/ui.md",
+    "Cell": ".design-sync/docs/ui.md",
+    "Section": ".design-sync/docs/ui.md",
+    "SectionHeading": ".design-sync/docs/ui.md",
+    "TextLink": ".design-sync/docs/ui.md",
+    "ArrowRight": ".design-sync/docs/icons.md",
+    "ArrowUpRight": ".design-sync/docs/icons.md",
+    "ArrowUp": ".design-sync/docs/icons.md",
+    "Asterisk": ".design-sync/docs/icons.md",
+    "Menu": ".design-sync/docs/icons.md",
+    "Close": ".design-sync/docs/icons.md",
+    "Heart": ".design-sync/docs/icons.md",
+    "Check": ".design-sync/docs/icons.md",
+    "Mail": ".design-sync/docs/icons.md",
+    "Photo": ".design-sync/docs/icons.md",
+    "Book": ".design-sync/docs/icons.md",
+    "Hammer": ".design-sync/docs/icons.md",
+    "MessageCircle": ".design-sync/docs/icons.md",
+    "Code": ".design-sync/docs/icons.md",
+    "Palette": ".design-sync/docs/icons.md",
+    "Flask": ".design-sync/docs/icons.md",
+    "MapPin": ".design-sync/docs/icons.md",
+    "Messages": ".design-sync/docs/icons.md",
+    "School": ".design-sync/docs/icons.md",
+    "HeartHandshake": ".design-sync/docs/icons.md",
+    "Flag": ".design-sync/docs/icons.md",
+    "Website": ".design-sync/docs/icons.md",
+    "BrandXMark": ".design-sync/docs/icons.md",
+    "BrandGithubMark": ".design-sync/docs/icons.md",
+    "BrandDiscordMark": ".design-sync/docs/icons.md",
+    "BrandInstagramMark": ".design-sync/docs/icons.md",
+    "About": null,
+    "CellPair": ".design-sync/docs/ui.md"
+  },
+  "readmeHeader": ".design-sync/conventions.md",
+  "overrides": {
+    "RuledGrid": {
+      "cardMode": "column",
+      "viewport": "1440x900"
+    },
+    "Cell": {
+      "cardMode": "column",
+      "viewport": "1440x900"
+    },
+    "Container": {
+      "cardMode": "column",
+      "viewport": "1440x700"
+    },
+    "NavBar": {
+      "cardMode": "column"
+    },
+    "PartnerLogo": {
+      "cardMode": "column"
+    }
+  }
+}

@@ -1,4 +1,3 @@
-import { ArrowUpRight } from "@/components/icons";
 import { JoinTrigger } from "@/components/join/join-dialog-provider";
 import { Brand } from "@/components/layout/brand";
 import { NavBar } from "@/components/layout/nav-bar";
@@ -30,10 +29,11 @@ export interface NavProps {
 }
 
 export function Nav({ ctaLabel = "参加する", className }: NavProps) {
-  // CTA は参加ダイアログを開くボタン（U-49）。行き先は外部なので矢印（ArrowUpRight）は
-  // 残すが、押した瞬間に新しいタブは開かない — 注記はダイアログの参加リンクが持つ。
-  // Discord マークは置かない（U-19。U-27 で一度足したが、帯の CTA は文言だけで足りると
-  // 同日に撤回。Mobile の幅検算 §6.7.2 も矢印ありの元の式に戻る）
+  // CTA は参加ダイアログを開くボタン（U-49）。矢印もマークも置かない（U-55、旧 U-19 / U-27）:
+  // 押した瞬間に開くのはページ内のダイアログで、外へ出る予告はダイアログの参加リンクが持つ。
+  // 幅の都合でもある — 矢印つき 127 では Mobile の帯が 378 で、375 の電話（iPhone mini / SE）
+  // からはみ出していた。文言だけの 99 で 350 ≤ 360。360 未満（折りたたみの外画面）は帯から
+  // CTA を落とす — Menu panel と Hero が同じ導線を持つ（§6.7.2）
   return (
     <NavBar
       className={className}
@@ -46,23 +46,17 @@ export function Nav({ ctaLabel = "参加する", className }: NavProps) {
           <Button
             asChild
             size="md"
-            icon={ArrowUpRight}
-            className="tablet:hidden"
+            className="hidden min-[22.5rem]:inline-flex tablet:hidden"
           >
             <JoinTrigger>{ctaLabel}</JoinTrigger>
           </Button>
-          <Button
-            asChild
-            size="sm"
-            icon={ArrowUpRight}
-            className="hidden tablet:inline-flex"
-          >
+          <Button asChild size="sm" className="hidden tablet:inline-flex">
             <JoinTrigger>{ctaLabel}</JoinTrigger>
           </Button>
         </>
       }
       menuCta={
-        <Button asChild size="md" fullWidth icon={ArrowUpRight}>
+        <Button asChild size="md" fullWidth>
           <JoinTrigger>{ctaLabel}</JoinTrigger>
         </Button>
       }

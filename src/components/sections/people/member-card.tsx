@@ -26,10 +26,13 @@ const PHOTO_RATIO = { leader: "16:9", staff: "4:3" } as const;
  */
 const PHOTO_SIZES = {
   leader: "(min-width: 78rem) 597px, (min-width: 48rem) 50vw, 100vw",
-  staff: "(min-width: 78rem) 397px, (min-width: 48rem) 50vw, 100vw",
+  staff:
+    "(min-width: 78rem) 397px, (min-width: 64rem) 33vw, (min-width: 48rem) 50vw, 100vw",
 } as const;
 
-const cardBody = cva("flex flex-1 flex-col", {
+// max-w-measure: 行いっぱいのカード（fillRow、L-36）で紹介文が 716 の 1 行（53 全角）に伸びない。
+// 通常の列幅（≤ 397）では効かない
+const cardBody = cva("flex flex-1 flex-col max-w-measure", {
   variants: {
     size: {
       leader: "p-inset-cell",
@@ -94,16 +97,29 @@ export interface MemberCardProps {
    * member.photo（パス）には触れない — content 側の値を残したまま表示だけを止める。
    */
   showPhoto?: boolean;
+  /**
+   * tablet の 2 列で最後の 1 枚が余るとき、行いっぱいに広げる（L-36）。
+   * 空いたトラックは frame fill（divider）の灰色の板になるので、格子に空席を作らない。
+   * 広げたカードは横組み（写真 1/2 + 本文、U-55）— 縦組みのまま伸ばすと 4:3 の写真が 716 × 537 の
+   * 面になり、本文は 1 行の帯になる。
+   */
+  fillRow?: boolean;
 }
 
 export function MemberCard({
   member,
   size,
   showPhoto = true,
+  fillRow = false,
 }: MemberCardProps) {
   return (
     // inset は body 側が持つ。写真はセルの縁に触れる（§6.15 の photo）
-    <Cell asChild inset="none">
+    <Cell
+      asChild
+      className={cn(fillRow && "tablet:max-desktop:flex-row")}
+      colSpan={fillRow ? "2-tablet-only" : 1}
+      inset="none"
+    >
       <li>
         {/* 人物写真の alt は空。氏名がすぐ隣に可視テキストとしてあるので、
             読み上げに同じ名前を二度出さない（§8.6）。focal は顔が上 1/3 に来る前提。
@@ -114,7 +130,7 @@ export function MemberCard({
             ratio={PHOTO_RATIO[size]}
             focal="face"
             sizes={PHOTO_SIZES[size]}
-            className="shrink-0"
+            className={cn("shrink-0", fillRow && "tablet:max-desktop:w-1/2")}
             src={member.photo}
             alt=""
           />
@@ -123,7 +139,7 @@ export function MemberCard({
             ratio={PHOTO_RATIO[size]}
             focal="face"
             sizes={PHOTO_SIZES[size]}
-            className="shrink-0"
+            className={cn("shrink-0", fillRow && "tablet:max-desktop:w-1/2")}
           />
         )}
 

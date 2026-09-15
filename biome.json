@@ -14,7 +14,8 @@
       "!dist",
       "!build",
       "!out",
-      "!public"
+      "!public",
+      "!.design-sync"
     ]
   },
   "formatter": {

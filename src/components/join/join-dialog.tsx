@@ -12,12 +12,12 @@ export const joinDialogIds = {
 /**
  * 参加ダイアログの中身（§6.21、DECISION U-49 → U-54）
  *
- * サーバで描く。題（Title/2「学生ですか？」）→ 導入（Body/S、ink-secondary）→ 行動 2 つ。
- * 主は Discord の「学生として参加する」（= 外部リンク。押すことが学生であることの表明）、
+ * サーバで描く。題（Title/2「参加する前に」）→ 導入（Body/S、ink-secondary、1 文 = 1 行）→ 行動 2 つ。
+ * 主は Discord の「サーバーに参加する」（= 外部リンク。押すことが学生であることの表明）、
  * 副は Ground / Outline の「閉じる」（<form method="dialog"> の submit、JS を介さず閉じる）。
  * 約束の行は無い（U-54: 確認は 1 問で足りる。並べる規範があるなら置き場は Discord のルール
  * チャンネル）。縦リズム: 題 → 導入 stack/md 16、導入 → 行動 stack/xl 32 の 2 種だけ（§3.3）。
- * 高さ: Desktop 216（24 + 28 + 16 + 48 + 32 + 44 + 24）/ Mobile 288。
+ * 高さ: Desktop 240（24 + 28 + 16 + 72 + 32 + 44 + 24）/ Mobile 360（導入 6 行、実測）。
  */
 export function JoinDialog() {
   const { title, lead, join, close } = joinContent;
@@ -27,14 +27,14 @@ export function JoinDialog() {
       <h2 id={joinDialogIds.title} className="text-ink text-title-2">
         {title}
       </h2>
-      {/* 各塊を nowrap で描き、折返しを文節の境目に限る（join.ts のコメント） */}
+      {/* 1 文 = 1 行。文の中の折返しは段落の既定（auto-phrase、U-48）に任せる */}
       <p
         id={joinDialogIds.lead}
         className="mt-stack-md text-body-s text-ink-secondary"
       >
-        {lead.map((chunk) => (
-          <span className="whitespace-nowrap" key={chunk}>
-            {chunk}
+        {lead.map((sentence) => (
+          <span className="block" key={sentence}>
+            {sentence}
           </span>
         ))}
       </p>
