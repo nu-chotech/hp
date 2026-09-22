@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
  * 決めなければならない。DECISION L-10 が退けたのは「列数」ではなくセル内容 128px
  * （Body S で 9 字）であって、和文の最小行長（≈20 字 ≈ セル幅 168px）を満たす限り
  * 中間段は置いてよい。768px の 2 列はセル内容 ≈309px = 22 字で閾値を満たす。
- * 段は 3 つ: tablet 48rem（2 列）/ desktop 64rem（persona・staff 3、bento 3）/
+ * 段は 3 つ: tablet 48rem（2 列）/ desktop 64rem（persona 3、bento 3。staff は 2 のまま、L-38）/
  * wide 78rem（bento 4 = 12 列幾何）。1 / 2 / 3 列は DOM を変えず span だけで作る（疎な
  * auto-placement で読む順 = DOM 順が各段で保たれることを検算済み）。**wide の 4 列だけは
  * 明示配置**（`col-start` / `row-start`、DECISION L-37）— About の 6a は CULTURE 2×2 と
@@ -63,7 +63,7 @@ const ruledGrid = cva(
 export interface RuledGridProps
   extends ComponentProps<"div">,
     Omit<VariantProps<typeof ruledGrid>, "columns"> {
-  /** Desktop の列数。bento 4 / persona・staff 3 / leader 2 / 1 = 外枠だけ（partner のロゴ行、U-43）。6 はライブラリ */
+  /** Desktop の列数。bento 4 / persona 3 / leader・staff 2 / 1 = 外枠だけ（partner のロゴ行、U-43）。6 はライブラリ */
   columns: 1 | 2 | 3 | 4 | 6;
   /** <ul> や <section> として組みたいときに、子要素へスタイルを委譲する */
   asChild?: boolean;
@@ -120,7 +120,8 @@ const cell = cva(
        * 横 span。段ごとに効く幅が違う（L-34 / L-37）:
        *   2: tablet から常に 2（ライブラリの基本形）
        *   2-until-wide: tablet から 2、wide では span を降ろす（CULTURE）
-       *   2-tablet-only: tablet の 2 列でだけ 2（Staff の端数セル。空トラックを作らない、L-36）
+       *   2-tablet-only: tablet の 2 列でだけ 2。Staff の端数セル用だったが、Staff が
+       *     desktop も 2 列になった（L-38）ので今はどこからも使っていない（ライブラリに残置）
        *   2-tablet-3-desktop: tablet で 2、desktop で行いっぱいの 3（OFFICIAL）
        *
        * `-until-wide` が `wide:col-span-1` ではなく **span 自体を止める**のは、wide の 4 列だけ

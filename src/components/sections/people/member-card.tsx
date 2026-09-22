@@ -22,16 +22,15 @@ const PHOTO_RATIO = { leader: "16:9", staff: "4:3" } as const;
 
 /**
  * next/image への移行時にそのまま持ち上がる sizes。
- * Leader は Desktop 2 列（597）、Staff は 3 列（397）、tablet は 2 列、Mobile は 1 列。
+ * Leader も Staff も Desktop 2 列（597）、tablet も 2 列、Mobile は 1 列（L-38）。
  */
 const PHOTO_SIZES = {
   leader: "(min-width: 78rem) 597px, (min-width: 48rem) 50vw, 100vw",
-  staff:
-    "(min-width: 78rem) 397px, (min-width: 64rem) 33vw, (min-width: 48rem) 50vw, 100vw",
+  staff: "(min-width: 78rem) 597px, (min-width: 48rem) 50vw, 100vw",
 } as const;
 
-// max-w-measure: 行いっぱいのカード（fillRow、L-36）で紹介文が 716 の 1 行（53 全角）に伸びない。
-// 通常の列幅（≤ 397）では効かない
+// max-w-measure: 行いっぱいのカード（fillRow、L-36）で紹介文が 1200 の 1 行に伸びない。
+// 通常の列幅（≤ 597）では効かない
 const cardBody = cva("flex flex-1 flex-col max-w-measure", {
   variants: {
     size: {
@@ -98,7 +97,8 @@ export interface MemberCardProps {
    */
   showPhoto?: boolean;
   /**
-   * tablet の 2 列で最後の 1 枚が余るとき、行いっぱいに広げる（L-36）。
+   * 2 列の格子で最後の 1 枚が余るとき、行いっぱいに広げる（L-36）。
+   * Staff が tablet から desktop まで 2 列になった（L-38）ので、上の段でも止めない。
    * 空いたトラックは frame fill（divider）の灰色の板になるので、格子に空席を作らない。
    * 広げたカードは横組み（写真 1/2 + 本文、U-55）— 縦組みのまま伸ばすと 4:3 の写真が 716 × 537 の
    * 面になり、本文は 1 行の帯になる。
@@ -116,8 +116,8 @@ export function MemberCard({
     // inset は body 側が持つ。写真はセルの縁に触れる（§6.15 の photo）
     <Cell
       asChild
-      className={cn(fillRow && "tablet:max-desktop:flex-row")}
-      colSpan={fillRow ? "2-tablet-only" : 1}
+      className={cn(fillRow && "tablet:flex-row")}
+      colSpan={fillRow ? 2 : 1}
       inset="none"
     >
       <li>
@@ -130,7 +130,7 @@ export function MemberCard({
             ratio={PHOTO_RATIO[size]}
             focal="face"
             sizes={PHOTO_SIZES[size]}
-            className={cn("shrink-0", fillRow && "tablet:max-desktop:w-1/2")}
+            className={cn("shrink-0", fillRow && "tablet:w-1/2")}
             src={member.photo}
             alt=""
           />
@@ -139,7 +139,7 @@ export function MemberCard({
             ratio={PHOTO_RATIO[size]}
             focal="face"
             sizes={PHOTO_SIZES[size]}
-            className={cn("shrink-0", fillRow && "tablet:max-desktop:w-1/2")}
+            className={cn("shrink-0", fillRow && "tablet:w-1/2")}
           />
         )}
 

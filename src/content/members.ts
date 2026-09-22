@@ -46,9 +46,9 @@ export const membersContent = {
   /** Leader として大きく扱う人数 */
   leaderCount: 2,
   /**
-   * Staff（運営 3 名）の顔写真を出すか。**暫定で false**。
+   * Staff（運営 2 名）の顔写真を出すか。**暫定で false**。
    *
-   * 写真が確定しているのは代表 / 副代表の 2 名だけで、Staff の 3 枚はまだプレースホルダ
+   * 写真が確定しているのは代表 / 副代表の 2 名だけで、Staff の 2 枚はまだプレースホルダ
    * なので、本人の写真が揃うまでは写真なしのカード（役職 → 名前 → 紹介 → 導線）で組む。
    * 各 member の photo と public/images/members/<id>.jpg は消していない —
    * ここを true に戻すだけで元のデザイン（4:3 の写真つき）に復帰する。
@@ -100,14 +100,6 @@ export const membersContent = {
           href: "https://my-portfolio-opal-seven-72.vercel.app",
         },
       ],
-    },
-    {
-      id: "shintaro",
-      name: "Shintaro Makiyama",
-      role: "運営",
-      bio: "長崎大学大学院 修士1年。ピラミッドや旧日系人収容所などの遺産をITで読み解き、後世に残す研究を行っています。",
-      photo: "/images/members/makiyama.jpg",
-      socials: [{ kind: "github", href: "https://github.com/shin3akiyama" }],
     },
   ] satisfies Member[],
 } as const;
