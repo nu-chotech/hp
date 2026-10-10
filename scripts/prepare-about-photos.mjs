@@ -23,12 +23,19 @@ const outDir = resolve(process.cwd(), "public/images/about");
 const ratio = 16 / 9;
 
 /**
- * `top`: 切り取りの上端（px、原寸基準）。人の頭の少し上に取る — 天井を帯として
- * 残すと奥行きが出るが、1/5 を占めると主役が入れ替わる。
+ * 配信の上限幅。いちばん大きく出るのは desktop の 379 × DPR 3 = 1137 なので、
+ * 2 倍の余裕を見てここで止める（§5.7.2 の「原寸のまま置く」の唯一の例外。
+ * 原版は 3000 〜 4618px あり、next/image が使う幅より一桁大きい）。
+ */
+const maxWidth = 2400;
+
+/**
+ * `top`: 切り取りの上端。**原寸に対する比**で持つ（px だと素材を差し替えた瞬間にずれる）。
+ * 人の頭の少し上に取る — 天井を帯として残すと奥行きが出るが、1/5 を占めると主役が入れ替わる。
  */
 const photos = [
-  { source: "geek-project.jpg", top: 300 },
-  { source: "nagasaki-hackathon.jpg", top: 300 },
+  { source: "geek-project.jpg", top: 0.2 },
+  { source: "nagasaki-hackathon.jpg", top: 0.2 },
 ];
 
 await mkdir(outDir, { recursive: true });
@@ -38,14 +45,19 @@ for (const { source, top } of photos) {
   const { width, height } = await sharp(input).metadata();
   const cropHeight = Math.round(width / ratio);
   // 下が足りなければ上端を引き上げる（原寸より大きくは切れない）
-  const y = Math.min(top, Math.max(0, height - cropHeight));
+  const y = Math.min(
+    Math.round(height * top),
+    Math.max(0, height - cropHeight),
+  );
+  const out = Math.min(maxWidth, width);
 
   await sharp(input)
     .extract({ left: 0, top: y, width, height: cropHeight })
+    .resize(out, null, { kernel: "lanczos3", withoutEnlargement: true })
     .jpeg({ quality: 88, mozjpeg: true })
     .toFile(resolve(outDir, source));
 
   console.log(
-    `${source}  ${width}×${height} → ${width}×${cropHeight}（top ${y}）`,
+    `${source}  ${width}×${height} → ${out}×${Math.round(out / ratio)}（top ${y}）`,
   );
 }
