@@ -55,13 +55,13 @@ import { aboutContent } from "@/content/about";
  */
 const WIDE = {
   culture: "wide:col-start-1 wide:col-end-3 wide:row-start-1 wide:row-end-3",
-  photoTalk: "wide:col-start-4 wide:row-start-1",
+  photoUpper: "wide:col-start-4 wide:row-start-1",
   members: "wide:col-start-4 wide:row-start-2",
   since: "wide:col-start-4 wide:row-start-3",
   chat: "wide:col-start-3 wide:row-start-1 wide:row-end-4",
   everyone: "wide:col-start-1 wide:col-end-3 wide:row-start-3",
   format: "wide:col-start-1 wide:row-start-4",
-  photoDev: "wide:col-start-2 wide:row-start-4",
+  photoLower: "wide:col-start-2 wide:row-start-4",
   official: "wide:col-start-3 wide:col-end-5 wide:row-start-4",
 } as const;
 
@@ -81,7 +81,8 @@ export function About() {
     forEveryone,
     photos,
   } = aboutContent;
-  const [talkDay, devDay] = photos;
+  // 上段（wide では CHAT の隣）と下段（OFFICIAL の隣）の 2 枚。順序は content が決める
+  const [upperPhoto, lowerPhoto] = photos;
 
   return (
     <Section aria-labelledby="about-title" id={sectionIds.about}>
@@ -133,10 +134,10 @@ export function About() {
         />
 
         <CellPhoto
-          alt={talkDay.alt}
-          className={WIDE.photoTalk}
+          alt={upperPhoto.alt}
+          className={WIDE.photoUpper}
           sizes={PHOTO_SIZES}
-          src={talkDay.src}
+          src={upperPhoto.src}
         />
 
         <CellFacts
@@ -153,10 +154,10 @@ export function About() {
         />
 
         <CellPhoto
-          alt={devDay.alt}
-          className={WIDE.photoDev}
+          alt={lowerPhoto.alt}
+          className={WIDE.photoLower}
           sizes={PHOTO_SIZES}
-          src={devDay.src}
+          src={lowerPhoto.src}
         />
 
         <CellOfficial
