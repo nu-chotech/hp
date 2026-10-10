@@ -32,11 +32,16 @@ const slot = cva(["relative overflow-hidden"], {
       placeholder: "bg-image-placeholder",
       none: "",
     },
-    /** §5.7.2 の 3 比率 + ロゴの 3:2（L-32）。fill は親（罫線グリッドのセルなど）が高さを決める場合 */
+    /**
+     * §5.7.2 の 3 比率 + ロゴの 2 比率。fill は親（罫線グリッドのセルなど）が高さを決める場合。
+     * ロゴは素材を正規化したキャンバスの比をそのまま受ける: 3:2 は Partners のタイルとマーキー
+     * （L-32）、16:5 は OFFICIAL の白いセルに高さで揃えて置くマーク（U-56）。
+     */
     ratio: {
       "16:9": "aspect-16/9",
       "4:3": "aspect-4/3",
       "3:2": "aspect-3/2",
+      "16:5": "aspect-16/5",
       "1:1": "aspect-square",
       fill: "size-full",
     },

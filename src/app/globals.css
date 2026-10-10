@@ -603,8 +603,9 @@
   /* CULTURE のサイクル図の箱（正方形）。286 / 440 — 中の軌道と円はこの箱に対する比（U-56）。
      Mobile の 1 列は container に追従するので max-width として渡す（375 未満で縮む） */
   --size-cycle: 17.875rem;
-  --size-logo-tile: 5rem; /* 80 / 72 — OFFICIAL のロゴ板の高さ（logo-ground の白、U-56） */
-  --size-logo-mark: 3.5rem; /* 56 / 52 — 板の中のロゴ（3:2 の白キャンバスの高さ、L-32 と同じ素材） */
+  /* OFFICIAL のマークの高さ（U-56）。セルごと白（logo-ground）なので板は持たない —
+     白い板を ground の上に置くと、比 1.12 の矩形が浮いて見えた（2026-10-10 の是正） */
+  --size-logo-mark: 3.5rem; /* 56 — 3:1 の白キャンバスの高さ */
 
   /* --- 5.3 アイコン（Tabler outline、24 グリッド、stroke 2、round cap/join） -- */
   --icon-sm: 1rem; /* 16 — 12〜14px の文字の横、36px コントロールのラベル横 */
@@ -692,8 +693,6 @@
     --cycle-word-size: 1.0625rem;
     --cycle-word-leading: 1.5rem;
     --size-cycle: 27.5rem; /* 440 */
-    --size-logo-tile: 4.5rem; /* 72 — 板は Desktop のほうが低い（列が 2 つ並ぶため） */
-    --size-logo-mark: 3.25rem; /* 52 */
     --grid-gutter: 1.5rem; /* 24 */
     --section-pad-top: 4rem; /* 64 */
     --section-pad-bottom: 5rem; /* 80 */
@@ -998,7 +997,6 @@
   --spacing-persona-rec: var(--size-persona-rec);
   --spacing-figure: var(--size-figure);
   --spacing-cycle: var(--size-cycle);
-  --spacing-logo-tile: var(--size-logo-tile);
   --spacing-logo-mark: var(--size-logo-mark);
   --spacing-mark-nav: var(--size-mark-nav);
   --spacing-mark-footer: var(--size-mark-footer);

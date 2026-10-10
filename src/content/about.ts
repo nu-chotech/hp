@@ -96,18 +96,23 @@ export const aboutContent = {
   /**
    * 公的な裏づけ 2 件（DECISION U-14 → U-40 → U-52 → U-56）。図（Tabler の円）をやめ、
    * **ロゴ板**（logo-ground の白）を各件の先頭に置く。裏づけを語るのは団体の意匠であって、
-   * こちらで選んだアイコンではない。長崎大学の公式マークは未入手なので枠だけ先に確定させる。
+   * こちらで選んだアイコンではない。
+   *
+   * マークは 3:1 の白キャンバスに正規化したもの（`pnpm generate:partner-logos`）。
+   * 技育プロジェクトは運営元の「サポーターズ」を左に組んだロックアップで、筆文字の
+   * ほぼ正方形のマーク単体（977 × 1024）が横長の板の中で小さく見えるのを直している
+   * （クライアント判断 2026-10-10）。Partners 節のタイル（3:2）とは別の素材。
    */
   official: {
     kicker: "OFFICIAL",
     rows: [
       {
-        // TODO(client): 長崎大学の公式マークが届いたら public/images/partners/ に置いて 1 行足す
+        logo: "/images/official/nagasaki-university.png",
         title: "長崎大学公認団体",
         sub: "2026年に長崎大学の公認を取得",
       },
       {
-        logo: "/images/partners/geek-project.png",
+        logo: "/images/official/geek-project.png",
         title: "技育プロジェクト公式パートナー",
         sub: "株式会社サポーターズが運営",
       },
