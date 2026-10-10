@@ -35,7 +35,8 @@ const maxWidth = 2400;
  */
 const photos = [
   { source: "geek-project.jpg", top: 0.2 },
-  { source: "nagasaki-hackathon.jpg", top: 0.2 },
+  // 窓の外の景色を帯として残したいので、天井だけを落とす浅めの切り口
+  { source: "hackathon-talk.jpg", top: 0.12 },
 ];
 
 await mkdir(outDir, { recursive: true });
