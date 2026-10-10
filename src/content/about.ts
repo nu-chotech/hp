@@ -224,11 +224,21 @@ export const aboutContent = {
   },
 
   /**
-   * 活動写真 2 枚（U-56）。Activities と同じ実素材を共用する（差し替えは同名で上書き）。
+   * 活動写真 2 枚（U-56、2026-10-10 差し替え）。About 専用の素材（`public/images/about/`）で、
+   * Activities とは別の写真を使う — 共用していた頃は dev-day が 1 ページに 2 回出ていた。
+   * どちらも**人が大勢集まっている場**の写真で、図と文字だけになりがちなベントに
+   * 「実際に人がいる」を入れるのがこの 2 枚の仕事（§6.11.5）。
+   *
    * ここでは写真を説明する文が隣に無いので、alt は空にせず「何の場面か」を持たせる（§8.6）。
    */
   photos: [
-    { src: "/images/activities/talk-day.jpg", alt: "Talk Day の様子" },
-    { src: "/images/activities/dev-day.jpg", alt: "Dev Day の様子" },
+    {
+      src: "/images/about/geek-project.jpg",
+      alt: "技育プロジェクトのイベントに参加したときの集合写真",
+    },
+    {
+      src: "/images/about/nagasaki-hackathon.jpg",
+      alt: "NAGASAKI HACKATHON 2026 の集合写真",
+    },
   ],
 } as const;
