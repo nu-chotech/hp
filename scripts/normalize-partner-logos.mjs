@@ -91,3 +91,127 @@ for (const { source, slug, scale, trim, whitePoint } of logos) {
     `${slug}.png  ${source} ${w}×${h} → mark ${width}×${height} on ${canvas.width}×${canvas.height}`,
   );
 }
+
+/* ---------------------------------------------------------------------------
+ * OFFICIAL のロゴ板（§6.11.4 / DECISION U-56）
+ *
+ * Partners のタイル（上の 3:2）とは板の形が違う: 板は 263 × 72（Desktop）の**横長**で、
+ * マークは高さ 52（`size/logo-mark`）で揃える。3:2 のキャンバスに載せると、横長のマークは
+ * 高さ方向が余って板の中で豆粒になるので、ここでは **3:1 のキャンバスに縁まで**収める
+ * （余白は板が 72 − 52 = 20 持っている）。2 枚のマークが同じ高さで並ぶことが、
+ * 「同格の裏づけが 2 つ」という構図を支える。
+ *
+ * 技育プロジェクトのマークは 977 × 1024 のほぼ正方形で、横長の板の中では小さく見える。
+ * 運営元の「サポーターズ」のワードマークを**左に組む**ことで、ロックアップ全体が横長になり
+ * 板の形と噛み合う（クライアント判断 2026-10-10:「技育プロジェクト（サポーターズ）みたいな
+ * 感じだから、技育プロジェクトロゴの左にあるとちょうど横長になる」）。
+ * ------------------------------------------------------------------------- */
+const officialSrcDir = resolve(process.cwd(), "assets/official");
+const officialOutDir = resolve(process.cwd(), "public/images/official");
+/**
+ * 16:5（3.2:1）。**最も横に長いマークが高さいっぱいで収まる**比に取る — 2 枚が同じ高さで
+ * 並ぶことがこの図の要なので、キャンバスの側を広げて縮小を避ける（長崎大学 3.12:1、
+ * 技育のロックアップ 3.15:1）。
+ */
+const officialCanvas = { width: 960, height: 300 };
+
+/**
+ * ロックアップ（複数のマークを横に組む）か、単体か。
+ * - `height`: キャンバス高に対するそのマークの高さ（1 = 縁まで）
+ * - `gap`: 直前のマークとの間隔（キャンバス高に対する比）
+ */
+const officialLogos = [
+  {
+    slug: "nagasaki-university",
+    marks: [
+      {
+        dir: officialSrcDir,
+        source: "nagasaki-university.png",
+        trim: 10,
+        height: 1,
+      },
+    ],
+  },
+  {
+    slug: "geek-project",
+    marks: [
+      // 運営元。細いワードマーク（6:1）なので、筆文字のマークに対して 32% の高さで釣り合う。
+      // 56 の中で約 18px になり、6 文字のカタカナがはっきり読める
+      {
+        dir: officialSrcDir,
+        source: "supporters.png",
+        trim: 10,
+        height: 0.32,
+      },
+      {
+        dir: srcDir,
+        source: "geek-project.jpg",
+        trim: 30,
+        whitePoint: 246,
+        height: 1,
+        // 2 つで 1 つのロックアップに見える距離。詰めると字とマークがぶつかり、
+        // 離すと「別々の 2 社」に読める
+        gap: 0.24,
+      },
+    ],
+  },
+];
+
+await mkdir(officialOutDir, { recursive: true });
+
+for (const { slug, marks } of officialLogos) {
+  const laid = [];
+  for (const mark of marks) {
+    let cleaned = sharp(resolve(mark.dir, mark.source)).trim({
+      threshold: mark.trim,
+    });
+    if (mark.whitePoint) cleaned = cleaned.linear(255 / mark.whitePoint, 0);
+    // 透過素材は白に焼き付ける（板は logo-ground の白。U-33 と同じ理由）
+    const buf = await cleaned.flatten({ background: white }).toBuffer();
+    const { width: w, height: h } = await sharp(buf).metadata();
+    const height = Math.round(officialCanvas.height * mark.height);
+    const width = Math.round((w / h) * height);
+    laid.push({
+      buf,
+      width,
+      height,
+      gap: (mark.gap ?? 0) * officialCanvas.height,
+    });
+  }
+
+  // 横に並べた素の幅。キャンバスに入らなければ全体を縮める
+  const raw = laid.reduce((sum, m) => sum + m.gap + m.width, 0);
+  const fit = Math.min(1, officialCanvas.width / raw);
+  const total = Math.round(raw * fit);
+
+  let x = Math.round((officialCanvas.width - total) / 2);
+  const composite = [];
+  for (const m of laid) {
+    const width = Math.max(1, Math.round(m.width * fit));
+    const height = Math.max(1, Math.round(m.height * fit));
+    x += Math.round(m.gap * fit);
+    composite.push({
+      input: await sharp(m.buf)
+        .resize(width, height, { fit: "fill", kernel: "lanczos3" })
+        .toBuffer(),
+      left: x,
+      // 縦は中央揃え。ワードマークは筆文字のマークの重心に合わせる
+      top: Math.round((officialCanvas.height - height) / 2),
+    });
+    x += width;
+  }
+
+  const composed = await sharp({
+    create: { ...officialCanvas, channels: 3, background: white },
+  })
+    .composite(composite)
+    .png()
+    .toBuffer();
+
+  const out = resolve(officialOutDir, `${slug}.png`);
+  await sharp(composed).removeAlpha().png({ compressionLevel: 9 }).toFile(out);
+
+  console.log(
+    `official/${slug}.png  ${marks.map((m) => m.source).join(" + ")} → ${total}×${officialCanvas.height} on ${officialCanvas.width}×${officialCanvas.height}`,
+  );
+}

@@ -4,14 +4,13 @@ import {
   IconArrowUpRight,
   IconAsterisk,
   IconBook,
+  IconBulb,
   IconCheck,
   IconCode,
   IconExternalLink,
-  IconFlag,
   IconFlask,
   IconHammer,
   IconHeart,
-  IconHeartHandshake,
   IconMail,
   IconMapPin,
   IconMenu2,
@@ -19,7 +18,6 @@ import {
   IconMessages,
   IconPalette,
   IconPhoto,
-  IconSchool,
   IconX,
 } from "@tabler/icons-react";
 import type { ComponentProps } from "react";
@@ -83,24 +81,25 @@ export const Mail = decorative(IconMail, "Mail");
 export const Photo = decorative(IconPhoto, "Photo");
 
 /**
- * About のベントのビジュアル（§6.11.2 / DECISION U-40 → U-52）。32 = icon/xl、stroke 1.5（§5.1）。
+ * About のベントのビジュアル（§6.11.2 / DECISION U-40 → U-52 → U-56）。stroke 1.5（§5.1）で、
+ * 32 = icon/xl（語を下に添える 80 の円）／40 = icon/2xl（サイクル図の 128 の円、Desktop）。
  * Bento / Figure が緑の円（C-32、accent-fill）の中に置き、色は currentColor = figure/ink（白）。
- * 題の語をひとつずつ図にする: 学ぶ = book、創る = hammer、話す = message-circle。
- * エンジニア = code、デザイナー = palette、サイエンティスト = flask。
- * 対面 = map-pin、オンライン = messages。公認 = school、公式パートナー = heart-handshake。
- * 設立 = flag。
+ * 円の語をひとつずつ図にする: 学ぶ = book、創る = hammer、話す = message-circle。
+ * エンジニア = code、デザイナー = palette、プランナー = bulb、サイエンティスト = flask。
+ * 対面 = map-pin、オンライン = messages。
+ *
+ * U-56 で外した 3 つ: school / heart-handshake（OFFICIAL は図をやめてロゴ板に）、
+ * flag（SINCE は図をやめて数字だけに）。
  */
 export const Book = decorative(IconBook, "Book");
 export const Hammer = decorative(IconHammer, "Hammer");
 export const MessageCircle = decorative(IconMessageCircle, "MessageCircle");
 export const Code = decorative(IconCode, "Code");
 export const Palette = decorative(IconPalette, "Palette");
+export const Bulb = decorative(IconBulb, "Bulb");
 export const Flask = decorative(IconFlask, "Flask");
 export const MapPin = decorative(IconMapPin, "MapPin");
 export const Messages = decorative(IconMessages, "Messages");
-export const School = decorative(IconSchool, "School");
-export const HeartHandshake = decorative(IconHeartHandshake, "HeartHandshake");
-export const Flag = decorative(IconFlag, "Flag");
 
 /** content 側が文字列で持つベントの図を解決する（about.ts の AboutIcon） */
 export const bentoIcons = {
@@ -109,12 +108,10 @@ export const bentoIcons = {
   message: MessageCircle,
   code: Code,
   palette: Palette,
+  bulb: Bulb,
   flask: Flask,
   "map-pin": MapPin,
   messages: Messages,
-  school: School,
-  handshake: HeartHandshake,
-  flag: Flag,
 } as const;
 /** 個人サイト */
 export const Website = decorative(IconExternalLink, "Website");

@@ -10,6 +10,7 @@
     "format": "biome format --write",
     "generate:icons": "node scripts/generate-icons.mjs",
     "generate:avatars": "node scripts/generate-avatars.mjs",
+    "generate:about-photos": "node scripts/prepare-about-photos.mjs",
     "generate:partner-logos": "node scripts/normalize-partner-logos.mjs"
   },
   "dependencies": {
