@@ -74,9 +74,9 @@ export const membersContent = {
       bio: "長崎大学大学院 修士1年。データ分析やAIを活用したサービス開発に取り組んでいます。ユーザーの課題を起点に、データから得た気づきを役立つ仕組みへ。",
       photo: "/images/members/nishiyama.jpg",
       socials: [
-        { kind: "x", href: "https://x.com/YiIbuki34" },
-        { kind: "github", href: "https://github.com/nikkiy30" },
-        { kind: "website", href: "https://roaring-puppy-a0e0d5.netlify.app" },
+        { kind: "x", href: "https://x.com/YiIbuki34/" },
+        { kind: "github", href: "https://github.com/nikkiy30/" },
+        { kind: "website", href: "https://portfolio.nikkiy.workers.dev/" },
       ],
     },
     {
