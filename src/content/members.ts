@@ -57,7 +57,7 @@ export const membersContent = {
       id: "takuya",
       name: "Takuya Uehara",
       role: "代表",
-      bio: "長崎大学大学院 修士1年。デザインとテクノロジーを横断したアプリの開発が得意です。ハッカソンに積極的に参加したり、技術を起点として様々なことに挑戦しています。",
+      bio: "長崎大学大学院 瀬戸崎研究室 修士1年。デザインとテクノロジーを横断したアプリの開発が得意です。ハッカソンに積極的に参加したり、技術を起点として様々なことに挑戦しています。",
       photo: "/images/members/uehara.jpg",
       socials: [
         { kind: "x", href: "https://x.com/ut42tech" },
@@ -69,7 +69,7 @@ export const membersContent = {
       id: "ibuki",
       name: "Ibuki Nishiyama",
       role: "副代表",
-      bio: "長崎大学大学院 修士1年。データ分析やAIを活用したサービス開発に取り組んでいます。ユーザーの課題を起点に、データから得た気づきを役立つ仕組みへ。",
+      bio: "長崎大学大学院 神山研究室 修士1年。データ分析やAIを活用したサービス開発に取り組んでいます。ユーザーの課題を起点に、データから得た気づきを役立つ仕組みへ。",
       photo: "/images/members/nishiyama.jpg",
       socials: [
         { kind: "x", href: "https://x.com/YiIbuki34/" },
@@ -81,7 +81,7 @@ export const membersContent = {
       id: "yuinosuke",
       name: "Yuinosuke Miyazaki",
       role: "運営",
-      bio: "長崎大学大学院 修士1年。Discord運営・イベント企画担当。研究ではPythonでのデータ解析や音響信号処理に取り組んでいます。",
+      bio: "長崎大学大学院 喜安研究室 修士1年。Discord運営・イベント企画担当。研究ではPythonでのデータ解析や音響信号処理に取り組んでいます。",
       photo: "/images/members/miyazaki.jpg",
       socials: [{ kind: "github", href: "https://github.com/yuinosuke92" }],
     },
