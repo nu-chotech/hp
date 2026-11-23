@@ -39,6 +39,7 @@
 > - **2026-10-10（3）**: Activities の Hackathon と About の 2 枚目を**入れ替える**（クライアント判断）。Hackathon のセルには NAGASAKI HACKATHON 2026 の表彰式の集合写真 — 節名がその催しそのものを指すので、会場の発表風景より先に「何の催しか」が読める。About は代わりに発表風景（`hackathon-talk.jpg`）を受け、2 枚が「集まっているところ」「やっているところ」の対になる。Activities 側は原寸 4:3 のまま枠が 16:9 に切る（§5.7.2 の既定）
 > - **2026-10-10（4）**: About の 2 枚の写真を**上下で入れ替える**（クライアント判断）。上（wide では CHAT の隣）が発表風景、下（OFFICIAL の隣）が技育プロジェクトの集合写真。節の終わりで大勢の写真と OFFICIAL が並ぶ。`about.tsx` の変数名も旧素材の名残（`talkDay` / `devDay`）から置き場の名前（`upperPhoto` / `lowerPhoto`、`WIDE.photoUpper` / `photoLower`）に直した
 > - **2026-11-23**: 運営メンバーの離脱で Staff が 2 → 1 名（向井を削除、写真も削除）。Staff グリッドは 2 列のまま（L-38）で、1 名は `fillRow` の横組みカード（L-36 / U-55）として行いっぱいに出る
+> - **2026-11-23（2）**: 宮崎の顔写真が本人のものに。iPhone の原版（3024 × 2423、位置情報つき EXIF）を `jpegtran -copy icc -crop 3024x2268+0+0` で**再圧縮せずに** 4:3 に切り（下の机の縁を落とす）、EXIF / XMP を外した（色の ICC プロファイル Display P3 だけ残す）。画素は原版と同一。Staff の写真が全員ぶん揃ったので `showStaffPhotos` を **true** に戻す（2026-09-07 の暫定非表示を解除、§6.15）
 > - **Figma v2 への反映は未実施**（2026-09-12 時点）。反映すべき変更の一覧と手順は [figma-sync-2026-09-12.md](./figma-sync-2026-09-12.md)
 > - **2026-09-11**: Cell Stat の所属バッジ（U-29）を**撤回**し、セルは `50+` の数字だけに戻す（**DECISION U-36**）。Chip の Inverse トーンは Accent と同じくライブラリのみ（ページに出さない）。About の CULTURE セルは本文を落として題だけ（「仲間と、学ぶ。創る。話す。」— Hero の h1 を `Hack Your Limits.` に差し替える予定に合わせ、3 語を Culture に降ろす）
 > - **2026-09-10（2）**: 外部リンクは**すべて新しいタブ**で開く（`target="_blank" rel="noopener noreferrer"`、vh「（外部、新しいタブで開く）」、**DECISION M-21**。M-15 は撤回）。Partner の Logo タイルは `href` があれば**タイル全体が団体サイトへのリンク**（**DECISION U-35**。hover / pressed の表現なし、フォーカスリングは内側）
@@ -2287,7 +2288,7 @@ Figma: `Persona / Card` 1。Props: `caseNo` `title` `quote` `rec` TEXT、`image`
 
 | 要素 | Leader | Staff |
 |---|---|---|
-| photo | Image slot Rect / Cover、**16:9**、原色（U-21）、`alt=""`（氏名が隣に可視、§8.6） | 4:3、同。**暫定非表示**（`showPhoto` false で写真枠ごと落とし、body がセル上端から始まる。本人写真が揃ったら戻す） |
+| photo | Image slot Rect / Cover、**16:9**、原色（U-21）、`alt=""`（氏名が隣に可視、§8.6） | 4:3、同。2026-09-07 から暫定非表示だったが、2026-11-23 に本人写真が揃ったので**表示**に戻した（`showStaffPhotos` true）。未確定の人が出たら `showPhoto` false で写真枠ごと落とし、body がセル上端から始まる |
 | body inset | `inset/cell` 24 / 20 | `inset/md` 16 |
 | role | `Overline/Latin` / `Overline/JP` 12、`ink-secondary`（5.83）、下 `stack/2xs` 4 | 同 |
 | name | `Title/2` 22 `ink`、`<h3>`、姓名の間は半角スペース | `Headline` 17 |

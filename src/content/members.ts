@@ -35,9 +35,8 @@ export interface Member {
  *   確定 … bio は Issue #9–12 本文、上原は ut42tech.com。GitHub は Issue の起票者
  *   未定 … **氏名**。Issue にもプロフィールにも姓しか無いので姓だけ置く。
  *          名が分かった時点で「姓 名」に直す（§6.15 の name は分かち書き 1 つ）
- *   仮   … **役職**と**顔写真**。代表 / 副代表だけは確定で、残り 3 名の役職は
- *          本人の関心（3D・イベント企画・デザイン）から当てた仮。写真は Unsplash 由来の
- *          プレースホルダで、実体は public/images/members/<id>.jpg に保存してある
+ *   仮   … **役職**。代表 / 副代表だけは確定で、残りの役職は本人の関心から当てた仮。
+ *          顔写真は 2026-11-23 に全員ぶんが本人の写真に揃った（public/images/members/<id>.jpg）
  *
  * Issue #8（上原）は本文が空のままなので、bio は本人サイト ut42tech.com から取った。
  */
@@ -46,14 +45,13 @@ export const membersContent = {
   /** Leader として大きく扱う人数 */
   leaderCount: 2,
   /**
-   * Staff（運営 1 名）の顔写真を出すか。**暫定で false**。
+   * Staff の顔写真を出すか。
    *
-   * 写真が確定しているのは代表 / 副代表の 2 名だけで、Staff の 1 枚はまだプレースホルダ
-   * なので、本人の写真が揃うまでは写真なしのカード（役職 → 名前 → 紹介 → 導線）で組む。
-   * 各 member の photo と public/images/members/<id>.jpg は消していない —
-   * ここを true に戻すだけで元のデザイン（4:3 の写真つき）に復帰する。
+   * 2026-09-07 から本人の写真が揃うまで false（写真なしのカード）で組んでいたが、
+   * 2026-11-23 に Staff（運営 1 名）の写真が本人のものに揃ったので true に戻した（§6.15）。
+   * 写真が未確定の人が増えたら、ここを false にすると写真枠ごと落ちる。
    */
-  showStaffPhotos: false,
+  showStaffPhotos: true,
   members: [
     {
       id: "takuya",
