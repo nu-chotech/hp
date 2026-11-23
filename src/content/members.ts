@@ -32,7 +32,9 @@ export interface Member {
  * 出典と確からしさが 3 段に分かれている。混ぜると「どこまで本物か」が読めなくなるので、
  * 行ごとに区別して持つ:
  *
- *   確定 … bio は Issue #9–12 本文、上原は ut42tech.com。GitHub は Issue の起票者
+ *   確定 … bio は Issue #9–12 本文、上原は ut42tech.com。GitHub は Issue の起票者。
+ *          宮崎の担当と最近の開発は 2026-11-23 にクライアントから。長さは 3 人とも上原（全角 84.5）に
+ *          揃え、3 列に並ぶ段で行数が同じになる長さにしてある
  *   未定 … **氏名**。Issue にもプロフィールにも姓しか無いので姓だけ置く。
  *          名が分かった時点で「姓 名」に直す（§6.15 の name は分かち書き 1 つ）
  *   仮   … **役職**。代表 / 副代表だけは確定で、残りの役職は本人の関心から当てた仮。
@@ -69,7 +71,7 @@ export const membersContent = {
       id: "ibuki",
       name: "Ibuki Nishiyama",
       role: "副代表",
-      bio: "長崎大学大学院 神山研究室 修士1年。データ分析やAIを活用したサービス開発に取り組んでいます。ユーザーの課題を起点に、データから得た気づきを役立つ仕組みへ。",
+      bio: "長崎大学大学院 神山研究室 修士1年。データ分析やAIを活用したサービス開発に取り組んでいます。ユーザーの課題を起点に、データから得た気づきを実際に役立つ仕組みへ。",
       photo: "/images/members/nishiyama.jpg",
       socials: [
         { kind: "x", href: "https://x.com/YiIbuki34/" },
@@ -81,7 +83,7 @@ export const membersContent = {
       id: "yuinosuke",
       name: "Yuinosuke Miyazaki",
       role: "運営",
-      bio: "長崎大学大学院 喜安研究室 修士1年。Discord運営・イベント企画担当。研究ではPythonでのデータ解析や音響信号処理に取り組んでいます。",
+      bio: "長崎大学大学院 喜安研究室 修士1年。イベント企画・運営担当。研究では音響信号処理に取り組みつつ、最近はWebアプリやDiscord Botの開発で役立つツールを作っています。",
       photo: "/images/members/miyazaki.jpg",
       socials: [{ kind: "github", href: "https://github.com/yuinosuke92" }],
     },
