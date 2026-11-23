@@ -119,10 +119,9 @@ const cell = cva(
       /**
        * 横 span。段ごとに効く幅が違う（L-34 / L-37）:
        *   2: tablet から常に 2（ライブラリの基本形）
-       *   2-until-wide: tablet から 2、wide では span を降ろす（CULTURE）
+       *   2-until-wide: tablet から 2、wide では span を降ろす（CULTURE・集合写真・OFFICIAL）
        *   2-tablet-only: tablet の 2 列でだけ 2。Staff が 1 名のとき、3 人を並べる 3 列の格子の
-       *     最後の 1 枚（L-39）— 端数が出るのは tablet の 2 列だけ
-       *   2-tablet-3-desktop: tablet で 2、desktop で行いっぱいの 3（OFFICIAL）
+       *     最後の 1 枚（L-39）— 端数が出るのは tablet の 2 列だけ。About の FORMAT も（L-40）
        *
        * `-until-wide` が `wide:col-span-1` ではなく **span 自体を止める**のは、wide の 4 列だけ
        * 疎な auto-placement をやめて `col-start` / `row-start` で明示的に置くため（About の 6a、
@@ -135,15 +134,13 @@ const cell = cva(
         2: "tablet:col-span-2",
         "2-until-wide": "tablet:max-wide:col-span-2",
         "2-tablet-only": "tablet:max-desktop:col-span-2",
-        "2-tablet-3-desktop":
-          "tablet:max-desktop:col-span-2 desktop:max-wide:col-span-3",
       },
       /**
        * 縦 span。既定では desktop（3 列）から効く — tablet の 2 列に行またぎを持ち込むと、
        * 一般には DOM 順と視覚順がずれるため。`2-tablet-until-wide`（CHAT）はその例外で、
-       * **その構図で読み順が保たれることを検算した上で**使う（L-37。2 列では
-       * CULTURE 2×1 / MEMBERS · SINCE / CHAT + 写真 / (CHAT) + EVERYONE / FORMAT + 写真 /
-       * OFFICIAL 2×1 と並び、行ごとの視覚順が DOM 順に一致する）。
+       * **その構図で読み順が保たれることを検算した上で**使う（L-37 / L-40。2 列では
+       * CULTURE 2×1 / MEMBERS · SINCE / CHAT + 写真 / (CHAT) + EVERYONE / 集合写真 2×1 /
+       * FORMAT 2×1 / OFFICIAL 2×1 と並び、行ごとの視覚順が DOM 順に一致する）。
        * wide で止めるのは横 span と同じ理由（L-37 の「span か、明示配置か」）。
        */
       rowSpan: {

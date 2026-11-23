@@ -47,6 +47,7 @@
 > - **2026-11-23（7）**: 宮崎の写真で人物が他の 2 人より大きく写っていた（クライアント所見「もう少し縮小されるのが理想」）。原版は幅をすべて使っているので切り方では引けず、**左右の壁を 378px ずつ鏡像で延ばして**幅を 1.25 倍（3780 × 2268）にした — 人物は 0.8 倍。延ばした部分は原版に無い画素（無地の壁のみ。等倍で見ると壁の模様にかすかな対称が出る）。下端の机の縁は (2) と同じく落とす。新しい画素を作るので再圧縮は避けられず、mozjpeg q92・4:4:4、元の領域は原版に対し PSNR 48 dB。ICC（Display P3）は残し、EXIF / XMP は外す。iPhone の原版（EXIF 上 4032 × 3024）が手に入れば、それで置き換えるのが本来の形
 > - **2026-11-23（8）**: 3 人の紹介文の長さを上原（全角換算 84.5）に揃える（クライアント判断）。西山は Issue #9 の「実際に」を戻して 79.5、宮崎は担当を「イベント企画・運営担当」に改め、最近の開発（Web アプリ・Discord Bot）を足して 79.5（文言はクライアント確認済み）。行数は 1440 で 4 / 4 / 4、1024 で 5 / 5 / 5、768・390 で 4 / 4 / 4 — 3 列に並ぶ段で導線の高さが揃う
 > - **2026-11-24**: About の下の写真を、技育プロジェクトのイベントの集合写真から**長大祭 2026 の ChoTech メンバーの集合写真**に差し替える（**DECISION U-57**、§6.11.5）。約 80 人の他団体の集合写真が「ChoTechについて」の節で MEMBERS 70+ の近くにあり、「これがメンバー」と読まれる（外部からの指摘）。原版（iPhone 4032 × 3024、EXIF つき）は `jpegtran -copy icc -crop 4032x2268+0+752` で**再圧縮せずに** 16:9 へ切り、EXIF / XMP を外して `public/images/about/chodaisai-2026.jpg` に直接置く（原版は repo に入れない）。キャプションは足さない。旧素材 `geek-project.jpg`（assets / public）は削除
+> - **2026-11-24（2）**: 集合写真に**どの段でも横 2 マス**を与える（**DECISION L-40**、§6.11.1）。8 人の横並びは 1×1（298 × 204 〜 373 × 202）では両端から欠けていた。DOM で集合写真を FORMAT の前に移し、tablet から**自分で 2:1** を持たせる（隣が高ければ `place-self-stretch` で揃う）。そのぶん OFFICIAL は desktop 3×1 → 2×1、wide 2×1 → **1×1**（2 件を縦に積む。列数はセルの内側 30rem で切り替わる container query）、FORMAT は tablet でだけ 2×1。tablet 14 マス = 7 行、desktop 15 マス = 5 行で空トラックは出ない。実測: wide 597 × 368、desktop 1100 で 698 × 349、tablet 768 で 716 × 358。OFFICIAL の題「技育プロジェクト公式パートナー」に著者の折り目（U+200B）— wide の 1×1 で「…パート / ナー」に割れた
 > - **Figma v2 への反映は未実施**（2026-09-12 時点）。反映すべき変更の一覧と手順は [figma-sync-2026-09-12.md](./figma-sync-2026-09-12.md)
 > - **2026-09-11**: Cell Stat の所属バッジ（U-29）を**撤回**し、セルは `50+` の数字だけに戻す（**DECISION U-36**）。Chip の Inverse トーンは Accent と同じくライブラリのみ（ページに出さない）。About の CULTURE セルは本文を落として題だけ（「仲間と、学ぶ。創る。話す。」— Hero の h1 を `Hack Your Limits.` に差し替える予定に合わせ、3 語を Culture に降ろす）
 > - **2026-09-10（2）**: 外部リンクは**すべて新しいタブ**で開く（`target="_blank" rel="noopener noreferrer"`、vh「（外部、新しいタブで開く）」、**DECISION M-21**。M-15 は撤回）。Partner の Logo タイルは `href` があれば**タイル全体が団体サイトへのリンク**（**DECISION U-35**。hover / pressed の表現なし、フォーカスリングは内側）
@@ -1186,7 +1187,7 @@ CSS: `.container { width: min(100% - 2 * var(--page-inset), 75rem); margin-inlin
 |---|---|---|
 | **tablet 48rem = 768**（iPad 縦 768 / 810 / 820 / 834） | **トークンのモード**（inset/cell 24、nav/pad-y 12、gutter 24、section 64 / 80 / 96、heading-mb 32、footer 40、stagger 80）+ 構造: ナビ横並び、見出し行、footer 行、罫線グリッド 2 列、ベントの 2 列構図、Staff の端数 span、Mobile ペアの解除 | Mobile のトークンは 342 の紙を守るための値（L-10 / L-11 / L-24）。720 以上の紙に Mobile の余白と 48px の節の頭を残すと、iPad が「広い電話」に見える。iPad は Apple の size class でも Mac 側 |
 | **desktop 64rem = 1024**（iPad 横 1024 / 1180 / 1194、小さいノート） | 構造だけ: persona 3 列（staff は L-38 で 2 列のまま）、partner N 列（5 → 165.6 ≥ 144）、ベント 3 列（CHAT 2×2 が開く）、Nav のタグライン。トークンは変わらない | container 976 で Desktop の性質が保たれる最小幅: h1 1 行（899 ≤ 976）、CULTURE の 2 行目 419 ≤ 599、ロゴ 5 枚、persona 3 列で引用 19 字 / 行 |
-| **wide 78rem = 1248**（container 1200） | 構造だけ: ベント 4 列（U-56 は**明示配置**、L-37）と OFFICIAL の内側 2 列。ここで初めて §3.7 の 12 列幾何が成立する | 4 列の 1×1 の内側 (V − 58) / 4 − 48 が FORMAT の図の列 199（円 80 + 24 + 「オンライン」95）を、2×1 の内側 549 が FOR EVERYONE の 545（題 132 + 24 + 図の列 389）を超える必要がある。後者から V ≥ 1206 で、1248 はそれを満たす、本書が自ら名指しする唯一の viewport 値（U-52 までの根拠「エンジニアもデザイナーも 228」は U-56 のコピー変更で失効） |
+| **wide 78rem = 1248**（container 1200） | 構造だけ: ベント 4 列（U-56 は**明示配置**、L-37）。OFFICIAL は L-40 から wide だけ 1×1 で縦積み（列数は viewport ではなくセルの内側で決まる）。ここで初めて §3.7 の 12 列幾何が成立する | 4 列の 1×1 の内側 (V − 58) / 4 − 48 が FORMAT の図の列 199（円 80 + 24 + 「オンライン」95）を、2×1 の内側 549 が FOR EVERYONE の 545（題 132 + 24 + 図の列 389）を超える必要がある。後者から V ≥ 1206 で、1248 はそれを満たす、本書が自ら名指しする唯一の viewport 値（U-52 までの根拠「エンジニアもデザイナーも 228」は U-56 のコピー変更で失効） |
 
 container は `min(viewport − 48, 1200)`: 342 / 720 / 786 / 976 / 1146 / 1200（390 / 768 / 834 / 1024 / 1194 / 1440）。タイポグラフィは 4 ロール（Display XL / L / M、Title/1）だけ 390–1440 の `clamp()` で連続、残り 18 ロールは単一値（§2.8。旧 L-29 の「流体補間しない」は実装と食い違っていたので改める）。CSS は `--breakpoint-tablet` 48rem / `--breakpoint-desktop` 64rem / `--breakpoint-wide` 78rem の 3 つを持ち、Tailwind の既定階梯は消す。iPad mini 縦（744）は tablet 未満で Mobile の段 — 段の境は iPad 縦の定番 768 に置き、744 だけの段は作らない（744 の 2 列は内側 305 で成立はする。U-55 で「内側 181」の誤記を訂正 — 181 は 3 列の値）。Mobile の Hero は著者改行の 2 行で、板は最長行「Hack Your」を抱くので 744 でも崩れない（U-55）。
 
@@ -2024,17 +2025,17 @@ Figma: `Section / Heading` `Layout` {Row, Stacked} 2。Props: `title` `label` TE
 | 列 | 4 列均等（(1200 − 10) / 4 = 297.5、wide 1248 から）。2×1 = 597。desktop 1024–1247 は 3 列（322.7 … 379.3）、tablet 768–1023 は 2 列（357 … 391）— L-34 | 1 列（338）、DOM 順。MEMBERS · SINCE だけ 168 × 2 のペア（L-35） |
 | 行の最小高 | `size/cell-min` 120 | 120 |
 | セル inset | `inset/cell` **24** | **20** |
-| セル数 | **9**（U-56。7 → 9: CULTURE / MEMBERS / SINCE / CHAT / 写真 / FOR EVERYONE / FORMAT / 写真 / OFFICIAL） | 同（DOM 順 = 読み順） |
+| セル数 | **9**（U-56。7 → 9: CULTURE / MEMBERS / SINCE / CHAT / 写真 / FOR EVERYONE / 集合写真 / FORMAT / OFFICIAL。L-40 で集合写真を FORMAT の前へ） | 同（DOM 順 = 読み順） |
 | 面 | インク 2（CULTURE / MEMBERS）、**白 1**（OFFICIAL = `logo-ground`、U-56）、画像 2、残りは ground | 同 |
 
-**DOM 順は Mobile の読み順**で固定する（どの段でも「文化 → 規模 → 設立 → 会話 → 写真 → 対象 → 場 → 写真 → 公認」）。構図は span と、wide だけ明示配置が決める（**DECISION L-37**）。
+**DOM 順は Mobile の読み順**で固定する（どの段でも「文化 → 規模 → 設立 → 会話 → 写真 → 対象 → 集合写真 → 場 → 公認」）。構図は span と、wide だけ明示配置が決める（**DECISION L-37**）。集合写真は**どの段でも横 2 マス**（**DECISION L-40**）。
 
 | 段 | 構図 |
 |---|---|
-| wide ≥ 1248（4 列、**明示配置**） | 行 1–2 [CULTURE **2×2** / CHAT **1×3** / 写真 · MEMBERS] 行 3 [FOR EVERYONE 2×1 / (CHAT) / SINCE] 行 4 [FORMAT · 写真 · OFFICIAL 2×1] |
-| desktop 1024–1247（3 列） | 行 1–2 [CULTURE 2×2 · MEMBERS / SINCE] 行 3–4 [CHAT **1×2** · 写真 · FOR EVERYONE / FORMAT · 写真] 行 5 [OFFICIAL **3×1**] |
-| tablet 768–1023（2 列） | [CULTURE 2×1] [MEMBERS · SINCE] [CHAT **1×2** · 写真] [(CHAT) · FOR EVERYONE] [FORMAT · 写真] [OFFICIAL 2×1] |
-| Mobile < 768（1 列） | CULTURE → [MEMBERS · SINCE]（ペア、L-35）→ CHAT → 写真 → FOR EVERYONE → FORMAT → 写真 → OFFICIAL |
+| wide ≥ 1248（4 列、**明示配置**） | 行 1–2 [CULTURE **2×2** / CHAT **1×3** / 写真 · MEMBERS] 行 3 [FOR EVERYONE 2×1 / (CHAT) / SINCE] 行 4 [集合写真 **2×1** · FORMAT · OFFICIAL **1×1**] |
+| desktop 1024–1247（3 列） | 行 1–2 [CULTURE 2×2 · MEMBERS / SINCE] 行 3–4 [CHAT **1×2** · 写真 · FOR EVERYONE / 集合写真 **2×1**] 行 5 [FORMAT · OFFICIAL **2×1**] |
+| tablet 768–1023（2 列） | [CULTURE 2×1] [MEMBERS · SINCE] [CHAT **1×2** · 写真] [(CHAT) · FOR EVERYONE] [集合写真 2×1] [FORMAT **2×1**] [OFFICIAL 2×1] |
+| Mobile < 768（1 列） | CULTURE → [MEMBERS · SINCE]（ペア、L-35）→ CHAT → 写真 → FOR EVERYONE → 集合写真 → FORMAT → OFFICIAL |
 
 **DECISION U-56**（2026-09-16、クライアント確定案 6a / 7a）ベントを **9 セル**に組み直す。
 
@@ -2049,7 +2050,7 @@ Figma: `Section / Heading` `Layout` {Row, Stacked} 2。Props: `title` `label` TE
 
 **確認待ちのコピー**（デザイン側で置いた仮の文言。クライアント確認の上で確定させること）: FOR EVERYONE の題「誰でも歓迎。」、職能の「プランナー」、チャット 3 往復目の「日曜にもくもく会やらない？」「行きます！」とスタンプのラベル（🙋 参加 / 🕐 あとで / ✌️ やった）。文言が変わっても寸法は変わらない（§9.3 の上限内）。
 
-**構図の決め方**（L-37）。中間の 2 段は**空トラックを作らない**ことを規準に選んだ（L-36 と同じ）。9 セルの占有マス数が列数の倍数になる組み合わせは限られていて、tablet 12 マス = 6 行 / desktop 15 マス = 5 行がほぼ唯一の解（OFFICIAL が desktop で 3×1 になるのはそのため）。wide の 4 列だけは疎な auto-placement では作れない — CHAT が欲しい 3 列目の行 1 を、DOM で先に来る MEMBERS が取ってしまう。段ごとに「span か、明示配置か」を**排他**にしておく（`col-span-*` は `grid-column` の一括指定なので、同じ段で `col-start-*` と重ねると宣言順で勝ち負けが決まる）。
+**構図の決め方**（L-37）。中間の 2 段は**空トラックを作らない**ことを規準に選んだ（L-36 と同じ）。9 セルの占有マス数が列数の倍数になる組み合わせは限られていて、tablet 12 マス = 6 行 / desktop 15 マス = 5 行がほぼ唯一の解（OFFICIAL が desktop で 3×1 になるのはそのため）。L-40 で集合写真が 2 マスになってからは tablet 14 マス = 7 行 / desktop 15 マス = 5 行で、どちらも DOM 順のまま疎な auto-placement で埋まる — 集合写真が FORMAT より先に来るので、desktop の行 4 に 2 マスがちょうど空く。wide の 4 列だけは疎な auto-placement では作れない — CHAT が欲しい 3 列目の行 1 を、DOM で先に来る MEMBERS が取ってしまう。段ごとに「span か、明示配置か」を**排他**にしておく（`col-span-*` は `grid-column` の一括指定なので、同じ段で `col-start-*` と重ねると宣言順で勝ち負けが決まる）。
 
 どの段でも高さを決めるのはチャットで、**幅ではなく行数**で受ける（1×2 / 1×3）。2 列に広げると吹き出しが左右の縁に貼り付いて真ん中に使われない帯ができ、1×1 に畳むと隣の写真セルがチャット 13 行の高さに引かれて極端な縦長（357 × 685）に切り取られる。
 
@@ -2103,7 +2104,7 @@ Display サイズの数字はこの 2 セルだけ（U-40 の「ページで 1 �
 
 #### 6.11.4 Cell Official（U-56）
 
-fill `ground`。kicker `OFFICIAL` → `<ul>` を 2 列（tablet から `grid-cols-2`、gap `inline/lg` 24、`align-items: center`。Mobile は縦積み gap `stack/lg` 24。desktop は 3×1 で行いっぱい）。各件は**中央揃え**で
+fill `ground`。kicker `OFFICIAL` → `<ul>` を 2 列（セルの内側が **30rem 以上**で `grid-cols-2` — container query、L-40。gap `inline/lg` 24、`align-items: center`。それ未満 = Mobile と wide の 1×1（内側 250）は縦積み gap `stack/lg` 24。tablet / desktop は 2×1）。30rem はマーク 2 枚（179 × 2 + 24 = 382）を超え、長いほうの題（15 全角 = 255）の折り返しが 1 回で済む幅。各件は**中央揃え**で
 
 マーク（3:1、高さ `size/logo-mark` 56）→ `stack/sm` 12 → 題 `Headline` 17 `<h3>` → `stack/2xs` 4 → 補足 `Footnote/Regular` 13 `ink-secondary`
 
@@ -2128,7 +2129,7 @@ fill `ground`。kicker `OFFICIAL` → `<ul>` を 2 列（tablet から `grid-col
 
 余白は U-56 で 1 段ずつ上げた（16 → 24、8 → 12）。wide でセルが 1 列 × 3 行の縦長になり、往復を 1 つ足してもなお詰まって見えたため — 縦に伸びた列にはそれに見合うゆとりが要る。スレッドは 13 行（3 往復 + スタンプ 6 + 入力中、§6.12）。
 
-**Cell Photo**（U-56、旧 6.11.6 の復帰）: `inset` 0 で Image slot をセルの縁まで敷く。高さの決まり方が段で変わる — Mobile の 1 列は**自分で 16:9 を持ち**（隣に高さを決めるセルが無く、行の床 120 では帯にならない）、tablet からは行の高さ = 隣のセルなので比を捨てて面を埋める（`ratio: fill` + `object-fit: cover`）。
+**Cell Photo**（U-56、旧 6.11.6 の復帰）: `inset` 0 で Image slot をセルの縁まで敷く。高さの決まり方が段で変わる — Mobile の 1 列は**自分で 16:9 を持ち**（隣に高さを決めるセルが無く、行の床 120 では帯にならない）、tablet からは行の高さ = 隣のセルなので比を捨てて面を埋める（`ratio: fill` + `object-fit: cover`）。**集合写真（横 2 マス）だけは tablet からも自分で 2:1 を持つ**（L-40）— 2×1 の行は隣の内容が 200 前後しかなく、行に任せると 600 × 204 の 3:1 の帯になる。比を持てば行の高さを写真が決め、隣が高ければ `place-self-stretch` でそれに揃う（縦横とも要る: 比を持つ grid item の既定は start で、縦だけ伸ばすと幅が比から決まって列をはみ出す）。
 
 素材は **About 専用**（`public/images/about/`、2026-10-10 差し替え）。Activities と共用していた頃は dev-day が 1 ページに 2 回出ていた。図と文字だけになりがちなベントに「実際に人がいる」を入れるのがこの 2 枚の仕事で、**上の 1 枚**（wide では CHAT の隣）が**やっているところ**（ハッカソンでの技術構成の発表）、**下の 1 枚**が**集まっているところ**（長大祭 2026 で Tech Pavilion を出展したメンバー、U-57）。細部から入って人の集まりで締める順。
 
@@ -3406,6 +3407,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | L-37 | About のベントは **wide の 4 列だけ明示配置**（`col-start` / `row-start`）、1 / 2 / 3 列は span だけ（2026-09-16）。段ごとに「span か、明示配置か」を排他にし、`-until-wide` の span は `wide:col-span-1` ではなく span 自体を止める。中間の 2 段（tablet 12 マス = 6 行 / desktop 15 マス = 5 行）は**空トラックを作らない**ことを規準に選び、OFFICIAL は desktop でだけ 3×1。CHAT は幅ではなく**行数**で伸ばす（tablet / desktop 1×2、wide 1×3）。rowSpan を tablet に持ち込むのは CHAT のみで、その構図で読み順が保たれることを検算した上で許す | 6a は CULTURE 2×2 と CHAT 1×3 が同じ行を跨いで噛み合う構図で、疎な auto-placement では作れない — CHAT が欲しい 3 列目の行 1 を、DOM で先に来る MEMBERS が取ってしまう。`col-span-*` は `grid-column` の一括指定なので、同じ段で `col-start-*` と重ねると宣言順で勝ち負けが決まる。チャットを 2 列に広げると吹き出しが左右の縁に貼り付いて真ん中に帯ができ、1×1 に畳むと隣の写真が 357 × 685 の極端な縦長に切り取られた |
 | L-38 | Staff グリッドは **desktop でも 2 列**（3 列を撤回、2026-09-22）。Leader と同じ 597 のトラックになり、`fillRow` は tablet 以降の全段で効く（`2-tablet-only` の span はライブラリに残置） | 運営の退任で Staff が 3 → 2 名になり、desktop の 3 列目が 397 の**灰色の空トラック**として出た（L-9 の系）。列数は人数ではなく「空席を作らないこと」から決まる。Leader と同幅になるが、Leader / Staff の差は写真比・inset・name・skills の 4 点で保たれる（§6.15） |
 | L-39 | Staff が **1 名**のときは Leader / Staff の 2 つの格子をやめ、3 人を 1 つの 3 列の格子に**同格**（Leader の組み）で並べる。desktop 3 列 1 行、tablet は 2 列 + 最後の 1 枚を tablet だけ横組みで行いっぱい（`fillRow="tablet-only"`）、Mobile 1 列（2026-11-23、クライアント判断） | 向井の離脱で Staff が 1 名になり、L-36 の `fillRow` で 1200 の行を 1 人が占めた。1 人の運営が代表 2 人ぶんの面積を取り、4:3 の写真（横組みで 597 × 448）が Leader の 16:9（597 × 336）より背が高い — 格が逆転して「宮崎の紹介だけ領域が広すぎる」（クライアント所見）。2 × 2 の空き枠に「COMING SOON」を置く案は、空き枠の文言が読者に何も求めないという U-34 と同じ理由で退けた。3 人なら同格で 1 行に収まり、空席も出ない |
+| L-40 | About の集合写真（U-57）に**どの段でも横 2 マス**を与える。DOM で FORMAT の前に移し、tablet からは自分で 2:1（`place-self-stretch`）。OFFICIAL は desktop 3×1 → 2×1・wide 2×1 → 1×1（縦積み、内側 30rem の container query で列数を切り替え）、FORMAT は tablet だけ 2×1。tablet 14 マス = 7 行 / desktop 15 マス = 5 行、wide は明示配置のまま（2026-11-24） | 8 人の横並びは 1×1（298 × 204 〜 373 × 202）で両端から欠ける。自分たちの顔を見せる写真なので全員が入る大きさが要る。tablet で OFFICIAL を 1×1 にする案は、横に並べたマーク 2 枚（各 179）が内側 ≈ 310 に入らないので退けた。wide で EVERYONE を 1×1 に降ろす案は、行 3 が伸びて CHAT の下に空きが出るので退けた |
 | L-30 | logo mark は図の外接矩形で切った `icons/mark.svg` を 24 / 20 で置く | favicon.svg は余白込みで、図が小さく見え wordmark からも離れて見えた |
 | L-31 | ~~Partner セルは正方形タイル（Desktop 6 列 / tablet 3 / Mobile 2）~~ **U-43 でタイルごと撤去（外枠だけの 1 行）** | ロゴは正方形のアイコンが基本なので図とタイルの形を揃える。文字を運ばないタイルは L-10 の制約外。Mobile 1 列だと 342 角が 6 枚縦に積まれる |
 | L-33 | hero `min-height: min(100svh − size/nav − size/band-marquee, size/hero-max)`（2026-09-12、L-7 改） | ファーストビューの下端にパートナーの帯を乗せる。「支えられている」が最初の画面で見える。1440 × 900 で Hero 718 + 帯 120。内容が下限を超える画面（1280 × 720）では帯は一部 |
