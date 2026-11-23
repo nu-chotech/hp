@@ -103,3 +103,6 @@ export const socialLinks: readonly SocialLink[] = [
 export const externalLinks = {
   discord: "https://discord.gg/dvv8Xy6sMu",
 } as const;
+
+/** 問い合わせ先。Footer が mailto で出す（§6.18） */
+export const contactEmail = "contact@chotech.dev";

@@ -2,7 +2,7 @@ import { Brand } from "@/components/layout/brand";
 import { Container } from "@/components/ui/container";
 import { Rule } from "@/components/ui/rule";
 import { TextLink } from "@/components/ui/text-link";
-import { navLinks, sectionHref, siteConfig } from "@/config/site";
+import { contactEmail, navLinks, sectionHref, siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 
 /**
@@ -11,9 +11,11 @@ import { cn } from "@/lib/utils";
  * 上辺の 2px 罫だけが full-bleed で、中身は container に乗る（§3.6）。
  * 最終区画なので上下は section より静かで帯より広い footer/pad-y（40 / 32）。
  *
- * Mobile は Brand / リンク / © の 3 行を stack/lg 24 で積み、tablet（768）からは
- * Brand ← auto → リンク → 24 → © の 1 行にする（L-36。行の幅 ≈ 617 ≤ 720）。
- * 行が変わるだけで、読み上げ順（= DOM 順）はどちらも同じ。
+ * Mobile は Brand / リンク / 問い合わせ / © の 4 行を stack/lg 24 で積み、tablet（768）からは
+ * Brand ← auto → リンク → 24 → 問い合わせ → 24 → © の 1 行にする（L-36）。
+ * 行の幅は ≈ 890 で、desktop（container 976）からは 1 行に収まるが、tablet の 720 には
+ * 入らない。flex-wrap で問い合わせ以降を 2 行目に送る（Brand · リンクで ≈ 568）。
+ * 行が変わるだけで、読み上げ順（= DOM 順）はどれも同じ。
  *
  * Nav が JS を要求する Mobile でも、同じ 4 本のリンクはここに素の <a> として在る。
  */
@@ -28,7 +30,7 @@ export function Footer({ className }: FooterProps) {
       <Container
         className={cn(
           "flex flex-col gap-stack-lg py-footer-pad-y",
-          "tablet:flex-row tablet:items-center tablet:gap-inline-lg",
+          "tablet:flex-row tablet:flex-wrap tablet:items-center tablet:gap-inline-lg",
         )}
       >
         <Brand size="footer" className="tablet:me-auto" />
@@ -45,6 +47,12 @@ export function Footer({ className }: FooterProps) {
             ))}
           </ul>
         </nav>
+
+        {/* 問い合わせ先はアドレスそのものを見せる（コピーして使う人がいる）。
+            mailto も外部扱いで新しいタブ + arrow-up-right（DECISION M-21） */}
+        <TextLink variant="footer" href={`mailto:${contactEmail}`} external>
+          {contactEmail}
+        </TextLink>
 
         {/* 見出しでも段落でもない添え書き。12px の ink-secondary（5.83） */}
         <p className="text-caption text-ink-secondary">

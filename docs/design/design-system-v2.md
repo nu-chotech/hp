@@ -41,6 +41,7 @@
 > - **2026-11-23**: 運営メンバーの離脱で Staff が 2 → 1 名（向井を削除、写真も削除）。Staff グリッドは 2 列のまま（L-38）で、1 名は `fillRow` の横組みカード（L-36 / U-55）として行いっぱいに出る
 > - **2026-11-23（2）**: 宮崎の顔写真が本人のものに。iPhone の原版（3024 × 2423、位置情報つき EXIF）を `jpegtran -copy icc -crop 3024x2268+0+0` で**再圧縮せずに** 4:3 に切り（下の机の縁を落とす）、EXIF / XMP を外した（色の ICC プロファイル Display P3 だけ残す）。画素は原版と同一。Staff の写真が全員ぶん揃ったので `showStaffPhotos` を **true** に戻す（2026-09-07 の暫定非表示を解除、§6.15）
 > - **2026-11-23（3）**: MEMBERS の数字を `50+` → **`70+`**（読み上げ「メンバー 70人以上」）。本書の現状を語る箇所は 70+ に改め、DECISION 表と変更履歴の 50+ は当時の記録として残す
+> - **2026-11-23（4）**: Footer に問い合わせ先 **`contact@chotech.dev`**（mailto、外部扱いで新しいタブ + `arrow-up-right`、M-21）を足す。アドレスは `siteConfig` の隣の `contactEmail` に 1 か所で持つ。行が ≈ 890 に伸びて tablet の 720 に入らなくなったので、tablet 768–1023 は `flex-wrap` で問い合わせ以降を 2 行目へ送る。1 行は desktop 1024 から（§6.18）
 > - **Figma v2 への反映は未実施**（2026-09-12 時点）。反映すべき変更の一覧と手順は [figma-sync-2026-09-12.md](./figma-sync-2026-09-12.md)
 > - **2026-09-11**: Cell Stat の所属バッジ（U-29）を**撤回**し、セルは `50+` の数字だけに戻す（**DECISION U-36**）。Chip の Inverse トーンは Accent と同じくライブラリのみ（ページに出さない）。About の CULTURE セルは本文を落として題だけ（「仲間と、学ぶ。創る。話す。」— Hero の h1 を `Hack Your Limits.` に差し替える予定に合わせ、3 語を Culture に降ろす）
 > - **2026-09-10（2）**: 外部リンクは**すべて新しいタブ**で開く（`target="_blank" rel="noopener noreferrer"`、vh「（外部、新しいタブで開く）」、**DECISION M-21**。M-15 は撤回）。Partner の Logo タイルは `href` があれば**タイル全体が団体サイトへのリンク**（**DECISION U-35**。hover / pressed の表現なし、フォーカスリングは内側）
@@ -2385,9 +2386,9 @@ Figma: `Section / Poster` 1。Props: `kicker` `display` `paragraph` `ctaLabel` `
 |---|---|---|
 | 上辺 | Rule 2/H | 同 |
 | pad | `footer/pad-y` **40** × `page/inset` 24 | **32** × 24 |
-| 構成 | Brand Footer（左）← auto → Link Footer × 4（gap `inline/lg` 24）→ 24 → `© 2026 ChoTech`。1 行は tablet 768 から（≈ 617 ≤ 720、L-36） | 3 行、`stack/lg` 24: Brand / リンク 4 つ（1 行、左揃え、≈ 273 ≤ 342）/ © |
+| 構成 | Brand Footer（左）← auto → Link Footer × 4（gap `inline/lg` 24）→ 24 → 問い合わせ `contact@chotech.dev`（Link Footer、mailto、`arrow-up-right`、M-21）→ 24 → `© 2026 ChoTech`。行の幅 ≈ 890 なので 1 行は desktop 1024 から（≤ 976）。tablet 768–1023 は `flex-wrap` で 2 行: Brand ← auto → リンク（≈ 568 ≤ 720）/ 問い合わせ → 24 → ©（左揃え、行間 24） | 4 行、`stack/lg` 24: Brand / リンク 4 つ（1 行、左揃え、≈ 273 ≤ 342）/ 問い合わせ / © |
 | © | `Caption/Regular` 12、`ink-secondary`（5.83） | 同 |
-| 高さ | 2 + 40 + 24（mark 24 ≥ Headline 行 24）+ 40 = **106** | ≈ 176 |
+| 高さ | 2 + 40 + 24（mark 24 ≥ Headline 行 24）+ 40 = **106**（tablet の 2 行は ≈ 150） | ≈ 220 |
 | 意味 | `<footer>`、リンクは `<nav aria-label="フッター">` | 同 |
 
 Footer link の状態は §6.3。概念 36 → 40 / 32 は §3.2（最終区画なので広い側）。
