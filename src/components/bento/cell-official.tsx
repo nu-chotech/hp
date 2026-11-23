@@ -59,7 +59,10 @@ export function CellOfficial({
   return (
     <Cell
       asChild
-      className={cn("gap-stack-lg", className)}
+      // 列数はセルの内側の幅で決める（L-40）。Mobile（内側 ≈ 298）ではマーク 2 枚
+      // （各 179）が横に並ばないので縦に積む。2 列になるのは内側 30rem から —
+      // 179 × 2 + 24 = 382 を超え、長いほうの題（15 全角 = 255）の折り返しが 1 回で済む幅
+      className={cn("@container gap-stack-lg", className)}
       colSpan={colSpan}
       surface="logo"
     >
@@ -68,7 +71,7 @@ export function CellOfficial({
         {/* biome-ignore-start lint/a11y/noRedundantRoles: Tailwind の preflight が list-style を none にするので、Safari / VoiceOver は ul から list ロールを外す。§8.5 が求める <ul> > <li> の読み上げを残すには明示が要る */}
         {/* biome-ignore lint/a11y/useSemanticElements: 要素はすでに <ul>。role は上の理由で重ねている */}
         <ul
-          className="grid flex-1 items-center gap-stack-lg tablet:grid-cols-2 tablet:gap-x-inline-lg"
+          className="grid flex-1 items-center gap-stack-lg @min-[30rem]:grid-cols-2 @min-[30rem]:gap-x-inline-lg"
           role="list"
         >
           {rows.map(({ logo, title, sub }) => (

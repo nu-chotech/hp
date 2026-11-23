@@ -33,8 +33,10 @@ const maxWidth = 2400;
  * `top`: 切り取りの上端。**原寸に対する比**で持つ（px だと素材を差し替えた瞬間にずれる）。
  * 人の頭の少し上に取る — 天井を帯として残すと奥行きが出るが、1/5 を占めると主役が入れ替わる。
  */
+// 長大祭 2026 の集合写真（`chodaisai-2026.jpg`、DECISION U-57）はここを通さない。
+// EXIF（GPS）つきの原版を assets/ に置かないため、`jpegtran -copy icc -crop` で
+// 再圧縮せずに 16:9 へ切って public/ に直接置いた（原版 4032 × 3024、下端に揃えて 752 から）。
 const photos = [
-  { source: "geek-project.jpg", top: 0.2 },
   // 窓の外の景色を帯として残したいので、天井だけを落とす浅めの切り口
   { source: "hackathon-talk.jpg", top: 0.12 },
 ];

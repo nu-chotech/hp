@@ -76,7 +76,7 @@ export interface NavLink {
 export const navLinks: readonly NavLink[] = [
   { id: sectionIds.about, label: "About" },
   { id: sectionIds.activities, label: "Activities" },
-  { id: sectionIds.members, label: "Members" },
+  { id: sectionIds.members, label: "Organizers" },
   { id: sectionIds.partners, label: "Partners" },
 ] as const;
 
