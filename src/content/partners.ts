@@ -64,7 +64,8 @@ export const partnersContent = {
    * TODO(client): 題と本文はデザイン側の仮の文言（2026-11-24）。確認の上で確定させること。
    */
   network: {
-    kicker: "GEEK PROJECT",
+    // 所属を名乗る一文にする — 「GEEK PROJECT」だけでは何の段か分からなかった（クライアント所見）
+    kicker: "WE ARE A GEEK PROJECT PARTNER",
     title: "全国の学生と、つながる。",
     body: "ChoTechは技育プロジェクトの公式パートナーです。技育のイベントには全国の学生・学生団体・企業が集まり、ChoTechのメンバーも参加してつながりを広げています。",
     photo: {

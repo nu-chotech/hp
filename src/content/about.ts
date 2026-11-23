@@ -113,9 +113,7 @@ export const aboutContent = {
       },
       {
         logo: "/images/official/geek-project.png",
-        // U+200B は著者の折り目（<wbr> の代わり、§2.6.4）。wide の 1×1（内側 250）で 15 全角が
-        // 2 行に折れるとき、auto-phrase は全体を 1 文節と見て「…パート / ナー」に割った（L-40）
-        title: "技育プロジェクト​公式パートナー",
+        title: "技育プロジェクト公式パートナー",
         sub: "株式会社サポーターズが運営",
       },
     ],

@@ -19,8 +19,8 @@ import { aboutContent } from "@/content/about";
  *   wide ≥ 1248（4 列・明示配置）        desktop 1024–1247（3 列）
  *   [ CULTURE 2×2 ][CHAT][ 写真  ]       [ CULTURE 2×2      ][ MEMBERS ]
  *   [             ][1×3 ][ MEM   ]       [                  ][ SINCE   ]
- *   [ EVERYONE 2×1][    ][ SIN   ]       [ CHAT ][ 写真      ][ EVERYONE]
- *   [ 集合写真 2×1 ][ FMT][ OFFI ]       [ 1×2  ][ 集合写真 2×1         ]
+ *   [EVERY][ FMT  ][    ][ SIN   ]       [ CHAT ][ 写真      ][ EVERYONE]
+ *   [ 集合写真 2×1 ][ OFFICIAL 2×1 ]       [ 1×2  ][ 集合写真 2×1         ]
  *                                        [ FMT  ][ OFFICIAL 2×1         ]
  *
  *   tablet 768–1023（2 列）              Mobile < 768（1 列）
@@ -34,8 +34,9 @@ import { aboutContent } from "@/content/about";
  *
  * 集合写真は**どの段でも横 2 マス**（L-40）。8 人の横並びは 1×1 では両端から欠けるので、
  * FORMAT の前に DOM を移して span で横長に取る。そのぶん OFFICIAL は desktop で 3×1 → 2×1、
- * wide で 2×1 → 1×1（2 件を縦に積む）、FORMAT は tablet でだけ 2×1 になる。tablet で
- * OFFICIAL を 1×1 にしないのは、横に並べたマーク 2 枚（各 179）が内側 ≈ 310 に入らないため。
+ * FORMAT は tablet でだけ 2×1、wide では FOR EVERYONE が 2×1 → 1×1 になる。OFFICIAL を
+ * 1×1 にしない（マーク 2 枚を縦に積むと締まらない、クライアント所見）。wide では行 3 が
+ * EVERYONE の 2×2 の高さ（≈ 380）まで伸び、CHAT の会話と一文のあいだが ≈ 170 空く。
  *
  * wide だけ `col-start` / `row-start` で明示的に置く（**DECISION L-37**）。CULTURE の 2×2 と
  * CHAT の 1×3 が同じ行を跨いで噛み合う構図は、疎な auto-placement では作れない — CHAT が
@@ -66,10 +67,10 @@ const WIDE = {
   members: "wide:col-start-4 wide:row-start-2",
   since: "wide:col-start-4 wide:row-start-3",
   chat: "wide:col-start-3 wide:row-start-1 wide:row-end-4",
-  everyone: "wide:col-start-1 wide:col-end-3 wide:row-start-3",
+  everyone: "wide:col-start-1 wide:row-start-3",
   photoLower: "wide:col-start-1 wide:col-end-3 wide:row-start-4",
-  format: "wide:col-start-3 wide:row-start-4",
-  official: "wide:col-start-4 wide:row-start-4",
+  format: "wide:col-start-2 wide:row-start-3",
+  official: "wide:col-start-3 wide:col-end-5 wide:row-start-4",
 } as const;
 
 /** 上の写真セルの実幅。Mobile 1 列 / tablet 2 列 / desktop 3 列 / wide は 1×1 の 297.5 */
