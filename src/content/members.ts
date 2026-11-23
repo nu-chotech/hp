@@ -46,9 +46,9 @@ export const membersContent = {
   /** Leader として大きく扱う人数 */
   leaderCount: 2,
   /**
-   * Staff（運営 2 名）の顔写真を出すか。**暫定で false**。
+   * Staff（運営 1 名）の顔写真を出すか。**暫定で false**。
    *
-   * 写真が確定しているのは代表 / 副代表の 2 名だけで、Staff の 2 枚はまだプレースホルダ
+   * 写真が確定しているのは代表 / 副代表の 2 名だけで、Staff の 1 枚はまだプレースホルダ
    * なので、本人の写真が揃うまでは写真なしのカード（役職 → 名前 → 紹介 → 導線）で組む。
    * 各 member の photo と public/images/members/<id>.jpg は消していない —
    * ここを true に戻すだけで元のデザイン（4:3 の写真つき）に復帰する。
@@ -86,20 +86,6 @@ export const membersContent = {
       bio: "長崎大学大学院 修士1年。Discord運営・イベント企画担当。研究ではPythonでのデータ解析や音響信号処理に取り組んでいます。",
       photo: "/images/members/miyazaki.jpg",
       socials: [{ kind: "github", href: "https://github.com/yuinosuke92" }],
-    },
-    {
-      id: "nao",
-      name: "Nao Mukai",
-      role: "運営",
-      bio: "長崎大学大学院 修士1年。広報活動担当。3D Gaussian Splattingの絶対スケール復元を研究。3Dモデリングとデザインも独学で学んでいます。",
-      photo: "/images/members/mukai.jpg",
-      socials: [
-        { kind: "github", href: "https://github.com/mk-no" },
-        {
-          kind: "website",
-          href: "https://my-portfolio-opal-seven-72.vercel.app",
-        },
-      ],
     },
   ] satisfies Member[],
 } as const;
