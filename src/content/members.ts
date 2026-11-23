@@ -43,7 +43,9 @@ export interface Member {
  * Issue #8（上原）は本文が空のままなので、bio は本人サイト ut42tech.com から取った。
  */
 export const membersContent = {
-  heading: { title: "運営メンバー", label: "MEMBERS" },
+  // 欧文ラベルは ORGANIZERS（2026-11-24）。MEMBERS は About の「MEMBERS 70+」（コミュニティ全体の
+  // 人数）と同じ語で、運営 3 人の節と取り違えうる。節の id は外部リンクのため `members` のまま
+  heading: { title: "運営メンバー", label: "ORGANIZERS" },
   /** Leader として大きく扱う人数 */
   leaderCount: 2,
   /**

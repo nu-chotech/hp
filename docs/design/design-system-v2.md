@@ -50,6 +50,7 @@
 > - **2026-11-24（2）**: 集合写真に**どの段でも横 2 マス**を与える（**DECISION L-40**、§6.11.1）。8 人の横並びは 1×1（298 × 204 〜 373 × 202）では両端から欠けていた。DOM で集合写真を FORMAT の前に移し、tablet から**自分で 2:1** を持たせる（隣が高ければ `place-self-stretch` で揃う）。そのぶん OFFICIAL は desktop 3×1 → 2×1、wide 2×1 → **1×1**（2 件を縦に積む。列数はセルの内側 30rem で切り替わる container query）、FORMAT は tablet でだけ 2×1。tablet 14 マス = 7 行、desktop 15 マス = 5 行で空トラックは出ない。実測: wide 597 × 368、desktop 1100 で 698 × 349、tablet 768 で 716 × 358。OFFICIAL の題「技育プロジェクト公式パートナー」に著者の折り目（U+200B）— wide の 1×1 で「…パート / ナー」に割れた
 > - **2026-11-24（3）**: Partners 節のロゴの下に、**技育プロジェクトを通したつながり**の段を連結する（**DECISION U-58**、§6.16）。写真（U-57 で About から外した技育のイベントの集合写真）16:9 ／ kicker `GEEK PROJECT`（（4）で改）→ 題「全国の学生と、つながる。」（Title/2）→ 本文（Body/S、`ink-secondary`）の 2 列。ロゴの格子とは `joinTop` で 1 枚の罫線に。写真は git の履歴の原版（3000 × 2250、GPS なし）を `jpegtran -copy icc -crop 3000x1688+0+448` で再圧縮せずに切って `public/images/partners/geek-project-event.jpg` に。キャプションは持たない（隣の文が場面を説明する）。題と本文は仮の文言
 > - **2026-11-24（4）**: クライアント所見を 2 つ反映。(1) wide の OFFICIAL を 1×1 の縦積みから **2×1 の横並びに戻す**（「縦表示はスッキリしない」、L-40 改）。代わりに FOR EVERYONE を 2×1 → **1×1**（題の下に 2×2）にし、行 3 を [EVERYONE · FORMAT · (CHAT) · SINCE]、行 4 を [集合写真 2×1 · OFFICIAL 2×1] にする。集合写真は 597 × 299 でちょうど 2:1。行 3 が EVERYONE の 2×2 の高さ 380 まで伸びるので、CHAT の会話と一文のあいだが ≈ 170 空く。Cell Facts の wide の横一列は撤去、OFFICIAL の題の U+200B も不要になって外した。(2) Partners の技育の段のキッカーを `GEEK PROJECT` → **`WE ARE A GEEK PROJECT PARTNER`**（「GEEK PROJECT だけではわからない。所属していると名乗る感じに」、U-58 改）。390 でも 1 行（298）
+> - **2026-11-24（5）**: 運営の節の欧文ラベルを `MEMBERS` → **`ORGANIZERS`**、Nav も `Members` → **`Organizers`**（クライアント所見「運営は MEMBERS じゃなくて ORGANIZERS がより正しい」）。About の `MEMBERS 70+` はコミュニティ全体の人数なのでそのまま — 同じ語が 2 つの意味を持たなくなる。節の id（`#members`）は外部リンクのため据え置き。和文の題「運営メンバー」も据え置き
 > - **Figma v2 への反映は未実施**（2026-09-12 時点）。反映すべき変更の一覧と手順は [figma-sync-2026-09-12.md](./figma-sync-2026-09-12.md)
 > - **2026-09-11**: Cell Stat の所属バッジ（U-29）を**撤回**し、セルは `50+` の数字だけに戻す（**DECISION U-36**）。Chip の Inverse トーンは Accent と同じくライブラリのみ（ページに出さない）。About の CULTURE セルは本文を落として題だけ（「仲間と、学ぶ。創る。話す。」— Hero の h1 を `Hack Your Limits.` に差し替える予定に合わせ、3 語を Culture に降ろす）
 > - **2026-09-10（2）**: 外部リンクは**すべて新しいタブ**で開く（`target="_blank" rel="noopener noreferrer"`、vh「（外部、新しいタブで開く）」、**DECISION M-21**。M-15 は撤回）。Partner の Logo タイルは `href` があれば**タイル全体が団体サイトへのリンク**（**DECISION U-35**。hover / pressed の表現なし、フォーカスリングは内側）
@@ -1820,7 +1821,7 @@ Desktop Nav に sm を使う理由: バー高 `nav/pad-y` 12 + 36 + 12 + `stroke
 
 #### 6.3.3 コンテンツ規則
 
-- Nav ラベルは英語 1 語（`About` `Activities` `Members` `Partners`）。セクション見出しの label と対応させる。
+- Nav ラベルは英語 1 語（`About` `Activities` `Organizers` `Partners`）。セクション見出しの label と対応させる。運営の節は 2026-11-24 に `MEMBERS` → `ORGANIZERS`（About の `MEMBERS 70+` はコミュニティ全体の人数で、同じ語が 2 つの意味を持っていた）。節の id は `members` のまま（外部からのリンクを切らない）。
 - Inline link は文の中で **動詞句** を丸ごとリンクにする（`パートナーになる` + `arrow-up-right` 16）。「こちら」禁止。
 
 #### 6.3.4 Figma
