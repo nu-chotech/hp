@@ -3,6 +3,7 @@ import { ImageSlot } from "@/components/ui/image-slot";
 import { Cell, RuledGrid } from "@/components/ui/ruled-grid";
 import { Section } from "@/components/ui/section";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { TextLink } from "@/components/ui/text-link";
 import { sectionIds } from "@/config/site";
 import { partnersContent } from "@/content/partners";
 import { PartnerLogo } from "./people/partner-logo";
@@ -22,7 +23,7 @@ const titleId = `${sectionIds.partners}-title`;
  * 件数を焼き込まない）。見出しの下は `heading-mb-intro` 12、導入文の下は `stack/lg` 24（§3.9）。
  *
  * ロゴの下に**技育プロジェクトを通したつながり**を 2 列で連結する（DECISION U-58）:
- * 写真 16:9 ／ kicker → 題 → 本文。ロゴの格子とは `joinTop` で 1 枚の罫線にする（§3.8）。
+ * 写真 16:9 ／ kicker → 題 → 本文 → 技育のサイトへのリンク。ロゴの格子とは `joinTop` で 1 枚の罫線にする（§3.8）。
  * ロゴを先に置くのは、導入文「支えてくださる企業・団体」の直後に来るべきは顔ぶれだから —
  * 技育の段は「つながりの一例」として後に続き、節を締める。
  */
@@ -86,6 +87,15 @@ export function Partners() {
             <p className="mt-stack-xs max-w-measure text-body-s text-ink-secondary">
               {network.body}
             </p>
+            {/* 単独で立つ inline リンク（hit area 44、§6.1.5）。左に寄せて行幅いっぱいに伸ばさない */}
+            <TextLink
+              className="mt-stack-md self-start text-body-s"
+              external
+              href={network.link.href}
+              standalone
+            >
+              {network.link.label}
+            </TextLink>
           </section>
         </Cell>
       </RuledGrid>

@@ -61,16 +61,23 @@ export const partnersContent = {
    * いた頃は「これがメンバー」と読まれた（U-57）。パートナーの文脈の中なら他団体の催しとして
    * 読め、隣の文が場面を説明するのでキャプションは持たない。
    *
-   * TODO(client): 題と本文はデザイン側の仮の文言（2026-11-24）。確認の上で確定させること。
+   * 題はクライアント確定（2026-11-24）。TODO(client): 本文はデザイン側の仮の文言、確認の上で確定させること。
    */
   network: {
-    // 所属を名乗る一文にする — 「GEEK PROJECT」だけでは何の段か分からなかった（クライアント所見）
-    kicker: "WE ARE A GEEK PROJECT PARTNER",
-    title: "全国の学生と、つながる。",
+    // 所属を名乗る一文にする — 「GEEK PROJECT」だけでは何の段か分からなかった（クライアント所見）。
+    // 「We are Team Geek Project」が案で、ChoTech は技育そのものではなくその一員なので part of を足した。
+    // DOM は正書法、表示は Overline/Latin の大文字（§2.6.5）
+    kicker: "We’re part of Team Geek Project",
+    title: "全国の学生エンジニアとつながる。",
     body: "ChoTechは技育プロジェクトの公式パートナーです。技育のイベントには全国の学生・学生団体・企業が集まり、ChoTechのメンバーも参加してつながりを広げています。",
     photo: {
       src: "/images/partners/geek-project-event.jpg",
       alt: "技育プロジェクトのイベントの集合写真",
+    },
+    /** 文のセルの締め。外部なので新しいタブ + arrow-up-right（M-21） */
+    link: {
+      label: "技育プロジェクトについて",
+      href: "https://geek.supporterz.jp/geekpjt",
     },
   },
 } as const;
