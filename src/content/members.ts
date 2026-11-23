@@ -32,12 +32,13 @@ export interface Member {
  * 出典と確からしさが 3 段に分かれている。混ぜると「どこまで本物か」が読めなくなるので、
  * 行ごとに区別して持つ:
  *
- *   確定 … bio は Issue #9–12 本文、上原は ut42tech.com。GitHub は Issue の起票者
+ *   確定 … bio は Issue #9–12 本文、上原は ut42tech.com。GitHub は Issue の起票者。
+ *          宮崎の担当と最近の開発は 2026-11-23 にクライアントから。長さは 3 人とも上原（全角 84.5）に
+ *          揃え、3 列に並ぶ段で行数が同じになる長さにしてある
  *   未定 … **氏名**。Issue にもプロフィールにも姓しか無いので姓だけ置く。
  *          名が分かった時点で「姓 名」に直す（§6.15 の name は分かち書き 1 つ）
- *   仮   … **役職**と**顔写真**。代表 / 副代表だけは確定で、残り 3 名の役職は
- *          本人の関心（3D・イベント企画・デザイン）から当てた仮。写真は Unsplash 由来の
- *          プレースホルダで、実体は public/images/members/<id>.jpg に保存してある
+ *   仮   … **役職**。代表 / 副代表だけは確定で、残りの役職は本人の関心から当てた仮。
+ *          顔写真は 2026-11-23 に全員ぶんが本人の写真に揃った（public/images/members/<id>.jpg）
  *
  * Issue #8（上原）は本文が空のままなので、bio は本人サイト ut42tech.com から取った。
  */
@@ -46,20 +47,19 @@ export const membersContent = {
   /** Leader として大きく扱う人数 */
   leaderCount: 2,
   /**
-   * Staff（運営 2 名）の顔写真を出すか。**暫定で false**。
+   * Staff の顔写真を出すか。
    *
-   * 写真が確定しているのは代表 / 副代表の 2 名だけで、Staff の 2 枚はまだプレースホルダ
-   * なので、本人の写真が揃うまでは写真なしのカード（役職 → 名前 → 紹介 → 導線）で組む。
-   * 各 member の photo と public/images/members/<id>.jpg は消していない —
-   * ここを true に戻すだけで元のデザイン（4:3 の写真つき）に復帰する。
+   * 2026-09-07 から本人の写真が揃うまで false（写真なしのカード）で組んでいたが、
+   * 2026-11-23 に Staff（運営 1 名）の写真が本人のものに揃ったので true に戻した（§6.15）。
+   * 写真が未確定の人が増えたら、ここを false にすると写真枠ごと落ちる。
    */
-  showStaffPhotos: false,
+  showStaffPhotos: true,
   members: [
     {
       id: "takuya",
       name: "Takuya Uehara",
       role: "代表",
-      bio: "長崎大学大学院 修士1年。デザインとテクノロジーを横断したアプリの開発が得意です。ハッカソンに積極的に参加したり、技術を起点として様々なことに挑戦しています。",
+      bio: "長崎大学大学院 瀬戸崎研究室 修士1年。デザインとテクノロジーを横断したアプリの開発が得意です。ハッカソンに積極的に参加したり、技術を起点として様々なことに挑戦しています。",
       photo: "/images/members/uehara.jpg",
       socials: [
         { kind: "x", href: "https://x.com/ut42tech" },
@@ -71,7 +71,7 @@ export const membersContent = {
       id: "ibuki",
       name: "Ibuki Nishiyama",
       role: "副代表",
-      bio: "長崎大学大学院 修士1年。データ分析やAIを活用したサービス開発に取り組んでいます。ユーザーの課題を起点に、データから得た気づきを役立つ仕組みへ。",
+      bio: "長崎大学大学院 神山研究室 修士1年。データ分析やAIを活用したサービス開発に取り組んでいます。ユーザーの課題を起点に、データから得た気づきを実際に役立つ仕組みへ。",
       photo: "/images/members/nishiyama.jpg",
       socials: [
         { kind: "x", href: "https://x.com/YiIbuki34/" },
@@ -83,23 +83,9 @@ export const membersContent = {
       id: "yuinosuke",
       name: "Yuinosuke Miyazaki",
       role: "運営",
-      bio: "長崎大学大学院 修士1年。Discord運営・イベント企画担当。研究ではPythonでのデータ解析や音響信号処理に取り組んでいます。",
+      bio: "長崎大学大学院 喜安研究室 修士1年。イベント企画・運営担当。研究では音響信号処理に取り組みつつ、最近はWebアプリやDiscord Botの開発で役立つツールを作っています。",
       photo: "/images/members/miyazaki.jpg",
       socials: [{ kind: "github", href: "https://github.com/yuinosuke92" }],
-    },
-    {
-      id: "nao",
-      name: "Nao Mukai",
-      role: "運営",
-      bio: "長崎大学大学院 修士1年。広報活動担当。3D Gaussian Splattingの絶対スケール復元を研究。3Dモデリングとデザインも独学で学んでいます。",
-      photo: "/images/members/mukai.jpg",
-      socials: [
-        { kind: "github", href: "https://github.com/mk-no" },
-        {
-          kind: "website",
-          href: "https://my-portfolio-opal-seven-72.vercel.app",
-        },
-      ],
     },
   ] satisfies Member[],
 } as const;

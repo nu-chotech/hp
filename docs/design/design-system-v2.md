@@ -38,6 +38,14 @@
 > - **2026-10-10（2）**: About の活動写真 2 枚を**集合写真**に差し替え（**U-56** の追補）: 技育プロジェクトのイベントと NAGASAKI HACKATHON 2026。Activities との共用をやめて `public/images/about/` に分け、1 ページに同じ写真が 2 回出る状態を解消した。4:3 の原版は上 1/5 が天井で人が小さく見えたので、取り込み時に **16:9** へ切る（`pnpm generate:about-photos`、元素材は `assets/about/`）— wide / desktop のセルは 4:3 より縦長なので、表示側の焦点では天井を落とせない
 > - **2026-10-10（3）**: Activities の Hackathon と About の 2 枚目を**入れ替える**（クライアント判断）。Hackathon のセルには NAGASAKI HACKATHON 2026 の表彰式の集合写真 — 節名がその催しそのものを指すので、会場の発表風景より先に「何の催しか」が読める。About は代わりに発表風景（`hackathon-talk.jpg`）を受け、2 枚が「集まっているところ」「やっているところ」の対になる。Activities 側は原寸 4:3 のまま枠が 16:9 に切る（§5.7.2 の既定）
 > - **2026-10-10（4）**: About の 2 枚の写真を**上下で入れ替える**（クライアント判断）。上（wide では CHAT の隣）が発表風景、下（OFFICIAL の隣）が技育プロジェクトの集合写真。節の終わりで大勢の写真と OFFICIAL が並ぶ。`about.tsx` の変数名も旧素材の名残（`talkDay` / `devDay`）から置き場の名前（`upperPhoto` / `lowerPhoto`、`WIDE.photoUpper` / `photoLower`）に直した
+> - **2026-11-23**: 運営メンバーの離脱で Staff が 2 → 1 名（向井を削除、写真も削除）。Staff グリッドは 2 列のまま（L-38）で、1 名は `fillRow` の横組みカード（L-36 / U-55）として行いっぱいに出る
+> - **2026-11-23（2）**: 宮崎の顔写真が本人のものに。iPhone の原版（3024 × 2423、位置情報つき EXIF）を `jpegtran -copy icc -crop 3024x2268+0+0` で**再圧縮せずに** 4:3 に切り（下の机の縁を落とす）、EXIF / XMP を外した（色の ICC プロファイル Display P3 だけ残す）。画素は原版と同一。Staff の写真が全員ぶん揃ったので `showStaffPhotos` を **true** に戻す（2026-09-07 の暫定非表示を解除、§6.15）
+> - **2026-11-23（3）**: MEMBERS の数字を `50+` → **`70+`**（読み上げ「メンバー 70人以上」）。本書の現状を語る箇所は 70+ に改め、DECISION 表と変更履歴の 50+ は当時の記録として残す
+> - **2026-11-23（4）**: Footer に問い合わせ先 **`contact@chotech.dev`**（mailto、外部扱いで新しいタブ + `arrow-up-right`、M-21）を足す。アドレスは `siteConfig` の隣の `contactEmail` に 1 か所で持つ。行が ≈ 890 に伸びて tablet の 720 に入らなくなったので、tablet 768–1023 は `flex-wrap` で問い合わせ以降を 2 行目へ送る。1 行は desktop 1024 から（§6.18）
+> - **2026-11-23（5）**: Staff 1 名の横いっぱいのカードが広すぎた（クライアント所見）ので、3 人を **1 つの 3 列の格子に同格**で並べる（**DECISION L-39**、§6.15）。desktop 3 列 1 行、tablet は 2 + 1（最後の 1 枚は tablet だけ横組み）、Mobile 1 列
+> - **2026-11-23（6）**: 運営メンバーの紹介文の頭に所属研究室を足す（「長崎大学大学院 瀬戸崎研究室 修士1年。」— 大学院 → 研究室 → 学年の順）。上原 瀬戸崎研究室 / 西山 神山研究室 / 宮崎 喜安研究室。1440 の 3 列でカードの高さは 442 のまま（上原が 4 行で最長）
+> - **2026-11-23（7）**: 宮崎の写真で人物が他の 2 人より大きく写っていた（クライアント所見「もう少し縮小されるのが理想」）。原版は幅をすべて使っているので切り方では引けず、**左右の壁を 378px ずつ鏡像で延ばして**幅を 1.25 倍（3780 × 2268）にした — 人物は 0.8 倍。延ばした部分は原版に無い画素（無地の壁のみ。等倍で見ると壁の模様にかすかな対称が出る）。下端の机の縁は (2) と同じく落とす。新しい画素を作るので再圧縮は避けられず、mozjpeg q92・4:4:4、元の領域は原版に対し PSNR 48 dB。ICC（Display P3）は残し、EXIF / XMP は外す。iPhone の原版（EXIF 上 4032 × 3024）が手に入れば、それで置き換えるのが本来の形
+> - **2026-11-23（8）**: 3 人の紹介文の長さを上原（全角換算 84.5）に揃える（クライアント判断）。西山は Issue #9 の「実際に」を戻して 79.5、宮崎は担当を「イベント企画・運営担当」に改め、最近の開発（Web アプリ・Discord Bot）を足して 79.5（文言はクライアント確認済み）。行数は 1440 で 4 / 4 / 4、1024 で 5 / 5 / 5、768・390 で 4 / 4 / 4 — 3 列に並ぶ段で導線の高さが揃う
 > - **Figma v2 への反映は未実施**（2026-09-12 時点）。反映すべき変更の一覧と手順は [figma-sync-2026-09-12.md](./figma-sync-2026-09-12.md)
 > - **2026-09-11**: Cell Stat の所属バッジ（U-29）を**撤回**し、セルは `50+` の数字だけに戻す（**DECISION U-36**）。Chip の Inverse トーンは Accent と同じくライブラリのみ（ページに出さない）。About の CULTURE セルは本文を落として題だけ（「仲間と、学ぶ。創る。話す。」— Hero の h1 を `Hack Your Limits.` に差し替える予定に合わせ、3 語を Culture に降ろす）
 > - **2026-09-10（2）**: 外部リンクは**すべて新しいタブ**で開く（`target="_blank" rel="noopener noreferrer"`、vh「（外部、新しいタブで開く）」、**DECISION M-21**。M-15 は撤回）。Partner の Logo タイルは `href` があれば**タイル全体が団体サイトへのリンク**（**DECISION U-35**。hover / pressed の表現なし、フォーカスリングは内側）
@@ -391,7 +399,7 @@ Bento / Figure 以外がこのロールを引いてはならない。Mono では
 
 | ロール | 値 | 使用箇所 | 下端の比 |
 |---|---|---|---|
-| `color/number-gradient/on-ink` | `linear-gradient(180deg, #ffffff 0%, #b8b5b5 100%)` | MEMBERS `50+`、CULTURE の中心語「仲間と」 | `#b8b5b5` vs ink **8.15** |
+| `color/number-gradient/on-ink` | `linear-gradient(180deg, #ffffff 0%, #b8b5b5 100%)` | MEMBERS `70+`、CULTURE の中心語「仲間と」 | `#b8b5b5` vs ink **8.15** |
 | `color/number-gradient/on-ground` | `linear-gradient(180deg, #201e1d 0%, #6b6868 100%)` | SINCE `2025` | `#6b6868` vs ground **4.94** |
 
 下端の 2 値は neutral の階梯の外（`alpha/black/64` と同じ「見た目で決めた値」の扱い）。`#bab6b6`（neutral-400、ink 上 8.30）では濃淡が出ず、`#7d7979`（neutral-600、ground 上 3.85）では下端が薄れて字が消えた。
@@ -573,8 +581,8 @@ CSS 変数名は Figma 名の `/` を `-` に置換する（例 `--color-inverse
 | cap-height / x-height | Regular 0.751 / 0.509em、Bold 0.758 / 0.524em、ExtraBold 0.773 / 0.548em | x/cap ≈ 0.68–0.71 と大きく、12px でも読める。12px を最小サイズにできる根拠 |
 | 欧文小文字の平均送り幅 | Regular 0.566em、Bold 0.609em、ExtraBold 0.649em | 欧文は全角 1em に対し約 0.6em/字で行長換算 |
 | 全角文字の送り幅 | すべて 1.000em（かな・漢字・約物） | `palt` を使わない限り「n 文字 = n em」で幅が計算でき、見出しの収まりを設計段階で保証できる（§2.6.3） |
-| 実測幅（ExtraBold） | Talk Day 5.15em、Dev Day 4.84em、Project 4.12em、ChoTech 5.12em、50+ 2.13em | Display M の欧文 1 行判定に使用 |
-| 数字 | プロポーショナル（0 = 0.725em）。**`tnum` なし** | 桁揃えは不可。統計「50+」は 1 値なので不要。`tabular-nums` 指定は無効（書体に無い） |
+| 実測幅（ExtraBold） | Talk Day 5.15em、Dev Day 4.84em、Project 4.12em、ChoTech 5.12em、70+ 2.06em（50+ 2.13em に、ブラウザ実測の比 70+ / 50+ = 1.999 / 2.071 を掛けた値。2026-11-23） | Display M の欧文 1 行判定に使用 |
+| 数字 | プロポーショナル（0 = 0.725em）。**`tnum` なし** | 桁揃えは不可。統計「70+」は 1 値なので不要。`tabular-nums` 指定は無効（書体に無い） |
 | GSUB | `palt pwid halt hwid fwid liga dlig kern…` | `palt` / `halt` は **使用しない**（§2.6.2） |
 | name table | Regular/Bold: family "LINE Seed JP"。ExtraBold: legacy family "LINE Seed JP ExtraBold" + typographic family "LINE Seed JP" / subfamily "ExtraBold" | Figma は `{family:"LINE Seed JP", style:"ExtraBold"}` を `listAvailableFontsAsync()` で確認。見つからない環境では `{family:"LINE Seed JP ExtraBold", style:"Regular"}` が同じファイル |
 
@@ -852,7 +860,7 @@ s.paragraphSpacing = 0;
 s.description = "Hero h1. 1 line ≤ 9 zenkaku (D) / 2 authored lines (M). Color: inverse/ink; lead-in inverse/ink-quaternary.";
 ```
 
-混在ノードは `setRangeTextStyleId` で範囲適用する（`setRangeFontName` はスタイルを外すので使わない）: 統計「50+」= `Display/M` + `Title/1`（「+」）、ヒーローのメタ行 = `Overline/Latin` + `Overline/JP`。
+混在ノードは `setRangeTextStyleId` で範囲適用する（`setRangeFontName` はスタイルを外すので使わない）: 統計「70+」= `Display/M` + `Title/1`（「+」）、ヒーローのメタ行 = `Overline/Latin` + `Overline/JP`。
 
 ### 2.6 日本語組版の規則
 
@@ -861,14 +869,14 @@ s.description = "Hero h1. 1 line ≤ 9 zenkaku (D) / 2 authored lines (M). Color
 | 項目 | 規則 | 例（ページ） |
 |---|---|---|
 | 句読点・括弧 | 和文中は全角「、。「」（）」。欧文のみの文字列は半角 | ChoTech（チョーテック）は… ／ Hack Your Limits. |
-| 全角英数字 | 禁止（ＡＢＣ１２３）。英数字は常に半角プロポーショナル | 50+、2025、UI/UX |
+| 全角英数字 | 禁止（ＡＢＣ１２３）。英数字は常に半角プロポーショナル | 70+、2025、UI/UX |
 | 三点リーダ | 「…」U+2026 を 1 つ。「...」「・・・」は不可 | 入力中… |
 | 波ダッシュ | 「〜」U+301C。「～」U+FF5E は使わない | 月1〜2回 |
 | 中黒 | 並列は「・」 | 勉強会・ハンズオン、チーム開発・イベント企画 |
 | ダッシュ | 欧文ラベル内の区切りは「—」U+2014 と半角スペース | #general — いつものChoTech |
 | 引用 | 発話は「」。“ ” は和文で使わない | 「プログラミング、何から始めればいいか分からない…」 |
 | 姓名 | 姓と名の間は半角スペース 1 つ。全角スペース U+3000 は禁止 | 田中 太郎 |
-| 数値と単位 | 和文単位・記号は詰める。数字と欧文単位の間も詰める | 5分、50+、1人5分 |
+| 数値と単位 | 和文単位・記号は詰める。数字と欧文単位の間も詰める | 5分、70+、1人5分 |
 | 行頭の「 | 「 で始まる見出しは `text-spacing-trim: trim-start` で左端の字面を揃える。Figma は開き括弧分 −0.5em の位置調整 | 「やってみたい」に、すぐ仲間が集まる。 |
 | 記号・絵文字 | 文字として置かない。置換表は §9.6 | — |
 
@@ -1225,7 +1233,7 @@ CSS: `.grid { display:grid; grid-template-columns: repeat(n, 1fr); gap: 2px; pad
 | 縦 span (m) | 最小高さ = m × 120 + (m−1) × 2 = 242（m=2）。画像セルは隣接セル（chat）の高さに合わせて伸びる |
 | bento の構図（span だけで作る、DOM 固定） | 4 列: [CULTURE 2×1 · MEMBERS · SINCE] / [CHAT 2×2 · OFFICIAL 2×1] / [· ONLINE · EVERYONE]。3 列: [CULTURE 2×1 · MEMBERS] / [SINCE · CHAT 2×2] / [OFFICIAL · ·] / [ONLINE · EVERYONE 2×1]。2 列: [CULTURE 2×1] / [MEMBERS · SINCE] / [CHAT · OFFICIAL] / [ONLINE · EVERYONE]。1 列: DOM 順（MEMBERS · SINCE だけペア）。疎な auto-placement で読む順 = DOM 順が各段で保たれる（L-34） |
 | 連結グリッド | leader (2 col) の直下に staff (3 col) を置くときは staff 側の上枠を 0 にし、leader の下枠を共有する。2px 罫線を 2 本重ねない |
-| Mobile | **1 列**、DOM 順。span は無視。chat は hug。**DECISION L-10** 2 列（168px）だと inset 20 を引いた本文幅 128 ≈ Body S 14 で 9 字。和文の最小行長（≈ 20 字）を割るため。例外は**本文を持たないセルのペア**（**DECISION L-35**、2026-09-15）: MEMBERS（50+）と SINCE（日付 + 図）を `CellPair`（背景なしの入れ子グリッド、gap 2 から親の divider が覗く）で 168 × 2 の 1 行に。SINCE の題は 128 の内側に入る Title/2 22（121.5）で、tablet から Title/1。tablet からは `display: contents` で箱が消え、2 つは親の item に戻る |
+| Mobile | **1 列**、DOM 順。span は無視。chat は hug。**DECISION L-10** 2 列（168px）だと inset 20 を引いた本文幅 128 ≈ Body S 14 で 9 字。和文の最小行長（≈ 20 字）を割るため。例外は**本文を持たないセルのペア**（**DECISION L-35**、2026-09-15）: MEMBERS（70+）と SINCE（日付 + 図）を `CellPair`（背景なしの入れ子グリッド、gap 2 から親の divider が覗く）で 168 × 2 の 1 行に。SINCE の題は 128 の内側に入る Title/2 22（121.5）で、tablet から Title/1。tablet からは `display: contents` で箱が消え、2 つは親の item に戻る |
 | Mobile 行最小 | 120（同値。1 列でも 1×1 セルは kicker + 見出し 2 行で 128 に伸びる） |
 | 空トラック | frame fill が divider なので、行の端数で空いたトラックは**灰色の板**として見える（L-9 の系）。均等セルの格子は空トラックを作らない: 2 列の Staff が奇数なら最後の 1 枚を `fillRow` で行いっぱいに（**DECISION L-36**。L-38 で Staff が全段 2 列になったので、`fillRow` は tablet 以降ずっと効く） |
 
@@ -2031,7 +2039,7 @@ Figma: `Section / Heading` `Layout` {Row, Stacked} 2。Props: `title` `label` TE
 
 1. CULTURE を「学ぶ → 創る → 話す」が巡る **1 枚の図**（§6.11.2）にして、節の主張をベントの中で言い切る。可視の題は中心語「仲間と」だけ。
 2. 図（緑の円）の出現箇所を絞り、そのぶん大きくする（64 → **80**、サイクルは 96 / 128）。円は**語を連れる** — 1 セル 1 つの絵。
-3. 数字（`50+` / `2025`）をセルの**中央**に置き、縦のグラデーション（§1.3.11）で厚みを出す。SINCE は「2025年4月 + 旗の図」をやめて年だけの数字セルに。
+3. 数字（`70+` / `2025`）をセルの**中央**に置き、縦のグラデーション（§1.3.11）で厚みを出す。SINCE は「2025年4月 + 旗の図」をやめて年だけの数字セルに。
 4. OFFICIAL は図（school / heart-handshake）をやめ、**ロゴ板**（`logo-ground` の白）に。裏づけを語るのは相手の意匠。
 5. 活動写真を 2 枚戻す（§6.11.5）。U-40 で移したのはスライド送り（U-18）であって写真ではない。
 6. `ONLINE & OFFLINE` → **`FORMAT`**、FOR EVERYONE の題は「誰でも歓迎。」の 1 文に。職能・場は図の語が数え上げる。
@@ -2088,7 +2096,7 @@ U-52 の Cell Text（kicker ／ 題 → 図）は **Cell Cycle** と **Cell Fact
 
 どちらも「kicker → `stack/xs` 8 → 数字」を面の**中央**に置き（U-56。U-36 の「底に置く」は撤回 — 高さが隣のチャットに引かれて伸びると、底の数字と kicker の間が空きすぎた）、数字に縦のグラデーション（§1.3.11）を掛ける。規模を語るのは色ではなく**大きさ**という U-24 は変わらない — グラデーションは色相を持たず、字の上端から下端へ 1 段落ちるだけ。
 
-「50+」「2025」は字面であって語ではない。読み上げには「メンバー 50人以上」「2025年4月 設立」という文を渡し、可視側は `aria-hidden`（§8.5）。グラデーションは**字だけを包む要素**に当て、`sr-only` は外に出す。
+「70+」「2025」は字面であって語ではない。読み上げには「メンバー 70人以上」「2025年4月 設立」という文を渡し、可視側は `aria-hidden`（§8.5）。グラデーションは**字だけを包む要素**に当て、`sr-only` は外に出す。
 
 Display サイズの数字はこの 2 セルだけ（U-40 の「ページで 1 つだけ」は U-56 で 2 つに）。SINCE が Display/M に収まるのは 1×1 の内側 249.5 に 4 桁（半角、書体に `tnum` は無い）が入るため — Mobile のペア（内側 130）でも Display/M の Mobile 値 32 で収まる。
 
@@ -2286,7 +2294,7 @@ Figma: `Persona / Card` 1。Props: `caseNo` `title` `quote` `rec` TEXT、`image`
 
 | 要素 | Leader | Staff |
 |---|---|---|
-| photo | Image slot Rect / Cover、**16:9**、原色（U-21）、`alt=""`（氏名が隣に可視、§8.6） | 4:3、同。**暫定非表示**（`showPhoto` false で写真枠ごと落とし、body がセル上端から始まる。本人写真が揃ったら戻す） |
+| photo | Image slot Rect / Cover、**16:9**、原色（U-21）、`alt=""`（氏名が隣に可視、§8.6） | 4:3、同。2026-09-07 から暫定非表示だったが、2026-11-23 に本人写真が揃ったので**表示**に戻した（`showStaffPhotos` true）。未確定の人が出たら `showPhoto` false で写真枠ごと落とし、body がセル上端から始まる |
 | body inset | `inset/cell` 24 / 20 | `inset/md` 16 |
 | role | `Overline/Latin` / `Overline/JP` 12、`ink-secondary`（5.83）、下 `stack/2xs` 4 | 同 |
 | name | `Title/2` 22 `ink`、`<h3>`、姓名の間は半角スペース | `Headline` 17 |
@@ -2294,6 +2302,8 @@ Figma: `Persona / Card` 1。Props: `caseNo` `title` `quote` `rec` TEXT、`image`
 | 列 | 2 列は tablet 768 から（357 … 597）/ Mobile 1 列 | **同じく 2 列**（tablet 768 から、357 … 597。**DECISION L-38**）。奇数なら最後の 1 枚を行いっぱいに（`fillRow`、L-36。空トラックの灰色の板を出さない）。広げたカードは**横組み**（写真 1/2 + 本文、本文は `max-width: measure/paragraph` 588 — U-55: 縦組みのままだと 4:3 の写真が 716 × 537 の面になり、紹介文が 53 全角の 1 行の帯になった）/ Mobile 1 列 |
 
 Leader と Staff の差は **写真比・inset・name・skills の 4 点**（Socials は共通）。列数は差ではない — L-38 で両方 2 列になった。Staff グリッドは Leader グリッドの直下に上枠なしで接続（1 つの罫線列、§3.8）。カード自体はリンクではない。
+
+**Staff が 1 名のとき（DECISION L-39）**: 2 つの格子をやめ、3 人を **1 つの 3 列の格子に同格で**並べる。3 枚とも Leader の組み（16:9・`inset/cell`・`Title/2`・`Footnote`）で、差は役職の表記だけ。desktop 1024 から 3 列 1 行（1440: 397 × 442、写真 397 × 223 / 1024: 323 × 420）、tablet 768–1023 は 2 列 + 最後の 1 枚を**その段だけ**行いっぱいの横組みに（`fillRow` の `tablet-only`、`2-tablet-only` の span。768: 716 × 201、写真 358 × 201 で上の 2 枚と同寸）、Mobile 1 列。紹介文は 397 幅で 3〜4 行になる（上の表の「≤ 2 行」は 597 幅での値）。写真の `sizes` は列数で決まる: `(min-width: 78rem) 397px, (min-width: 64rem) 33vw, (min-width: 48rem) 50vw, 100vw`
 
 **Socials（DECISION U-12）**
 
@@ -2382,9 +2392,9 @@ Figma: `Section / Poster` 1。Props: `kicker` `display` `paragraph` `ctaLabel` `
 |---|---|---|
 | 上辺 | Rule 2/H | 同 |
 | pad | `footer/pad-y` **40** × `page/inset` 24 | **32** × 24 |
-| 構成 | Brand Footer（左）← auto → Link Footer × 4（gap `inline/lg` 24）→ 24 → `© 2026 ChoTech`。1 行は tablet 768 から（≈ 617 ≤ 720、L-36） | 3 行、`stack/lg` 24: Brand / リンク 4 つ（1 行、左揃え、≈ 273 ≤ 342）/ © |
+| 構成 | Brand Footer（左）← auto → Link Footer × 4（gap `inline/lg` 24）→ 24 → 問い合わせ `contact@chotech.dev`（Link Footer、mailto、`arrow-up-right`、M-21）→ 24 → `© 2026 ChoTech`。行の幅 ≈ 890 なので 1 行は desktop 1024 から（≤ 976）。tablet 768–1023 は `flex-wrap` で 2 行: Brand ← auto → リンク（≈ 568 ≤ 720）/ 問い合わせ → 24 → ©（左揃え、行間 24） | 4 行、`stack/lg` 24: Brand / リンク 4 つ（1 行、左揃え、≈ 273 ≤ 342）/ 問い合わせ / © |
 | © | `Caption/Regular` 12、`ink-secondary`（5.83） | 同 |
-| 高さ | 2 + 40 + 24（mark 24 ≥ Headline 行 24）+ 40 = **106** | ≈ 176 |
+| 高さ | 2 + 40 + 24（mark 24 ≥ Headline 行 24）+ 40 = **106**（tablet の 2 行は ≈ 150） | ≈ 220 |
 | 意味 | `<footer>`、リンクは `<nav aria-label="フッター">` | 同 |
 
 Footer link の状態は §6.3。概念 36 → 40 / 32 は §3.2（最終区画なので広い側）。
@@ -2672,7 +2682,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | トークン | 前景 → 背景 | 比 | 使用 | 区分 | 判定 |
 |---|---|---|---|---|---|
 | `inverse/ink` / `inverse/ground` | #f3f2f2 → #201e1d | **14.86** | h1 `Your Limits.` 116 EB、Stat 56 EB、CTA 題 19 EB、自分側バブル 14 B、Outline ボタン 15 B | N | ✓ |
-| `number-gradient/on-ink` 下端 / `inverse/ground` | #b8b5b5 → #201e1d | **8.15** | MEMBERS「50+」Display/L 96 / 40、CULTURE の中心語「仲間と」40 / 26（U-56） | L（本文基準 4.5 も満たす） | ✓（neutral-400 8.30 では濃淡が出なかった） |
+| `number-gradient/on-ink` 下端 / `inverse/ground` | #b8b5b5 → #201e1d | **8.15** | MEMBERS「70+」Display/L 96 / 40、CULTURE の中心語「仲間と」40 / 26（U-56） | L（本文基準 4.5 も満たす） | ✓（neutral-400 8.30 では濃淡が出なかった） |
 | `cycle/orbit` / `inverse/ground` | ground@24 → #201e1d | 7.06 相当 | サイクル図の軌道（1px の環、U-56） | U（テクスチャ。`inverse/hairline` と同じ扱いで WCAG 対象外） | — |
 | `inverse/ink-secondary` / ink | #dad9d8 → #201e1d | 11.78 | Hero 段落 16 R、CTA 副 13 R | N | ✓ |
 | `inverse/ink-tertiary` / ink | #b8b7b6 → #201e1d | 8.29 | Hero メタ 12 B、Stat キッカー 12 B | N | ✓ |
@@ -2761,7 +2771,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 - h1: Hack Your Limits.（`lang="en"`、名前は可視の文そのもの。U-37）
 - h2: コミュニティの、今。／活動内容／こんな人に、おすすめ。／運営メンバー／パートナー／いっしょに、やろう。
 - h3: ベントのセル題（**仲間と、学ぶ。創る。話す。**（サイクル図、可視は「仲間と」）／**2025年4月 設立**（可視は「2025」）／誰でも歓迎。／長崎大学公認団体／技育プロジェクト公式パートナー、U-56）、Activity 題（Talk Day / Dev Day / Project / Hackathon）、Persona 題、Member 名
-- 見出しにしないもの: セクションの欧文ラベル（ABOUT / ACTIVITY …）、キッカー（CULTURE / MEMBERS / SINCE / FORMAT / FOR EVERYONE / OFFICIAL）、統計「50+」、チャットのチャンネル名、Cell Facts の語（`<li>` の本文）。これらは `<p>` / `<li>` で置く
+- 見出しにしないもの: セクションの欧文ラベル（ABOUT / ACTIVITY …）、キッカー（CULTURE / MEMBERS / SINCE / FORMAT / FOR EVERYONE / OFFICIAL）、統計「70+」、チャットのチャンネル名、Cell Facts の語（`<li>` の本文）。これらは `<p>` / `<li>` で置く
 
 **パターン**（`aria-label` は `<p>` / `<span>`（role paragraph / generic）では naming prohibited のため使わない）
 
@@ -2771,7 +2781,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | Activity セル | `<li><a href aria-labelledby="t1 s1"><h3><span id="t1">Talk Day</span> <span id="s1">ライトニングトーク</span></h3> …説明・タグ… </a></li>`（DECISION M-12）。名前 = 題 + 副題、説明・タグは名前に含めないがリンク内容として読める。セル内に別のリンクを置かない。トレードオフ: リンク内のテキストはドラッグ選択しにくい（マーケティング面では許容） |
 | Member の SNS | `<ul>` > `<li>` > `<a>`。アイコンは `aria-hidden`、名前は visually-hidden で人名込み（「田中 太郎 の X」）。同じアイコンが 5 枚並ぶため、人名がないと区別できない |
 | Activity タグ | `<ul aria-label="キーワード">` > `<li>` |
-| Bento | `<ul>` ではなく `<section>` 群（内容が異種）。MEMBERS は `<p><span aria-hidden="true">50+</span><span class="vh">メンバー 50人以上</span></p>`、SINCE は同じ形の `<h3>`（全文「2025年4月 設立」）。**サイクル図**は環と円が `aria-hidden` で、`<h3>` が可視「仲間と」+ vh「仲間と、学ぶ。創る。話す。」を持つ。**Cell Facts の語は content**（`<ul>` > `<li>`、`aria-hidden` にしない）— 装飾はアイコンだけ。OFFICIAL は `<ul>` > `<li>`、題が `<h3>`、ロゴは `alt=""`（U-56） |
+| Bento | `<ul>` ではなく `<section>` 群（内容が異種）。MEMBERS は `<p><span aria-hidden="true">70+</span><span class="vh">メンバー 70人以上</span></p>`、SINCE は同じ形の `<h3>`（全文「2025年4月 設立」）。**サイクル図**は環と円が `aria-hidden` で、`<h3>` が可視「仲間と」+ vh「仲間と、学ぶ。創る。話す。」を持つ。**Cell Facts の語は content**（`<ul>` > `<li>`、`aria-hidden` にしない）— 装飾はアイコンだけ。OFFICIAL は `<ul>` > `<li>`、題が `<h3>`、ロゴは `alt=""`（U-56） |
 | Chat | `<figure>` > `<p class="kicker">#general — いつものChoTech</p>` + `<ul>`（`<li>` = 頭文字 `<span aria-hidden>` + vh「参加者」+ 本文）+ `<figcaption>こんな会話が、毎日どこかで。</figcaption>`。図の名前は figcaption（DECISION M-18）。リアクションは `<span role="img" aria-label="いいね 3">`（内部の svg と数字は presentational） |
 | Persona / Member / Partner | `<ul>` > `<li>`。カードに `<article>` は不要（見出し + 段落で足りる） |
 | ボタン内アイコン | `<svg aria-hidden="true" focusable="false">`。名前は可視ラベルのみ |
@@ -2917,7 +2927,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 - 欧文内のスペースは保つ（Talk Day、Since 2025、UI/UX）。
 - 日本語の中の分かち書きスペースはキッカーと Meta のみ許可（長崎大学公認 学生団体）。本文では読点か中黒。
 - 単位・助数詞は続けて書く（5分、50人、月1〜2回）。
-- 英語の複数形・所有格は日本語に持ち込まない（Members → メンバー 50+ の表示はキッカー扱い）。
+- 英語の複数形・所有格は日本語に持ち込まない（Members → メンバー 70+ の表示はキッカー扱い）。
 
 ### 9.6 ラベル・CTA・アイコン
 
@@ -2949,7 +2959,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 
 | 種類 | 形式 |
 |---|---|
-| 統計 | 整数 + 接尾 `+`、空白なし（50+）。3 桁まで。4 桁以上は千区切り（1,200） |
+| 統計 | 整数 + 接尾 `+`、空白なし（70+）。3 桁まで。4 桁以上は千区切り（1,200） |
 | 頻度 | 月1〜2回／随時 |
 | 時間 | 5分／2時間。「分」「時間」は続け書き |
 | 年 | 西暦 4 桁（© 2026、Since 2025）。和暦不可 |
@@ -3217,7 +3227,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 - `fontSize` と `lineHeight` を `Typography` の変数に束縛、`letterSpacing` は PERCENT リテラル、`paragraphSpacing` は Body 3 本だけ `Spacing/stack/sm`（§2.5.2）。
 - Headline / Subheadline / Callout は 1 段のグループになるよう `Text/` 接頭辞を持つ（DECISION F-1）。本文中の呼称は接頭辞なし。
 - スタイルは色を持たない。色は部品側でテキストの fill を `Color` に束縛する。
-- 混在ノード（統計 `50+`、ヒーローメタ）は `setRangeTextStyleId` で範囲適用。
+- 混在ノード（統計 `70+`、ヒーローメタ）は `setRangeTextStyleId` で範囲適用。
 
 ### 11.4 コンポーネントセット（variant 数はすべて ≤ 30）
 
@@ -3392,6 +3402,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | L-36 | 見出し行と footer 行を tablet 48rem から横に、2 列の Staff が奇数なら最後の 1 枚を `fillRow` で行いっぱいに（2026-09-15。L-38 以降は tablet 以降の全段で効く） | 見出しと footer の縦積みはトークンと同じ点で解く（旧 L-29 は 78rem）。frame fill = divider なので空トラックは灰色の板 — 均等セルの格子は空席を作らない（§3.8） |
 | L-37 | About のベントは **wide の 4 列だけ明示配置**（`col-start` / `row-start`）、1 / 2 / 3 列は span だけ（2026-09-16）。段ごとに「span か、明示配置か」を排他にし、`-until-wide` の span は `wide:col-span-1` ではなく span 自体を止める。中間の 2 段（tablet 12 マス = 6 行 / desktop 15 マス = 5 行）は**空トラックを作らない**ことを規準に選び、OFFICIAL は desktop でだけ 3×1。CHAT は幅ではなく**行数**で伸ばす（tablet / desktop 1×2、wide 1×3）。rowSpan を tablet に持ち込むのは CHAT のみで、その構図で読み順が保たれることを検算した上で許す | 6a は CULTURE 2×2 と CHAT 1×3 が同じ行を跨いで噛み合う構図で、疎な auto-placement では作れない — CHAT が欲しい 3 列目の行 1 を、DOM で先に来る MEMBERS が取ってしまう。`col-span-*` は `grid-column` の一括指定なので、同じ段で `col-start-*` と重ねると宣言順で勝ち負けが決まる。チャットを 2 列に広げると吹き出しが左右の縁に貼り付いて真ん中に帯ができ、1×1 に畳むと隣の写真が 357 × 685 の極端な縦長に切り取られた |
 | L-38 | Staff グリッドは **desktop でも 2 列**（3 列を撤回、2026-09-22）。Leader と同じ 597 のトラックになり、`fillRow` は tablet 以降の全段で効く（`2-tablet-only` の span はライブラリに残置） | 運営の退任で Staff が 3 → 2 名になり、desktop の 3 列目が 397 の**灰色の空トラック**として出た（L-9 の系）。列数は人数ではなく「空席を作らないこと」から決まる。Leader と同幅になるが、Leader / Staff の差は写真比・inset・name・skills の 4 点で保たれる（§6.15） |
+| L-39 | Staff が **1 名**のときは Leader / Staff の 2 つの格子をやめ、3 人を 1 つの 3 列の格子に**同格**（Leader の組み）で並べる。desktop 3 列 1 行、tablet は 2 列 + 最後の 1 枚を tablet だけ横組みで行いっぱい（`fillRow="tablet-only"`）、Mobile 1 列（2026-11-23、クライアント判断） | 向井の離脱で Staff が 1 名になり、L-36 の `fillRow` で 1200 の行を 1 人が占めた。1 人の運営が代表 2 人ぶんの面積を取り、4:3 の写真（横組みで 597 × 448）が Leader の 16:9（597 × 336）より背が高い — 格が逆転して「宮崎の紹介だけ領域が広すぎる」（クライアント所見）。2 × 2 の空き枠に「COMING SOON」を置く案は、空き枠の文言が読者に何も求めないという U-34 と同じ理由で退けた。3 人なら同格で 1 行に収まり、空席も出ない |
 | L-30 | logo mark は図の外接矩形で切った `icons/mark.svg` を 24 / 20 で置く | favicon.svg は余白込みで、図が小さく見え wordmark からも離れて見えた |
 | L-31 | ~~Partner セルは正方形タイル（Desktop 6 列 / tablet 3 / Mobile 2）~~ **U-43 でタイルごと撤去（外枠だけの 1 行）** | ロゴは正方形のアイコンが基本なので図とタイルの形を揃える。文字を運ばないタイルは L-10 の制約外。Mobile 1 列だと 342 角が 6 枚縦に積まれる |
 | L-33 | hero `min-height: min(100svh − size/nav − size/band-marquee, size/hero-max)`（2026-09-12、L-7 改） | ファーストビューの下端にパートナーの帯を乗せる。「支えられている」が最初の画面で見える。1440 × 900 で Hero 718 + 帯 120。内容が下限を超える画面（1280 × 720）では帯は一部 |

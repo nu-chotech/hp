@@ -63,7 +63,7 @@ const ruledGrid = cva(
 export interface RuledGridProps
   extends ComponentProps<"div">,
     Omit<VariantProps<typeof ruledGrid>, "columns"> {
-  /** Desktop の列数。bento 4 / persona 3 / leader・staff 2 / 1 = 外枠だけ（partner のロゴ行、U-43）。6 はライブラリ */
+  /** Desktop の列数。bento 4 / persona・Staff 1 名のときの members 3（L-39）/ leader・staff 2 / 1 = 外枠だけ（partner のロゴ行、U-43）。6 はライブラリ */
   columns: 1 | 2 | 3 | 4 | 6;
   /** <ul> や <section> として組みたいときに、子要素へスタイルを委譲する */
   asChild?: boolean;
@@ -120,8 +120,8 @@ const cell = cva(
        * 横 span。段ごとに効く幅が違う（L-34 / L-37）:
        *   2: tablet から常に 2（ライブラリの基本形）
        *   2-until-wide: tablet から 2、wide では span を降ろす（CULTURE）
-       *   2-tablet-only: tablet の 2 列でだけ 2。Staff の端数セル用だったが、Staff が
-       *     desktop も 2 列になった（L-38）ので今はどこからも使っていない（ライブラリに残置）
+       *   2-tablet-only: tablet の 2 列でだけ 2。Staff が 1 名のとき、3 人を並べる 3 列の格子の
+       *     最後の 1 枚（L-39）— 端数が出るのは tablet の 2 列だけ
        *   2-tablet-3-desktop: tablet で 2、desktop で行いっぱいの 3（OFFICIAL）
        *
        * `-until-wide` が `wide:col-span-1` ではなく **span 自体を止める**のは、wide の 4 列だけ
@@ -197,7 +197,7 @@ export function Cell({
  * 背景を持たない入れ子のグリッド。親の frame fill（divider）が gap 2 の隙間から覗くので、
  * 罫線のレシピ（L-9）はそのまま成立する。tablet からは display: contents で箱ごと消え、
  * 2 つの子は親グリッドの直接の item になる — 構図は親の span が決める。
- * 置けるのは本文を持たないセル（MEMBERS の `50+` / SINCE の `2025`）だけ: 168 のセルの
+ * 置けるのは本文を持たないセル（MEMBERS の `70+` / SINCE の `2025`）だけ: 168 のセルの
  * 内側 128 は L-10 の 20 字に足りない（L-31 と同じ理屈）。ラッパーに data-reveal や
  * フォーカスできる内容を置かないこと。
  *

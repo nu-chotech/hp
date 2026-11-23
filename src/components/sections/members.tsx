@@ -21,10 +21,16 @@ const titleId = `${sectionIds.members}-title`;
  * 2 つのグリッドは 1 本の罫線を共有して 1 つの罫線列になる（§3.8「連結グリッド」）ので、
  * 間にマージンを置いてはならない — 置いた瞬間に 2px 罫が 2 本に割れる。
  *
+ * **Staff が 1 名のときだけは例外**（DECISION L-39）。1 名を fillRow で 1200 の行に広げると、
+ * 1 人の運営が代表 2 人ぶんの面積を取り、4:3 の写真は Leader の 16:9 より背が高くなる —
+ * 格が逆転する。なので 3 人を 1 つの格子に**同格**（すべて Leader の組み）で並べる:
+ * desktop 3 列の 1 行、tablet は 2 列 + 最後の 1 枚を tablet だけ横組みで行いっぱいに。
+ * 差は役職の表記だけになる。
+ *
  * reveal は 0（見出し）/ 1（Leader）/ 2（Staff）の 3 段（§7.4.1 のインデックス表）。
  * DECISION M-2 が 1 つの面として束ねるのは **1 つの格子の中のセル群** であって、
  * 連結した 2 つの格子ではない。Leader と Staff は写真比も組みも違う 2 つの面なので、
- * §7.4.1 が数えたとおり順に出す。
+ * §7.4.1 が数えたとおり順に出す。L-39 の 1 つの格子は 0 / 1 の 2 段。
  */
 export function Members() {
   const { heading, leaderCount, showStaffPhotos, members } = membersContent;
@@ -40,32 +46,55 @@ export function Members() {
         data-reveal
       />
 
-      <RuledGrid columns={2} asChild data-reveal>
-        {/* biome-ignore lint/a11y/noRedundantRoles: Tailwind の preflight が list-style を none にするので、Safari / VoiceOver は ul から list ロールを外す。§8.5 が求める <ul> > <li> の読み上げを残すには明示が要る */}
-        {/* biome-ignore lint/a11y/useSemanticElements: 要素はすでに <ul>。role は上の理由で重ねている */}
-        <ul role="list">
-          {leaders.map((member) => (
-            <MemberCard key={member.id} member={member} size="leader" />
-          ))}
-        </ul>
-      </RuledGrid>
-      {staff.length > 0 ? (
-        <RuledGrid columns={2} joinTop asChild data-reveal>
+      {staff.length === 1 ? (
+        <RuledGrid columns={3} asChild data-reveal>
           {/* biome-ignore lint/a11y/noRedundantRoles: Tailwind の preflight が list-style を none にするので、Safari / VoiceOver は ul から list ロールを外す。§8.5 が求める <ul> > <li> の読み上げを残すには明示が要る */}
           {/* biome-ignore lint/a11y/useSemanticElements: 要素はすでに <ul>。role は上の理由で重ねている */}
           <ul role="list">
-            {staff.map((member, index) => (
+            {members.map((member, index) => (
               <MemberCard
-                fillRow={staff.length % 2 === 1 && index === staff.length - 1}
+                columns={3}
+                fillRow={index === members.length - 1 ? "tablet-only" : false}
                 key={member.id}
                 member={member}
-                size="staff"
-                showPhoto={showStaffPhotos}
+                size="leader"
+                showPhoto={index < leaderCount || showStaffPhotos}
               />
             ))}
           </ul>
         </RuledGrid>
-      ) : null}
+      ) : (
+        <>
+          <RuledGrid columns={2} asChild data-reveal>
+            {/* biome-ignore lint/a11y/noRedundantRoles: Tailwind の preflight が list-style を none にするので、Safari / VoiceOver は ul から list ロールを外す。§8.5 が求める <ul> > <li> の読み上げを残すには明示が要る */}
+            {/* biome-ignore lint/a11y/useSemanticElements: 要素はすでに <ul>。role は上の理由で重ねている */}
+            <ul role="list">
+              {leaders.map((member) => (
+                <MemberCard key={member.id} member={member} size="leader" />
+              ))}
+            </ul>
+          </RuledGrid>
+          {staff.length > 0 ? (
+            <RuledGrid columns={2} joinTop asChild data-reveal>
+              {/* biome-ignore lint/a11y/noRedundantRoles: Tailwind の preflight が list-style を none にするので、Safari / VoiceOver は ul から list ロールを外す。§8.5 が求める <ul> > <li> の読み上げを残すには明示が要る */}
+              {/* biome-ignore lint/a11y/useSemanticElements: 要素はすでに <ul>。role は上の理由で重ねている */}
+              <ul role="list">
+                {staff.map((member, index) => (
+                  <MemberCard
+                    fillRow={
+                      staff.length % 2 === 1 && index === staff.length - 1
+                    }
+                    key={member.id}
+                    member={member}
+                    size="staff"
+                    showPhoto={showStaffPhotos}
+                  />
+                ))}
+              </ul>
+            </RuledGrid>
+          ) : null}
+        </>
+      )}
     </Section>
   );
 }
