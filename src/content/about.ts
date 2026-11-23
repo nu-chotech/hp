@@ -76,10 +76,10 @@ export const aboutContent = {
 
   stat: {
     kicker: "MEMBERS",
-    value: "50",
+    value: "70",
     suffix: "+",
     /** 数字は装飾。読み上げは文で渡す（§6.11.3） */
-    accessibleName: "メンバー 50人以上",
+    accessibleName: "メンバー 70人以上",
   },
 
   /**
