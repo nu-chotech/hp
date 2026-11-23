@@ -53,4 +53,23 @@ export const partnersContent = {
       logo: "/images/partners/progate-path.png",
     },
   ] satisfies Partner[],
+
+  /**
+   * 技育プロジェクトを通したつながり（DECISION U-58）。ロゴの並びの下に、写真と文の 2 列で置く。
+   * 伝えたいのは「技育と一緒に外のイベントへ出ていく活発さ」と「技育を通して全国の学生団体・
+   * 企業とつながっている」こと。写真は技育のイベントの集合写真（約 80 人）で、About に置いて
+   * いた頃は「これがメンバー」と読まれた（U-57）。パートナーの文脈の中なら他団体の催しとして
+   * 読め、隣の文が場面を説明するのでキャプションは持たない。
+   *
+   * TODO(client): 題と本文はデザイン側の仮の文言（2026-11-24）。確認の上で確定させること。
+   */
+  network: {
+    kicker: "GEEK PROJECT",
+    title: "全国の学生と、つながる。",
+    body: "ChoTechは技育プロジェクトの公式パートナーです。技育のイベントには全国の学生・学生団体・企業が集まり、ChoTechのメンバーも参加してつながりを広げています。",
+    photo: {
+      src: "/images/partners/geek-project-event.jpg",
+      alt: "技育プロジェクトのイベントの集合写真",
+    },
+  },
 } as const;
