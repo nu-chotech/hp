@@ -42,6 +42,7 @@
 > - **2026-11-23（2）**: 宮崎の顔写真が本人のものに。iPhone の原版（3024 × 2423、位置情報つき EXIF）を `jpegtran -copy icc -crop 3024x2268+0+0` で**再圧縮せずに** 4:3 に切り（下の机の縁を落とす）、EXIF / XMP を外した（色の ICC プロファイル Display P3 だけ残す）。画素は原版と同一。Staff の写真が全員ぶん揃ったので `showStaffPhotos` を **true** に戻す（2026-09-07 の暫定非表示を解除、§6.15）
 > - **2026-11-23（3）**: MEMBERS の数字を `50+` → **`70+`**（読み上げ「メンバー 70人以上」）。本書の現状を語る箇所は 70+ に改め、DECISION 表と変更履歴の 50+ は当時の記録として残す
 > - **2026-11-23（4）**: Footer に問い合わせ先 **`contact@chotech.dev`**（mailto、外部扱いで新しいタブ + `arrow-up-right`、M-21）を足す。アドレスは `siteConfig` の隣の `contactEmail` に 1 か所で持つ。行が ≈ 890 に伸びて tablet の 720 に入らなくなったので、tablet 768–1023 は `flex-wrap` で問い合わせ以降を 2 行目へ送る。1 行は desktop 1024 から（§6.18）
+> - **2026-11-23（5）**: Staff 1 名の横いっぱいのカードが広すぎた（クライアント所見）ので、3 人を **1 つの 3 列の格子に同格**で並べる（**DECISION L-39**、§6.15）。desktop 3 列 1 行、tablet は 2 + 1（最後の 1 枚は tablet だけ横組み）、Mobile 1 列
 > - **Figma v2 への反映は未実施**（2026-09-12 時点）。反映すべき変更の一覧と手順は [figma-sync-2026-09-12.md](./figma-sync-2026-09-12.md)
 > - **2026-09-11**: Cell Stat の所属バッジ（U-29）を**撤回**し、セルは `50+` の数字だけに戻す（**DECISION U-36**）。Chip の Inverse トーンは Accent と同じくライブラリのみ（ページに出さない）。About の CULTURE セルは本文を落として題だけ（「仲間と、学ぶ。創る。話す。」— Hero の h1 を `Hack Your Limits.` に差し替える予定に合わせ、3 語を Culture に降ろす）
 > - **2026-09-10（2）**: 外部リンクは**すべて新しいタブ**で開く（`target="_blank" rel="noopener noreferrer"`、vh「（外部、新しいタブで開く）」、**DECISION M-21**。M-15 は撤回）。Partner の Logo タイルは `href` があれば**タイル全体が団体サイトへのリンク**（**DECISION U-35**。hover / pressed の表現なし、フォーカスリングは内側）
@@ -2299,6 +2300,8 @@ Figma: `Persona / Card` 1。Props: `caseNo` `title` `quote` `rec` TEXT、`image`
 
 Leader と Staff の差は **写真比・inset・name・skills の 4 点**（Socials は共通）。列数は差ではない — L-38 で両方 2 列になった。Staff グリッドは Leader グリッドの直下に上枠なしで接続（1 つの罫線列、§3.8）。カード自体はリンクではない。
 
+**Staff が 1 名のとき（DECISION L-39）**: 2 つの格子をやめ、3 人を **1 つの 3 列の格子に同格で**並べる。3 枚とも Leader の組み（16:9・`inset/cell`・`Title/2`・`Footnote`）で、差は役職の表記だけ。desktop 1024 から 3 列 1 行（1440: 397 × 442、写真 397 × 223 / 1024: 323 × 420）、tablet 768–1023 は 2 列 + 最後の 1 枚を**その段だけ**行いっぱいの横組みに（`fillRow` の `tablet-only`、`2-tablet-only` の span。768: 716 × 201、写真 358 × 201 で上の 2 枚と同寸）、Mobile 1 列。紹介文は 397 幅で 3〜4 行になる（上の表の「≤ 2 行」は 597 幅での値）。写真の `sizes` は列数で決まる: `(min-width: 78rem) 397px, (min-width: 64rem) 33vw, (min-width: 48rem) 50vw, 100vw`
+
 **Socials（DECISION U-12）**
 
 | 項目 | 仕様 |
@@ -3396,6 +3399,7 @@ WCAG 2.2 **AA** を必須とし、HIG のターゲット寸法（44pt）と以�
 | L-36 | 見出し行と footer 行を tablet 48rem から横に、2 列の Staff が奇数なら最後の 1 枚を `fillRow` で行いっぱいに（2026-09-15。L-38 以降は tablet 以降の全段で効く） | 見出しと footer の縦積みはトークンと同じ点で解く（旧 L-29 は 78rem）。frame fill = divider なので空トラックは灰色の板 — 均等セルの格子は空席を作らない（§3.8） |
 | L-37 | About のベントは **wide の 4 列だけ明示配置**（`col-start` / `row-start`）、1 / 2 / 3 列は span だけ（2026-09-16）。段ごとに「span か、明示配置か」を排他にし、`-until-wide` の span は `wide:col-span-1` ではなく span 自体を止める。中間の 2 段（tablet 12 マス = 6 行 / desktop 15 マス = 5 行）は**空トラックを作らない**ことを規準に選び、OFFICIAL は desktop でだけ 3×1。CHAT は幅ではなく**行数**で伸ばす（tablet / desktop 1×2、wide 1×3）。rowSpan を tablet に持ち込むのは CHAT のみで、その構図で読み順が保たれることを検算した上で許す | 6a は CULTURE 2×2 と CHAT 1×3 が同じ行を跨いで噛み合う構図で、疎な auto-placement では作れない — CHAT が欲しい 3 列目の行 1 を、DOM で先に来る MEMBERS が取ってしまう。`col-span-*` は `grid-column` の一括指定なので、同じ段で `col-start-*` と重ねると宣言順で勝ち負けが決まる。チャットを 2 列に広げると吹き出しが左右の縁に貼り付いて真ん中に帯ができ、1×1 に畳むと隣の写真が 357 × 685 の極端な縦長に切り取られた |
 | L-38 | Staff グリッドは **desktop でも 2 列**（3 列を撤回、2026-09-22）。Leader と同じ 597 のトラックになり、`fillRow` は tablet 以降の全段で効く（`2-tablet-only` の span はライブラリに残置） | 運営の退任で Staff が 3 → 2 名になり、desktop の 3 列目が 397 の**灰色の空トラック**として出た（L-9 の系）。列数は人数ではなく「空席を作らないこと」から決まる。Leader と同幅になるが、Leader / Staff の差は写真比・inset・name・skills の 4 点で保たれる（§6.15） |
+| L-39 | Staff が **1 名**のときは Leader / Staff の 2 つの格子をやめ、3 人を 1 つの 3 列の格子に**同格**（Leader の組み）で並べる。desktop 3 列 1 行、tablet は 2 列 + 最後の 1 枚を tablet だけ横組みで行いっぱい（`fillRow="tablet-only"`）、Mobile 1 列（2026-11-23、クライアント判断） | 向井の離脱で Staff が 1 名になり、L-36 の `fillRow` で 1200 の行を 1 人が占めた。1 人の運営が代表 2 人ぶんの面積を取り、4:3 の写真（横組みで 597 × 448）が Leader の 16:9（597 × 336）より背が高い — 格が逆転して「宮崎の紹介だけ領域が広すぎる」（クライアント所見）。2 × 2 の空き枠に「COMING SOON」を置く案は、空き枠の文言が読者に何も求めないという U-34 と同じ理由で退けた。3 人なら同格で 1 行に収まり、空席も出ない |
 | L-30 | logo mark は図の外接矩形で切った `icons/mark.svg` を 24 / 20 で置く | favicon.svg は余白込みで、図が小さく見え wordmark からも離れて見えた |
 | L-31 | ~~Partner セルは正方形タイル（Desktop 6 列 / tablet 3 / Mobile 2）~~ **U-43 でタイルごと撤去（外枠だけの 1 行）** | ロゴは正方形のアイコンが基本なので図とタイルの形を揃える。文字を運ばないタイルは L-10 の制約外。Mobile 1 列だと 342 角が 6 枚縦に積まれる |
 | L-33 | hero `min-height: min(100svh − size/nav − size/band-marquee, size/hero-max)`（2026-09-12、L-7 改） | ファーストビューの下端にパートナーの帯を乗せる。「支えられている」が最初の画面で見える。1440 × 900 で Hero 718 + 帯 120。内容が下限を超える画面（1280 × 720）では帯は一部 |

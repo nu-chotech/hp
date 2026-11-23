@@ -21,12 +21,14 @@ import { cn } from "@/lib/utils";
 const PHOTO_RATIO = { leader: "16:9", staff: "4:3" } as const;
 
 /**
- * next/image への移行時にそのまま持ち上がる sizes。
- * Leader も Staff も Desktop 2 列（597）、tablet も 2 列、Mobile は 1 列（L-38）。
+ * next/image への移行時にそのまま持ち上がる sizes。決めるのは size ではなく格子の列数。
+ * 2 列: Leader も Staff も Desktop 597、tablet も 2 列、Mobile は 1 列（L-38）。
+ * 3 列: Staff 1 名のとき 3 人を同格に並べる格子（L-39）。Desktop 397、desktop 段は 1/3、
+ * tablet は 2 列（最後の 1 枚は横組みで写真が行の 1/2 = やはり 50vw）。
  */
 const PHOTO_SIZES = {
-  leader: "(min-width: 78rem) 597px, (min-width: 48rem) 50vw, 100vw",
-  staff: "(min-width: 78rem) 597px, (min-width: 48rem) 50vw, 100vw",
+  2: "(min-width: 78rem) 597px, (min-width: 48rem) 50vw, 100vw",
+  3: "(min-width: 78rem) 397px, (min-width: 64rem) 33vw, (min-width: 48rem) 50vw, 100vw",
 } as const;
 
 // max-w-measure: 行いっぱいのカード（fillRow、L-36）で紹介文が 1200 の 1 行に伸びない。
@@ -102,24 +104,37 @@ export interface MemberCardProps {
    * 空いたトラックは frame fill（divider）の灰色の板になるので、格子に空席を作らない。
    * 広げたカードは横組み（写真 1/2 + 本文、U-55）— 縦組みのまま伸ばすと 4:3 の写真が 716 × 537 の
    * 面になり、本文は 1 行の帯になる。
+   *
+   * `"tablet-only"` は 3 列の格子（L-39）の最後の 1 枚: 端数が出るのは tablet の 2 列だけなので、
+   * 広げるのも横組みにするのもその段だけ。desktop の 3 列では普通の 1 枚に戻る。
    */
-  fillRow?: boolean;
+  fillRow?: boolean | "tablet-only";
+  /** 載っている格子の列数。写真の sizes だけがこれで変わる（2 = L-38、3 = L-39） */
+  columns?: 2 | 3;
 }
+
+/** fillRow の段ごとの効き方。Tailwind が拾えるよう、クラスは文字列のまま持つ */
+const FILL_ROW = {
+  all: { span: 2, card: "tablet:flex-row", photo: "tablet:w-1/2" },
+  "tablet-only": {
+    span: "2-tablet-only",
+    card: "tablet:max-desktop:flex-row",
+    photo: "tablet:max-desktop:w-1/2",
+  },
+} as const;
 
 export function MemberCard({
   member,
   size,
   showPhoto = true,
   fillRow = false,
+  columns = 2,
 }: MemberCardProps) {
+  const fill = fillRow ? FILL_ROW[fillRow === true ? "all" : fillRow] : null;
+
   return (
     // inset は body 側が持つ。写真はセルの縁に触れる（§6.15 の photo）
-    <Cell
-      asChild
-      className={cn(fillRow && "tablet:flex-row")}
-      colSpan={fillRow ? 2 : 1}
-      inset="none"
-    >
+    <Cell asChild className={fill?.card} colSpan={fill?.span ?? 1} inset="none">
       <li>
         {/* 人物写真の alt は空。氏名がすぐ隣に可視テキストとしてあるので、
             読み上げに同じ名前を二度出さない（§8.6）。focal は顔が上 1/3 に来る前提。
@@ -129,8 +144,8 @@ export function MemberCard({
           <ImageSlot
             ratio={PHOTO_RATIO[size]}
             focal="face"
-            sizes={PHOTO_SIZES[size]}
-            className={cn("shrink-0", fillRow && "tablet:w-1/2")}
+            sizes={PHOTO_SIZES[columns]}
+            className={cn("shrink-0", fill?.photo)}
             src={member.photo}
             alt=""
           />
@@ -138,8 +153,8 @@ export function MemberCard({
           <ImageSlot
             ratio={PHOTO_RATIO[size]}
             focal="face"
-            sizes={PHOTO_SIZES[size]}
-            className={cn("shrink-0", fillRow && "tablet:w-1/2")}
+            sizes={PHOTO_SIZES[columns]}
+            className={cn("shrink-0", fill?.photo)}
           />
         )}
 
